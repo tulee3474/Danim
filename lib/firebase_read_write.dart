@@ -54,15 +54,76 @@ class Point {
       };
 }
 
+class Place {
+  String name = ""; //_는 private의 의미
+  double latitude = 0.00; //위도
+  double longitude = 0.00; //경도
+  int takenTime = 0; //평균 소요시간
+  int popular = 0; //인기관광지 척도 - 조회수기반
+  List<int> partner = List.generate(7, (index) => 0);
+  //0: 혼자 여행, 1: 커플여행 2:우정여행 3:가족여행 4:효도여행 5:어린자녀와 6:반려견과
+  List<int> concept = List.generate(5, (index) => 0);
+  //0: 힐링 1: 에너지틱 2:배움이 있는 3:여유로운 4:맛있는
+  List<int> play = List.generate(6, (index) => 0);
+  //0: 레저스포츠 1: 문화시설 2: 사진 3: 이색체험 4:문화체험 5: 역사
+  List<int> tour = List.generate(11, (index) => 0);
+  //0: 바다 1:산 2:자연  3:트레킹 4:드라이브코스 5:산책
+  //6: 쇼핑 7:실내여행지  8:시티투어 9:지역 축제 10:전통한옥
+  List<int> season = List.generate(4, (index) => 0);
+  //0: 봄 1:여름 2:가을 3:겨울
+
+  // Place({
+  //   required this.name,
+  //   required this.latitude,
+  //   required this.longitude,
+  //   required this.popular,
+  //   required this.partner,
+  //   required this.concept,
+  //   required this.play,
+  //   required this.tour,
+  //   required this.season,
+  // });
+  Place(
+    this.name,
+    this.latitude,
+    this.longitude,
+    this.takenTime,
+    this.popular,
+    this.partner,
+    this.concept,
+    this.play,
+    this.tour,
+    this.season,
+  );
+
+  Place.from(Place bestPath);
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'latitude': latitude,
+        'longitude': longitude,
+        'takenTime': takenTime,
+        'popular': popular,
+        'partner': partner,
+        'concept': concept,
+        'play': play,
+        'tour': tour,
+        'season': season,
+      };
+}
+
+//Write하는 부분
 void fb_write_user() {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   User userModel =
       User(fullName: 'John Doe', company: "Stokes and Sons", age: 42);
   users.add(userModel.toJson());
+  //문서를 안쓰고 컬렉션만 쓰는 방식.
 }
 
-void fb_write_point(city, name, latitude, longitude) {
+void fb_write_place(city, name, latitude, longitude, takenTime, popular,
+    partner, concept, play, tour, season) {
   //CollectionReference points = FirebaseFirestore.instance.collection('points');
 
   //덮어쓰기
@@ -76,12 +137,87 @@ void fb_write_point(city, name, latitude, longitude) {
   FirebaseFirestore.instance.collection(city).doc(name).set({
     'latitude': latitude,
     'longitude': longitude,
+    'takenTime': takenTime,
+    'popular': popular,
+    'partner': partner,
+    'concept': concept,
+    'play': play,
+    'tour': tour,
+    'season': season,
   }, SetOptions(merge: true));
 }
 
+//Read하는 부분
 class ReadController extends GetxController {
   final db = FirebaseFirestore.instance;
   //var data;
+
+  Future<List<Place>> fb_read_all_place(city) async {
+    List<Place> data = [];
+
+    List<String> placeList = await fb_read_place_list(city) as List<String>;
+
+    for (int i = 0; i < placeList.length; i++) {
+      Place read_data = await fb_read_one_place(city, placeList[i]);
+      data.add(read_data);
+    }
+
+    return data;
+  }
+
+  Future<List> fb_read_place_list(city) async {
+    var data = await db.collection(city).doc("관광지목록").get();
+
+    List<String> placeList = [];
+    for (int i = 0; i < data.data()!['관광지'].length; i++) {
+      placeList.add(data.data()!['관광지'][i]);
+    }
+    return placeList;
+  }
+
+  Future<Place> fb_read_one_place(city, name) async {
+    var data = await db.collection(city).doc(name).get();
+
+    double latitude = data.data()!['latitude'] as double;
+    double longitude = data.data()!['longitude'] as double;
+    int popular = data.data()!['popular'] as int;
+    int takenTime = data.data()!['takenTime'] as int;
+
+    //Error: Expected a value of type 'List<int>', but got one of type 'List<dynamic>'
+    //위 에러 때문에 하나식 일일히 형변환함. 리스트를 통으로 형변환하면 에러
+    List<dynamic> partner2 = data.data()!['partner'];
+    List<int> partner = [];
+    for (int i = 0; i < partner2.length; i++) {
+      partner.add(partner2[i] as int);
+    }
+    List<dynamic> concept2 = data.data()!['concept'];
+    List<int> concept = [];
+    for (int i = 0; i < concept2.length; i++) {
+      concept.add(concept2[i] as int);
+    }
+    List<dynamic> play2 = data.data()!['play'];
+    List<int> play = [];
+    for (int i = 0; i < play2.length; i++) {
+      play.add(play2[i] as int);
+    }
+    List<dynamic> tour2 = data.data()!['tour'];
+    List<int> tour = [];
+    for (int i = 0; i < tour2.length; i++) {
+      tour.add(tour2[i] as int);
+    }
+    List<dynamic> season2 = data.data()!['season'];
+    List<int> season = [];
+    for (int i = 0; i < season2.length; i++) {
+      season.add(season2[i] as int);
+    }
+
+    Place placedata = Place(name, latitude, longitude, takenTime, popular,
+        partner, concept, play, tour, season);
+
+    return placedata;
+  }
+
+//기존에 했던 함수 혹시 몰라서 남겨 둠.
   Future<List<double>> fb_read_point(city, name) async {
     var data = await db.collection(city).doc(name).get();
     // final docRef = db.collection(city).doc(name);

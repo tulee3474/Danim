@@ -8,6 +8,7 @@ import 'firebase_options.dart';
 
 import 'my_home_page.dart';
 import 'firebase_read_write.dart';
+import 'map.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
+      //home: const Map(),
       home: const MyHomePage(),
     );
   }

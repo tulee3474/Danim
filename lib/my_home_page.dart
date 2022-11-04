@@ -223,22 +223,22 @@ class _TmpPageState extends State<MyHomePage> {
                 ElevatedButton(
                     onPressed: () {
                       print('ElevatedButton - onPressed');
-                      fb_write_point(
-                          point_city_ctrl.text,
-                          point_name_ctrl.text,
-                          double.parse(point_latitude_ctrl.text),
-                          double.parse(point_longitude_ctrl.text));
+                      // fb_write_place(
+                      //     point_city_ctrl.text,
+                      //     point_name_ctrl.text,
+                      //     double.parse(point_latitude_ctrl.text),
+                      //     double.parse(point_longitude_ctrl.text));
                       resetCtrl();
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Firebase에 데이터 전송 완료')));
                     },
                     onLongPress: () {
                       print('ElevatedButton - onLongPress');
-                      fb_write_point(
-                          point_city_ctrl.text,
-                          point_name_ctrl.text,
-                          double.parse(point_latitude_ctrl.text),
-                          double.parse(point_longitude_ctrl.text));
+                      // fb_write_place(
+                      //     point_city_ctrl.text,
+                      //     point_name_ctrl.text,
+                      //     double.parse(point_latitude_ctrl.text),
+                      //     double.parse(point_longitude_ctrl.text));
                       resetCtrl();
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Firebase에 데이터 전송 완료')));
@@ -253,7 +253,7 @@ class _TmpPageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RouteAI()),
+                      MaterialPageRoute(builder: (context) => RouteAIPage()),
                     );
                     print('ElevatedButton - onPressed');
                   },
