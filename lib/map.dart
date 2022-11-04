@@ -8,50 +8,13 @@ import 'package:google_maps_webservice/places.dart';
 import 'route.dart';
 import 'restaurant.dart';
 import 'route_ai.dart';
+import 'firebase_read_write.dart';
 
 // list of locations to display polylines
 List<LatLng> latLen = [
   //const LatLng(37.507941, 127.009686),
   //const LatLng(37.302263, 126.977977)
 ];
-
-class Place {
-  String name = "";
-  double latitude = 0.0;
-  double longitude = 0.0;
-
-  Place(
-    this.name,
-    this.latitude,
-    this.longitude,
-  );
-
-  void setName(String n) {
-    this.name = n;
-  }
-
-  String getName() {
-    return this.name;
-  }
-
-  void setLat(double lat) {
-    this.latitude = lat;
-  }
-
-  double getLat() {
-    return this.latitude;
-  }
-
-  void setLong(double long) {
-    this.longitude = long;
-  }
-
-  double getLong() {
-    return this.longitude;
-  }
-}
-
-List<Place> placeList = [];
 
 class Map extends StatefulWidget {
   const Map({super.key});
@@ -256,7 +219,7 @@ class _MapState extends State<Map> {
           //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
           //이곳에 한개 이상의 위젯들을 가진다.
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               print('ElevatedButton - onPressed');
               //Navigator.pop(context);
               //여기서 AI 실행하고 결과를 지도에 표시
@@ -273,9 +236,8 @@ class _MapState extends State<Map> {
                 [0, 1, 0, 0]
               ];
 
-              //read_data = ai.route_search("제주도", selectList, 90000, 5);
-              read_data = ai
-                  .route_search("제주도", selectList, 90000, 5)
+              //read_data = await ai.route_search("제주도", selectList, 90000, 5);
+              read_data = (await ai.route_search("제주도", selectList, 90000, 5))
                   .cast<List<Place>>();
               print("route_search함수 실행 후 리턴");
               print(read_data);

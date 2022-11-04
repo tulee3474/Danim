@@ -11,32 +11,19 @@ List<Place> placeList = []; //장소 리스트, 전역 변수
 
 class RouteAI {
   //Step 1. Data Loading
-  Future<List> data_loading(city) async {
+  data_loading(city) async {
     List<Place> readData;
 
     var read = ReadController();
-    print("여긴가 에러?1");
+
     readData = await read.fb_read_all_place(city);
-    print("여긴가 에러?2");
 
     placeList.addAll(readData);
-    print(placeList);
-    print("여긴가 에러?3");
-
-    return placeList;
   }
 
   //Step 2. Initialization
   List<Place> initialize_greedy(selectList, firstPlace, timeLimit) {
     int numPlace = placeList.length;
-    List weight = [
-      1,
-      2,
-      2,
-      1,
-      1,
-      2
-    ]; //각 성향 카테고리별 가중치, weight[5]는 popular, 인기관광지 점수
 
     List<Place> path = [];
     path.add(firstPlace);
@@ -46,20 +33,17 @@ class RouteAI {
 
     //Iteratively Connect nearest cities
     for (int i = 1; i < numPlace; i++) {
-      List<int> sum = []; //각 관광지의 점수 합
+      List<int> sum = List<int>.filled(numPlace, 0); //각 관광지의 점수 합
 
       //각 관광지별 계산하기
       for (int n = 0; n < numPlace; n++) {
-        double time = 20000;
+        double time = 600;
         //time = timeCalculate(path[i-1].name, placeList[n].name); - 시간계산 함수 - 시간계산 dart에서 함수 호출, 시간 리턴
 
         //자동차 여행일 경우 시간에 대한 가중치 줄여줌.
         // if (carTravel) {
         //   time *= 0.8;
         // }
-
-        //selectList는 사용자가 고른 성향을 가지고 있는 2차원 0 or 1 List - partner, concept, play, tour, season 5가지 영역에 각각 원소들 수만큼 공간
-
         //각 성향 점수 * 가중치 * 선택 유무 sum에 +해주기
         sum[n] += place_point(selectList, placeList[n]);
 
@@ -109,7 +93,7 @@ class RouteAI {
     int sum = 0;
 
     //각 성향 카테고리별 가중치, weight[5]는 popular, 인기관광지 점수
-    List weight = [1, 1, 1, 1, 1, 3];
+    List weight = [1, 2, 2, 1, 1, 1];
 
     //각 성향 점수 * 가중치 * 선택 유무
     for (int x = 0; x < 5; x++) {
@@ -129,12 +113,13 @@ class RouteAI {
         }
       }
     }
+
     return sum;
   }
 
   //Step 3. Searching a path
   List<Place> two_opts(selectList, path) {
-    int iterations = 10; //2-opts 시도 횟수
+    int iterations = 20; //2-opts 시도 횟수
 
     List<Place> bestPath = new List.from(path);
     int bestCost = 0;
@@ -154,18 +139,26 @@ class RouteAI {
       //1. 이미 있는 코스에서 2개를 바꾼다.
       if (i % 2 == 0) {
         Place temp;
-        temp = new Place.from(newPath[idx1]);
-        newPath[idx1] = new Place.from(newPath[idx2]);
-        newPath[idx2] = new Place.from(temp);
+        temp = Place.from(newPath[idx1]);
+
+        newPath.remove(idx1);
+        newPath.insert(idx1, Place.from(newPath[idx2]));
+
+        newPath.remove(idx2);
+        newPath.insert(idx2, temp);
+
+        //newPath[idx1] = Place.from(newPath[idx2]);
+        //newPath[idx2] = Place.from(temp);
+
       }
-      //2. 관광지 하나를 새 관광지로 바꾼다. -
-      //이건 매개인자로 PlaceList까지 가져와야하는데 그렇게까지 해야하려나?
+      //2. 관광지 하나를 새 관광지로 바꾼다. - 안할까 고민중
       //근데 path 하나의 관광지 수가 많지는 않을텐데, 하는게 맞나?
+      //아예 랜덤으로 하면, 너무 멀리있는 관광지랑 바뀔 수도 있음
+      //현재 cost시스템이 시간을 고려 안하기 때문
       else {
-        Place temp;
-        temp = new Place.from(newPath[idx1]);
-        newPath[idx1] = new Place.from(newPath[idx2]);
-        newPath[idx2] = new Place.from(temp);
+        // newPath[idx1] =
+        //     new Place.from(placeList[Random().nextInt(placeList.length)]);
+        //하게된다면, 기존 path와 중복 여부 체크도 추가할 것.
       }
 
       int newCost = 0;
@@ -174,7 +167,7 @@ class RouteAI {
       }
 
       if (newCost < bestCost) {
-        bestPath = newPath;
+        bestPath = new List.from(newPath);
         bestCost = newCost;
       }
     }
@@ -184,8 +177,11 @@ class RouteAI {
 
   List<Place> hill_climbing(path, selectList) {
     int StopRepeat = 3; //개선 여부에 따른 HC 횟수 조절
+
     bool kOptContinue = true;
+
     int kOptCheck = 0;
+
     List<Place> bestPath = two_opts(selectList, path);
 
     int bestCost = 0;
@@ -207,7 +203,7 @@ class RouteAI {
 
       // 2-opts를 통해 개선이 일어났다면, 기존 path와 교체
       if (newCost < bestCost) {
-        bestPath = newPath;
+        bestPath = new List.from(newPath);
         bestCost = newCost;
         kOptCheck = 0; //개선이 일어났으면 k_opt_check를 0으로 초기화하여 다시 카운트
       } else {
@@ -224,68 +220,36 @@ class RouteAI {
   }
 
   //main part
-  List<List<Place>> route_search(city, selectList, timeLimit, numPreset) {
-    //List<dynamic> placeList = await data_loading(city);
-    //전역변수로 바꿔줘야함!!!!! 그 후 route_search함수 async랑 future도 바꾸고
-    print("에러위치확인0");
-
-    // future 라는 변수에서 미래에(3초 후에) int가 나올 것입니다
-    // Future<List> future = data_loading(city);
-
-    // future.then((val) {
-    //   // int가 나오면 해당 값을 출력
-    //   print('val: $val');
-    // }).catchError((error) {
-    //   // error가 해당 에러를 출력
-    //   print('error: $error');
-    // });
-
-    // print('기다리는 중');
-    data_loading(city).then((val) {
-      print("기다림");
-    });
-
-    //placeList에 로딩이 끝날때까지 기다리기
-    // while (placeList.isEmpty) {
-    //   print("데이터 로딩 기다리는중1");
-    //   //sleep(const Duration(seconds: 1));
-    //   Duration(seconds: 1);
-    //   Future.delayed(const Duration(milliseconds: 500), () {
-    //     print('데이터 로딩 기다리는중2');
-    //   });
-    // }
+  Future<List<List<Place>>> route_search(
+      city, selectList, timeLimit, numPreset) async {
+    // await안쓰면 이 함수 따로 돌리고 넘어가서, placeList에 원소 안넣은 상태로 코드돌림
+    await data_loading(city);
 
     List<List<Place>> pathList = []; //path의 List,관광지의 List의 List
 
     List<int> point = [];
 
-    print("에러위치확인1");
-    print(placeList);
-
     //모든 관광지의 시간을 제외한 point를 탐색
     for (int i = 0; i < placeList.length; i++) {
       point.add(place_point(selectList, placeList[i]));
     }
-    print("에러위치확인2");
+
     //점수를 기준으로 sort해서 시작 관광지를 numPreset만큼 추출
     List pointCopy = new List.from(point);
     pointCopy.sort();
 
     Place firstPlace;
-
     for (int i = 0; i < numPreset; i++) {
       int index = point.indexOf(pointCopy[i]); //출발지의 Index
       firstPlace = placeList[index];
-
       //초기 path 만들기
       List<Place> initializePath =
           initialize_greedy(selectList, firstPlace, timeLimit);
 
       //초기 path 개선 - Hill-Climbing으로
-      initializePath = hill_climbing(initializePath, selectList);
-
+      List<Place> improvedPath = hill_climbing(initializePath, selectList);
       //pathList에 저장
-      pathList.add(initializePath);
+      pathList.add(improvedPath);
     }
 
     for (int i = 0; i < numPreset; i++) {
@@ -374,9 +338,17 @@ class RouteAIPage extends StatelessWidget {
                     [0, 1, 0, 0]
                   ];
 
-                  read_data = ai.route_search("제주도", selectList, 90000, 5);
+                  read_data = await ai.route_search("제주도", selectList, 600, 2);
                   print("route_search함수 실행 후 리턴");
                   print(read_data);
+
+                  for (int i = 0; i < read_data.length; i++) {
+                    print("코스");
+                    for (int j = 0; j < read_data[i].length; j++) {
+                      print(read_data[i][j].name);
+                    }
+                    print("---------------------------");
+                  }
 
                   //point_latitude_ctrl = read_data[0];
                   //point_longitude_ctrl = read_data[1];
