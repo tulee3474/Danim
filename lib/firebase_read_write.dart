@@ -62,13 +62,12 @@ class Place {
   int popular = 0; //인기관광지 척도 - 조회수기반
   List<int> partner = List.generate(7, (index) => 0);
   //0: 혼자 여행, 1: 커플여행 2:우정여행 3:가족여행 4:효도여행 5:어린자녀와 6:반려견과
-  List<int> concept = List.generate(5, (index) => 0);
-  //0: 힐링 1: 에너지틱 2:배움이 있는 3:여유로운 4:맛있는
+  List<int> concept = List.generate(4, (index) => 0);
+  //0: 힐링 1: 액티비티 2:배움이 있는 3:맛있는
   List<int> play = List.generate(6, (index) => 0);
-  //0: 레저스포츠 1: 문화시설 2: 사진 3: 이색체험 4:문화체험 5: 역사
-  List<int> tour = List.generate(11, (index) => 0);
-  //0: 바다 1:산 2:자연  3:트레킹 4:드라이브코스 5:산책
-  //6: 쇼핑 7:실내여행지  8:시티투어 9:지역 축제 10:전통한옥
+  //0: 레저스포츠 1: 문화시설 2: 사진명소 3: 이색체험 4:문화체험 5: 역사
+  List<int> tour = List.generate(9, (index) => 0);
+  //0: 바다 1:산 2:드라이브코스 3:산책 4: 쇼핑 5:실내여행지 6:시티투어 7:지역축제 8:전통한옥
   List<int> season = List.generate(4, (index) => 0);
   //0: 봄 1:여름 2:가을 3:겨울
 
@@ -218,29 +217,29 @@ class ReadController extends GetxController {
   }
 
 //기존에 했던 함수 혹시 몰라서 남겨 둠.
-  Future<List<double>> fb_read_point(city, name) async {
-    var data = await db.collection(city).doc(name).get();
-    // final docRef = db.collection(city).doc(name);
-    // docRef.get().then(
-    //   (DocumentSnapshot doc) {
-    //     final data = doc.data() as Map<String, dynamic>;
-    //   },
-    //   onError: (e) => print("Error getting document: $e"),
-    // );
-    print(data.data());
+  // Future<List<double>> fb_read_point(city, name) async {
+  //   var data = await db.collection(city).doc(name).get();
+  //   // final docRef = db.collection(city).doc(name);
+  //   // docRef.get().then(
+  //   //   (DocumentSnapshot doc) {
+  //   //     final data = doc.data() as Map<String, dynamic>;
+  //   //   },
+  //   //   onError: (e) => print("Error getting document: $e"),
+  //   // );
+  //   print(data.data());
 
-    double data1 = data.data()!['latitude'];
-    double data2 = data.data()!['longitude'];
+  //   double data1 = data.data()!['latitude'];
+  //   double data2 = data.data()!['longitude'];
 
-    List<double> dataList = [data1, data2];
+  //   List<double> dataList = [data1, data2];
 
-    print(dataList);
+  //   print(dataList);
 
-    // 컬렉션 전체 읽어오기, 문서 이름은 안알려주고 값만 넣은 2차원 배열 형태. x좌표 y좌표 상관없이 오름차순 정렬해줌....ㅠ
-    // db.collection(city).get().then(
-    //       (value) => print(value.docs.map((doc) => doc.data()).toList()),
-    //       onError: (e) => print("Error completing: $e"),
-    //     );
-    return dataList;
-  }
+  //   // 컬렉션 전체 읽어오기, 문서 이름은 안알려주고 값만 넣은 2차원 배열 형태. x좌표 y좌표 상관없이 오름차순 정렬해줌....ㅠ
+  //   // db.collection(city).get().then(
+  //   //       (value) => print(value.docs.map((doc) => doc.data()).toList()),
+  //   //       onError: (e) => print("Error completing: $e"),
+  //   //     );
+  //   return dataList;
+  // }
 }

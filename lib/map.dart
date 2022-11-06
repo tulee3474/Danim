@@ -124,22 +124,22 @@ class _MapState extends State<Map> {
     }
   }
 
-  void addMarker() async {
+  void addMarker(path) async {
     //convert(duration[duration.length-1]);
-    int i = placeList.length - 1;
+    int i = path.length - 1;
 
     if (i > 0) {
-      String durat = await getTransitDuration(
-          placeList[i - 1].getName(), placeList[i].getName());
-      String st = await getTransitSteps(
-          placeList[i - 1].getName(), placeList[i].getName());
+      print(path[i - 1].name);
+      print(path[i].name);
+      String durat = await getTransitDuration(path[i - 1].name, path[i].name);
+      String st = await getTransitSteps(path[i - 1].name, path[i].name);
       _markers.add(
           // added markers
           Marker(
         markerId: MarkerId(i.toString()),
         position: latLen[i], //
         infoWindow: InfoWindow(
-            title: placeList[i].name,
+            title: path[i].name,
             snippet:
                 durat //await getTransitSteps(placeList[i-1].name, placeList[i].name)
             ),
@@ -153,7 +153,7 @@ class _MapState extends State<Map> {
         position:
             latLen[i], //LatLng(placeList[i].latitude,placeList[i].longitude)
         infoWindow: InfoWindow(
-            title: placeList[i].name, snippet: i.toString() //placeList[i].name
+            title: path[i].name, snippet: i.toString() //placeList[i].name
             ),
         icon: BitmapDescriptor.defaultMarker,
       ));
@@ -230,17 +230,32 @@ class _MapState extends State<Map> {
               //임시 selectList
               List selectList = [
                 [0, 1, 0, 0, 0, 0, 0],
-                [0, 1, 0, 1, 0],
+                [0, 1, 0, 1],
                 [0, 1, 0, 0, 1, 0],
-                [0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1],
+                [0, 1, 0, 1, 0, 1, 1, 0, 1],
                 [0, 1, 0, 0]
               ];
 
-              //read_data = await ai.route_search("제주도", selectList, 90000, 5);
-              read_data = (await ai.route_search("제주도", selectList, 90000, 5))
+              await ai.data_loading("제주도");
+
+              //read_data = await ai.route_search("제주도", selectList, 600, 3);
+              read_data = (await ai.route_search("제주도", selectList, 600, 3))
                   .cast<List<Place>>();
               print("route_search함수 실행 후 리턴");
               print(read_data);
+
+              for (int i = 0; i < read_data.length; i++) {
+                print("코스");
+                for (int j = 0; j < read_data[i].length; j++) {
+                  print(read_data[i][j].name);
+                }
+                print("---------------------------");
+              }
+
+              setState(() {
+                addMarker(read_data[0]);
+                addPoly();
+              });
             },
             onLongPress: () {
               print('ElevatedButton - onLongPress');
@@ -335,7 +350,7 @@ class _MapState extends State<Map> {
                         CameraPosition(target: newlatlang, zoom: 17)));
                     var places = location.split(', ');
                     String placeName = places[places.length - 1];
-                    placeList.add(Place(placeName, lat, lang));
+                    //placeList.add(Place(placeName, lat, lang));
                     getRestaurant(lat, lang);
                     getCafe(lat, lang);
                     getAccommodation(lat, lang);
@@ -343,7 +358,7 @@ class _MapState extends State<Map> {
                       addRestMarker();
                       addCafeMarker();
                       addAccommodationMarker();
-                      addMarker();
+                      //addMarker();
                       addPoly();
                     });
                     setState(() {});

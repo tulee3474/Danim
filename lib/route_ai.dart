@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'firebase_read_write.dart';
+import 'map.dart';
 
 List<Place> placeList = []; //장소 리스트, 전역 변수
 
@@ -13,6 +14,8 @@ class RouteAI {
   //Step 1. Data Loading
   data_loading(city) async {
     List<Place> readData;
+
+    placeList = []; //한번 초기화하고 넣자
 
     var read = ReadController();
 
@@ -37,7 +40,7 @@ class RouteAI {
 
       //각 관광지별 계산하기
       for (int n = 0; n < numPlace; n++) {
-        double time = 600;
+        int time = 600;
         //time = timeCalculate(path[i-1].name, placeList[n].name); - 시간계산 함수 - 시간계산 dart에서 함수 호출, 시간 리턴
 
         //자동차 여행일 경우 시간에 대한 가중치 줄여줌.
@@ -49,7 +52,6 @@ class RouteAI {
 
         sum[n] += placeList[n].popular as int; //인기관광지 지표 포함하기
         sum[n] -= time as int; // - 시간 계산
-
       }
 
       //sort해서 다음 목적지 고르기, sort해서 그 인덱스 번호를 알아와야함. 그래야 Place리스트에서 쓸 수 있음.
@@ -223,7 +225,8 @@ class RouteAI {
   Future<List<List<Place>>> route_search(
       city, selectList, timeLimit, numPreset) async {
     // await안쓰면 이 함수 따로 돌리고 넘어가서, placeList에 원소 안넣은 상태로 코드돌림
-    await data_loading(city);
+    //await data_loading(city);
+    //이거 map.dart에서 실행하는거로 일단 바꿈.!!!!!!!!!!!!!!!!!!!!
 
     List<List<Place>> pathList = []; //path의 List,관광지의 List의 List
 
@@ -252,8 +255,10 @@ class RouteAI {
       pathList.add(improvedPath);
     }
 
+    //Map map = const Map();
+
     for (int i = 0; i < numPreset; i++) {
-      //addMarker(pathList[i]);
+      //map.addMarker(pathList[i]);
       //addPloy(pathList[i]);
 
     }
@@ -332,9 +337,9 @@ class RouteAIPage extends StatelessWidget {
                   //임시 selectList
                   List selectList = [
                     [0, 1, 0, 0, 0, 0, 0],
-                    [0, 1, 0, 1, 0],
+                    [0, 1, 0, 1],
                     [0, 1, 0, 0, 1, 0],
-                    [0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1],
+                    [0, 1, 0, 1, 0, 1, 1, 0, 1],
                     [0, 1, 0, 0]
                   ];
 
