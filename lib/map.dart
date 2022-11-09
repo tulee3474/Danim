@@ -124,40 +124,21 @@ class _MapState extends State<Map> {
     }
   }
 
-  void addMarker(path) async {
+  void addMarker(Place place, int i) async {
     //convert(duration[duration.length-1]);
-    int i = path.length - 1;
 
-    if (i > 0) {
-      print(path[i - 1].name);
-      print(path[i].name);
-      String durat = await getTransitDuration(path[i - 1].name, path[i].name);
-      String st = await getTransitSteps(path[i - 1].name, path[i].name);
-      _markers.add(
-          // added markers
-          Marker(
-        markerId: MarkerId(i.toString()),
-        position: latLen[i], //
-        infoWindow: InfoWindow(
-            title: path[i].name,
-            snippet:
-                durat //await getTransitSteps(placeList[i-1].name, placeList[i].name)
-            ),
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-    } else {
-      _markers.add(
-          // added markers
-          Marker(
-        markerId: MarkerId(i.toString()),
-        position:
-            latLen[i], //LatLng(placeList[i].latitude,placeList[i].longitude)
-        infoWindow: InfoWindow(
-            title: path[i].name, snippet: i.toString() //placeList[i].name
-            ),
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-    }
+    //String durat = await getTransitDuration(path[i-1].name, path[i].name);
+    //String st = await getTransitSteps(path[i-1].name, path[i].name);
+    _markers.add(
+        // added markers
+        Marker(
+      markerId: MarkerId(place.name),
+      position: latLen[i], //
+      infoWindow: InfoWindow(title: place.name, snippet: i.toString()
+          //durat //await getTransitSteps(placeList[i-1].name, placeList[i].name)
+          ),
+      icon: BitmapDescriptor.defaultMarker,
+    ));
   }
 
   void addPoly() {
@@ -235,14 +216,16 @@ class _MapState extends State<Map> {
                 [0, 1, 0, 1, 0, 1, 1, 0, 1],
                 [0, 1, 0, 0]
               ];
+              var stopwatch = Stopwatch();
+              stopwatch.start();
 
               await ai.data_loading("제주도");
 
               //read_data = await ai.route_search("제주도", selectList, 600, 3);
               read_data = (await ai.route_search("제주도", selectList, 600, 3))
                   .cast<List<Place>>();
-              print("route_search함수 실행 후 리턴");
-              print(read_data);
+              //print("route_search함수 실행 후 리턴");
+              //print(read_data);
 
               for (int i = 0; i < read_data.length; i++) {
                 print("코스");
@@ -251,9 +234,21 @@ class _MapState extends State<Map> {
                 }
                 print("---------------------------");
               }
+              print("AI 돌리는데 걸리는 시간");
+              print(stopwatch.elapsed);
+              stopwatch.stop();
+
+              //임시로 0번째 코스만 해보자
+              for (int i = 0; i < read_data[0].length; i++) {
+                latLen.add(LatLng(
+                    read_data[0][i].latitude, read_data[0][i].longitude));
+              }
 
               setState(() {
-                addMarker(read_data[0]);
+                for (int i = 0; i < read_data[0].length; i++) {
+                  addMarker(read_data[0][i], i);
+                }
+
                 addPoly();
               });
             },

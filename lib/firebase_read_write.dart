@@ -109,6 +109,20 @@ class Place {
         'tour': tour,
         'season': season,
       };
+
+//deep copy 하기 위한 함수
+  Place.clone(Place placeA)
+      : this(
+            placeA.name,
+            placeA.latitude,
+            placeA.longitude,
+            placeA.takenTime,
+            placeA.popular,
+            placeA.partner,
+            placeA.concept,
+            placeA.play,
+            placeA.tour,
+            placeA.season);
 }
 
 //Write하는 부분
@@ -160,6 +174,10 @@ class ReadController extends GetxController {
       Place read_data = await fb_read_one_place(city, placeList[i]);
       data.add(read_data);
     }
+    // for (int i = 0; i < data.length; i++) {
+    //   print(data[i].name);
+    //   print(data[i].latitude);
+    // }
 
     return data;
   }

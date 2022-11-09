@@ -7,8 +7,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'firebase_read_write.dart';
 import 'map.dart';
+import 'route.dart';
 
 List<Place> placeList = []; //장소 리스트, 전역 변수
+int qqq = 0;
+int www = 0;
 
 class RouteAI {
   //Step 1. Data Loading
@@ -25,7 +28,8 @@ class RouteAI {
   }
 
   //Step 2. Initialization
-  List<Place> initialize_greedy(selectList, firstPlace, timeLimit) {
+  Future<List<Place>> initialize_greedy(
+      selectList, firstPlace, timeLimit) async {
     int numPlace = placeList.length;
 
     List<Place> path = [];
@@ -40,18 +44,17 @@ class RouteAI {
 
       //각 관광지별 계산하기
       for (int n = 0; n < numPlace; n++) {
-        int time = 600;
-        //time = timeCalculate(path[i-1].name, placeList[n].name); - 시간계산 함수 - 시간계산 dart에서 함수 호출, 시간 리턴
-
-        //자동차 여행일 경우 시간에 대한 가중치 줄여줌.
+        //자동차 여행일 경우 거리에 대한 가중치 줄여줌.
         // if (carTravel) {
         //   time *= 0.8;
         // }
-        //각 성향 점수 * 가중치 * 선택 유무 sum에 +해주기
-        sum[n] += place_point(selectList, placeList[n]);
 
-        sum[n] += placeList[n].popular as int; //인기관광지 지표 포함하기
-        sum[n] -= time as int; // - 시간 계산
+        //첫 관광지가 이미 path에 있으므로 beforePlace에 null 넣는 예외처리 안해줘도 된다.
+        //각 성향 점수 * 가중치 * 선택 유무 sum에 +해주기
+        sum[n] += place_point(selectList, path[i - 1], placeList[n]);
+
+        //sum[n] += placeList[n].popular as int; //인기관광지 지표 포함하기
+        // sum[n] -= distance.toInt(); // - 거리 계산
       }
 
       //sort해서 다음 목적지 고르기, sort해서 그 인덱스 번호를 알아와야함. 그래야 Place리스트에서 쓸 수 있음.
@@ -73,6 +76,7 @@ class RouteAI {
         totalTime += path[0].takenTime;
       } else {
         //totalTime += timeCalculate(path[i-1].name, path[i].name); - 이동 시간 계산해서 +해주기
+        //distance해서 거리 비율 시간 계산
         totalTime += path[i].takenTime; // 관광지에서 소요시간
       }
 
@@ -91,11 +95,11 @@ class RouteAI {
     return path;
   }
 
-  int place_point(selectList, targetPlace) {
+  int place_point(selectList, beforePlace, targetPlace) {
     int sum = 0;
 
     //각 성향 카테고리별 가중치, weight[5]는 popular, 인기관광지 점수
-    List weight = [1, 2, 2, 1, 1, 1];
+    List weight = [2, 3, 3, 2, 2, 1];
 
     //각 성향 점수 * 가중치 * 선택 유무
     for (int x = 0; x < 5; x++) {
@@ -116,20 +120,38 @@ class RouteAI {
       }
     }
 
+    sum += targetPlace.popular as int; //인기관광지 지표 포함하기
+
+    if (beforePlace != null) {
+      double latDiff = targetPlace.latitude - beforePlace.latitude;
+      double longDiff = targetPlace.longitude - beforePlace.longitude;
+
+      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 150000;
+
+      sum -= distance.toInt(); // - 거리 계산
+
+      if (distance > 3000) {
+        qqq += 1;
+      } else {
+        www += 1;
+      }
+    }
+
     return sum;
   }
 
   //Step 3. Searching a path
   List<Place> two_opts(selectList, path) {
-    int iterations = 20; //2-opts 시도 횟수
+    int iterations = 50; //2-opts 시도 횟수
 
     List<Place> bestPath = new List.from(path);
-    int bestCost = 0;
+    List<Place> bestPath2 = new List.from(path);
+    int bestPoint = 0;
 
-    //판단 기준은 시간 제외, place_point의 합으로 한다.
-    //제한 시간은 동일하니, 동선이 좋다면 관광지 수가 많아 점수가 높을 것
-    for (int i = 0; i < bestPath.length; i++) {
-      bestCost += place_point(selectList, bestPath[i]);
+    //판단 기준은 place_point의 합으로 한다.
+    bestPoint += place_point(selectList, null, bestPath[0]);
+    for (int i = 1; i < bestPath.length; i++) {
+      bestPoint += place_point(selectList, bestPath[i - 1], bestPath[i]);
     }
 
     for (int i = 0; i < iterations; i++) {
@@ -138,39 +160,82 @@ class RouteAI {
       int idx1 = Random().nextInt(bestPath.length);
       int idx2 = Random().nextInt(bestPath.length);
 
-      //1. 이미 있는 코스에서 2개를 바꾼다.
-      if (i % 2 == 0) {
+      while (idx1 == idx2 && (bestPath.length >= 2)) {
+        idx2 = Random().nextInt(bestPath.length);
+      }
+      //idx1, 2 순서 정렬
+      if (idx1 > idx2) {
+        int idx3 = idx1;
+        idx1 = idx2;
+        idx2 = idx3;
+      }
+
+      //1. 관광지 하나를 새 관광지로 바꾼다. - 모든 관광지를 갈 경우 안함.
+      if (i % 2 == 0 && (placeList.length > newPath.length)) {
         Place temp;
-        temp = Place.from(newPath[idx1]);
+        bool flag = true;
+        int flag2 = 0;
+        while (true) {
+          int a = Random().nextInt(placeList.length);
+          Place temp2 = Place.clone(placeList[a]);
 
-        newPath.remove(idx1);
-        newPath.insert(idx1, Place.from(newPath[idx2]));
-
-        newPath.remove(idx2);
-        newPath.insert(idx2, temp);
-
-        //newPath[idx1] = Place.from(newPath[idx2]);
-        //newPath[idx2] = Place.from(temp);
-
+          for (int j = 0; j < newPath.length; j++) {
+            if (temp2.name == newPath[j].name) {
+              flag = false; //같은 이름이 있으면, 반복하여 다른 Place찾음
+            }
+          }
+          if (flag) {
+            temp = Place.clone(temp2);
+            break;
+          } else {
+            flag2 += 1;
+          }
+          flag = true; //이거땜에 많이 헤멨었는데, 까먹지 말고 초기화할것!
+          //만약을 대비
+          if (flag2 > 3) {
+            temp = Place.clone(placeList[idx1]);
+            break;
+          }
+        }
+        newPath.removeWhere((item) => item.name == newPath[idx1].name);
+        if (idx1 >= newPath.length) {
+          newPath.add(Place.clone(temp));
+        } else {
+          newPath.insert(idx1, Place.clone(temp));
+        }
       }
-      //2. 관광지 하나를 새 관광지로 바꾼다. - 안할까 고민중
-      //근데 path 하나의 관광지 수가 많지는 않을텐데, 하는게 맞나?
-      //아예 랜덤으로 하면, 너무 멀리있는 관광지랑 바뀔 수도 있음
-      //현재 cost시스템이 시간을 고려 안하기 때문
+      //2. 이미 있는 코스에서 2개를 바꾼다.
       else {
-        // newPath[idx1] =
-        //     new Place.from(placeList[Random().nextInt(placeList.length)]);
-        //하게된다면, 기존 path와 중복 여부 체크도 추가할 것.
+        Place temp;
+        Place temp2;
+        temp = Place.clone(newPath[idx1]);
+        temp2 = Place.clone(newPath[idx2]);
+
+        newPath.removeWhere((item) => item.name == newPath[idx1].name);
+        newPath.removeWhere((item) => item.name == newPath[idx2 - 1].name);
+        if (idx1 >= newPath.length) {
+          newPath.add(Place.clone(temp2));
+        } else {
+          newPath.insert(idx1, Place.clone(temp2));
+        }
+        if (idx2 >= newPath.length) {
+          newPath.add(Place.clone(temp));
+        } else {
+          newPath.insert(idx2, Place.clone(temp));
+        }
       }
 
-      int newCost = 0;
-      for (int i = 0; i < newPath.length; i++) {
-        newCost += place_point(selectList, newPath[i]);
+      int newPoint = 0;
+
+      newPoint += place_point(selectList, null, newPath[0]);
+      for (int i = 1; i < newPath.length; i++) {
+        newPoint += place_point(selectList, newPath[i - 1], newPath[i]);
       }
 
-      if (newCost < bestCost) {
+      if (newPoint >= bestPoint) {
+        bestPath2 = new List.from(bestPath);
         bestPath = new List.from(newPath);
-        bestCost = newCost;
+        bestPoint = newPoint;
       }
     }
 
@@ -178,42 +243,49 @@ class RouteAI {
   }
 
   List<Place> hill_climbing(path, selectList) {
-    int StopRepeat = 3; //개선 여부에 따른 HC 횟수 조절
+    int StopRepeat = 5; //개선 여부에 따른 HC 횟수 조절
+    int StopRepeat2 = 10; //너무 많이 반복되는 것 방지
 
     bool kOptContinue = true;
 
     int kOptCheck = 0;
+    int kOptCheck2 = 0;
 
     List<Place> bestPath = two_opts(selectList, path);
 
-    int bestCost = 0;
+    int bestPoint = 0;
 
     //판단 기준은 시간 제외, place_point의 합으로 한다.
     //제한 시간은 동일하니, 동선이 좋다면 관광지 수가 많아 점수가 높을 것
-    for (int i = 0; i < bestPath.length; i++) {
-      bestCost += place_point(selectList, bestPath[i]);
+    bestPoint += place_point(selectList, null, bestPath[0]);
+    for (int i = 1; i < bestPath.length; i++) {
+      bestPoint += place_point(selectList, bestPath[i - 1], bestPath[i]);
     }
 
     while (kOptContinue) {
       List<Place> newPath = two_opts(selectList, path);
 
-      int newCost = 0;
+      int newPoint = 0;
 
-      for (int i = 0; i < newPath.length; i++) {
-        newCost += place_point(selectList, newPath[i]);
+      newPoint += place_point(selectList, null, newPath[0]);
+      for (int i = 1; i < newPath.length; i++) {
+        newPoint += place_point(selectList, newPath[i - 1], newPath[i]);
       }
 
       // 2-opts를 통해 개선이 일어났다면, 기존 path와 교체
-      if (newCost < bestCost) {
+      if (newPoint > bestPoint) {
         bestPath = new List.from(newPath);
-        bestCost = newCost;
+        bestPoint = newPoint;
         kOptCheck = 0; //개선이 일어났으면 k_opt_check를 0으로 초기화하여 다시 카운트
+        kOptCheck2 += 1;
       } else {
         kOptCheck += 1;
+        kOptCheck2 += 1;
       }
-
+      // print("kOptCheck2");
+      // print(kOptCheck2);
       //개선이 StopRepeat만큼 일어나지 않으면 반복문 종료
-      if (kOptCheck >= StopRepeat) {
+      if (kOptCheck >= StopRepeat || kOptCheck2 >= StopRepeat2) {
         kOptContinue = false;
       }
     }
@@ -233,8 +305,9 @@ class RouteAI {
     List<int> point = [];
 
     //모든 관광지의 시간을 제외한 point를 탐색
-    for (int i = 0; i < placeList.length; i++) {
-      point.add(place_point(selectList, placeList[i]));
+    point.add(place_point(selectList, null, placeList[0]));
+    for (int i = 1; i < placeList.length; i++) {
+      point.add(place_point(selectList, placeList[i - 1], placeList[i]));
     }
 
     //점수를 기준으로 sort해서 시작 관광지를 numPreset만큼 추출
@@ -247,22 +320,30 @@ class RouteAI {
       firstPlace = placeList[index];
       //초기 path 만들기
       List<Place> initializePath =
-          initialize_greedy(selectList, firstPlace, timeLimit);
+          await initialize_greedy(selectList, firstPlace, timeLimit);
 
       //초기 path 개선 - Hill-Climbing으로
       List<Place> improvedPath = hill_climbing(initializePath, selectList);
+
+      // for (int j = 0; j < improvedPath.length; j++) {
+      //   print(improvedPath[j].name);
+      //   print(improvedPath[j].latitude);
+      // }
+      // print("----------------------");
       //pathList에 저장
       pathList.add(improvedPath);
     }
 
     //Map map = const Map();
 
-    for (int i = 0; i < numPreset; i++) {
-      //map.addMarker(pathList[i]);
-      //addPloy(pathList[i]);
+    // for (int i = 0; i < numPreset; i++) {
+    //   //map.addMarker(pathList[i]);
+    //   //addPloy(pathList[i]);
 
-    }
-
+    // }
+    print(qqq);
+    print(www);
+    print("위 두개는 거리 지표가 어느정도 효과인지 알아보기 위함");
     return pathList;
   }
 }
@@ -344,8 +425,6 @@ class RouteAIPage extends StatelessWidget {
                   ];
 
                   read_data = await ai.route_search("제주도", selectList, 600, 2);
-                  print("route_search함수 실행 후 리턴");
-                  print(read_data);
 
                   for (int i = 0; i < read_data.length; i++) {
                     print("코스");
