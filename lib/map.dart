@@ -1,65 +1,294 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'route.dart';
-import 'restaurant.dart';
+import 'nearby.dart';
 import 'route_ai.dart';
 import 'firebase_read_write.dart';
+import 'package:naver_map_plugin/naver_map_plugin.dart';
 
 // list of locations to display polylines
 List<LatLng> latLen = [
   //const LatLng(37.507941, 127.009686),
   //const LatLng(37.302263, 126.977977)
 ];
+List<LatLng> latLen2 = [
+  //const LatLng(37.507941, 127.009686),
+  //const LatLng(37.302263, 126.977977)
+];
+List<LatLng> latLen3 = [
+  //const LatLng(37.507941, 127.009686),
+  //const LatLng(37.302263, 126.977977)
+];
+
+final List<Marker> markers = [];
+final Set<PathOverlay> pathOverlays = {};
+
+void addMarker(String placeName, double lat, double lng) {
+  markers.add(Marker(
+    markerId: placeName,
+    position: LatLng(lat, lng),
+    infoWindow: placeName,
+  ));
+}
+
+void addPoly(color) {
+  pathOverlays.add(PathOverlay(PathOverlayId('path1'), latLen,
+      color: color[0], width: 7, outlineWidth: 0));
+  pathOverlays.add(PathOverlay(PathOverlayId('path2'), latLen2,
+      color: color[1], width: 7, outlineWidth: 0));
+  pathOverlays.add(PathOverlay(PathOverlayId('path3'), latLen3,
+      color: color[2], width: 7, outlineWidth: 0));
+}
 
 class Map extends StatefulWidget {
   const Map({super.key});
 
   @override
-  _MapState createState() => _MapState();
+  //_MapState createState() => _MapState();
+  NaverMapState createState() => NaverMapState();
 }
 
-/*
-double longitudeCalculate() {
-  double cameraLongitude=0.0;
-  for(int i=0; i<latLen.length; i++) {
-    cameraLongitude+=latLen[i].longitude;
-  }
-  cameraLongitude/=latLen.length;
-  return cameraLongitude;
-}
+String location = "Search Location";
 
-double latitudeCalculate() {
-  double cameraLatitude=0.0;
-  for(int i=0; i<latLen.length; i++) {
-    cameraLatitude+=latLen[i].latitude;
-  }
-  cameraLatitude/=latLen.length;
-  return cameraLatitude;
-}*/
-/*
-void route() async{
-  http.Response response=await http.get(Uri.parse(
-      "https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=${latLen[0].longitude},${latLen[0].latitude}&goal=${latLen[1].longitude},${latLen[1].latitude}&option=trafast"
-  ),headers: {"X-NCP-APIGW-API-KEY-ID": "piv474r6sz",
-    "X-NCP-APIGW-API-KEY": "Ugcq7WpbmUSu010hzNpE4bFFXO1E3Ds983KBKwSI"}
-  );
-  sta=response.statusCode.toString();
-  if (response.statusCode<200 || response.statusCode>400){
-    //error핸들링
-  } else {
-    String responseData=utf8.decode(response.bodyBytes);
-    var responseBody=jsonDecode(responseData);
-    //duration=responseBody.toString();
-    duration=(responseBody['route']['trafast'][0]['summary']['duration'].toString());
+class NaverMapState extends State<Map> {
+  //Completer<NaverMapController> _controller = Completer();
+  NaverMapController? mapController;
+  MapType _mapType = MapType.Basic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('NaverMap Test'),
+        actions: [
+          //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
+          //이곳에 한개 이상의 위젯들을 가진다.
+          ElevatedButton(
+            onPressed: () async {
+              print('ElevatedButton - onPressed');
+              //Navigator.pop(context);
+              //여기서 AI 실행하고 결과를 지도에 표시
+              var ai = RouteAI(); //RouteAI 클래스 생성
+
+              List<List<Place>> read_data;
+
+              //임시 selectList
+              List selectList = [
+                [0, 1, 0, 0, 0, 0, 0],
+                [0, 1, 0, 1],
+                [0, 1, 0, 0, 1, 0],
+                [0, 1, 0, 1, 0, 1, 1, 0, 1],
+                [0, 1, 0, 0]
+              ];
+              var stopwatch = Stopwatch();
+              stopwatch.start();
+
+              await ai.data_loading("제주도");
+
+              //임시 숙소
+              Place house = Place(
+                  "제주신라호텔",
+                  33.3616656,
+                  126.5291656,
+                  0,
+                  0,
+                  [0, 1, 0, 0, 0, 0, 0],
+                  [0, 1, 0, 1],
+                  [0, 1, 0, 0, 1, 0],
+                  [0, 1, 0, 1, 0, 1, 1, 0, 1],
+                  [0, 1, 0, 0]);
+
+              //read_data = await ai.route_search("제주도", selectList, 600, 3);
+              read_data = (await ai.route_search(
+                      "제주도", house, selectList, [12, 14], 3, 3))
+                  .cast<List<Place>>();
+              //print("route_search함수 실행 후 리턴");
+              //print(read_data);
+
+              for (int i = 0; i < read_data.length; i++) {
+                print("코스");
+                for (int j = 0; j < read_data[i].length; j++) {
+                  print(read_data[i][j].name);
+                }
+                print("---------------------------");
+              }
+              print("AI 돌리는데 걸리는 시간");
+              print(stopwatch.elapsed);
+              stopwatch.stop();
+
+              int houseCount = 0;
+              int polycount = 0;
+              int iSave = 0;
+
+              setState(() {
+                for (int i = 0; i < read_data[0].length; i++) {
+                  addMarker(read_data[0][i].name, read_data[0][i].latitude,
+                      read_data[0][i].longitude);
+
+                  if (read_data[0][i].name == "제주신라호텔") {
+                    houseCount += 1;
+                  }
+                  if (houseCount == 2) {
+                    //임시로 0번째 코스만 해보자
+                    for (int j = iSave; j < i; j++) {
+                      latLen.add(LatLng(
+                          read_data[0][j].latitude, read_data[0][j].longitude));
+                    }
+                    latLen.add(LatLng(read_data[0][iSave].latitude,
+                        read_data[0][iSave].longitude));
+
+                    //houseCount = 0;
+                    //latLen = [];
+                    iSave = i;
+                  }
+                  if (houseCount == 4) {
+                    for (int j = iSave; j < i; j++) {
+                      latLen2.add(LatLng(
+                          read_data[0][j].latitude, read_data[0][j].longitude));
+                    }
+
+                    latLen.add(LatLng(read_data[0][iSave].latitude,
+                        read_data[0][iSave].longitude));
+                    iSave = i;
+                  }
+
+                  if (houseCount == 6) {
+                    for (int j = iSave; j < i; j++) {
+                      latLen3.add(LatLng(
+                          read_data[0][j].latitude, read_data[0][j].longitude));
+                    }
+
+                    latLen.add(LatLng(read_data[0][iSave].latitude,
+                        read_data[0][iSave].longitude));
+                    iSave = i;
+                  }
+                }
+                addPoly([
+                  Colors.pink,
+                  Colors.green,
+                  Colors.purple,
+                  Colors.brown,
+                  Colors.black
+                ]);
+              });
+            },
+            onLongPress: () {
+              print('ElevatedButton - onLongPress');
+            },
+            // button 스타일은 여기서 작성한다.
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.orange,
+            ),
+            child: const Text('Ai실행'),
+          ),
+        ],
+      ),
+      body: Stack(children: [
+        NaverMap(
+          onMapCreated: (controller) {
+            setState(() {
+              mapController = controller;
+            });
+          },
+          initialCameraPosition: CameraPosition(
+              bearing: 0.0,
+              target: LatLng(33.371964, 126.543512),
+              tilt: 0.0,
+              zoom: 9.0),
+          mapType: _mapType,
+          markers: markers,
+          pathOverlays: pathOverlays,
+        ),
+        Positioned(
+          //search input bar
+          top: 10,
+          child: InkWell(
+            onTap: () async {
+              var place = await PlacesAutocomplete.show(
+                context: context,
+                apiKey: 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                mode: Mode.overlay,
+                language: "kr",
+                components: [Component(Component.country, 'kr')],
+                //google_map_webservice package
+              );
+
+              if (place != null) {
+                setState(() {
+                  location = place.description.toString();
+                });
+
+                //form google_maps_webservice package
+                final plist = GoogleMapsPlaces(
+                  apiKey: 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                  apiHeaders: await GoogleApiHeaders().getHeaders(),
+                  //from google_api_headers package
+                );
+
+                String placeid = place.placeId ?? "0";
+                final detail = await plist.getDetailsByPlaceId(placeid);
+                final geometry = detail.result.geometry!;
+                final lat = geometry.location.lat;
+                final lang = geometry.location.lng;
+                var newlatlang = LatLng(lat, lang);
+                latLen.add(newlatlang);
+                setState(() {
+                  CameraPosition cameraPosition = CameraPosition(
+                      bearing: 0.0, target: newlatlang, tilt: 0.0, zoom: 14.0);
+                  //move map camera to selected place with animation
+                  CameraUpdate cameraUpdate =
+                      CameraUpdate.toCameraPosition(cameraPosition);
+                  mapController?.moveCamera(cameraUpdate);
+                });
+
+                var places = location.split(', ');
+                //String placeName=await getDrivingDuration(33.5170488, 126.5033901, 33.5042977, 126.954048);
+                String placeName = places[places.length - 1];
+                //placeList.add(Place(placeName, lat, lang));
+
+                setState(() {
+                  //addRestMarker();
+                  //addCafeMarker();
+                  //addAccommodationMarker();
+                  getRestaurant(lat, lang);
+                  getCafe(lat, lang);
+                  getAccommodation(lat, lang);
+                  addMarker(placeName, lat, lang);
+                  //addPoly(Colors.pink);
+                });
+                setState(() {});
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Card(
+                child: Container(
+                    padding: EdgeInsets.all(0),
+                    width: MediaQuery.of(context).size.width - 40,
+                    child: ListTile(
+                      title: Text(
+                        location,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      trailing: Icon(Icons.search),
+                      dense: true,
+                    )),
+              ),
+            ),
+          ),
+        )
+      ]),
+    );
   }
 }
-*/
+/*
 class _MapState extends State<Map> {
+
   // created controller to display Google Maps
   Completer<GoogleMapController> _controller = Completer();
   //on below line we have set the camera position
@@ -72,83 +301,103 @@ class _MapState extends State<Map> {
   final Set<Polyline> _polyline = {};
 
   void addRestMarker() {
-    for (int i = 0; i < restaurantList.length; i++) {
+    for(int i=0;i<restaurantList.length;i++) {
       _markers.add(
-          // added markers
+        // added markers
           Marker(
-        markerId: MarkerId((i + 1000).toString()),
-        position:
-            LatLng(restaurantList[i].restLat, restaurantList[i].restLong), //
-        infoWindow: InfoWindow(
-            title: restaurantList[i].restName,
-            snippet: restaurantList[i]
-                .restCategory //await getTransitSteps(placeList[i-1].name, placeList[i].name)
+            markerId: MarkerId((i+1000).toString()),
+            position: LatLng(restaurantList[i].restLat,restaurantList[i].restLong), //
+            infoWindow: InfoWindow(
+                title: restaurantList[i].restName,
+                snippet: restaurantList[i].restCategory//await getTransitSteps(placeList[i-1].name, placeList[i].name)
             ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
-      ));
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
+          )
+      );
     }
   }
 
   void addCafeMarker() {
-    for (int i = 0; i < cafeList.length; i++) {
+    for(int i=0;i<cafeList.length;i++) {
       _markers.add(
-          // added markers
+        // added markers
           Marker(
-        markerId: MarkerId((i + 2000).toString()),
-        position: LatLng(cafeList[i].cafeLat, cafeList[i].cafeLong), //
-        infoWindow: InfoWindow(
-            title: cafeList[i].cafeName,
-            snippet: cafeList[i]
-                .cafeCategory //await getTransitSteps(placeList[i-1].name, placeList[i].name)
+            markerId: MarkerId((i+2000).toString()),
+            position: LatLng(cafeList[i].cafeLat,cafeList[i].cafeLong), //
+            infoWindow: InfoWindow(
+                title: cafeList[i].cafeName,
+                snippet: cafeList[i].cafeCategory//await getTransitSteps(placeList[i-1].name, placeList[i].name)
             ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
-      ));
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+          )
+      );
     }
   }
 
   void addAccommodationMarker() {
-    for (int i = 0; i < cafeList.length; i++) {
+    for(int i=0;i<cafeList.length;i++) {
       _markers.add(
-          // added markers
+        // added markers
           Marker(
-        markerId: MarkerId((i + 3000).toString()),
-        position: LatLng(
-            accommodationList[i].accoLat, accommodationList[i].accoLong), //
-        infoWindow: InfoWindow(
-            title: accommodationList[i].accoName,
-            snippet: accommodationList[i]
-                .accoCategory //await getTransitSteps(placeList[i-1].name, placeList[i].name)
+            markerId: MarkerId((i+3000).toString()),
+            position: LatLng(accommodationList[i].accoLat,accommodationList[i].accoLong), //
+            infoWindow: InfoWindow(
+                title: accommodationList[i].accoName,
+                snippet: accommodationList[i].accoCategory//await getTransitSteps(placeList[i-1].name, placeList[i].name)
             ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-      ));
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+          )
+      );
     }
   }
 
-  void addMarker(Place place, int i) async {
+  void addMarker() async{
+
     //convert(duration[duration.length-1]);
+    int i=placeList.length-1;
 
-    //String durat = await getTransitDuration(path[i-1].name, path[i].name);
-    //String st = await getTransitSteps(path[i-1].name, path[i].name);
-    _markers.add(
-        // added markers
-        Marker(
-      markerId: MarkerId(place.name),
-      position: latLen[i], //
-      infoWindow: InfoWindow(title: place.name, snippet: i.toString()
-          //durat //await getTransitSteps(placeList[i-1].name, placeList[i].name)
+    if (i>0)
+      {
+        String durat= await getTransitDuration(placeList[i-1].getName(), placeList[i].getName());
+        String st=await getTransitSteps(placeList[i-1].getName(), placeList[i].getName());
+        _markers.add(
+          // added markers
+          Marker(
+            markerId: MarkerId(i.toString()),
+            position: latLen[i], //
+            infoWindow: InfoWindow(
+                title: placeList[i].name,
+                snippet: durat//await getTransitSteps(placeList[i-1].name, placeList[i].name)
           ),
-      icon: BitmapDescriptor.defaultMarker,
-    ));
+          icon: BitmapDescriptor.defaultMarker,
+        )
+    );
+      }else {
+    _markers.add(
+      // added markers
+        Marker(
+          markerId: MarkerId(i.toString()),
+          position: latLen[i], //LatLng(placeList[i].latitude,placeList[i].longitude)
+          infoWindow: InfoWindow(
+            title: placeList[i].name,
+            snippet: i.toString()//placeList[i].name
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+        )
+    );}
   }
 
-  void addPoly() {
-    _polyline.add(Polyline(
-      polylineId: const PolylineId('1'),
-      width: 5,
-      points: latLen,
-      color: Colors.green,
-    ));
+  void addPoly(){
+    _polyline.add(
+        Polyline(
+          polylineId: const PolylineId('1'),
+          width: 5,
+          points: latLen,
+          color: Colors.green,
+        )
+    );
   }
+
 
   @override
   void initState() {
@@ -186,7 +435,6 @@ class _MapState extends State<Map> {
 
     });*/
   }
-
   String location = "Search Location";
   GoogleMapController? mapController;
   @override
@@ -196,97 +444,31 @@ class _MapState extends State<Map> {
         backgroundColor: Color(0xFF0F9D58),
         // title of app
         title: Text("Danim"),
-        actions: [
-          //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
-          //이곳에 한개 이상의 위젯들을 가진다.
-          ElevatedButton(
-            onPressed: () async {
-              print('ElevatedButton - onPressed');
-              //Navigator.pop(context);
-              //여기서 AI 실행하고 결과를 지도에 표시
-              var ai = RouteAI(); //RouteAI 클래스 생성
-
-              List<List<Place>> read_data;
-
-              //임시 selectList
-              List selectList = [
-                [0, 1, 0, 0, 0, 0, 0],
-                [0, 1, 0, 1],
-                [0, 1, 0, 0, 1, 0],
-                [0, 1, 0, 1, 0, 1, 1, 0, 1],
-                [0, 1, 0, 0]
-              ];
-              var stopwatch = Stopwatch();
-              stopwatch.start();
-
-              await ai.data_loading("제주도");
-
-              //read_data = await ai.route_search("제주도", selectList, 600, 3);
-              read_data = (await ai.route_search("제주도", selectList, 600, 3))
-                  .cast<List<Place>>();
-              //print("route_search함수 실행 후 리턴");
-              //print(read_data);
-
-              for (int i = 0; i < read_data.length; i++) {
-                print("코스");
-                for (int j = 0; j < read_data[i].length; j++) {
-                  print(read_data[i][j].name);
-                }
-                print("---------------------------");
-              }
-              print("AI 돌리는데 걸리는 시간");
-              print(stopwatch.elapsed);
-              stopwatch.stop();
-
-              //임시로 0번째 코스만 해보자
-              for (int i = 0; i < read_data[0].length; i++) {
-                latLen.add(LatLng(
-                    read_data[0][i].latitude, read_data[0][i].longitude));
-              }
-
+      ),
+      body: Stack(
+        children: [
+          GoogleMap(
+            //given camera position
+            initialCameraPosition: _kGoogle,
+            // on below line we have given map type
+            mapType: MapType.normal,
+            // specified set of markers below
+            markers: _markers,
+            // on below line we have enabled location
+            myLocationEnabled: true,
+            myLocationButtonEnabled: true,
+            // on below line we have enabled compass location
+            compassEnabled: true,
+            // on below line we have added polylines
+            polylines: _polyline,
+            // displayed google map
+            onMapCreated: (controller) {
               setState(() {
-                for (int i = 0; i < read_data[0].length; i++) {
-                  addMarker(read_data[0][i], i);
-                }
-
-                addPoly();
+                mapController = controller;
               });
             },
-            onLongPress: () {
-              print('ElevatedButton - onLongPress');
-            },
-            // button 스타일은 여기서 작성한다.
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.orange,
-            ),
-            child: const Text('Ai실행'),
           ),
-        ],
-      ),
-      body: Stack(children: [
-        GoogleMap(
-          //given camera position
-          initialCameraPosition: _kGoogle,
-          // on below line we have given map type
-          mapType: MapType.normal,
-          // specified set of markers below
-          markers: _markers,
-          // on below line we have enabled location
-          myLocationEnabled: true,
-          myLocationButtonEnabled: true,
-          // on below line we have enabled compass location
-          compassEnabled: true,
-          // on below line we have added polylines
-          polylines: _polyline,
-          // displayed google map
-          onMapCreated: (controller) {
-            setState(() {
-              mapController = controller;
-            });
-          },
-        ),
-        /*Positioned(
+    /*Positioned(
       bottom:30,
       child: ElevatedButton(
         child:Text(
@@ -301,81 +483,118 @@ class _MapState extends State<Map> {
         },
       )
     ),*/
-        Positioned(
-            //search input bar
-            top: 10,
-            child: InkWell(
-                onTap: () async {
-                  var place = await PlacesAutocomplete.show(
-                    context: context,
-                    apiKey: 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
-                    mode: Mode.overlay,
-                    language: "kr",
-                    //types: [],
-                    //strictbounds: false,
-                    components: [Component(Component.country, 'kr')],
-                    //google_map_webservice package
-                    //onError: (err){
-                    //  print(err);
-                    //},
-                  );
+    Positioned(  //search input bar
+      top:10,
+      child: InkWell(
+        onTap: () async {
+          var place = await PlacesAutocomplete.show(
+              context: context,
+              apiKey: 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+              mode: Mode.overlay,
+              language: "kr",
+              //types: [],
+              //strictbounds: false,
+              components: [Component(Component.country, 'kr')],
+                          //google_map_webservice package
+              //onError: (err){
+              //  print(err);
+              //},
+          );
 
-                  if (place != null) {
-                    setState(() {
-                      location = place.description.toString();
-                    });
+      if(place != null){
+          setState(() {
+            location = place.description.toString();
+          });
 
-                    //form google_maps_webservice package
-                    final plist = GoogleMapsPlaces(
-                      apiKey: 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
-                      apiHeaders: await GoogleApiHeaders().getHeaders(),
-                      //from google_api_headers package
-                    );
+        //form google_maps_webservice package
+        final plist = GoogleMapsPlaces(apiKey:'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+              apiHeaders: await GoogleApiHeaders().getHeaders(),
+                          //from google_api_headers package
+        );
 
-                    String placeid = place.placeId ?? "0";
-                    final detail = await plist.getDetailsByPlaceId(placeid);
-                    final geometry = detail.result.geometry!;
-                    final lat = geometry.location.lat;
-                    final lang = geometry.location.lng;
-                    var newlatlang = LatLng(lat, lang);
-                    latLen.add(newlatlang);
+        String placeid = place.placeId ?? "0";
+        final detail = await plist.getDetailsByPlaceId(placeid);
+        final geometry = detail.result.geometry!;
+        final lat = geometry.location.lat;
+        final lang = geometry.location.lng;
+        var newlatlang = LatLng(lat, lang);
+        latLen.add(newlatlang);
 
-                    //move map camera to selected place with animation
-                    mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                        CameraPosition(target: newlatlang, zoom: 17)));
-                    var places = location.split(', ');
-                    String placeName = places[places.length - 1];
-                    //placeList.add(Place(placeName, lat, lang));
-                    getRestaurant(lat, lang);
-                    getCafe(lat, lang);
-                    getAccommodation(lat, lang);
-                    setState(() {
-                      addRestMarker();
-                      addCafeMarker();
-                      addAccommodationMarker();
-                      //addMarker();
-                      addPoly();
-                    });
-                    setState(() {});
-                  }
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(15),
-                  child: Card(
-                    child: Container(
-                        padding: EdgeInsets.all(0),
-                        width: MediaQuery.of(context).size.width - 40,
-                        child: ListTile(
-                          title: Text(
-                            location,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          trailing: Icon(Icons.search),
-                          dense: true,
-                        )),
-                  ),
-                )))
-      ]),
-    );
+        //move map camera to selected place with animation
+        mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
+        var places=location.split(', ');
+        String placeName=places[places.length-1];
+        placeList.add(Place(placeName, lat, lang));
+        getRestaurant(lat, lang);
+        getCafe(lat, lang);
+        getAccommodation(lat, lang);
+        setState(() {
+          addRestMarker();
+          addCafeMarker();
+          addAccommodationMarker();
+          addMarker();
+          addPoly();
+        });
+        setState(() {
+        });
+      }
+    },
+    child:Padding(
+      padding: EdgeInsets.all(15),
+        child: Card(
+          child: Container(
+            padding: EdgeInsets.all(0),
+            width: MediaQuery.of(context).size.width - 40,
+            child: ListTile(
+              title:Text(location, style: TextStyle(fontSize: 18),),
+              trailing: Icon(Icons.search),
+              dense: true,
+            )
+          ),
+        ),
+      )
+      )
+      )
+
+      ]
+      ),
+      );
+  }
+}*/
+
+/*
+double longitudeCalculate() {
+  double cameraLongitude=0.0;
+  for(int i=0; i<latLen.length; i++) {
+    cameraLongitude+=latLen[i].longitude;
+  }
+  cameraLongitude/=latLen.length;
+  return cameraLongitude;
+}
+
+double latitudeCalculate() {
+  double cameraLatitude=0.0;
+  for(int i=0; i<latLen.length; i++) {
+    cameraLatitude+=latLen[i].latitude;
+  }
+  cameraLatitude/=latLen.length;
+  return cameraLatitude;
+}*/
+/*
+void route() async{
+  http.Response response=await http.get(Uri.parse(
+      "https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=${latLen[0].longitude},${latLen[0].latitude}&goal=${latLen[1].longitude},${latLen[1].latitude}&option=trafast"
+  ),headers: {"X-NCP-APIGW-API-KEY-ID": "piv474r6sz",
+    "X-NCP-APIGW-API-KEY": "Ugcq7WpbmUSu010hzNpE4bFFXO1E3Ds983KBKwSI"}
+  );
+  sta=response.statusCode.toString();
+  if (response.statusCode<200 || response.statusCode>400){
+    //error핸들링
+  } else {
+    String responseData=utf8.decode(response.bodyBytes);
+    var responseBody=jsonDecode(responseData);
+    //duration=responseBody.toString();
+    duration=(responseBody['route']['trafast'][0]['summary']['duration'].toString());
   }
 }
+*/
