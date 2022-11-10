@@ -126,7 +126,7 @@ class RouteAI {
       double latDiff = targetPlace.latitude - beforePlace.latitude;
       double longDiff = targetPlace.longitude - beforePlace.longitude;
 
-      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 150000;
+      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 120000;
 
       sum -= distance.toInt(); // - 거리 계산
 
@@ -142,7 +142,7 @@ class RouteAI {
 
   //Step 3. Searching a path
   List<Place> two_opts(selectList, path) {
-    int iterations = 50; //2-opts 시도 횟수
+    int iterations = 100; //2-opts 시도 횟수
 
     List<Place> bestPath = new List.from(path);
     List<Place> bestPath2 = new List.from(path);
@@ -244,7 +244,7 @@ class RouteAI {
 
   List<Place> hill_climbing(path, selectList) {
     int StopRepeat = 5; //개선 여부에 따른 HC 횟수 조절
-    int StopRepeat2 = 10; //너무 많이 반복되는 것 방지
+    int StopRepeat2 = 1000; //너무 많이 반복되는 것 방지
 
     bool kOptContinue = true;
 
