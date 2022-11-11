@@ -151,7 +151,7 @@ class NaverMapState extends State<Map> {
                           read_data[0][j].latitude, read_data[0][j].longitude));
                     }
 
-                    latLen.add(LatLng(read_data[0][iSave].latitude,
+                    latLen2.add(LatLng(read_data[0][iSave].latitude,
                         read_data[0][iSave].longitude));
                     iSave = i;
                   }
@@ -162,7 +162,7 @@ class NaverMapState extends State<Map> {
                           read_data[0][j].latitude, read_data[0][j].longitude));
                     }
 
-                    latLen.add(LatLng(read_data[0][iSave].latitude,
+                    latLen3.add(LatLng(read_data[0][iSave].latitude,
                         read_data[0][iSave].longitude));
                     iSave = i;
                   }
