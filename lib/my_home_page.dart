@@ -191,7 +191,7 @@ class _TmpPageState extends State<MyHomePage> {
                     controller: point_city_ctrl,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Point City',
+                      labelText: 'Point Code',
                     ))),
             Container(
                 margin: EdgeInsets.all(8),
@@ -207,7 +207,7 @@ class _TmpPageState extends State<MyHomePage> {
                     controller: point_latitude_ctrl,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Point Latitude',
+                      labelText: 'Point ㅜㅜㅜㅜㅜㅜ',
                     ))),
             Container(
                 margin: EdgeInsets.all(8),
@@ -215,7 +215,7 @@ class _TmpPageState extends State<MyHomePage> {
                     controller: point_longitude_ctrl,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Point Longitude',
+                      labelText: 'Point ㅜㅜㅜㅜㅜㅜ',
                     ))),
             Row(
               // 버튼 두개 만들기
@@ -223,23 +223,42 @@ class _TmpPageState extends State<MyHomePage> {
                 ElevatedButton(
                     onPressed: () {
                       print('ElevatedButton - onPressed');
-                      // fb_write_place(
-                      //     point_city_ctrl.text,
-                      //     point_name_ctrl.text,
-                      //     double.parse(point_latitude_ctrl.text),
-                      //     double.parse(point_longitude_ctrl.text));
+                      List travelList1 = ["서울", "제주도"];
+                      List placeNumList1 = [3, 2];
+                      List traveledPlaceList1 = [
+                        "남산",
+                        "경복궁",
+                        "이태원",
+                        "성산일출봉",
+                        "우도"
+                      ];
+                      List eventNumList1 = [2, 4];
+                      List eventList1 = [
+                        "이벤트01",
+                        "이벤트02",
+                        "이벤트11",
+                        "이벤트12",
+                        "이벤트13",
+                        "이벤트14"
+                      ];
+                      List diaryList1 = ["일기1", "일기2"];
+                      fb_write_user(
+                          point_city_ctrl.text,
+                          point_name_ctrl.text,
+                          travelList1,
+                          placeNumList1,
+                          traveledPlaceList1,
+                          eventNumList1,
+                          eventList1,
+                          diaryList1);
                       resetCtrl();
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Firebase에 데이터 전송 완료')));
                     },
                     onLongPress: () {
                       print('ElevatedButton - onLongPress');
-                      // fb_write_place(
-                      //     point_city_ctrl.text,
-                      //     point_name_ctrl.text,
-                      //     double.parse(point_latitude_ctrl.text),
-                      //     double.parse(point_longitude_ctrl.text));
-                      resetCtrl();
+
+                      //resetCtrl();
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Firebase에 데이터 전송 완료')));
                     },

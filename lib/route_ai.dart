@@ -536,7 +536,7 @@ class RouteAIPage extends StatelessWidget {
                   print('ElevatedButton - onPressed');
                   var ai = RouteAI(); //RouteAI 클래스 생성
 
-                  List<List<Place>> read_data;
+                  //List<List<Place>> read_data;
 
                   //임시 selectList
                   List selectList = [
@@ -546,6 +546,17 @@ class RouteAIPage extends StatelessWidget {
                     [0, 1, 0, 1, 0, 1, 1, 0, 1],
                     [0, 1, 0, 0]
                   ];
+
+                  var read = ReadController();
+
+                  User read_data = await read.fb_read_user("docCode");
+                  print(read_data.name);
+                  print(read_data.travelList);
+                  print(read_data.placeNumList);
+                  print(read_data.traveledPlaceList);
+                  print(read_data.eventNumList);
+                  print(read_data.eventList);
+                  print(read_data.diaryList);
 
                   // read_data =
                   //     await ai.route_search("제주도", selectList, 600, 2, 2);
