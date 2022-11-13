@@ -61,12 +61,23 @@ class NaverMapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
+    bool houseCheck = true;
     return Scaffold(
       appBar: AppBar(
         title: const Text('NaverMap Test'),
         actions: [
           //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
           //이곳에 한개 이상의 위젯들을 가진다.
+          IconButton(
+              icon: Icon(Icons.house),
+              onPressed: () {
+                if (houseCheck) {
+                  houseCheck = false;
+                } else {
+                  houseCheck = true;
+                }
+                print('search button is clicked.');
+              }),
           ElevatedButton(
             onPressed: () async {
               print('ElevatedButton - onPressed');
@@ -90,10 +101,10 @@ class NaverMapState extends State<Map> {
               await ai.data_loading("제주도");
 
               //임시 숙소
-              Place house = Place(
+              Place? house = Place(
                   "제주신라호텔",
-                  33.3616656,
-                  126.5291656,
+                  33.3615656,
+                  126.5290656,
                   0,
                   0,
                   [0, 1, 0, 0, 0, 0, 0],
@@ -101,10 +112,13 @@ class NaverMapState extends State<Map> {
                   [0, 1, 0, 0, 1, 0],
                   [0, 1, 0, 1, 0, 1, 1, 0, 1],
                   [0, 1, 0, 0]);
+              if (!houseCheck) {
+                house = null;
+              }
 
               //read_data = await ai.route_search("제주도", selectList, 600, 3);
-              read_data = (await ai.route_search(
-                      "제주도", house, selectList, [12, 14], 3, 3))
+              read_data = (await ai.route_search("제주도", house,
+                      ["카멜리아힐", "성산일출봉"], [1, 2], selectList, [9, 18], 3, 3))
                   .cast<List<Place>>();
               //print("route_search함수 실행 후 리턴");
               //print(read_data);
@@ -125,15 +139,18 @@ class NaverMapState extends State<Map> {
               int iSave = 0;
 
               setState(() {
+                //임시로 0번째 코스만 해보자
                 for (int i = 0; i < read_data[0].length; i++) {
-                  addMarker(read_data[0][i].name, read_data[0][i].latitude,
-                      read_data[0][i].longitude);
+                  if (read_data[0][i].name != '더미') {
+                    addMarker(read_data[0][i].name, read_data[0][i].latitude,
+                        read_data[0][i].longitude);
+                  }
 
-                  if (read_data[0][i].name == "제주신라호텔") {
+                  if (read_data[0][i].name == house?.name ||
+                      read_data[0][i].name == '더미') {
                     houseCount += 1;
                   }
                   if (houseCount == 2) {
-                    //임시로 0번째 코스만 해보자
                     for (int j = iSave; j < i; j++) {
                       latLen.add(LatLng(
                           read_data[0][j].latitude, read_data[0][j].longitude));
@@ -144,6 +161,12 @@ class NaverMapState extends State<Map> {
                     //houseCount = 0;
                     //latLen = [];
                     iSave = i;
+                    if (!houseCheck) {
+                      print(latLen.length);
+                      latLen.removeWhere((element) =>
+                          element.latitude == 0.0 || element.longitude == 0.0);
+                      print(latLen.length);
+                    }
                   }
                   if (houseCount == 4) {
                     for (int j = iSave; j < i; j++) {
@@ -154,6 +177,12 @@ class NaverMapState extends State<Map> {
                     latLen2.add(LatLng(read_data[0][iSave].latitude,
                         read_data[0][iSave].longitude));
                     iSave = i;
+                    if (!houseCheck) {
+                      print(latLen.length);
+                      latLen2.removeWhere((element) =>
+                          element.latitude == 0.0 || element.longitude == 0.0);
+                      print(latLen.length);
+                    }
                   }
 
                   if (houseCount == 6) {
@@ -165,6 +194,12 @@ class NaverMapState extends State<Map> {
                     latLen3.add(LatLng(read_data[0][iSave].latitude,
                         read_data[0][iSave].longitude));
                     iSave = i;
+                    if (!houseCheck) {
+                      print(latLen.length);
+                      latLen3.removeWhere((element) =>
+                          element.latitude == 0.0 || element.longitude == 0.0);
+                      print(latLen.length);
+                    }
                   }
                 }
                 addPoly([

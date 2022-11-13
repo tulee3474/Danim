@@ -37,12 +37,21 @@ class RouteAI {
 
   //Step 2. Initialization
   Future<List<Place>> initialize_greedy(
-      selectList, firstPlace, timeLimit) async {
+      selectList, firstPlace, fixedPlaceList, timeLimit) async {
     List<Place> path = [];
     path.add(firstPlace);
 
     //placeListCopy에서는 제거
     placeListCopy.removeWhere((item) => item.name == firstPlace.name);
+
+    //fixedPlaceList가 있을 경우
+    if (fixedPlaceList.length > 0) {
+      for (int i = 0; i < fixedPlaceList.length; i++) {
+        path.add(fixedPlaceList[i]);
+        placeListCopy
+            .removeWhere((item) => item.name == fixedPlaceList[i].name);
+      }
+    }
 
     int numPlace = placeListCopy.length;
 
@@ -50,8 +59,13 @@ class RouteAI {
 
     int startIndex = -1;
 
+    //만약, 숙소를 골라두었을 경우, 마지막 장소로 가는 소요시간까지 생각하기
+    if (firstPlace.name != '더미' && timeLimit > 2) {
+      timeLimit -= 1;
+    }
+
     //Iteratively Connect nearest cities
-    for (int i = 1; i < numPlace; i++) {
+    for (int i = path.length; i < numPlace; i++) {
       List<int> sum = List<int>.filled(numPlace, 0); //각 관광지의 점수 합
 
       //각 관광지별 계산하기
@@ -102,14 +116,6 @@ class RouteAI {
         //예정된 여행 시간만큼의 일정이 채워졌다면 반복 종료
         break;
       }
-      //만약, 숙소를 골라두었을 경우, 마지막 장소로 가는 소요시간까지 생각하기
-      //타임리미트를 여유있게 하는 방식의 경우, 더 여유있게 두기
-      // if (chooseHouse) {
-      //   if (totalTime + timeCalculate(path[-1].name, house) >
-      //       timeLimit) {
-      //     break;
-      //   }
-      // }
     }
     return path;
   }
@@ -142,10 +148,14 @@ class RouteAI {
     sum += targetPlace.popular as int; //인기관광지 지표 포함하기
 
     if (beforePlace != null) {
+      //더미는 스킵
+      if (targetPlace.latitude == 0.0 || beforePlace.latitude == 0.0) {
+        return sum;
+      }
       double latDiff = targetPlace.latitude - beforePlace.latitude;
       double longDiff = targetPlace.longitude - beforePlace.longitude;
 
-      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 120000;
+      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 100000;
 
       sum -= distance.toInt(); // - 거리 계산
 
@@ -160,8 +170,13 @@ class RouteAI {
   }
 
   //Step 3. Searching a path
-  List<Place> two_opts(selectList, path, finishPath) {
-    int iterations = 20000; //2-opts 시도 횟수
+  List<Place> two_opts(path, fixedPlaceList, selectList, finishPath) {
+    int iterations = 5000; //2-opts 시도 횟수
+
+    //fixedPlaceList가 없을 경우 2배로 시도 횟수를 늘린다.
+    if (fixedPlaceList.length == 0) {
+      iterations = iterations * 2;
+    }
 
     List<Place> bestPath = new List.from(path);
     int bestPoint = 0;
@@ -234,15 +249,23 @@ class RouteAI {
         removePlace = null;
         removePlace = Place.clone(newPath[idx1]);
 
-        if (removePlace.name == addPlace.name) {
-          print(removePlace.name);
-          print("~~~~~~~~~~~~~~~~~~~~~~~~~");
+        //fixedPlaceList가 있는데, removePlace가 이 안에 있다면, break
+        bool flag4 = false;
+        for (int k = 0; k < fixedPlaceList.length; k++) {
+          if (removePlace.name == fixedPlaceList[k].name) {
+            flag4 = true; //같은 이름이 있으면, continue;
+          }
+        }
+
+        if (flag4) {
+          //제거할 Place가 fixedPlace여서 continue합니다.
+          continue;
         }
 
         newPath
             .removeWhere((item) => item.name == Place.clone(removePlace).name);
         //혹시모르니까, 추가전에 한번 더 없애줌
-        newPath.removeWhere((item) => item.name == addPlace.name);
+        newPath.removeWhere((item) => item.name == Place.clone(addPlace).name);
         if (idx1 >= newPath.length) {
           newPath.add(Place.clone(addPlace));
         } else {
@@ -255,10 +278,6 @@ class RouteAI {
         Place temp2;
         temp = Place.clone(newPath[idx1]);
         temp2 = Place.clone(newPath[idx2]);
-        if (temp.name == temp2.name) {
-          print(temp.name);
-          print("~~~~~~~~~~~~~~~~~~~~~~123~~~");
-        }
         newPath.removeWhere((item) => item.name == newPath[idx1].name);
         newPath.removeWhere((item) => item.name == newPath[idx2 - 1].name);
         if (idx1 >= newPath.length) {
@@ -276,8 +295,8 @@ class RouteAI {
       int newPoint = 0;
 
       newPoint += place_point(selectList, null, newPath[0]);
-      for (int i = 1; i < newPath.length; i++) {
-        newPoint += place_point(selectList, newPath[i - 1], newPath[i]);
+      for (int n = 1; n < newPath.length; n++) {
+        newPoint += place_point(selectList, newPath[n - 1], newPath[n]);
       }
 
       if (newPoint >= bestPoint) {
@@ -314,16 +333,24 @@ class RouteAI {
     return bestPath;
   }
 
-  List<Place> hill_climbing(path, selectList, finishPath) {
-    int StopRepeat = 10; //개선 여부에 따른 HC 횟수 조절
-    int StopRepeat2 = 5000; //너무 많이 반복되는 것 방지
+  List<Place> hill_climbing(
+      path, fixedPlaceList, selectList, finishPath, house, timeLimit) {
+    int StopRepeat = 5; //개선 여부에 따른 HC 횟수 조절
+    int StopRepeat2 = 2000; //너무 많이 반복되는 것 방지
+
+    //fixedPlaceList가 없을 경우 2배로 시도
+    if (fixedPlaceList.length == 0) {
+      StopRepeat *= 2;
+      StopRepeat2 *= 2;
+    }
 
     bool kOptContinue = true;
 
     int kOptCheck = 0;
     int kOptCheck2 = 0;
 
-    List<Place> bestPath = two_opts(selectList, path, finishPath);
+    List<Place> bestPath =
+        two_opts(path, fixedPlaceList, selectList, finishPath);
 
     int bestPoint = 0;
 
@@ -335,7 +362,8 @@ class RouteAI {
     }
 
     while (kOptContinue) {
-      List<Place> newPath = two_opts(selectList, path, finishPath);
+      List<Place> newPath =
+          two_opts(path, fixedPlaceList, selectList, finishPath);
 
       int newPoint = 0;
 
@@ -363,17 +391,62 @@ class RouteAI {
       }
     }
 
+    //시간 계산해서 뒷부분 짤라야 함
+    int totalTime = 0;
+    //100번 해봐도 못빠져나가면 그대로 리턴해버림
+    for (int r = 0; r < 100; r++) {
+      totalTime = 0;
+      for (int t = 0; t < bestPath.length; t++) {
+        totalTime += bestPath[t].takenTime;
+      }
+
+      if (totalTime > timeLimit + 120) {
+        int aaa = bestPath.length;
+        Place popPlace = bestPath.removeLast();
+
+        //fixedPlaceList가 있을 경우
+        if (fixedPlaceList.length > 0) {
+          for (int d = 0; d < fixedPlaceList.length; d++) {
+            //만약 pop된 Place가 fixedPlaceList에 있을 경우
+            if (popPlace.name == fixedPlaceList[d].name) {
+              //bestPath의 맨 앞으로 이동시킨다.
+              if (bestPath[0].name == '더미' || bestPath[0].name == house.name) {
+                bestPath.insert(1, Place.clone(popPlace));
+              } else {
+                bestPath.insert(0, Place.clone(popPlace));
+              }
+
+              break;
+            }
+          }
+        } else if (aaa - bestPath.length != 1) {
+          print("알 수 없는 에러");
+        }
+      } else {
+        break;
+      }
+      if (r == 99) {
+        print("HC 마무리 과정 중, 뺄 수 있는 Place가 없습니다.");
+        print('totalTime : ' + totalTime.toString());
+        print('timeLimit : ' + timeLimit.toString());
+        print(bestPath.length);
+        print(bestPath[0].name);
+      }
+    }
+
     return bestPath;
   }
 
   //main part
-  Future<List<List<Place>>> route_search(
-      city, house, selectList, timeLimitArray, numPreset, nDay) async {
+  Future<List<List<Place>>> route_search(city, house, fixedPlaceNameList,
+      fixedPlaceDayList, selectList, timeLimitArray, numPreset, nDay) async {
     // await안쓰면 이 함수 따로 돌리고 넘어가서, placeList에 원소 안넣은 상태로 코드돌림
 
     List<List<Place>> pathList = []; //path의 List,관광지의 List의 List
 
     List<int> point = [];
+
+    List<Place> fixedPlaceList = [];
 
     //모든 관광지의 시간을 제외한 point를 탐색
     point.add(place_point(selectList, null, placeList[0]));
@@ -432,18 +505,40 @@ class RouteAI {
         if (house != null) {
           firstPlace = house;
         }
+
+        fixedPlaceList = [];
+
+        if (fixedPlaceNameList.length > 0) {
+          var read = ReadController();
+          for (int f = 0; f < fixedPlaceNameList.length; f++) {
+            //fixedPlaceDayList의 원소가 d+1(n일차)와 같을때만
+            if (fixedPlaceDayList[f] == d + 1) {
+              Place read_data =
+                  await read.fb_read_one_place(city, fixedPlaceNameList[f]);
+              fixedPlaceList.add(read_data);
+            }
+          }
+        }
+
         //초기 path 만들기
-        List<Place> initializePath =
-            await initialize_greedy(selectList, firstPlace, timeLimit / 3);
+        List<Place> initializePath = await initialize_greedy(
+            selectList, firstPlace, fixedPlaceList, time[d]);
+
+        // for (int f = 0; f < initializePath.length; f++) {
+        //   print(initializePath[f].name);
+        // }
+        // print("initializePath");
 
         //초기 path 개선 - Hill-Climbing으로
-        List<Place> improvedPath =
-            hill_climbing(initializePath, selectList, finishPath);
+        List<Place> improvedPath = hill_climbing(initializePath, fixedPlaceList,
+            selectList, finishPath, house, time[d]);
 
         //path 맨뒤에 숙소 추가
         if (house != null) {
           improvedPath.add(Place.clone(house));
-        } else {
+        }
+        //숙소 없으면 더비 추가
+        else {
           improvedPath.add(Place.clone(dummy));
         }
 
@@ -457,6 +552,11 @@ class RouteAI {
         for (int q = 0; q < finishPath.length; q++) {
           placeListCopy.removeWhere((item) => item.name == finishPath[q].name);
         }
+      }
+
+      //숙소 없을 경우, 맨 앞에 더미를 넣어준다
+      if (house == null) {
+        finishPath.insert(0, Place.clone(dummy));
       }
 
       pathList.add(finishPath);
