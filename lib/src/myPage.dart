@@ -35,8 +35,7 @@ Future readUserData(docCode) async {
   }
 }
 
-List<DateTime> dates_ex = [DateTime(2022, 5, 14), DateTime(2022, 5, 15)];
-//이건 뭔지 몰라서 놔둠.
+//지금 DB에 넣어놓은 데이터가 시간순이 아니라 이상하게 보일 수 있음.
 
 class MyPage extends StatelessWidget {
   @override
@@ -83,8 +82,10 @@ class MyPage extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  MyJourney(journeys[i], dates_ex)));
+                              builder: (context) => MyJourney(journeys[i], [
+                                    journeys[i][0].date,
+                                    journeys[i][journeys[i].length - 1].date
+                                  ])));
                     }))
         ]));
   }
