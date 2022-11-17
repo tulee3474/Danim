@@ -398,7 +398,10 @@ class RouteAI {
         totalTime += bestPath[t].takenTime;
       }
 
-      if (totalTime > timeLimit + 120) {
+      //코스의 길이가 길수록 이동시간도 길어짐
+      //길이에 비례하여 timeLimit를 줄임
+      //이 수치는 차후에 조정할 것!!
+      if (totalTime > timeLimit + 240 - bestPath.length * 30) {
         int aaa = bestPath.length;
         Place popPlace = bestPath.removeLast();
 
