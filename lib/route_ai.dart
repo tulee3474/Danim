@@ -97,8 +97,6 @@ class RouteAI {
       path.add(Place.clone(placeListCopy[startIndex]));
 
       //placeListCopy에서는 제거
-      int aaaaa = placeListCopy.length;
-      Place delPlace = Place.clone(placeListCopy[startIndex]);
       placeListCopy
           .removeWhere((item) => item.name == placeListCopy[startIndex].name);
       numPlace -= 1;
@@ -212,7 +210,7 @@ class RouteAI {
       }
 
       //1. 관광지 하나를 새 관광지로 바꾼다. - 모든 관광지를 갈 경우 안함.
-      if (i % 2 == 0 &&
+      if (i % 3 == 0 &&
           (placeList.length > newPath.length) &&
           placeListCopy.length > 0) {
         var temp;
@@ -301,7 +299,7 @@ class RouteAI {
 
       if (newPoint >= bestPoint) {
         bestPath = new List.from(newPath);
-        if (i % 2 == 0 &&
+        if (i % 3 == 0 &&
             (placeList.length > newPath.length) &&
             placeListCopy.length > 0 &&
             flag3 == false &&
@@ -449,9 +447,11 @@ class RouteAI {
     List<Place> fixedPlaceList = [];
 
     //모든 관광지의 시간을 제외한 point를 탐색
-    point.add(place_point(selectList, null, placeList[0]));
-    for (int i = 1; i < placeList.length; i++) {
-      point.add(place_point(selectList, placeList[i - 1], placeList[i]));
+    if (house == null) {
+      point.add(place_point(selectList, null, placeList[0]));
+      for (int i = 1; i < placeList.length; i++) {
+        point.add(place_point(selectList, null, placeList[i]));
+      }
     }
 
     int timeLimit = 0;
@@ -493,17 +493,19 @@ class RouteAI {
     List pointCopy = new List.from(point);
     pointCopy.sort();
 
-    Place firstPlace;
+    Place firstPlace = Place.clone(dummy);
     for (int i = 0; i < numPreset; i++) {
-      int index = point.indexOf(pointCopy[i]); //출발지의 Index
-      firstPlace = placeList[index];
+      if (house == null) {
+        int index = point.indexOf(pointCopy[i]); //출발지의 Index
+        firstPlace = Place.clone(placeList[index]);
+      }
 
       List<Place> finishPath = [];
 
       for (int d = 0; d < nDay; d++) {
         //숙소를 지정해뒀을 경우
         if (house != null) {
-          firstPlace = house;
+          firstPlace = Place.clone(house);
         }
 
         fixedPlaceList = [];
@@ -649,13 +651,14 @@ class RouteAIPage extends StatelessWidget {
 
                   var read = ReadController();
 
-                  User read_data = await read.fb_read_user("docCode");
+                  User read_data = await read.fb_read_user("docCodeTest123");
                   print(read_data.name);
                   print(read_data.travelList);
                   print(read_data.placeNumList);
                   print(read_data.traveledPlaceList);
                   print(read_data.eventNumList);
-                  print(read_data.eventList);
+                  print(read_data.eventList[0]);
+                  print(read_data.eventList[0].title);
                   print(read_data.diaryList);
 
                   // read_data =

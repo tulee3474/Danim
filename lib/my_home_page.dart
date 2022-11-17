@@ -2,10 +2,12 @@
 ////파란 줄을 없애기 위한 빠른 수정
 
 import 'package:flutter/material.dart';
+import 'package:danim/calendar_view.dart';
 
 //import 'main.dart';
 import 'firebase_read_write.dart';
 import 'route_ai.dart';
+import '../model/event.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -224,22 +226,70 @@ class _TmpPageState extends State<MyHomePage> {
                     onPressed: () {
                       print('ElevatedButton - onPressed');
                       List travelList1 = ["서울", "제주도"];
-                      List placeNumList1 = [3, 2];
+                      List placeNumList1 = [2, 4];
                       List traveledPlaceList1 = [
                         "남산",
                         "경복궁",
-                        "이태원",
+                        "금악오름",
                         "성산일출봉",
-                        "우도"
+                        "우도",
+                        "카멜리아힐"
                       ];
                       List eventNumList1 = [2, 4];
                       List eventList1 = [
-                        "이벤트01",
-                        "이벤트02",
-                        "이벤트11",
-                        "이벤트12",
-                        "이벤트13",
-                        "이벤트14"
+                        CalendarEventData(
+                          title: '남산',
+                          date: DateTime(2022, 5, 14),
+                          event: Event(title: '남산'),
+                          description: '',
+                          startTime: DateTime(2022, 5, 14, 13),
+                          endTime: DateTime(2022, 5, 14, 15),
+                        ),
+
+                        CalendarEventData(
+                          title: '경복궁',
+                          date: DateTime(2022, 5, 14),
+                          event: Event(title: '경복궁'),
+                          description: '',
+                          startTime: DateTime(2022, 5, 14, 15),
+                          endTime: DateTime(2022, 5, 14, 17),
+                        ),
+
+                        CalendarEventData(
+                          title: '금악오름',
+                          date: DateTime(2022, 5, 15),
+                          event: Event(title: '금악오름'),
+                          description: '',
+                          startTime: DateTime(2022, 5, 15, 13),
+                          endTime: DateTime(2022, 5, 15, 15),
+                        ),
+
+//
+
+                        CalendarEventData(
+                          title: '성산일출봉',
+                          date: DateTime(2022, 6, 7),
+                          event: Event(title: '성산일출봉'),
+                          description: '',
+                          startTime: DateTime(2022, 6, 7, 13),
+                          endTime: DateTime(2022, 6, 7, 15),
+                        ),
+                        CalendarEventData(
+                          title: '우도',
+                          date: DateTime(2022, 6, 7),
+                          event: Event(title: '우도'),
+                          description: '',
+                          startTime: DateTime(2022, 6, 7, 13),
+                          endTime: DateTime(2022, 5, 14, 15),
+                        ),
+                        CalendarEventData(
+                          title: '카멜리아힐',
+                          date: DateTime(2022, 6, 8),
+                          event: Event(title: '카멜리아힐'),
+                          description: '',
+                          startTime: DateTime(2022, 6, 8, 13),
+                          endTime: DateTime(2022, 6, 8, 15),
+                        )
                       ];
                       List diaryList1 = ["일기1", "일기2"];
                       fb_write_user(

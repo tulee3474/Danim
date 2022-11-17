@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:danim/calendar_view.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../model/event.dart';
 
 //import 'main.dart';
 
@@ -15,7 +17,7 @@ class User {
   List<int> placeNumList = []; // 각 여행에서 몇개의 관광지를 여행 다녔는지
   List<String> traveledPlaceList = []; //여행다녔던 관광지들 1차원 배열
   List<int> eventNumList = []; // 각 여행에서 몇개의 이벤트가 있는지
-  List<dynamic> eventList = []; // 이벤트 1차원 배열
+  List<CalendarEventData> eventList = []; // 이벤트 1차원 배열
   List<String> diaryList = []; // 일기 - 텍스트만, travelList랑 1:1 대응
 
   User(
@@ -120,27 +122,55 @@ class Place {
 //Write하는 부분
 void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
     eventNumList, eventList, diaryList) {
-  //문서를 안쓰고 컬렉션만 쓰는 방식.
-  // User userModel =
-  //     User(fullName: 'John Doe', company: "Stokes and Sons", age: 42);
-  // users.add(userModel.toJson());
+  var data2;
+  CalendarEventData temp;
 
-  //합쳐쓰기
+  List<String> eventStringList = [];
+
   FirebaseFirestore.instance.collection('Users').doc(docCode).set({
     'name': name,
     'travelList': travelList,
     'placeNumList': placeNumList,
     'traveledPlaceList': traveledPlaceList,
     'eventNumList': eventNumList,
-    'eventList': eventList,
+    //'eventStringList': eventStringList,
     'diaryList': diaryList,
+  }, SetOptions(merge: true));
+
+  for (int i = 0; i < eventList.length; i++) {
+    eventStringList.add(eventList[i].title);
+    int date = eventList[i].date.year * 10000 +
+        eventList[i].date.month * 100 +
+        eventList[i].date.day;
+    int startTime = eventList[i].startTime.year * 1000000 +
+        eventList[i].startTime.month * 10000 +
+        eventList[i].startTime.day * 100 +
+        eventList[i].startTime.hour;
+    int endTime = eventList[i].endTime.year * 1000000 +
+        eventList[i].endTime.month * 10000 +
+        eventList[i].endTime.day * 100 +
+        eventList[i].endTime.hour;
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(docCode)
+        .collection('event')
+        .doc(eventStringList[i])
+        .set({
+      'title': eventStringList[i],
+      'date': date,
+      'description': eventList[i].description,
+      'startTime': startTime,
+      'endTime': endTime,
+    }, SetOptions(merge: true));
+  }
+
+  FirebaseFirestore.instance.collection('Users').doc(docCode).set({
+    'eventStringList': eventStringList,
   }, SetOptions(merge: true));
 }
 
 void fb_write_place(city, name, latitude, longitude, takenTime, popular,
     partner, concept, play, tour, season) {
-  //CollectionReference points = FirebaseFirestore.instance.collection('points');
-
   //덮어쓰기
   // FirebaseFirestore.instance.collection('points').doc(city).set({
   //   'name': name,
@@ -166,6 +196,7 @@ void fb_write_place(city, name, latitude, longitude, takenTime, popular,
 class ReadController extends GetxController {
   final db = FirebaseFirestore.instance;
   //var data;
+
   Future<User> fb_read_user(docCode) async {
     var data = await db.collection('Users').doc(docCode).get();
 
@@ -198,10 +229,35 @@ class ReadController extends GetxController {
       eventNumList.add(eventNumList2[i] as int);
     }
 
-    List<dynamic> eventList2 = data.data()!['eventList'];
-    List<dynamic> eventList = [];
-    for (int i = 0; i < eventList2.length; i++) {
-      eventList.add(eventList2[i]);
+    var data2;
+    List<dynamic> eventStringList2 = data.data()!['eventStringList'];
+    CalendarEventData temp;
+
+    List<CalendarEventData> eventList = [];
+
+    for (int i = 0; i < eventStringList2.length; i++) {
+      data2 = await db
+          .collection('Users')
+          .doc(docCode)
+          .collection('event')
+          .doc(eventStringList2[i] as String)
+          .get();
+
+      String title = data2.data()!['title'] as String;
+      List<int> date = parseDate(data2.data()!['date'] as int);
+      List<int> startTime = parseTime(data2.data()!['startTime'] as int);
+      List<int> endTime = parseTime(data2.data()!['endTime'] as int);
+      temp = CalendarEventData(
+        title: title,
+        date: DateTime(date[0], date[1], date[2]),
+        event: Event(title: title),
+        description: data2.data()!['description'] as String,
+        startTime:
+            DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
+        endTime:
+            DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
+      );
+      eventList.add(temp);
     }
 
     List<dynamic> diaryList2 = data.data()!['diaryList'];
@@ -283,5 +339,31 @@ class ReadController extends GetxController {
         partner, concept, play, tour, season);
 
     return placedata;
+  }
+
+  List<int> parseDate(date) {
+    List<int> returnData = [];
+
+    returnData.add(date ~/ 10000); //year
+    int index1 = date % 10000;
+    returnData.add(index1 ~/ 100); //month
+    int index2 = date % 100;
+    returnData.add(index2); //day
+
+    return returnData;
+  }
+
+  List<int> parseTime(time) {
+    List<int> returnData = [];
+
+    returnData.add(time ~/ 1000000); //year
+    int index1 = time % 1000000;
+    returnData.add(index1 ~/ 10000); //month
+    int index2 = time % 10000;
+    returnData.add(index2 ~/ 100); //day
+    int index3 = time % 100;
+    returnData.add(index3); //time
+
+    return returnData;
   }
 }

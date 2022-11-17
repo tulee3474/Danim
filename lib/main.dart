@@ -9,6 +9,12 @@ import 'firebase_options.dart';
 import 'my_home_page.dart';
 import 'firebase_read_write.dart';
 import 'map.dart';
+import 'dart:ui';
+import 'package:danim/calendar_view.dart';
+import 'model/event.dart';
+import 'widgets/responsive_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:danim/src/app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,9 +37,13 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       title: 'Danim (다님)',
       theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const Map(),
+          primarySwatch: Colors.green,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.blue,
+            titleTextStyle: TextStyle(color: Colors.black),
+          )),
+      home: App(),
+      //home: const Map(),
       //home: const MyHomePage(),
     );
   }
