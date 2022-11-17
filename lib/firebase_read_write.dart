@@ -121,7 +121,7 @@ class Place {
 
 //Write하는 부분
 void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
-    eventNumList, eventList, diaryList) {
+    eventNumList, selectList, eventList, diaryList) {
   var data2;
   CalendarEventData temp;
 
@@ -161,6 +161,21 @@ void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
       'description': eventList[i].description,
       'startTime': startTime,
       'endTime': endTime,
+    }, SetOptions(merge: true));
+  }
+
+  for (int i = 0; i < travelList.length; i++) {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(docCode)
+        .collection('selectList')
+        .doc(i.toString())
+        .set({
+      'partner': selectList[0],
+      'concept': selectList[1],
+      'play': selectList[2],
+      'tour': selectList[3],
+      'season': selectList[4],
     }, SetOptions(merge: true));
   }
 

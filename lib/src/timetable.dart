@@ -8,14 +8,15 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../app_colors.dart';
 import '../constants.dart';
 import '../extension.dart';
-//import 'package:danim/src/place.dart';
-import 'package:danim/src/exampleResource.dart';
 
 import '../widgets/add_event_widget.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/date_time_selector.dart';
 import 'foodRecommend.dart';
 import 'package:danim/firebase_read_write.dart';
+
+DateTime startDay = DateTime(2022, 11, 15);
+DateTime endDay = DateTime(2022, 11, 20);
 
 List<CalendarEventData<Event>> createEventList(List<Place> path,
     List<int> moving_time, DateTime startDay, DateTime endDay) {

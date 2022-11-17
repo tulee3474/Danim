@@ -42,9 +42,9 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Colors.blue,
             titleTextStyle: TextStyle(color: Colors.black),
           )),
-      home: App(),
+      //home: App(),
       //home: const Map(),
-      //home: const MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }

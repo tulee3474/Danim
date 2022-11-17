@@ -14,7 +14,6 @@ import 'dart:ui';
 import 'package:danim/src/login.dart';
 import 'package:danim/src/myPage.dart';
 
-import 'exampleResource.dart';
 import 'package:danim/route_ai.dart';
 import 'package:danim/firebase_read_write.dart';
 

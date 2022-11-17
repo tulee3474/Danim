@@ -5,7 +5,6 @@ import 'package:danim/components/image_data.dart';
 import 'package:flutter/services.dart';
 import 'package:danim/src/preset.dart';
 import 'package:intl/intl.dart';
-import 'package:danim/src/exampleResource.dart';
 import 'package:danim/src/app.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/myPage.dart';

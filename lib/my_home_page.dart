@@ -291,6 +291,14 @@ class _TmpPageState extends State<MyHomePage> {
                           endTime: DateTime(2022, 6, 8, 15),
                         )
                       ];
+                      //임시 selectList
+                      List selectList1 = [
+                        [0, 1, 0, 0, 0, 0, 0],
+                        [0, 1, 0, 1],
+                        [0, 1, 0, 0, 1, 0],
+                        [0, 1, 0, 1, 0, 1, 1, 0, 1],
+                        [0, 1, 0, 0]
+                      ];
                       List diaryList1 = ["일기1", "일기2"];
                       fb_write_user(
                           point_city_ctrl.text,
@@ -299,6 +307,7 @@ class _TmpPageState extends State<MyHomePage> {
                           placeNumList1,
                           traveledPlaceList1,
                           eventNumList1,
+                          selectList1,
                           eventList1,
                           diaryList1);
                       resetCtrl();
