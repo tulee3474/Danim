@@ -8,13 +8,14 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../app_colors.dart';
 import '../constants.dart';
 import '../extension.dart';
-import 'package:danim/src/place.dart';
+//import 'package:danim/src/place.dart';
 import 'package:danim/src/exampleResource.dart';
 
 import '../widgets/add_event_widget.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/date_time_selector.dart';
 import 'foodRecommend.dart';
+import 'package:danim/firebase_read_write.dart';
 
 List<CalendarEventData<Event>> createEventList(List<Place> path,
     List<int> moving_time, DateTime startDay, DateTime endDay) {
@@ -30,7 +31,7 @@ List<CalendarEventData<Event>> createEventList(List<Place> path,
 
   for (int i = 0; i < path.length; i++) {
     if ((timeIndex > endDayTime) ||
-        ((timeIndex + path[i].time) > endDayTime) ||
+        ((timeIndex + path[i].takenTime) > endDayTime) ||
         timeIndex + moving_time[i] > endDayTime) {
       dayIndex = dayIndex.add(const Duration(days: 1));
       timeIndex = startDayTime;
@@ -51,7 +52,7 @@ List<CalendarEventData<Event>> createEventList(List<Place> path,
     }
 
     if ((timeIndex > endDayTime) ||
-        ((timeIndex + path[i].time) > endDayTime) ||
+        ((timeIndex + path[i].takenTime) > endDayTime) ||
         timeIndex + moving_time[i] > endDayTime) {
       dayIndex = dayIndex.add(const Duration(days: 1));
       timeIndex = startDayTime;
@@ -80,10 +81,10 @@ List<CalendarEventData<Event>> createEventList(List<Place> path,
           startTime:
               DateTime(dayIndex.year, dayIndex.month, dayIndex.day, timeIndex),
           endTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
-              timeIndex += path[i].time)));
+              timeIndex += path[i].takenTime)));
 
     if ((timeIndex > endDayTime) ||
-        ((timeIndex + path[i].time) > endDayTime) ||
+        ((timeIndex + path[i].takenTime) > endDayTime) ||
         timeIndex + moving_time[i] > endDayTime) {
       dayIndex = dayIndex.add(const Duration(days: 1));
       timeIndex = startDayTime;
