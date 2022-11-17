@@ -85,7 +85,7 @@ class NaverMapState extends State<Map> {
               //여기서 AI 실행하고 결과를 지도에 표시
               var ai = RouteAI(); //RouteAI 클래스 생성
 
-              List<List<Place>> read_data;
+              List<List<List<Place>>> read_data;
 
               //임시 selectList
               List selectList = [
@@ -119,14 +119,17 @@ class NaverMapState extends State<Map> {
               //read_data = await ai.route_search("제주도", selectList, 600, 3);
               read_data = (await ai.route_search("제주도", house,
                       ["카멜리아힐", "성산일출봉"], [1, 2], selectList, [9, 18], 3, 3))
-                  .cast<List<Place>>();
+                  .cast<List<List<Place>>>();
               //print("route_search함수 실행 후 리턴");
               //print(read_data);
 
               for (int i = 0; i < read_data.length; i++) {
                 print("코스");
                 for (int j = 0; j < read_data[i].length; j++) {
-                  print(read_data[i][j].name);
+                  print("날짜 : " + (j + 1).toString());
+                  for (int k = 0; k < read_data[i][j].length; k++) {
+                    print(read_data[i][j][k].name);
+                  }
                 }
                 print("---------------------------");
               }
@@ -138,78 +141,78 @@ class NaverMapState extends State<Map> {
               int polycount = 0;
               int iSave = 0;
 
-              setState(() {
-                //임시로 0번째 코스만 해보자
-                for (int i = 0; i < read_data[0].length; i++) {
-                  if (read_data[0][i].name != '더미') {
-                    addMarker(read_data[0][i].name, read_data[0][i].latitude,
-                        read_data[0][i].longitude);
-                  }
+              // setState(() {
+              //   //임시로 0번째 코스만 해보자
+              //   for (int i = 0; i < read_data[0].length; i++) {
+              //     if (read_data[0][i].name != '더미') {
+              //       addMarker(read_data[0][i].name, read_data[0][i].latitude,
+              //           read_data[0][i].longitude);
+              //     }
 
-                  if (read_data[0][i].name == house?.name ||
-                      read_data[0][i].name == '더미') {
-                    houseCount += 1;
-                  }
-                  if (houseCount == 2) {
-                    for (int j = iSave; j < i; j++) {
-                      latLen.add(LatLng(
-                          read_data[0][j].latitude, read_data[0][j].longitude));
-                    }
-                    latLen.add(LatLng(read_data[0][iSave].latitude,
-                        read_data[0][iSave].longitude));
+              //     if (read_data[0][i].name == house?.name ||
+              //         read_data[0][i].name == '더미') {
+              //       houseCount += 1;
+              //     }
+              //     if (houseCount == 2) {
+              //       for (int j = iSave; j < i; j++) {
+              //         latLen.add(LatLng(
+              //             read_data[0][j].latitude, read_data[0][j].longitude));
+              //       }
+              //       latLen.add(LatLng(read_data[0][iSave].latitude,
+              //           read_data[0][iSave].longitude));
 
-                    //houseCount = 0;
-                    //latLen = [];
-                    iSave = i;
-                    if (!houseCheck) {
-                      print(latLen.length);
-                      latLen.removeWhere((element) =>
-                          element.latitude == 0.0 || element.longitude == 0.0);
-                      print(latLen.length);
-                    }
-                  }
-                  if (houseCount == 4) {
-                    for (int j = iSave; j < i; j++) {
-                      latLen2.add(LatLng(
-                          read_data[0][j].latitude, read_data[0][j].longitude));
-                    }
+              //       //houseCount = 0;
+              //       //latLen = [];
+              //       iSave = i;
+              //       if (!houseCheck) {
+              //         print(latLen.length);
+              //         latLen.removeWhere((element) =>
+              //             element.latitude == 0.0 || element.longitude == 0.0);
+              //         print(latLen.length);
+              //       }
+              //     }
+              //     if (houseCount == 4) {
+              //       for (int j = iSave; j < i; j++) {
+              //         latLen2.add(LatLng(
+              //             read_data[0][j].latitude, read_data[0][j].longitude));
+              //       }
 
-                    latLen2.add(LatLng(read_data[0][iSave].latitude,
-                        read_data[0][iSave].longitude));
-                    iSave = i;
-                    if (!houseCheck) {
-                      print(latLen.length);
-                      latLen2.removeWhere((element) =>
-                          element.latitude == 0.0 || element.longitude == 0.0);
-                      print(latLen.length);
-                    }
-                  }
+              //       latLen2.add(LatLng(read_data[0][iSave].latitude,
+              //           read_data[0][iSave].longitude));
+              //       iSave = i;
+              //       if (!houseCheck) {
+              //         print(latLen.length);
+              //         latLen2.removeWhere((element) =>
+              //             element.latitude == 0.0 || element.longitude == 0.0);
+              //         print(latLen.length);
+              //       }
+              //     }
 
-                  if (houseCount == 6) {
-                    for (int j = iSave; j < i; j++) {
-                      latLen3.add(LatLng(
-                          read_data[0][j].latitude, read_data[0][j].longitude));
-                    }
+              //     if (houseCount == 6) {
+              //       for (int j = iSave; j < i; j++) {
+              //         latLen3.add(LatLng(
+              //             read_data[0][j].latitude, read_data[0][j].longitude));
+              //       }
 
-                    latLen3.add(LatLng(read_data[0][iSave].latitude,
-                        read_data[0][iSave].longitude));
-                    iSave = i;
-                    if (!houseCheck) {
-                      print(latLen.length);
-                      latLen3.removeWhere((element) =>
-                          element.latitude == 0.0 || element.longitude == 0.0);
-                      print(latLen.length);
-                    }
-                  }
-                }
-                addPoly([
-                  Colors.pink,
-                  Colors.green,
-                  Colors.purple,
-                  Colors.brown,
-                  Colors.black
-                ]);
-              });
+              //       latLen3.add(LatLng(read_data[0][iSave].latitude,
+              //           read_data[0][iSave].longitude));
+              //       iSave = i;
+              //       if (!houseCheck) {
+              //         print(latLen.length);
+              //         latLen3.removeWhere((element) =>
+              //             element.latitude == 0.0 || element.longitude == 0.0);
+              //         print(latLen.length);
+              //       }
+              //     }
+              //   }
+              //   addPoly([
+              //     Colors.pink,
+              //     Colors.green,
+              //     Colors.purple,
+              //     Colors.brown,
+              //     Colors.black
+              //   ]);
+              // });
             },
             onLongPress: () {
               print('ElevatedButton - onLongPress');

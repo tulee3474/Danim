@@ -408,10 +408,22 @@ class RouteAI {
             //만약 pop된 Place가 fixedPlaceList에 있을 경우
             if (popPlace.name == fixedPlaceList[d].name) {
               //bestPath의 맨 앞으로 이동시킨다.
-              if (bestPath[0].name == '더미' || bestPath[0].name == house.name) {
-                bestPath.insert(1, Place.clone(popPlace));
-              } else {
-                bestPath.insert(0, Place.clone(popPlace));
+
+              //숙소가 없을 경우
+              if (house == null) {
+                if (bestPath[0].name == '더미') {
+                  bestPath.insert(1, Place.clone(popPlace));
+                } else {
+                  bestPath.insert(0, Place.clone(popPlace));
+                }
+              }
+              //숙소가 없을 경우
+              else {
+                if (bestPath[0].name == house.name) {
+                  bestPath.insert(1, Place.clone(popPlace));
+                } else {
+                  bestPath.insert(0, Place.clone(popPlace));
+                }
               }
 
               break;
@@ -436,11 +448,13 @@ class RouteAI {
   }
 
   //main part
-  Future<List<List<Place>>> route_search(city, house, fixedPlaceNameList,
+  Future<List<List<List<Place>>>> route_search(city, house, fixedPlaceNameList,
       fixedPlaceDayList, selectList, timeLimitArray, numPreset, nDay) async {
     // await안쓰면 이 함수 따로 돌리고 넘어가서, placeList에 원소 안넣은 상태로 코드돌림
 
-    List<List<Place>> pathList = []; //path의 List,관광지의 List의 List
+    //path의 List,관광지의 List의 List, 날짜별로 한번 더 쪼갠것임
+    //pathList[프리셋넘버][n일차넘버][n번째관광지]
+    List<List<List<Place>>> pathList = [];
 
     List<int> point = [];
 
@@ -494,13 +508,16 @@ class RouteAI {
     pointCopy.sort();
 
     Place firstPlace = Place.clone(dummy);
+
     for (int i = 0; i < numPreset; i++) {
       if (house == null) {
         int index = point.indexOf(pointCopy[i]); //출발지의 Index
         firstPlace = Place.clone(placeList[index]);
-      }
+      } else {}
 
       List<Place> finishPath = [];
+
+      List<List<Place>> tempPath = [];
 
       for (int d = 0; d < nDay; d++) {
         //숙소를 지정해뒀을 경우
@@ -515,9 +532,9 @@ class RouteAI {
           for (int f = 0; f < fixedPlaceNameList.length; f++) {
             //fixedPlaceDayList의 원소가 d+1(n일차)와 같을때만
             if (fixedPlaceDayList[f] == d + 1) {
-              Place read_data =
+              Place readData =
                   await read.fb_read_one_place(city, fixedPlaceNameList[f]);
-              fixedPlaceList.add(read_data);
+              fixedPlaceList.add(readData);
             }
           }
         }
@@ -525,11 +542,6 @@ class RouteAI {
         //초기 path 만들기
         List<Place> initializePath = await initialize_greedy(
             selectList, firstPlace, fixedPlaceList, time[d]);
-
-        // for (int f = 0; f < initializePath.length; f++) {
-        //   print(initializePath[f].name);
-        // }
-        // print("initializePath");
 
         //초기 path 개선 - Hill-Climbing으로
         List<Place> improvedPath = hill_climbing(initializePath, fixedPlaceList,
@@ -539,29 +551,20 @@ class RouteAI {
         if (house != null) {
           improvedPath.add(Place.clone(house));
         }
-        //숙소 없으면 더비 추가
-        else {
-          improvedPath.add(Place.clone(dummy));
-        }
 
         finishPath = new List.from(finishPath)..addAll(improvedPath);
-
-        //숙소 없으면 더미 추가
-        firstPlace = Place.clone(dummy);
 
         placeListCopy = [];
         placeListCopy = new List.from(placeList);
         for (int q = 0; q < finishPath.length; q++) {
           placeListCopy.removeWhere((item) => item.name == finishPath[q].name);
         }
+
+        //i번째 프리셋 pathList에 추가
+        tempPath.add(improvedPath);
       }
 
-      //숙소 없을 경우, 맨 앞에 더미를 넣어준다
-      if (house == null) {
-        finishPath.insert(0, Place.clone(dummy));
-      }
-
-      pathList.add(finishPath);
+      pathList.add(tempPath);
       placeListCopy = [];
       placeListCopy = new List.from(placeList);
     }
