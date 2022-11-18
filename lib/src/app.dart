@@ -6,13 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:danim/src/courseDetail.dart';
 import 'package:danim/src/myPage.dart';
+import 'package:danim/src/start_end_day.dart';
 
-import 'dart:ui';
 import 'package:danim/src/login.dart';
-import 'package:danim/src/myPage.dart';
-
-import 'package:danim/calendar_view.dart';
-import 'package:flutter/material.dart';
 
 import 'community.dart';
 
@@ -23,9 +19,14 @@ void main() {
   ));
 }
 
-class App extends StatelessWidget {
-  TextEditingController _DataTimeEditingController = TextEditingController();
-  TextEditingController _EstimatedEditingController = TextEditingController();
+class App extends StatefulWidget {
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  TextEditingController _startDateController = TextEditingController();
+  TextEditingController _endDateController = TextEditingController();
 
   DateTime? tempPickedDate;
 
@@ -71,18 +72,19 @@ class App extends StatelessWidget {
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                         content: SizedBox(
-                                      height: 200.0,
+                                      height: 350.0,
+                                      width: 300,
                                       child: Column(children: <Widget>[
-                                        Row(children: <Widget>[
+                                        Column(children: <Widget>[
                                           Container(
-                                              width: 90.0,
+                                              width: 180.0,
                                               child: TextField(
                                                   decoration: InputDecoration(
                                                       border:
                                                           OutlineInputBorder(),
                                                       labelText: '지역'))),
                                           Container(
-                                            width: 60.0,
+                                            width: 180.0,
                                             child: SafeArea(
                                                 child: Padding(
                                               padding: const EdgeInsets.only(
@@ -99,7 +101,7 @@ class App extends StatelessWidget {
                                                         onTap: () {
                                                           HapticFeedback
                                                               .mediumImpact();
-                                                          _selectedDataCalendar_expecteddate_visit(
+                                                          _selectedDataCalendar_startDay(
                                                               context);
                                                         },
                                                         child: AbsorbPointer(
@@ -143,7 +145,7 @@ class App extends StatelessWidget {
                                                               ),
                                                             ),
                                                             controller:
-                                                                _DataTimeEditingController,
+                                                                _startDateController,
                                                           ),
                                                         )))
                                                   ]),
@@ -151,7 +153,7 @@ class App extends StatelessWidget {
                                           ),
 
                                           Container(
-                                            width: 60.0,
+                                            width: 180.0,
                                             child: SafeArea(
                                                 child: Padding(
                                               padding: const EdgeInsets.only(
@@ -168,7 +170,7 @@ class App extends StatelessWidget {
                                                         onTap: () {
                                                           HapticFeedback
                                                               .mediumImpact();
-                                                          _selectedDataCalendar_expecteddate_visit(
+                                                          _selectedDataCalendar_endDay(
                                                               context);
                                                         },
                                                         child: AbsorbPointer(
@@ -212,7 +214,7 @@ class App extends StatelessWidget {
                                                               ),
                                                             ),
                                                             controller:
-                                                                _DataTimeEditingController,
+                                                                _endDateController,
                                                           ),
                                                         )))
                                                   ]),
@@ -237,8 +239,9 @@ class App extends StatelessWidget {
                                         Container(
                                             width: 100.0,
                                             child: ElevatedButton(
-                                                onPressed: () =>
-                                                    print('customize course'),
+                                                onPressed: () {
+                                                  print('customize course');
+                                                },
                                                 child: Text('혼자 짤래요')))
                                       ]),
                                     ));
@@ -334,7 +337,7 @@ class App extends StatelessWidget {
         });
   }
 
-  void _selectedDataCalendar_expecteddate_visit(BuildContext context) {
+  void _selectedDataCalendar_startDay(BuildContext context) {
     showCupertinoDialog(
         context: context,
         builder: (context) {
@@ -351,7 +354,7 @@ class App extends StatelessWidget {
                 showNavigationArrow: true,
                 headerStyle: DateRangePickerHeaderStyle(
                   textAlign: TextAlign.center,
-                  textStyle: TextStyle(fontSize: 25, color: Colors.blueAccent),
+                  textStyle: TextStyle(fontSize: 25, color: Colors.black45),
                 ),
                 headerHeight: 80,
                 view: DateRangePickerView.month,
@@ -369,11 +372,78 @@ class App extends StatelessWidget {
                 cancelText: '취소',
                 onSubmit: (args) => {
                   setState(() {
-                    _EstimatedEditingController.clear();
+                    //_endDateController.clear();
                     //tempPickedDate = args as DateTime?;
-                    _DataTimeEditingController.text = args.toString();
-                    convertDateTimeDisplay(
-                        _DataTimeEditingController.text, '방문');
+                    _startDateController.text = args.toString();
+                    print(args.toString());
+
+                    startDay = DateTime.parse(args.toString());
+
+                    //convertDateTimeDisplay(_startDateController.text, '가는날');
+
+                    // _endDateController.text = args.toString();
+                    //convertDateTimeDisplay(_endDateController.text, '오는날');
+
+                    Navigator.of(context).pop();
+                  }),
+                },
+                onCancel: () => Navigator.of(context).pop(),
+                showActionButtons: true,
+              ),
+            ),
+          ));
+        });
+  }
+
+  void _selectedDataCalendar_endDay(BuildContext context) {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return SafeArea(
+              child: Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width / 1.1,
+              height: 550,
+              child: SfDateRangePicker(
+                monthViewSettings: DateRangePickerMonthViewSettings(
+                  dayFormat: 'EEE',
+                ),
+                monthFormat: 'MMM',
+                showNavigationArrow: true,
+                headerStyle: DateRangePickerHeaderStyle(
+                  textAlign: TextAlign.center,
+                  textStyle: TextStyle(fontSize: 25, color: Colors.black45),
+                ),
+                headerHeight: 80,
+                view: DateRangePickerView.month,
+                allowViewNavigation: false,
+                backgroundColor: ThemeData.light().scaffoldBackgroundColor,
+                initialSelectedDate: DateTime.now(),
+                minDate: DateTime.now(),
+                // 아래코드는 tempPickedDate를 전역으로 받아 시작일을 선택한 날자로 시작할 수 있음
+                //minDate: tempPickedDate,
+                maxDate: DateTime.now().add(new Duration(days: 365)),
+                // 아래 코드는 선택시작일로부터 2주까지밖에 날자 선택이 안됌
+                //maxDate: tempPickedDate!.add(new Duration(days: 14)),
+                selectionMode: DateRangePickerSelectionMode.single,
+                confirmText: '완료',
+                cancelText: '취소',
+                onSubmit: (args) => {
+                  setState(() {
+                    //_endDateController.clear();
+                    //tempPickedDate = args as DateTime?;
+                    //_startDateController.text = args.toString();
+                    //print(args.toString());
+
+                    endDay = DateTime.parse(args.toString());
+
+                    //convertDateTimeDisplay(_startDateController.text, '가는날');
+
+                    _endDateController.text = args.toString();
+                    print(args.toString());
+
+                    //convertDateTimeDisplay(_endDateController.text, '오는날');
+
                     Navigator.of(context).pop();
                   }),
                 },
@@ -389,33 +459,10 @@ class App extends StatelessWidget {
     final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
     final DateFormat serverFormater = DateFormat('yyyy-MM-dd');
     final DateTime displayDate = displayFormater.parse(date);
-    if (text == '방문') {
-      _EstimatedEditingController.clear();
-      return _DataTimeEditingController.text =
-          serverFormater.format(displayDate);
+    if (text == '가는날') {
+      //_endDateController.clear();
+      return _startDateController.text = serverFormater.format(displayDate);
     } else
-      return _EstimatedEditingController.text =
-          serverFormater.format(displayDate);
+      return _endDateController.text = serverFormater.format(displayDate);
   }
-
-  void setState(Null Function() param0) {}
 }
-
-
-//bool _leisureTour = false;
-//String caption_leisure_tour = '푹 쉬고 싶어요';
-
-//void _leisureTourChanged(bool value) => setState(() => _leisureTour = value);
-
-/*Widget checkBoxTitleLeisureTour() {
-  return Container(
-    width:230,
-    child: new CheckboxListTile(
-        value: false,
-        onChanged: true,
-    title: new Text(caption_leisure_tour),
-    controlAffinity: ListTileControlAffinity.leading,
-      activeColor: Colors.lightBlue,
-    )
-  );
-}*/

@@ -16,6 +16,8 @@ import 'package:danim/src/myPage.dart';
 
 import 'package:danim/route_ai.dart';
 import 'package:danim/firebase_read_write.dart';
+import 'package:danim/src/place.dart';
+import 'package:danim/src/user.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key});

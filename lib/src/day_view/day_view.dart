@@ -21,9 +21,6 @@ import '../typedefs.dart';
 import '_internal_day_view_page.dart';
 
 class DayView<T extends Object?> extends StatefulWidget {
-
-
-
   /// A function that returns a [Widget] that determines appearance of each
   /// cell in day calendar.
   final EventTileBuilder<T>? eventTileBuilder;
@@ -318,67 +315,69 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-
               _dayTitleBuilder(_currentDate),
               Expanded(
                 child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                      children: [
+                    controller: _scrollController,
+                    child: Column(children: [
+                      Container(
+                        height: 300,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black45)),
+                      )
+                      // 지도 들어갈 자리 !!
 
-                        SizedBox(
-                          height: 200
-                        )
-                        // 지도 들어갈 자리 !!
+                      ,
+                      SizedBox(
+                        height: _height,
+                        child: PageView.builder(
+                          itemCount: _totalDays,
+                          controller: _pageController,
+                          onPageChanged: _onPageChange,
+                          itemBuilder: (_, index) {
+                            final date = DateTime(_minDate.year, _minDate.month,
+                                _minDate.day + index);
 
-                        ,SizedBox(
-                    height: _height,
-                    child: PageView.builder(
-                      itemCount: _totalDays,
-                      controller: _pageController,
-                      onPageChanged: _onPageChange,
-                      itemBuilder: (_, index) {
-                        final date = DateTime(_minDate.year, _minDate.month,
-                            _minDate.day + index);
-
-                        return ValueListenableBuilder(
-                            valueListenable: _scrollConfiguration,
-                            builder: (_, __, ___) => InternalDayViewPage<T>(
-                                  key: ValueKey(
-                                      _hourHeight.toString() + date.toString()),
-                                  width: _width,
-                                  liveTimeIndicatorSettings:
-                                      _liveTimeIndicatorSettings,
-                                  timeLineBuilder: _timeLineBuilder,
-                                  eventTileBuilder: _eventTileBuilder,
-                                  heightPerMinute: widget.heightPerMinute,
-                                  hourIndicatorSettings: _hourIndicatorSettings,
-                                  date: date,
-                                  onTileTap: widget.onEventTap,
-                                  onDateLongPress: widget.onDateLongPress,
-                                  showLiveLine: widget
-                                          .showLiveTimeLineInAllDays ||
-                                      date.compareWithoutTime(DateTime.now()),
-                                  timeLineOffset: widget.timeLineOffset,
-                                  timeLineWidth: _timeLineWidth,
-                                  verticalLineOffset: widget.verticalLineOffset,
-                                  showVerticalLine: widget.showVerticalLine,
-                                  height: _height,
-                                  controller: controller,
-                                  hourHeight: _hourHeight,
-                                  eventArranger: _eventArranger,
-                                  minuteSlotSize: widget.minuteSlotSize,
-                                  scrollNotifier: _scrollConfiguration,
-                                ))
-                        ;
-                      },
-                    ),
-                  ),])
-                ),
+                            return ValueListenableBuilder(
+                                valueListenable: _scrollConfiguration,
+                                builder: (_, __, ___) => InternalDayViewPage<T>(
+                                      key: ValueKey(_hourHeight.toString() +
+                                          date.toString()),
+                                      width: _width,
+                                      liveTimeIndicatorSettings:
+                                          _liveTimeIndicatorSettings,
+                                      timeLineBuilder: _timeLineBuilder,
+                                      eventTileBuilder: _eventTileBuilder,
+                                      heightPerMinute: widget.heightPerMinute,
+                                      hourIndicatorSettings:
+                                          _hourIndicatorSettings,
+                                      date: date,
+                                      onTileTap: widget.onEventTap,
+                                      onDateLongPress: widget.onDateLongPress,
+                                      showLiveLine:
+                                          widget.showLiveTimeLineInAllDays ||
+                                              date.compareWithoutTime(
+                                                  DateTime.now()),
+                                      timeLineOffset: widget.timeLineOffset,
+                                      timeLineWidth: _timeLineWidth,
+                                      verticalLineOffset:
+                                          widget.verticalLineOffset,
+                                      showVerticalLine: widget.showVerticalLine,
+                                      height: _height,
+                                      controller: controller,
+                                      hourHeight: _hourHeight,
+                                      eventArranger: _eventArranger,
+                                      minuteSlotSize: widget.minuteSlotSize,
+                                      scrollNotifier: _scrollConfiguration,
+                                    ));
+                          },
+                        ),
+                      ),
+                    ])),
               ),
             ],
           ),
-         ),
+        ),
       ),
     );
   }

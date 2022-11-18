@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:danim/src/app.dart';
 import 'package:danim/src/place.dart';
 import '../model/event.dart';
+import 'package:danim/src/place.dart';
+import 'package:danim/src/user.dart';
 
 import 'myJourney.dart';
 

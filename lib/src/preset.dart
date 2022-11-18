@@ -1,20 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
 import 'package:danim/src/timetable.dart';
-//import 'package:danim/src/place.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+import 'package:danim/src/place.dart';
+import 'package:danim/map.dart' as map;
+//import 'exampleResource.dart';\
 
-//import 'exampleResource.dart';
-import 'package:danim/firebase_read_write.dart';
-//import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+//임시 이동시간 배열
+List<int> moving_time_ex = [1, 2, 1, 1, 3, 2, 1, 1];
 
 class Preset extends StatelessWidget {
   List<List<List<Place>>> pathList;
-
-  //임시 이동시간 배열
-  List<int> moving_time_ex = [1, 2, 1, 1, 3, 2, 1, 1];
 
   Preset(this.pathList);
 
@@ -44,11 +39,13 @@ class Preset extends StatelessWidget {
                               '${pathList[i][0][0].name} + ${pathList[i][0][1].name}...'),
                           //이거 나중에 인덱스 초기화 에러 조심할 것! 관광지 갯수가 적으면..
                           onPressed: () => {
+                                map.addMarker(pathList[i]),
+                                map.addPoly(pathList[i]),
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Timetable(
-                                            pathList[i][0], moving_time_ex)))
+                                        builder: (context) =>
+                                            Timetable(path: pathList[i][0])))
                               })),
                   Positioned(
                       right: -20,

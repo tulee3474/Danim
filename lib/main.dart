@@ -6,14 +6,6 @@ import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-import 'my_home_page.dart';
-import 'firebase_read_write.dart';
-import 'map.dart';
-import 'dart:ui';
-import 'package:danim/calendar_view.dart';
-import 'model/event.dart';
-import 'widgets/responsive_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:danim/src/app.dart';
 
 Future<void> main() async {
@@ -42,9 +34,9 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Colors.blue,
             titleTextStyle: TextStyle(color: Colors.black),
           )),
-      //home: App(),
+      home: App(),
       //home: const Map(),
-      home: const MyHomePage(),
+      //home: const MyHomePage(),
     );
   }
 }

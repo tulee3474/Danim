@@ -1,14 +1,13 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'nearby.dart';
+import 'package:naver_map_plugin/naver_map_plugin.dart';
+
+import 'package:danim/src/place.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'route.dart';
-import 'nearby.dart';
 import 'route_ai.dart';
-import 'firebase_read_write.dart';
-import 'package:naver_map_plugin/naver_map_plugin.dart';
 
 // list of locations to display polylines
 List<LatLng> latLen = [
@@ -27,21 +26,47 @@ List<LatLng> latLen3 = [
 final List<Marker> markers = [];
 final Set<PathOverlay> pathOverlays = {};
 
-void addMarker(String placeName, double lat, double lng) {
+/*void addMarker(String placeName, double lat, double lng) {
   markers.add(Marker(
     markerId: placeName,
     position: LatLng(lat, lng),
     infoWindow: placeName,
   ));
+}*/
+void addMarker(List<List<Place>> pathList) {
+  markers.clear();
+  for (int i = 0; i < pathList.length; i++) {
+    for (int j = 0; j < pathList[i].length; j++) {
+      markers.add(Marker(
+        markerId: pathList[i][j].name,
+        position: LatLng(pathList[i][j].latitude, pathList[i][j].longitude),
+        infoWindow: pathList[i][j].name,
+        width: 20,
+        height: 20,
+      ));
+    }
+  }
 }
 
-void addPoly(color) {
+void addPoly(List<List<Place>> pathList) {
+  latLen.clear();
+  latLen2.clear();
+  latLen3.clear();
+  for (int i = 0; i < pathList[0].length; i++) {
+    latLen.add(LatLng(pathList[0][i].latitude, pathList[0][i].longitude));
+  }
+  for (int i = 0; i < pathList[1].length; i++) {
+    latLen2.add(LatLng(pathList[1][i].latitude, pathList[1][i].longitude));
+  }
+  for (int i = 0; i < pathList[2].length; i++) {
+    latLen3.add(LatLng(pathList[2][i].latitude, pathList[2][i].longitude));
+  }
   pathOverlays.add(PathOverlay(PathOverlayId('path1'), latLen,
-      color: color[0], width: 7, outlineWidth: 0));
+      color: Colors.green, width: 7, outlineWidth: 0));
   pathOverlays.add(PathOverlay(PathOverlayId('path2'), latLen2,
-      color: color[1], width: 7, outlineWidth: 0));
+      color: Colors.pink, width: 7, outlineWidth: 0));
   pathOverlays.add(PathOverlay(PathOverlayId('path3'), latLen3,
-      color: color[2], width: 7, outlineWidth: 0));
+      color: Colors.deepOrange, width: 7, outlineWidth: 0));
 }
 
 class Map extends StatefulWidget {
@@ -296,7 +321,7 @@ class NaverMapState extends State<Map> {
                   getRestaurant(lat, lang);
                   getCafe(lat, lang);
                   getAccommodation(lat, lang);
-                  addMarker(placeName, lat, lang);
+                  //addMarker(placeName, lat, lang);
                   //addPoly(Colors.pink);
                 });
                 setState(() {});

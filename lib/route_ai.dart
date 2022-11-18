@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'firebase_read_write.dart';
 import 'map.dart';
 import 'route.dart';
+import 'package:danim/src/place.dart';
+import 'package:danim/src/user.dart';
 
 List<Place> placeList = []; //장소 리스트, 전역 변수, 원본
 List<Place> placeListCopy = []; //장소 리스트, 전역 변수, n일차 코스를 위함.
@@ -16,8 +18,6 @@ List<Place> placeListCopy = []; //장소 리스트, 전역 변수, n일차 코�
 int qqq = 0;
 int www = 0;
 bool ffff = true;
-Place dummy = Place("더미", 0.0, 0.0, 0, 0, [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0]);
 
 class RouteAI {
   //Step 1. Data Loading
