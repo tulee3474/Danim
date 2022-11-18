@@ -183,6 +183,7 @@ class _TimetableState extends State<Timetable> {
                   alignment: Alignment(
                       Alignment.bottomRight.x, Alignment.bottomRight.y - 0.15),
                   child: FloatingActionButton(
+                    heroTag: "임시태그1",
                     child: Icon(Icons.add),
                     elevation: 8,
                     onPressed: () async {
@@ -201,6 +202,7 @@ class _TimetableState extends State<Timetable> {
               Align(
                   alignment: Alignment.bottomRight,
                   child: FloatingActionButton(
+                    heroTag: "임시태그2",
                     child: Icon(Icons.fastfood_rounded),
                     elevation: 8,
                     onPressed: () => {
@@ -235,8 +237,6 @@ class DayViewWidget extends StatefulWidget {
 }
 
 class _DayViewWidgetState extends State<DayViewWidget> {
-  NaverMapController? mapController;
-  MapType _mapType = MapType.Basic;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -255,28 +255,6 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                     child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Column(children: [
-                          SizedBox(
-                            height: 200,
-                            child: Container(
-                              child: (NaverMap(
-                                onMapCreated: (controller) {
-                                  setState(() {
-                                    mapController = controller;
-                                  });
-                                },
-                                initialCameraPosition: CameraPosition(
-                                    bearing: 0.0,
-                                    target: LatLng(33.371964, 126.543512),
-                                    tilt: 0.0,
-                                    zoom: 8.0),
-                                mapType: _mapType,
-                                markers: map.markers,
-                                pathOverlays: map.pathOverlays,
-                              )),
-                            ),
-                          ),
-
-                          // 지도 들어갈 자리 !!
                           Container(child: Text('${event}')),
                           Container(
                               padding: EdgeInsets.fromLTRB(0, 240, 0, 0),

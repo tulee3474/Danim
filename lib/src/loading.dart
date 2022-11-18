@@ -64,8 +64,8 @@ class _LoadingState extends State<Loading> {
     //임시 숙소
     Place? house = Place(
         "제주신라호텔",
-        33.3615656,
-        126.5290656,
+        33.2475582,
+        126.4081161,
         0,
         0,
         [0, 1, 0, 0, 0, 0, 0],

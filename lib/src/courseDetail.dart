@@ -16,37 +16,13 @@ class CourseDetail extends StatefulWidget {
 
 class _CourseDetailState extends State<CourseDetail> {
   bool private_car = false, public_transportation = false;
-
-  bool alone = false,
-      couple = false,
-      friend = false,
-      family = false,
-      hyodo = false,
-      kid = false,
-      pet = false;
-  bool healing = false,
-      activity = false,
-      learning = false,
-      leisure = false,
-      tasty = false;
-  bool leisure_sport = false,
-      culture_facility = false,
-      picture = false,
-      experience = false,
-      culture_experience = false,
-      history = false;
-  bool beach = false,
-      mountain = false,
-      nature = false,
-      trekking = false,
-      drive = false,
-      walk = false,
-      shopping = false,
-      indoor = false,
-      city = false,
-      festival = false,
-      traditional_house = false;
-  bool spring = false, summer = false, autumn = false, winter = false;
+  List selectList = [
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0]
+  ];
 
   String str = '';
 
@@ -133,35 +109,65 @@ class _CourseDetailState extends State<CourseDetail> {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {alone = true, print(alone)}),
+                      onPressed: () => {
+                            if (selectList[0][0] == 0)
+                              {selectList[0][0] = 1}
+                            else
+                              {selectList[0][0] = 0},
+                            print(selectList[0][0])
+                          }),
                   ElevatedButton(
                       child:
                           Text('커플여행', style: TextStyle(color: Colors.black)),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {couple = true, print(couple)}),
+                      onPressed: () => {
+                            if (selectList[0][1] == 0)
+                              {selectList[0][1] = 1}
+                            else
+                              {selectList[0][1] = 0},
+                            print(selectList[0][1])
+                          }),
                   ElevatedButton(
                       child:
                           Text('우정여행', style: TextStyle(color: Colors.black)),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {friend = true, print(friend)}),
+                      onPressed: () => {
+                            if (selectList[0][2] == 0)
+                              {selectList[0][2] = 1}
+                            else
+                              {selectList[0][2] = 0},
+                            print(selectList[0][2])
+                          }),
                   ElevatedButton(
                       child:
                           Text('가족여행', style: TextStyle(color: Colors.black)),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {family = true, print(family)}),
+                      onPressed: () => {
+                            if (selectList[0][3] == 0)
+                              {selectList[0][3] = 1}
+                            else
+                              {selectList[0][3] = 0},
+                            print(selectList[0][3])
+                          }),
                   ElevatedButton(
                       child:
                           Text('효도여행', style: TextStyle(color: Colors.black)),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {hyodo = true, print(hyodo)})
+                      onPressed: () => {
+                            if (selectList[0][4] == 0)
+                              {selectList[0][4] = 1}
+                            else
+                              {selectList[0][4] = 0},
+                            print(selectList[0][4])
+                          })
                 ]),
                 Row(children: [
                   ElevatedButton(
@@ -170,14 +176,26 @@ class _CourseDetailState extends State<CourseDetail> {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {kid = true, print(kid)}),
+                      onPressed: () => {
+                            if (selectList[0][5] == 0)
+                              {selectList[0][5] = 1}
+                            else
+                              {selectList[0][5] = 0},
+                            print(selectList[0][5])
+                          }),
                   ElevatedButton(
                       child:
                           Text('반려견과', style: TextStyle(color: Colors.black)),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {pet = true, print(pet)})
+                      onPressed: () => {
+                            if (selectList[0][6] == 0)
+                              {selectList[0][6] = 1}
+                            else
+                              {selectList[0][6] = 0},
+                            print(selectList[0][6])
+                          })
                 ])
               ]),
             ),
@@ -201,34 +219,51 @@ class _CourseDetailState extends State<CourseDetail> {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {healing = true, print(healing)}),
+                      onPressed: () => {
+                            if (selectList[1][0] == 0)
+                              {selectList[1][0] = 1}
+                            else
+                              {selectList[1][0] = 0},
+                            print(selectList[1][0])
+                          }),
                   ElevatedButton(
                       child:
                           Text('액티비티', style: TextStyle(color: Colors.black)),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {activity = true, print(activity)}),
+                      onPressed: () => {
+                            if (selectList[1][1] == 0)
+                              {selectList[1][1] = 1}
+                            else
+                              {selectList[1][1] = 0},
+                            print(selectList[1][1])
+                          }),
                   ElevatedButton(
                       child:
                           Text('배움이 있는', style: TextStyle(color: Colors.black)),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {learning = true, print(learning)}),
-                  ElevatedButton(
-                      child:
-                          Text('여유로운', style: TextStyle(color: Colors.black)),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {leisure = true, print(leisure)}),
+                      onPressed: () => {
+                            if (selectList[1][2] == 0)
+                              {selectList[1][2] = 1}
+                            else
+                              {selectList[1][2] = 0},
+                            print(selectList[1][2])
+                          }),
                   ElevatedButton(
                       child: Text('맛있는', style: TextStyle(color: Colors.black)),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {tasty = true, print(tasty)})
+                      onPressed: () => {
+                            if (selectList[1][3] == 0)
+                              {selectList[1][3] = 1}
+                            else
+                              {selectList[1][3] = 0},
+                            print(selectList[1][3])
+                          })
                 ])),
             Container(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -252,31 +287,52 @@ class _CourseDetailState extends State<CourseDetail> {
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () =>
-                            {leisure_sport = true, print(leisure_sport)}),
+                        onPressed: () => {
+                              if (selectList[2][0] == 0)
+                                {selectList[2][0] = 1}
+                              else
+                                {selectList[2][0] = 0},
+                              print(selectList[2][0])
+                            }),
                     ElevatedButton(
                         child:
                             Text('문화시설', style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () =>
-                            {culture_facility = true, print(culture_facility)}),
+                        onPressed: () => {
+                              if (selectList[2][1] == 0)
+                                {selectList[2][1] = 1}
+                              else
+                                {selectList[2][1] = 0},
+                              print(selectList[2][1])
+                            }),
                     ElevatedButton(
                         child:
                             Text('사진', style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {picture = true, print(picture)}),
+                        onPressed: () => {
+                              if (selectList[2][2] == 0)
+                                {selectList[2][2] = 1}
+                              else
+                                {selectList[2][2] = 0},
+                              print(selectList[2][2])
+                            }),
                     ElevatedButton(
                         child:
                             Text('이색체험', style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () =>
-                            {experience = true, print(experience)}),
+                        onPressed: () => {
+                              if (selectList[2][3] == 0)
+                                {selectList[2][3] = 1}
+                              else
+                                {selectList[2][3] = 0},
+                              print(selectList[2][3])
+                            }),
                     ElevatedButton(
                         child:
                             Text('문화체험', style: TextStyle(color: Colors.black)),
@@ -284,8 +340,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              culture_experience = true,
-                              print(culture_experience)
+                              if (selectList[2][4] == 0)
+                                {selectList[2][4] = 1}
+                              else
+                                {selectList[2][4] = 0},
+                              print(selectList[2][4])
                             }),
                   ]),
                   Row(children: [
@@ -295,7 +354,13 @@ class _CourseDetailState extends State<CourseDetail> {
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {history = true, print(history)})
+                        onPressed: () => {
+                              if (selectList[2][5] == 0)
+                                {selectList[2][5] = 1}
+                              else
+                                {selectList[2][5] = 0},
+                              print(selectList[2][5])
+                            })
                   ])
                 ])),
             Container(
@@ -320,41 +385,51 @@ class _CourseDetailState extends State<CourseDetail> {
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {beach = true, print(beach)}),
+                        onPressed: () => {
+                              if (selectList[3][0] == 0)
+                                {selectList[3][0] = 1}
+                              else
+                                {selectList[3][0] = 0},
+                              print(selectList[3][0])
+                            }),
                     ElevatedButton(
                         child: Text('산', style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {mountain = true, print(mountain)}),
+                        onPressed: () => {
+                              if (selectList[3][1] == 0)
+                                {selectList[3][1] = 1}
+                              else
+                                {selectList[3][1] = 0},
+                              print(selectList[3][1])
+                            }),
                     ElevatedButton(
-                        child:
-                            Text('자연', style: TextStyle(color: Colors.black)),
+                        child: Text('드라이브코스',
+                            style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {nature = true, print(nature)}),
-                    ElevatedButton(
-                        child:
-                            Text('트레킹', style: TextStyle(color: Colors.black)),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {trekking = true, print(trekking)}),
-                    ElevatedButton(
-                        child:
-                            Text('드라이브', style: TextStyle(color: Colors.black)),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {drive = true, print(drive)}),
+                        onPressed: () => {
+                              if (selectList[3][2] == 0)
+                                {selectList[3][2] = 1}
+                              else
+                                {selectList[3][2] = 0},
+                              print(selectList[3][2])
+                            }),
                     ElevatedButton(
                         child:
                             Text('산책', style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {walk = true, print(walk)})
+                        onPressed: () => {
+                              if (selectList[3][3] == 0)
+                                {selectList[3][3] = 1}
+                              else
+                                {selectList[3][3] = 0},
+                              print(selectList[3][3])
+                            })
                   ]),
                   Row(children: [
                     ElevatedButton(
@@ -363,28 +438,52 @@ class _CourseDetailState extends State<CourseDetail> {
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {shopping = true, print(shopping)}),
+                        onPressed: () => {
+                              if (selectList[3][4] == 0)
+                                {selectList[3][4] = 1}
+                              else
+                                {selectList[3][4] = 0},
+                              print(selectList[3][4])
+                            }),
                     ElevatedButton(
                         child: Text('실내여행지',
                             style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {indoor = true, print(indoor)}),
+                        onPressed: () => {
+                              if (selectList[3][5] == 0)
+                                {selectList[3][5] = 1}
+                              else
+                                {selectList[3][5] = 0},
+                              print(selectList[3][5])
+                            }),
                     ElevatedButton(
                         child:
                             Text('시티투어', style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {city = true, print(city)}),
+                        onPressed: () => {
+                              if (selectList[3][6] == 0)
+                                {selectList[3][6] = 1}
+                              else
+                                {selectList[3][6] = 0},
+                              print(selectList[3][6])
+                            }),
                     ElevatedButton(
                         child:
                             Text('지역축제', style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {festival = true, print(festival)}),
+                        onPressed: () => {
+                              if (selectList[3][7] == 0)
+                                {selectList[3][7] = 1}
+                              else
+                                {selectList[3][7] = 0},
+                              print(selectList[3][7])
+                            }),
                     ElevatedButton(
                         child:
                             Text('전통한옥', style: TextStyle(color: Colors.black)),
@@ -392,8 +491,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              traditional_house = true,
-                              print(traditional_house)
+                              if (selectList[3][8] == 0)
+                                {selectList[3][8] = 1}
+                              else
+                                {selectList[3][8] = 0},
+                              print(selectList[3][8])
                             })
                   ])
                 ])),
