@@ -14,26 +14,28 @@ import 'package:danim/src/user.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import "package:http/http.dart" as http;
 
-String apiKEY='AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI';
-String placeURL='https://maps.googleapis.com/maps/api/place/findplacefromtext/json?';
+String apiKEY = 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI';
+String placeURL =
+    'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?';
 
-Future<LatLng> getLocation(String place) async{
+Future<LatLng> getLocation(String place) async {
   LatLng latLng;
-  http.Response response = await http.get(Uri.parse(
-      '${placeURL}input=$place&inputtype=textquery&fields=formatted_address,name,geometry&key=$apiKEY'
-  ),
+  http.Response response = await http.get(
+    Uri.parse(
+        '${placeURL}input=$place&inputtype=textquery&fields=formatted_address,name,geometry&key=$apiKEY'),
   );
   if (response.statusCode < 200 || response.statusCode > 400) {
-    return LatLng(0,0); // 오류시 -1 리턴
+    return LatLng(0, 0); // 오류시 -1 리턴
   } else {
     String responseData = utf8.decode(response.bodyBytes);
     var responseBody = jsonDecode(responseData);
-    double lat=responseBody["candidates"][0]["geometry"]["location"]["lat"];
-    double lng=responseBody["candidates"][0]["geometry"]["location"]["lng"];
-    latLng=LatLng(lat, lng);
+    double lat = responseBody["candidates"][0]["geometry"]["location"]["lat"];
+    double lng = responseBody["candidates"][0]["geometry"]["location"]["lng"];
+    latLng = LatLng(lat, lng);
   }
   return latLng;
 }
+
 List<Place> placeList = []; //장소 리스트, 전역 변수, 원본
 List<Place> placeListCopy = []; //장소 리스트, 전역 변수, n일차 코스를 위함.
 //path에 들어간 Place들은 제거하는 리스트
@@ -160,14 +162,13 @@ class RouteAI {
           sum += targetPlace.tour[y] * weight[x] * selectList[x][y] as int;
         } else if (x == 4) {
           sum += targetPlace.season[y] * weight[x] * selectList[x][y] as int;
-        }
-        else {
+        } else {
           print("알 수 없는 에러");
         }
       }
     }
 
-    sum += targetPlace.popular*weight[5] as int; //인기관광지 지표 포함하기
+    sum += targetPlace.popular * weight[5] as int; //인기관광지 지표 포함하기
 
     if (beforePlace != null) {
       //더미는 스킵
@@ -413,6 +414,9 @@ class RouteAI {
       }
     }
 
+    //이게 true가 되면 fixedPlace가 맨 앞으로 이동한 것이라서, 경로 최적화 다시
+    bool courseFlag = true;
+
     //시간 계산해서 뒷부분 짤라야 함
     int totalTime = 0;
     //100번 해봐도 못빠져나가면 그대로 리턴해버림
@@ -435,6 +439,8 @@ class RouteAI {
             //만약 pop된 Place가 fixedPlaceList에 있을 경우
             if (popPlace.name == fixedPlaceList[d].name) {
               //bestPath의 맨 앞으로 이동시킨다.
+
+              courseFlag = true;
 
               //숙소가 없을 경우
               if (house == null) {
@@ -471,7 +477,108 @@ class RouteAI {
       }
     }
 
+    //fixedPlace가 맨 앞으로 이동해서, 경로 최적화 다시
+    if (courseFlag) {
+      //먼저 현재 코스의 거리합을 계산한다
+      double bestSum = 0.0;
+
+      for (int c = 0; c < bestPath.length - 1; c++) {
+        if (bestPath[c].latitude == 0.0) {
+          continue; //이 경우는 house가 없어서, firstPlace가 더미인경우밖에없음
+        }
+        double latDiff = bestPath[c].latitude - bestPath[c + 1].latitude;
+        double longDiff = bestPath[c].longitude - bestPath[c + 1].longitude;
+
+        double dis = sqrt(latDiff * latDiff + longDiff * longDiff) * 100;
+        bestSum += dis;
+      }
+
+      //그 후, full search를 통해 최적 경로를 찾는다. 갯수 적어서 ㄱㅊ을듯
+      //시간복잡도 O(n!)일거임 아마?
+      bestPath = new List.from(course_full_search(bestPath, []) as List<Place>);
+      for (int x = 0; x < bestPath.length - 1; x++) {
+        for (int y = x + 1; y < bestPath.length; y++) {
+          List<Place> newPath = new List.from(bestPath);
+          Place temp;
+          Place temp2;
+          temp = Place.clone(newPath[x]);
+          temp2 = Place.clone(newPath[y]);
+          newPath.removeWhere((item) => item.name == newPath[x].name);
+          newPath.removeWhere((item) => item.name == newPath[y - 1].name);
+          if (x >= newPath.length) {
+            newPath.add(Place.clone(temp2));
+          } else {
+            newPath.insert(x, Place.clone(temp2));
+          }
+          if (y >= newPath.length) {
+            newPath.add(Place.clone(temp));
+          } else {
+            newPath.insert(y, Place.clone(temp));
+          }
+
+          if (newPath.length == 0) {
+            print("경로최적화 중 알 수 없는 에러 발생");
+            break;
+          }
+
+          double sum = 0.0;
+
+          for (int c = 0; c < newPath.length - 1; c++) {
+            if (newPath[c].latitude == 0.0) {
+              continue; //이 경우는 house가 없어서, firstPlace가 더미인경우밖에없음
+            }
+            double latDiff = newPath[c].latitude - newPath[c + 1].latitude;
+            double longDiff = newPath[c].longitude - newPath[c + 1].longitude;
+
+            double dis = sqrt(latDiff * latDiff + longDiff * longDiff) * 100;
+            sum += dis;
+          }
+
+          // 코스 길이 합이 짧아졌다면 기존 코스와 교체
+          if (sum < bestPoint) {
+            bestPath = new List.from(newPath);
+            bestSum = sum;
+          }
+        }
+      }
+    }
+
     return bestPath;
+  }
+
+  double disSum = 100000000.0;
+  List<Place> bestDis = [];
+
+  List<Place> course_full_search(
+      List<Place> placeList, List<Place> selectList) {
+    //selectList가 모든 관광지를 가져온 경우
+    if (placeList.length == 0) {
+      double sum = 0.0;
+      for (int c = 0; c < selectList.length - 1; c++) {
+        if (selectList[c].latitude == 0.0) {
+          continue; //이 경우는 house가 없어서, firstPlace가 더미인경우밖에없음
+        }
+        double latDiff = selectList[c].latitude - selectList[c + 1].latitude;
+        double longDiff = selectList[c].longitude - selectList[c + 1].longitude;
+
+        double dis = sqrt(latDiff * latDiff + longDiff * longDiff) * 100;
+        sum += dis;
+      }
+      if (disSum > sum) {
+        disSum = sum;
+        return selectList as List<Place>;
+      }
+    }
+    //재귀 하향 탐색? selectList에 관광지 하나씩 넘겨가면서
+    for (int i = 0; i < placeList.length; i++) {
+      selectList.add(placeList[i]);
+      placeList.removeWhere((item) => item.name == placeList[i].name);
+      bestDis = course_full_search(placeList, selectList);
+      placeList.add(selectList[selectList.length - 1]);
+      selectList.removeWhere(
+          (item) => item.name == selectList[selectList.length - 1].name);
+    }
+    return bestDis;
   }
 
   //main part
@@ -486,14 +593,6 @@ class RouteAI {
     List<int> point = [];
 
     List<Place> fixedPlaceList = [];
-
-    //모든 관광지의 시간을 제외한 point를 탐색
-    if (house == null) {
-      point.add(place_point(selectList, null, placeList[0]));
-      for (int i = 1; i < placeList.length; i++) {
-        point.add(place_point(selectList, null, placeList[i]));
-      }
-    }
 
     int timeLimit = 0;
     List time = [];
@@ -530,18 +629,9 @@ class RouteAI {
       }
     }
 
-    //점수를 기준으로 sort해서 시작 관광지를 numPreset만큼 추출
-    List pointCopy = new List.from(point);
-    pointCopy.sort();
-
     Place firstPlace = Place.clone(dummy);
 
     for (int i = 0; i < numPreset; i++) {
-      if (house == null) {
-        int index = point.indexOf(pointCopy[i]); //출발지의 Index
-        firstPlace = Place.clone(placeList[index]);
-      } else {}
-
       List<Place> finishPath = [];
 
       List<List<Place>> tempPath = [];
@@ -550,6 +640,19 @@ class RouteAI {
         //숙소를 지정해뒀을 경우
         if (house != null) {
           firstPlace = Place.clone(house);
+        }
+        //숙소를 지정해두지 않았을 경우
+        else {
+          //모든 관광지의 시간을 제외한 point를 탐색
+          point.add(place_point(selectList, null, placeListCopy[0]));
+          for (int i = 1; i < placeListCopy.length; i++) {
+            point.add(place_point(selectList, null, placeListCopy[i]));
+          }
+          //점수를 기준으로 sort해서 시작 관광지를 numPreset * day만큼 추출
+          List pointCopy = new List.from(point);
+          pointCopy.sort();
+          int index = point.indexOf(pointCopy[i]); //출발지의 Index
+          firstPlace = Place.clone(placeListCopy[index]);
         }
 
         fixedPlaceList = [];
@@ -561,7 +664,7 @@ class RouteAI {
             if (fixedPlaceDayList[f] == d + 1) {
               // Place readData =
               //     await read.fb_read_one_place(city, fixedPlaceNameList[f]);
-              LatLng tmp=await getLocation(fixedPlaceNameList[f]);
+              LatLng tmp = await getLocation(fixedPlaceNameList[f]);
               double lat = tmp.latitude; //좌표읽어오기
 
               double long = tmp.longitude; //좌표읽어오기
