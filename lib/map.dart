@@ -128,8 +128,8 @@ class NaverMapState extends State<Map> {
               //임시 숙소
               Place? house = Place(
                   "제주신라호텔",
-                  33.3615656,
-                  126.5290656,
+                  33.2475582,
+                  126.4081161,
                   0,
                   0,
                   [0, 1, 0, 0, 0, 0, 0],
@@ -143,7 +143,7 @@ class NaverMapState extends State<Map> {
 
               //read_data = await ai.route_search("제주도", selectList, 600, 3);
               read_data = (await ai.route_search("제주도", house,
-                      ["카멜리아힐", "성산일출봉"], [1, 2], selectList, [9, 18], 3, 3))
+                      ["성산일출봉"], [1], selectList, [9, 18], 3, 3))
                   .cast<List<List<Place>>>();
               //print("route_search함수 실행 후 리턴");
               //print(read_data);

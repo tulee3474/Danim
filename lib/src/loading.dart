@@ -89,7 +89,7 @@ class _LoadingState extends State<Loading> {
     }
 
     List<List<List<Place>>> path_ex =
-        await loadPath(city, house, selectList, [], [], [9, 18], 5, 3);
+        await loadPath(city, house, selectList, ["성산일출봉"], [1], [9, 18], 5, 3);
     Timer(Duration(seconds: 5), () {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Preset(path_ex)));

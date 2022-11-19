@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
@@ -10,7 +11,29 @@ import 'map.dart';
 import 'route.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/user.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import "package:http/http.dart" as http;
 
+String apiKEY='AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI';
+String placeURL='https://maps.googleapis.com/maps/api/place/findplacefromtext/json?';
+
+Future<LatLng> getLocation(String place) async{
+  LatLng latLng;
+  http.Response response = await http.get(Uri.parse(
+      '${placeURL}input=$place&inputtype=textquery&fields=formatted_address,name,geometry&key=$apiKEY'
+  ),
+  );
+  if (response.statusCode < 200 || response.statusCode > 400) {
+    return LatLng(0,0); // 오류시 -1 리턴
+  } else {
+    String responseData = utf8.decode(response.bodyBytes);
+    var responseBody = jsonDecode(responseData);
+    double lat=responseBody["candidates"][0]["geometry"]["location"]["lat"];
+    double lng=responseBody["candidates"][0]["geometry"]["location"]["lng"];
+    latLng=LatLng(lat, lng);
+  }
+  return latLng;
+}
 List<Place> placeList = []; //장소 리스트, 전역 변수, 원본
 List<Place> placeListCopy = []; //장소 리스트, 전역 변수, n일차 코스를 위함.
 //path에 들어간 Place들은 제거하는 리스트
@@ -122,7 +145,7 @@ class RouteAI {
     int sum = 0;
 
     //각 성향 카테고리별 가중치, weight[5]는 popular, 인기관광지 점수
-    List weight = [2, 3, 3, 2, 2, 1];
+    List weight = [2, 2, 2, 2, 2, 2];
 
     //각 성향 점수 * 가중치 * 선택 유무
     for (int x = 0; x < 5; x++) {
@@ -137,13 +160,14 @@ class RouteAI {
           sum += targetPlace.tour[y] * weight[x] * selectList[x][y] as int;
         } else if (x == 4) {
           sum += targetPlace.season[y] * weight[x] * selectList[x][y] as int;
-        } else {
+        }
+        else {
           print("알 수 없는 에러");
         }
       }
     }
 
-    sum += targetPlace.popular as int; //인기관광지 지표 포함하기
+    sum += targetPlace.popular*weight[5] as int; //인기관광지 지표 포함하기
 
     if (beforePlace != null) {
       //더미는 스킵
@@ -153,7 +177,7 @@ class RouteAI {
       double latDiff = targetPlace.latitude - beforePlace.latitude;
       double longDiff = targetPlace.longitude - beforePlace.longitude;
 
-      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 100000;
+      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 20000;
 
       sum -= distance.toInt(); // - 거리 계산
 
@@ -535,8 +559,23 @@ class RouteAI {
           for (int f = 0; f < fixedPlaceNameList.length; f++) {
             //fixedPlaceDayList의 원소가 d+1(n일차)와 같을때만
             if (fixedPlaceDayList[f] == d + 1) {
-              Place readData =
-                  await read.fb_read_one_place(city, fixedPlaceNameList[f]);
+              // Place readData =
+              //     await read.fb_read_one_place(city, fixedPlaceNameList[f]);
+              LatLng tmp=await getLocation(fixedPlaceNameList[f]);
+              double lat = tmp.latitude; //좌표읽어오기
+
+              double long = tmp.longitude; //좌표읽어오기
+              Place readData = Place(
+                  fixedPlaceNameList[f],
+                  lat,
+                  long,
+                  0,
+                  0,
+                  [0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0]);
               fixedPlaceList.add(readData);
             }
           }
