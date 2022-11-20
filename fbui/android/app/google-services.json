@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "70367155908",
+    "project_id": "danim-3439e",
+    "storage_bucket": "danim-3439e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70367155908:android:ba936316358226d0141b91",
+        "android_client_info": {
+          "package_name": "com.example.danim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70367155908-li7to5i4bq75mpog69prtpmo7t7hnq5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVEQpLINJPRz139TIVwmOqN-QUerr3Fms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70367155908-li7to5i4bq75mpog69prtpmo7t7hnq5e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "70367155908-db1etfvpmhkuorkq3va84nlsoq19s8ha.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.danim"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70367155908:android:cc9e603fb1dc9f61141b91",
+        "android_client_info": {
+          "package_name": "com.example.fbui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70367155908-li7to5i4bq75mpog69prtpmo7t7hnq5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVEQpLINJPRz139TIVwmOqN-QUerr3Fms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70367155908-li7to5i4bq75mpog69prtpmo7t7hnq5e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "70367155908-db1etfvpmhkuorkq3va84nlsoq19s8ha.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.danim"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
