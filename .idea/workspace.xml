@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
@@ -7,7 +12,7 @@
     <list default="true" id="48d0c55b-fa7a-4ea5-8117-8a4d5a966085" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/map.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/map.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/route_ai.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/route_ai.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/loading.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/loading.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />

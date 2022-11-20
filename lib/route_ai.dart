@@ -147,28 +147,39 @@ class RouteAI {
     int sum = 0;
 
     //각 성향 카테고리별 가중치, weight[5]는 popular, 인기관광지 점수
-    List weight = [2, 2, 2, 2, 2, 2];
-
+    List weight = [15, 15, 15, 15, 15, 0.3];
+    List count=[0,0,0,0,0];
+    List listSum=[0,0,0,0,0];
     //각 성향 점수 * 가중치 * 선택 유무
     for (int x = 0; x < 5; x++) {
       for (int y = 0; y < selectList[x].length; y++) {
         if (x == 0) {
-          sum += targetPlace.partner[y] * weight[x] * selectList[x][y] as int;
+          if (selectList[x][y]==1) count[0]+=1;//로딩에서 해서 넘겨
+          listSum[0] += targetPlace.partner[y] * weight[x] * selectList[x][y] as int;
         } else if (x == 1) {
-          sum += targetPlace.concept[y] * weight[x] * selectList[x][y] as int;
+          if (selectList[x][y]==1) count[1]+=1;
+          listSum[1] += targetPlace.concept[y] * weight[x] * selectList[x][y] as int;
         } else if (x == 2) {
-          sum += targetPlace.play[y] * weight[x] * selectList[x][y] as int;
+          if (selectList[x][y]==1) count[2]+=1;
+          listSum[2] += targetPlace.play[y] * weight[x] * selectList[x][y] as int;
         } else if (x == 3) {
-          sum += targetPlace.tour[y] * weight[x] * selectList[x][y] as int;
+          if (selectList[x][y]==1) count[3]+=1;
+          listSum[3] += targetPlace.tour[y] * weight[x] * selectList[x][y] as int;
         } else if (x == 4) {
-          sum += targetPlace.season[y] * weight[x] * selectList[x][y] as int;
-        } else {
+          if (selectList[x][y]==1) count[4]+=1;
+          listSum[4] += targetPlace.season[y] * weight[x] * selectList[x][y] as int;
+        }
+        else {
           print("알 수 없는 에러");
         }
       }
     }
-
-    sum += targetPlace.popular * weight[5] as int; //인기관광지 지표 포함하기
+    for(int i=0;i<5;i++) {
+      if(count[i]>0) {
+        sum+=(listSum[i]/count[i]).ceil() as int ;
+      }
+    }
+    sum += (targetPlace.popular*weight[5].ceil()) as int; //인기관광지 지표 포함하기
 
     if (beforePlace != null) {
       //더미는 스킵
@@ -178,7 +189,7 @@ class RouteAI {
       double latDiff = targetPlace.latitude - beforePlace.latitude;
       double longDiff = targetPlace.longitude - beforePlace.longitude;
 
-      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 20000;
+      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 5000;
 
       sum -= distance.toInt(); // - 거리 계산
 
