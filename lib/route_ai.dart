@@ -480,105 +480,77 @@ class RouteAI {
     //fixedPlace가 맨 앞으로 이동해서, 경로 최적화 다시
     if (courseFlag) {
       //먼저 현재 코스의 거리합을 계산한다
-      double bestSum = 0.0;
-
-      for (int c = 0; c < bestPath.length - 1; c++) {
-        if (bestPath[c].latitude == 0.0) {
-          continue; //이 경우는 house가 없어서, firstPlace가 더미인경우밖에없음
-        }
-        double latDiff = bestPath[c].latitude - bestPath[c + 1].latitude;
-        double longDiff = bestPath[c].longitude - bestPath[c + 1].longitude;
-
-        double dis = sqrt(latDiff * latDiff + longDiff * longDiff) * 100;
-        bestSum += dis;
-      }
+      double bestSum = 100000000.0;
 
       //그 후, full search를 통해 최적 경로를 찾는다. 갯수 적어서 ㄱㅊ을듯
       //시간복잡도 O(n!)일거임 아마?
-      bestPath = new List.from(course_full_search(bestPath, []) as List<Place>);
-      for (int x = 0; x < bestPath.length - 1; x++) {
-        for (int y = x + 1; y < bestPath.length; y++) {
-          List<Place> newPath = new List.from(bestPath);
-          Place temp;
-          Place temp2;
-          temp = Place.clone(newPath[x]);
-          temp2 = Place.clone(newPath[y]);
-          newPath.removeWhere((item) => item.name == newPath[x].name);
-          newPath.removeWhere((item) => item.name == newPath[y - 1].name);
-          if (x >= newPath.length) {
-            newPath.add(Place.clone(temp2));
-          } else {
-            newPath.insert(x, Place.clone(temp2));
-          }
-          if (y >= newPath.length) {
-            newPath.add(Place.clone(temp));
-          } else {
-            newPath.insert(y, Place.clone(temp));
-          }
+      List<Place> tempPath = new List.from(bestPath);
+      Place tempPlace = Place.clone(tempPath[0]);
 
-          if (newPath.length == 0) {
-            print("경로최적화 중 알 수 없는 에러 발생");
-            break;
+      tempPath.removeWhere((item) => item.name == tempPath[0].name);
+      if (house != null) {
+        tempPath.add(house);
+      }
+      //첫번째 관광지는 고정이니까
+      course_full_search(tempPath, [tempPlace], house);
+
+      for (int x = 0; x < corDis.length; x++) {
+        if (corDis[x].length == 0) {
+          print("경로최적화 중 알 수 없는 에러 발생");
+          break;
+        }
+        if (house != null) {
+          //마지막게 숙소가 아니면 건너뜀. 첫번째건 짜피 고정
+          if (corDis[x].last.name != house.name) {
+            continue;
           }
+        }
+        double sum = 0.0;
 
-          double sum = 0.0;
-
-          for (int c = 0; c < newPath.length - 1; c++) {
-            if (newPath[c].latitude == 0.0) {
-              continue; //이 경우는 house가 없어서, firstPlace가 더미인경우밖에없음
-            }
-            double latDiff = newPath[c].latitude - newPath[c + 1].latitude;
-            double longDiff = newPath[c].longitude - newPath[c + 1].longitude;
-
-            double dis = sqrt(latDiff * latDiff + longDiff * longDiff) * 100;
-            sum += dis;
+        for (int y = 0; y < corDis[x].length - 1; y++) {
+          if (corDis[x][y].latitude == 0.0) {
+            continue; //이 경우는 house가 없어서, firstPlace가 더미인경우밖에없음
           }
+          double latDiff = corDis[x][y].latitude - corDis[x][y + 1].latitude;
+          double longDiff = corDis[x][y].longitude - corDis[x][y + 1].longitude;
 
-          // 코스 길이 합이 짧아졌다면 기존 코스와 교체
-          if (sum < bestPoint) {
-            bestPath = new List.from(newPath);
-            bestSum = sum;
-          }
+          double dis = sqrt(latDiff * latDiff + longDiff * longDiff);
+          sum += dis;
+        }
+        // 코스 길이 합이 짧아졌다면 기존 코스와 교체
+        if (sum < bestSum) {
+          bestPath = new List.from(corDis[x]);
+
+          bestSum = sum;
         }
       }
     }
-
+    corDis = [];
     return bestPath;
   }
 
-  double disSum = 100000000.0;
-  List<Place> bestDis = [];
+  bool sadsad = true;
+  List<List<Place>> corDis = [];
 
-  List<Place> course_full_search(
-      List<Place> placeList, List<Place> selectList) {
+  course_full_search(
+      List<Place> placeList, List<Place> selectList, Place house) {
     //selectList가 모든 관광지를 가져온 경우
     if (placeList.length == 0) {
-      double sum = 0.0;
-      for (int c = 0; c < selectList.length - 1; c++) {
-        if (selectList[c].latitude == 0.0) {
-          continue; //이 경우는 house가 없어서, firstPlace가 더미인경우밖에없음
-        }
-        double latDiff = selectList[c].latitude - selectList[c + 1].latitude;
-        double longDiff = selectList[c].longitude - selectList[c + 1].longitude;
-
-        double dis = sqrt(latDiff * latDiff + longDiff * longDiff) * 100;
-        sum += dis;
-      }
-      if (disSum > sum) {
-        disSum = sum;
-        return selectList as List<Place>;
-      }
+      corDis.add(List.from(selectList));
     }
     //재귀 하향 탐색? selectList에 관광지 하나씩 넘겨가면서
     for (int i = 0; i < placeList.length; i++) {
       selectList.add(placeList[i]);
       placeList.removeWhere((item) => item.name == placeList[i].name);
-      bestDis = course_full_search(placeList, selectList);
-      placeList.add(selectList[selectList.length - 1]);
-      selectList.removeWhere(
-          (item) => item.name == selectList[selectList.length - 1].name);
+      course_full_search(placeList, selectList, house);
+      placeList.insert(i, selectList.last);
+      int temp = selectList.length;
+      selectList.removeWhere((item) => item.name == selectList.last.name);
+      //2개 이상인 경우는 house가 빠지는 경우밖에 없음
+      if (temp - selectList.length > 1 && house != null) {
+        selectList.insert(0, house);
+      }
     }
-    return bestDis;
   }
 
   //main part
@@ -693,9 +665,9 @@ class RouteAI {
             selectList, finishPath, house, time[d]);
 
         //path 맨뒤에 숙소 추가
-        if (house != null) {
-          improvedPath.add(Place.clone(house));
-        }
+        // if (house != null) {
+        //   improvedPath.add(Place.clone(house));
+        // }
 
         finishPath = new List.from(finishPath)..addAll(improvedPath);
 
