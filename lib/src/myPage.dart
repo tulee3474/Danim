@@ -84,10 +84,14 @@ class MyPage extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MyJourney(journeys[i], [
+                              builder: (context) => MyJourney(
+                                  journeys[i],
+                                  [
                                     journeys[i][0].date,
                                     journeys[i][journeys[i].length - 1].date
-                                  ])));
+                                  ],
+                                  i)));
+                      //i 인덱스도 넣어줌
                     }))
         ]));
   }

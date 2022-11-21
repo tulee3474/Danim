@@ -39,6 +39,7 @@ Future<LatLng> getLocation(String place) async {
 List<Place> placeList = []; //장소 리스트, 전역 변수, 원본
 List<Place> placeListCopy = []; //장소 리스트, 전역 변수, n일차 코스를 위함.
 //path에 들어간 Place들은 제거하는 리스트
+List count = [0, 0, 0, 0, 0]; //selectList 선택 개수 저장 배열
 
 int qqq = 0;
 int www = 0;
@@ -148,38 +149,58 @@ class RouteAI {
 
     //각 성향 카테고리별 가중치, weight[5]는 popular, 인기관광지 점수
     List weight = [15, 15, 15, 15, 15, 0.3];
-    List count=[0,0,0,0,0];
-    List listSum=[0,0,0,0,0];
+    List listSum = [0, 0, 0, 0, 0];
     //각 성향 점수 * 가중치 * 선택 유무
+    // for (int x = 0; x < 5; x++) {
+    //   for (int y = 0; y < selectList[x].length; y++) {
+    //     if (x == 0) {
+    //       listSum[0] +=
+    //           targetPlace.partner[y] * weight[x] * selectList[x][y] as int;
+    //     } else if (x == 1) {
+    //       listSum[1] +=
+    //           targetPlace.concept[y] * weight[x] * selectList[x][y] as int;
+    //     } else if (x == 2) {
+    //       listSum[2] +=
+    //           targetPlace.play[y] * weight[x] * selectList[x][y] as int;
+    //     } else if (x == 3) {
+    //       listSum[3] +=
+    //           targetPlace.tour[y] * weight[x] * selectList[x][y] as int;
+    //     } else if (x == 4) {
+    //       listSum[4] +=
+    //           targetPlace.season[y] * weight[x] * selectList[x][y] as int;
+    //     } else {
+    //       print("알 수 없는 에러");
+    //     }
+    //   }
+    //   if (count[x] > 0) {
+    //     sum += (listSum[x] / count[x]).ceil() as int;
+    //   }
+    // }
+
+    for (int y = 0; y < selectList[0].length; y++) {
+      listSum[0] +=
+          targetPlace.partner[y] * weight[0] * selectList[0][y] as int;
+    }
+    for (int y = 0; y < selectList[1].length; y++) {
+      listSum[1] +=
+          targetPlace.concept[y] * weight[1] * selectList[1][y] as int;
+    }
+    for (int y = 0; y < selectList[2].length; y++) {
+      listSum[2] += targetPlace.play[y] * weight[2] * selectList[2][y] as int;
+    }
+    for (int y = 0; y < selectList[3].length; y++) {
+      listSum[3] += targetPlace.tour[y] * weight[3] * selectList[3][y] as int;
+    }
+    for (int y = 0; y < selectList[4].length; y++) {
+      listSum[4] += targetPlace.season[y] * weight[4] * selectList[4][y] as int;
+    }
     for (int x = 0; x < 5; x++) {
-      for (int y = 0; y < selectList[x].length; y++) {
-        if (x == 0) {
-          if (selectList[x][y]==1) count[0]+=1;//로딩에서 해서 넘겨
-          listSum[0] += targetPlace.partner[y] * weight[x] * selectList[x][y] as int;
-        } else if (x == 1) {
-          if (selectList[x][y]==1) count[1]+=1;
-          listSum[1] += targetPlace.concept[y] * weight[x] * selectList[x][y] as int;
-        } else if (x == 2) {
-          if (selectList[x][y]==1) count[2]+=1;
-          listSum[2] += targetPlace.play[y] * weight[x] * selectList[x][y] as int;
-        } else if (x == 3) {
-          if (selectList[x][y]==1) count[3]+=1;
-          listSum[3] += targetPlace.tour[y] * weight[x] * selectList[x][y] as int;
-        } else if (x == 4) {
-          if (selectList[x][y]==1) count[4]+=1;
-          listSum[4] += targetPlace.season[y] * weight[x] * selectList[x][y] as int;
-        }
-        else {
-          print("알 수 없는 에러");
-        }
+      if (count[x] > 0) {
+        sum += (listSum[x] / count[x]).ceil() as int;
       }
     }
-    for(int i=0;i<5;i++) {
-      if(count[i]>0) {
-        sum+=(listSum[i]/count[i]).ceil() as int ;
-      }
-    }
-    sum += (targetPlace.popular*weight[5].ceil()) as int; //인기관광지 지표 포함하기
+
+    sum += (targetPlace.popular * weight[5].ceil()) as int; //인기관광지 지표 포함하기
 
     if (beforePlace != null) {
       //더미는 스킵
@@ -208,9 +229,9 @@ class RouteAI {
     int iterations = 5000; //2-opts 시도 횟수
 
     //fixedPlaceList가 없을 경우 2배로 시도 횟수를 늘린다.
-    if (fixedPlaceList.length == 0) {
-      iterations = iterations * 2;
-    }
+    // if (fixedPlaceList.length == 0) {
+    //   iterations = iterations * 2;
+    // }
 
     List<Place> bestPath = new List.from(path);
     int bestPoint = 0;
@@ -373,10 +394,10 @@ class RouteAI {
     int StopRepeat2 = 2000; //너무 많이 반복되는 것 방지
 
     //fixedPlaceList가 없을 경우 2배로 시도
-    if (fixedPlaceList.length == 0) {
-      StopRepeat *= 2;
-      StopRepeat2 *= 2;
-    }
+    // if (fixedPlaceList.length == 0) {
+    //   StopRepeat *= 2;
+    //   StopRepeat2 *= 2;
+    // }
 
     bool kOptContinue = true;
 
@@ -440,7 +461,7 @@ class RouteAI {
       //코스의 길이가 길수록 이동시간도 길어짐
       //길이에 비례하여 timeLimit를 줄임
       //이 수치는 차후에 조정할 것!!
-      if (totalTime > timeLimit + 240 - bestPath.length * 30) {
+      if (totalTime > timeLimit - bestPath.length * 30) {
         int aaa = bestPath.length;
         Place popPlace = bestPath.removeLast();
 
@@ -568,6 +589,13 @@ class RouteAI {
   Future<List<List<List<Place>>>> route_search(city, house, fixedPlaceNameList,
       fixedPlaceDayList, selectList, timeLimitArray, numPreset, nDay) async {
     // await안쓰면 이 함수 따로 돌리고 넘어가서, placeList에 원소 안넣은 상태로 코드돌림
+
+    //selectList 선순회
+    for (int x = 0; x < 5; x++) {
+      for (int y = 0; y < selectList[x].length; y++) {
+        if (selectList[x][y] == 1) count[x] += 1;
+      }
+    }
 
     //path의 List,관광지의 List의 List, 날짜별로 한번 더 쪼갠것임
     //pathList[프리셋넘버][n일차넘버][n번째관광지]
@@ -700,6 +728,7 @@ class RouteAI {
     print(qqq);
     print(www);
     print("위 두개는 거리 지표가 어느정도 효과인지 알아보기 위함");
+    count = [0, 0, 0, 0, 0]; //전역변수 다시 초기화
     return pathList;
   }
 }

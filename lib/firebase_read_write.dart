@@ -10,6 +10,18 @@ import '../model/event.dart';
 //import 'main.dart';
 
 //Write하는 부분
+void fb_write_diary(docCode, diaryList) {
+  FirebaseFirestore.instance.collection('Users').doc(docCode).set({
+    // 'name': name,
+    // 'travelList': travelList,
+    // 'placeNumList': placeNumList,
+    // 'traveledPlaceList': traveledPlaceList,
+    // 'eventNumList': eventNumList,
+    //'eventStringList': eventStringList,
+    'diaryList': diaryList,
+  }, SetOptions(merge: true));
+}
+
 void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
     eventNumList, selectList, eventList, diaryList) {
   var data2;
@@ -175,6 +187,41 @@ class ReadController extends GetxController {
         traveledPlaceList, eventNumList, eventList, diaryList);
 
     return userData;
+  }
+
+  Future<List<List<int>>> fb_read_user_selectList(docCode, index) async {
+    List<List<int>> selectList = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0]
+    ];
+    var data;
+    data = await db.collection('Users').doc(docCode)
+      ..collection('selectList').doc(index.toString()).get();
+
+    List<dynamic> partner2 = data.data()!['partner'];
+    for (int i = 0; i < partner2.length; i++) {
+      selectList[0][i] = partner2[i] as int;
+    }
+    List<dynamic> concept2 = data.data()!['concept'];
+    for (int i = 0; i < concept2.length; i++) {
+      selectList[1][i] = concept2[i] as int;
+    }
+    List<dynamic> play2 = data.data()!['play'];
+    for (int i = 0; i < play2.length; i++) {
+      selectList[2][i] = play2[i] as int;
+    }
+    List<dynamic> tour2 = data.data()!['tour'];
+    for (int i = 0; i < tour2.length; i++) {
+      selectList[3][i] = tour2[i] as int;
+    }
+    List<dynamic> season2 = data.data()!['season'];
+    for (int i = 0; i < season2.length; i++) {
+      selectList[4][i] = season2[i] as int;
+    }
+    return selectList;
   }
 
   Future<List<Place>> fb_read_all_place(city) async {
