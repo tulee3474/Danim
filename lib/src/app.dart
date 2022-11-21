@@ -279,12 +279,13 @@ class _AppState extends State<App> {
 
                                                       List<List<Place>> emptyPreset = [[]];
 
+                                                      /*
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
                                                                   Timetable(preset: emptyPreset,transit: 0)));
-
+*/
 
                                                     },
                                                     child: Text('혼자 짤래요')))

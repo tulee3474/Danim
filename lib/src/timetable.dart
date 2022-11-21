@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
 import 'package:danim/model/event.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+import 'package:google_maps_webservice/directions.dart';
+import 'package:google_maps_webservice/places.dart';
 import '../app_colors.dart';
 import '../constants.dart';
 import '../extension.dart';
@@ -16,8 +20,11 @@ import 'package:danim/src/start_end_day.dart';
 import 'package:danim/src/preset.dart';
 import '../../map.dart' as map;
 
+import '../map.dart';
+import '../route_ai.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/date_time_selector.dart';
+import 'date_selectlist.dart';
 import 'foodRecommend.dart';
 import 'package:danim/route.dart';
 
@@ -80,7 +87,7 @@ Future<List<List<TransitTime>>> createTransitTimeList( List<List<Place>> preset 
 */
 
 
-List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,  DateTime startDay, DateTime endDay, int transit)  {
+List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,  DateTime startDay, DateTime endDay, List<List<int>> moving_time)  {
 
   int startDayTime = 7;
   int endDayTime = 21;
@@ -90,7 +97,7 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,  DateTi
   int timeIndex = startDayTime;
   int minuteIndex = 0;
   DateTime dayIndex = startDay;
-  int moving_time = 0;
+  //int moving_time = 0;
 
   List<CalendarEventData<Event>> events = [];
 
@@ -187,23 +194,11 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,  DateTi
       }
 
 
-      if(transit == 0){
-
-        //drivingTimeList = await createDrivingTimeList(preset);
-        moving_time = 60;
-
-      }
-      else{
-
-        //transitTimeList = await createTransitTimeList(preset);
-
-        moving_time = 90;
-      }
 
 
 
       DateTime transitEndTime = DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
-          timeIndex, minuteIndex + moving_time);
+          timeIndex, minuteIndex + moving_time[i][j]);
       DateTime transitEndTimeUpdated = transitEndTime;
 
       events.add(
@@ -244,13 +239,14 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,  DateTi
 
 
 class Timetable extends StatefulWidget {
-  Timetable({Key? key, required this.preset, required this.transit}) : super(key: key);
+  Timetable({Key? key, required this.preset, required this.movingTimeList}) : super(key: key);
 
 
-  int transit = 0;// 자차:0, 대중교통:1
+  //int transit = 0;// 자차:0, 대중교통:1
 
   List<List<Place>> preset = [];
   DateTime currentDate = startDay;
+  List<List<int>> movingTimeList;
 
 
 
@@ -265,14 +261,15 @@ class _TimetableState extends State<Timetable>{
 
   final _CourseNameController = TextEditingController();
 
-  late List<CalendarEventData<Event>> events = createEventList(widget.preset, startDay, endDay, widget.transit);
+  late List<CalendarEventData<Event>> events = createEventList(widget.preset, startDay, endDay, widget.movingTimeList);
 
 
 
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
+    //events = await createEventList(widget.preset, startDay, endDay, widget.transit);
   }
 
   @override
@@ -282,11 +279,11 @@ class _TimetableState extends State<Timetable>{
   }
 
 
-
+/*
   int getTransit() {
     return widget.transit;
   }
-
+*/
 
   List<List<Place>> getPreset () {
     return widget.preset;
@@ -294,6 +291,10 @@ class _TimetableState extends State<Timetable>{
 
   List<CalendarEventData<Event>> getEvents() {
     return events;
+  }
+
+  List<List<int>> getMovingTimeList(){
+    return widget.movingTimeList;
   }
 
 
@@ -304,7 +305,7 @@ class _TimetableState extends State<Timetable>{
   }
 
   void setEventList() {
-    events = createEventList(widget.preset,  startDay, endDay, widget.transit) as List<CalendarEventData<Event>>;
+    events = createEventList(widget.preset,  startDay, endDay, widget.movingTimeList) as List<CalendarEventData<Event>>;
   }
 
   @override
@@ -373,7 +374,7 @@ class _TimetableState extends State<Timetable>{
                     elevation: 8,
                     onPressed: () async {
                       final event = await context
-                          .pushRoute<CalendarEventData<Event>>(CreateEventPage(getPreset: getPreset,getEvents: getEvents, transit: widget.transit,currentDate: widget.currentDate,
+                          .pushRoute<CalendarEventData<Event>>(CreateEventPage(getPreset: getPreset,getEvents: getEvents,currentDate: widget.currentDate,getMovingTimeList: getMovingTimeList,
                         withDuration: true,
                       ));
                       if (event == null) return;
@@ -401,7 +402,7 @@ class _TimetableState extends State<Timetable>{
                     },
                   )
               )]),
-            body: DayViewWidget(getPreset:getPreset, getEvents: getEvents, transit: widget.transit)));
+            body: DayViewWidget(getPreset:getPreset, getEvents: getEvents, getMovingTimeList: getMovingTimeList,)));
   }
 }
 
@@ -411,9 +412,12 @@ class DayViewWidget extends StatefulWidget {
   final GlobalKey<DayViewState>? state;
   final double? width;
 
+
+
   final Function() getPreset;
   final Function() getEvents;
-  int transit = 0;
+  final Function() getMovingTimeList;
+  //int transit = 0;
 
 
 
@@ -424,7 +428,7 @@ class DayViewWidget extends StatefulWidget {
     this.width,
     required this.getPreset,
     required this.getEvents,
-    required this.transit
+    required this.getMovingTimeList
   }) : super(key: key);
 
   @override
@@ -534,7 +538,7 @@ class _DayViewWidgetState extends State<DayViewWidget>{
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        Timetable(preset: presetUpdated, transit: widget.transit )));
+                                                        Timetable(preset: presetUpdated, movingTimeList: widget.getMovingTimeList())));
 
 
 
@@ -578,6 +582,7 @@ class CreateEventPage extends StatefulWidget {
 
   final Function() getPreset;
   final Function() getEvents;
+  final Function() getMovingTimeList;
 
   int transit = 0;
 
@@ -585,7 +590,7 @@ class CreateEventPage extends StatefulWidget {
 
 
 
-  CreateEventPage({Key? key, this.withDuration = false,required this.getPreset, required this.transit, required this.getEvents, required this.currentDate,this.onEventAdd})
+  CreateEventPage({Key? key, this.withDuration = false,required this.getPreset, required this.getMovingTimeList, required this.getEvents, required this.currentDate,this.onEventAdd})
       : super(key: key);
 
 
@@ -600,7 +605,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   late DateTime _startTime;
 
-  DateTime? _endTime;
+  late DateTime _endTime;
 
   String _title = "";
 
@@ -769,23 +774,66 @@ class _CreateEventPageState extends State<CreateEventPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextFormField(
-                decoration: AppConstants.inputDecoration.copyWith(
-                  labelText: "관광지 검색",
-                ),
-                style: TextStyle(
-                  color: AppColors.black,
-                  fontSize: 17.0,
-                ),
-                onSaved: (value) => _title = value?.trim() ?? "",
-                validator: (value) {
-                  if (value == null || value == "")
-                    return "관광지명을 검색하세요";
+              InkWell(
+                  onTap: () async {
+                    var place = await PlacesAutocomplete.show(
+                      context: context,
+                      apiKey: 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                      mode: Mode.overlay,
+                      language: "kr",
+                      //types: [],
+                      //strictbounds: false,
+                      components: [Component(Component.country, 'kr')],
+                      //google_map_webservice package
+                      //onError: (err){
+                      //  print(err);
+                      //},
+                    );
 
-                  return null;
-                },
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
+                    if(place != null){
+                      setState(() {
+                        location = place.description.toString();
+                      });
+
+                      //form google_maps_webservice package
+                      final plist = GoogleMapsPlaces(apiKey:'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                        apiHeaders: await GoogleApiHeaders().getHeaders(),
+                        //from google_api_headers package
+                      );
+
+                      String placeid = place.placeId ?? "0";
+                      final detail = await plist.getDetailsByPlaceId(placeid);
+                      final geometry = detail.result.geometry!;
+                      final lat = geometry.location.lat;
+                      final lang = geometry.location.lng;
+                      var newlatlang = LatLng(lat, lang);
+                      latLen.add(newlatlang);
+
+                      //move map camera to selected place with animation
+                      //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
+                      var places=location.split(', ');
+                      String placeName=places[places.length-1];
+                      placeList.add(Place(placeName, lat, lang, 60, 20, selectedList[0], selectedList[1], selectedList[2], selectedList[3], selectedList[4]));
+                      setState(() {
+                      });
+                      setState(() {
+                      });
+                    }
+                  },
+                  child:Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Card(
+                      child: Container(
+                          padding: EdgeInsets.all(0),
+                          width: MediaQuery.of(context).size.width - 40,
+                          child: ListTile(
+                            title:Text(location, style: TextStyle(fontSize: 18),),
+                            trailing: Icon(Icons.search),
+                            dense: true,
+                          )
+                      ),
+                    ),
+                  )
               ),
               SizedBox(
                 height: 15,
@@ -940,7 +988,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
                       33.4,
                       43.2,
-                      2,
+                      _endTime.difference(_startTime).inMinutes,
                       30,
                       [10, 20, 30, 40, 50, 60, 70],
                       [10, 20, 30, 40, 50],
@@ -1023,7 +1071,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              Timetable(preset: presetToBeUpdated, transit: widget.transit )));
+                              Timetable(preset: presetToBeUpdated, movingTimeList: widget.getMovingTimeList())));
 
                 },
                 title: "관광지 추가",

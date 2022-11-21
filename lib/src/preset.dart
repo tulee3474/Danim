@@ -1,8 +1,11 @@
+import 'package:danim/src/createMovingTimeList.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
 import 'package:danim/src/timetable.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/map.dart' as map;
+
+import '../route.dart';
 //import 'exampleResource.dart';\
 
 
@@ -37,14 +40,52 @@ class Preset extends StatelessWidget {
                           child: Text(
                               '${pathList[i][0][0].name} + ${pathList[i][0][1].name}...'),
                           //이거 나중에 인덱스 초기화 에러 조심할 것! 관광지 갯수가 적으면..
-                          onPressed: () => {
-                                map.addMarker(pathList[i]),
-                                map.addPoly(pathList[i]),
-                                Navigator.push(
+                          onPressed: () async {
+
+
+
+
+                                map.addMarker(pathList[i]);
+                                map.addPoly(pathList[i]);
+
+
+
+                                  List<List<int>> movingTimeList = [
+                                    for(int i=0; i<pathList[i].length; i++)
+                                      []
+                                  ];
+
+                                  movingTimeList = await createDrivingTimeList(pathList[i]);
+
+
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            Timetable(preset: pathList[i], transit: transit)))
+                                            Timetable(preset: pathList[i],  movingTimeList: movingTimeList,)));
+
+
+                                /*
+                                else {
+                                  List<List<int>> movingTimeList = [
+                                    for(int i=0; i<pathList[i].length; i++)
+                                      []
+                                  ];
+
+                                  movingTimeList = await createTransitTimeList(pathList[i]);
+
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Timetable(preset: pathList[i], transit: transit, movingTimeList: movingTimeList,)));}
+
+                                */
+
+
+
+
                               })),
                   Positioned(
                       right: -20,

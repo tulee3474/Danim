@@ -531,6 +531,10 @@ class _MapState extends State<Map> {
               });
             },
           ),
+
+
+ */
+
     /*Positioned(
       bottom:30,
       child: ElevatedButton(
@@ -545,7 +549,7 @@ class _MapState extends State<Map> {
           });
         },
       )
-    ),*/
+    ),
     Positioned(  //search input bar
       top:10,
       child: InkWell(

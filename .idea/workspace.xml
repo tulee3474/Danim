@@ -10,35 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48d0c55b-fa7a-4ea5-8117-8a4d5a966085" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/src/attractionFix.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/date_selectlist.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/createMovingTimeList.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/danim.iml" beforeDir="false" afterPath="$PROJECT_DIR$/danim.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/Debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/Debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/Release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/Release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/map.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/map.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/create_event_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/day_view_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/route.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/route_ai.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/route_ai.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/app.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/app.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/calendar_event_data.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/calendar_event_data.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/courseDetail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/courseDetail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/day_view/day_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/day_view/day_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/loading.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/loading.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/myJourney.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/myJourney.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/attractionFix.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/attractionFix.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/preset.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/preset.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/timetable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/timetable.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/add_event_widget.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/calendar_configs.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Flutter/Flutter-Debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/Flutter-Debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Flutter/Flutter-Release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/Flutter-Release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,15 +53,18 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
