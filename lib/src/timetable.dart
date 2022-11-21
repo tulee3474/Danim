@@ -267,7 +267,7 @@ class _TimetableState extends State<Timetable>{
 
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     //events = await createEventList(widget.preset, startDay, endDay, widget.transit);
   }

@@ -119,6 +119,7 @@ class _AttractionFixState extends State<AttractionFix> {
                             );
 
                             String placeid = place.placeId ?? "0";
+
                             final detail = await plist.getDetailsByPlaceId(placeid);
                             final geometry = detail.result.geometry!;
                             final lat = geometry.location.lat;
@@ -130,6 +131,7 @@ class _AttractionFixState extends State<AttractionFix> {
                             //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
                             var places=location.split(', ');
                             String placeName=places[places.length-1];
+                            print('$placeName placeName');
                             placeList.add(Place(placeName, lat, lang, 60, 20, selectedList[0], selectedList[1], selectedList[2], selectedList[3], selectedList[4]));
                             setState(() {
                             });
