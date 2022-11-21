@@ -1,3 +1,4 @@
+import 'package:danim/src/attractionFix.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:danim/src/preset.dart';
 import 'package:intl/intl.dart';
 
+
+import 'date_selectlist.dart';
 import 'loading.dart';
 
 class CourseDetail extends StatefulWidget {
@@ -15,14 +18,8 @@ class CourseDetail extends StatefulWidget {
 }
 
 class _CourseDetailState extends State<CourseDetail> {
-  bool private_car = false, public_transportation = false;
-  List selectList = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0]
-  ];
+  int transit = 0; //초기값은 자차이용
+
 
   String str = '';
 
@@ -55,7 +52,9 @@ class _CourseDetailState extends State<CourseDetail> {
                     fit: BoxFit.contain, height: 20))
           ]),
         ),
-        body: Column(
+        body:SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+            child:Column(
           children: <Widget>[
             Container(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -75,7 +74,7 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () =>
-                          {private_car = true, print(private_car)}),
+                          {transit = 0, print(transit)}),
                   ElevatedButton(
                       child:
                           Text('대중교툥', style: TextStyle(color: Colors.black)),
@@ -83,8 +82,8 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            public_transportation = true,
-                            print(public_transportation)
+                            transit =1,
+                            print(transit)
                           })
                 ])),
             Container(
@@ -110,11 +109,11 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[0][0] == 0)
-                              {selectList[0][0] = 1}
+                            if (selectedList[0][0] == 0)
+                              {selectedList[0][0] = 1}
                             else
-                              {selectList[0][0] = 0},
-                            print(selectList[0][0])
+                              {selectedList[0][0] = 0},
+                            print(selectedList[0][0])
                           }),
                   ElevatedButton(
                       child:
@@ -123,11 +122,11 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[0][1] == 0)
-                              {selectList[0][1] = 1}
+                            if (selectedList[0][1] == 0)
+                              {selectedList[0][1] = 1}
                             else
-                              {selectList[0][1] = 0},
-                            print(selectList[0][1])
+                              {selectedList[0][1] = 0},
+                            print(selectedList[0][1])
                           }),
                   ElevatedButton(
                       child:
@@ -136,11 +135,11 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[0][2] == 0)
-                              {selectList[0][2] = 1}
+                            if (selectedList[0][2] == 0)
+                              {selectedList[0][2] = 1}
                             else
-                              {selectList[0][2] = 0},
-                            print(selectList[0][2])
+                              {selectedList[0][2] = 0},
+                            print(selectedList[0][2])
                           }),
                   ElevatedButton(
                       child:
@@ -149,27 +148,28 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[0][3] == 0)
-                              {selectList[0][3] = 1}
+                            if (selectedList[0][3] == 0)
+                              {selectedList[0][3] = 1}
                             else
-                              {selectList[0][3] = 0},
-                            print(selectList[0][3])
+                              {selectedList[0][3] = 0},
+                            print(selectedList[0][3])
                           }),
-                  ElevatedButton(
-                      child:
-                          Text('효도여행', style: TextStyle(color: Colors.black)),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith(getColor)),
-                      onPressed: () => {
-                            if (selectList[0][4] == 0)
-                              {selectList[0][4] = 1}
-                            else
-                              {selectList[0][4] = 0},
-                            print(selectList[0][4])
-                          })
+
                 ]),
-                Row(children: [
+                Row(children: [ ElevatedButton(
+                    child:
+                    Text('효도여행', style: TextStyle(color: Colors.black)),
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.resolveWith(getColor)),
+                    onPressed: () => {
+                      if (selectedList[0][4] == 0)
+                        {selectedList[0][4] = 1}
+                      else
+                        {selectedList[0][4] = 0},
+                      print(selectedList[0][4])
+                    }),
+
                   ElevatedButton(
                       child:
                           Text('어린자녀와', style: TextStyle(color: Colors.black)),
@@ -177,11 +177,11 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[0][5] == 0)
-                              {selectList[0][5] = 1}
+                            if (selectedList[0][5] == 0)
+                              {selectedList[0][5] = 1}
                             else
-                              {selectList[0][5] = 0},
-                            print(selectList[0][5])
+                              {selectedList[0][5] = 0},
+                            print(selectedList[0][5])
                           }),
                   ElevatedButton(
                       child:
@@ -190,11 +190,11 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[0][6] == 0)
-                              {selectList[0][6] = 1}
+                            if (selectedList[0][6] == 0)
+                              {selectedList[0][6] = 1}
                             else
-                              {selectList[0][6] = 0},
-                            print(selectList[0][6])
+                              {selectedList[0][6] = 0},
+                            print(selectedList[0][6])
                           })
                 ])
               ]),
@@ -220,11 +220,11 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[1][0] == 0)
-                              {selectList[1][0] = 1}
+                            if (selectedList[1][0] == 0)
+                              {selectedList[1][0] = 1}
                             else
-                              {selectList[1][0] = 0},
-                            print(selectList[1][0])
+                              {selectedList[1][0] = 0},
+                            print(selectedList[1][0])
                           }),
                   ElevatedButton(
                       child:
@@ -233,11 +233,11 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[1][1] == 0)
-                              {selectList[1][1] = 1}
+                            if (selectedList[1][1] == 0)
+                              {selectedList[1][1] = 1}
                             else
-                              {selectList[1][1] = 0},
-                            print(selectList[1][1])
+                              {selectedList[1][1] = 0},
+                            print(selectedList[1][1])
                           }),
                   ElevatedButton(
                       child:
@@ -246,11 +246,11 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[1][2] == 0)
-                              {selectList[1][2] = 1}
+                            if (selectedList[1][2] == 0)
+                              {selectedList[1][2] = 1}
                             else
-                              {selectList[1][2] = 0},
-                            print(selectList[1][2])
+                              {selectedList[1][2] = 0},
+                            print(selectedList[1][2])
                           }),
                   ElevatedButton(
                       child: Text('맛있는', style: TextStyle(color: Colors.black)),
@@ -258,11 +258,11 @@ class _CourseDetailState extends State<CourseDetail> {
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),
                       onPressed: () => {
-                            if (selectList[1][3] == 0)
-                              {selectList[1][3] = 1}
+                            if (selectedList[1][3] == 0)
+                              {selectedList[1][3] = 1}
                             else
-                              {selectList[1][3] = 0},
-                            print(selectList[1][3])
+                              {selectedList[1][3] = 0},
+                            print(selectedList[1][3])
                           })
                 ])),
             Container(
@@ -288,11 +288,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[2][0] == 0)
-                                {selectList[2][0] = 1}
+                              if (selectedList[2][0] == 0)
+                                {selectedList[2][0] = 1}
                               else
-                                {selectList[2][0] = 0},
-                              print(selectList[2][0])
+                                {selectedList[2][0] = 0},
+                              print(selectedList[2][0])
                             }),
                     ElevatedButton(
                         child:
@@ -301,11 +301,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[2][1] == 0)
-                                {selectList[2][1] = 1}
+                              if (selectedList[2][1] == 0)
+                                {selectedList[2][1] = 1}
                               else
-                                {selectList[2][1] = 0},
-                              print(selectList[2][1])
+                                {selectedList[2][1] = 0},
+                              print(selectedList[2][1])
                             }),
                     ElevatedButton(
                         child:
@@ -314,11 +314,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[2][2] == 0)
-                                {selectList[2][2] = 1}
+                              if (selectedList[2][2] == 0)
+                                {selectedList[2][2] = 1}
                               else
-                                {selectList[2][2] = 0},
-                              print(selectList[2][2])
+                                {selectedList[2][2] = 0},
+                              print(selectedList[2][2])
                             }),
                     ElevatedButton(
                         child:
@@ -327,27 +327,29 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[2][3] == 0)
-                                {selectList[2][3] = 1}
+                              if (selectedList[2][3] == 0)
+                                {selectedList[2][3] = 1}
                               else
-                                {selectList[2][3] = 0},
-                              print(selectList[2][3])
+                                {selectedList[2][3] = 0},
+                              print(selectedList[2][3])
                             }),
-                    ElevatedButton(
-                        child:
-                            Text('문화체험', style: TextStyle(color: Colors.black)),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.resolveWith(getColor)),
-                        onPressed: () => {
-                              if (selectList[2][4] == 0)
-                                {selectList[2][4] = 1}
-                              else
-                                {selectList[2][4] = 0},
-                              print(selectList[2][4])
-                            }),
+
                   ]),
                   Row(children: [
+                    ElevatedButton(
+                        child:
+                        Text('문화체험', style: TextStyle(color: Colors.black)),
+                        style: ButtonStyle(
+                            backgroundColor:
+                            MaterialStateProperty.resolveWith(getColor)),
+                        onPressed: () => {
+                          if (selectedList[2][4] == 0)
+                            {selectedList[2][4] = 1}
+                          else
+                            {selectedList[2][4] = 0},
+                          print(selectedList[2][4])
+                        }),
+
                     ElevatedButton(
                         child:
                             Text('역사', style: TextStyle(color: Colors.black)),
@@ -355,11 +357,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[2][5] == 0)
-                                {selectList[2][5] = 1}
+                              if (selectedList[2][5] == 0)
+                                {selectedList[2][5] = 1}
                               else
-                                {selectList[2][5] = 0},
-                              print(selectList[2][5])
+                                {selectedList[2][5] = 0},
+                              print(selectedList[2][5])
                             })
                   ])
                 ])),
@@ -386,11 +388,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[3][0] == 0)
-                                {selectList[3][0] = 1}
+                              if (selectedList[3][0] == 0)
+                                {selectedList[3][0] = 1}
                               else
-                                {selectList[3][0] = 0},
-                              print(selectList[3][0])
+                                {selectedList[3][0] = 0},
+                              print(selectedList[3][0])
                             }),
                     ElevatedButton(
                         child: Text('산', style: TextStyle(color: Colors.black)),
@@ -398,11 +400,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[3][1] == 0)
-                                {selectList[3][1] = 1}
+                              if (selectedList[3][1] == 0)
+                                {selectedList[3][1] = 1}
                               else
-                                {selectList[3][1] = 0},
-                              print(selectList[3][1])
+                                {selectedList[3][1] = 0},
+                              print(selectedList[3][1])
                             }),
                     ElevatedButton(
                         child: Text('드라이브코스',
@@ -411,11 +413,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[3][2] == 0)
-                                {selectList[3][2] = 1}
+                              if (selectedList[3][2] == 0)
+                                {selectedList[3][2] = 1}
                               else
-                                {selectList[3][2] = 0},
-                              print(selectList[3][2])
+                                {selectedList[3][2] = 0},
+                              print(selectedList[3][2])
                             }),
                     ElevatedButton(
                         child:
@@ -424,27 +426,29 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[3][3] == 0)
-                                {selectList[3][3] = 1}
+                              if (selectedList[3][3] == 0)
+                                {selectedList[3][3] = 1}
                               else
-                                {selectList[3][3] = 0},
-                              print(selectList[3][3])
-                            })
-                  ]),
-                  Row(children: [
+                                {selectedList[3][3] = 0},
+                              print(selectedList[3][3])
+                            }),
+
                     ElevatedButton(
                         child:
-                            Text('쇼핑', style: TextStyle(color: Colors.black)),
+                        Text('쇼핑', style: TextStyle(color: Colors.black)),
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.resolveWith(getColor)),
+                            MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[3][4] == 0)
-                                {selectList[3][4] = 1}
-                              else
-                                {selectList[3][4] = 0},
-                              print(selectList[3][4])
-                            }),
+                          if (selectedList[3][4] == 0)
+                            {selectedList[3][4] = 1}
+                          else
+                            {selectedList[3][4] = 0},
+                          print(selectedList[3][4])
+                        }),
+                  ]),
+                  Row(children: [
+
                     ElevatedButton(
                         child: Text('실내여행지',
                             style: TextStyle(color: Colors.black)),
@@ -452,11 +456,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[3][5] == 0)
-                                {selectList[3][5] = 1}
+                              if (selectedList[3][5] == 0)
+                                {selectedList[3][5] = 1}
                               else
-                                {selectList[3][5] = 0},
-                              print(selectList[3][5])
+                                {selectedList[3][5] = 0},
+                              print(selectedList[3][5])
                             }),
                     ElevatedButton(
                         child:
@@ -465,11 +469,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[3][6] == 0)
-                                {selectList[3][6] = 1}
+                              if (selectedList[3][6] == 0)
+                                {selectedList[3][6] = 1}
                               else
-                                {selectList[3][6] = 0},
-                              print(selectList[3][6])
+                                {selectedList[3][6] = 0},
+                              print(selectedList[3][6])
                             }),
                     ElevatedButton(
                         child:
@@ -478,11 +482,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[3][7] == 0)
-                                {selectList[3][7] = 1}
+                              if (selectedList[3][7] == 0)
+                                {selectedList[3][7] = 1}
                               else
-                                {selectList[3][7] = 0},
-                              print(selectList[3][7])
+                                {selectedList[3][7] = 0},
+                              print(selectedList[3][7])
                             }),
                     ElevatedButton(
                         child:
@@ -491,11 +495,11 @@ class _CourseDetailState extends State<CourseDetail> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () => {
-                              if (selectList[3][8] == 0)
-                                {selectList[3][8] = 1}
+                              if (selectedList[3][8] == 0)
+                                {selectedList[3][8] = 1}
                               else
-                                {selectList[3][8] = 0},
-                              print(selectList[3][8])
+                                {selectedList[3][8] = 0},
+                              print(selectedList[3][8])
                             })
                   ])
                 ])),
@@ -508,10 +512,10 @@ class _CourseDetailState extends State<CourseDetail> {
                 child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Loading()));
+                          MaterialPageRoute(builder: (context) => AttractionFix(transit)));
                     },
-                    child: Text('추천코스 받기')))
+                    child: Text('다음 단계')))
           ],
-        ));
+        )));
   }
 }

@@ -19,8 +19,12 @@ import 'package:danim/firebase_read_write.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/user.dart';
 
+import 'date_selectlist.dart';
+
 class Loading extends StatefulWidget {
-  const Loading({super.key});
+   Loading(this.transit,{super.key});
+
+  int transit = 0;
 
   @override
   State<Loading> createState() => _LoadingState();
@@ -60,27 +64,23 @@ class _LoadingState extends State<Loading> {
   }
 
   qqqq() async {
-    bool houseCheck = true;
+    bool houseCheck = false;
     //임시 숙소
     Place? house = Place(
         "제주신라호텔",
         33.2475582,
         126.4081161,
         0,
-        0,
+        1,
         [0, 1, 0, 0, 0, 0, 0],
         [0, 1, 0, 1],
         [0, 1, 0, 0, 1, 0],
         [0, 1, 0, 1, 0, 1, 1, 0, 1],
         [0, 1, 0, 0]);
     //임시 selectList
-    List selectList = [
-      [0, 1, 0, 0, 0, 0, 0],
-      [1, 1, 0, 1],
-      [1, 0, 1, 1, 1, 0],
-      [1, 1, 0, 1, 0, 0, 0, 0, 0],
-      [0, 1, 0, 0]
-    ];
+    List selectList = selectedList;
+
+
     //임시 도시
     String city = "제주도";
 
@@ -89,10 +89,10 @@ class _LoadingState extends State<Loading> {
     }
 
     List<List<List<Place>>> path_ex =
-        await loadPath(city, house, selectList, ["성산일출봉"], [1], [9, 18], 5, 3);
+        await loadPath(city, house, selectList, [], [], [9, 18], 5, 3);
     Timer(Duration(seconds: 5), () {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Preset(path_ex)));
+          context, MaterialPageRoute(builder: (context) => Preset(path_ex, widget.transit)));
     });
   }
 

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'extensions.dart';
 
+
 /// Stores all the events on [date]
 @immutable
 class CalendarEventData<T extends Object?> {
@@ -15,7 +16,7 @@ class CalendarEventData<T extends Object?> {
   /// Defines the start time of the event.
   /// [endTime] and [startTime] will defines time on same day.
   /// This is required when you are using [CalendarEventData] for [DayView]
-  final DateTime? startTime;
+  final DateTime startTime;
 
   /// Defines the end time of the event.
   /// [endTime] and [startTime] defines time on same day.
@@ -43,7 +44,7 @@ class CalendarEventData<T extends Object?> {
     this.description = "",
     this.event,
     this.color = Colors.blue,
-    this.startTime,
+    required this.startTime,
     this.endTime,
     DateTime? endDate,
     required this.date,
@@ -52,14 +53,14 @@ class CalendarEventData<T extends Object?> {
   DateTime get endDate => _endDate ?? date;
 
   Map<String, dynamic> toJson() => {
-        "date": date,
-        "startTime": startTime,
-        "endTime": endTime,
-        "event": event,
-        "title": title,
-        "description": description,
-        "endDate": endDate,
-      };
+    "date": date,
+    "startTime": startTime,
+    "endTime": endTime,
+    "event": event,
+    "title": title,
+    "description": description,
+    "endDate": endDate,
+  };
 
   @override
   String toString() => toJson().toString();
@@ -84,5 +85,7 @@ class CalendarEventData<T extends Object?> {
   }
 
   @override
-  int get hashCode => super.hashCode;
+  get hashCode => super.hashCode;
+
+
 }

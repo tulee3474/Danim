@@ -5,13 +5,12 @@ import 'package:danim/src/place.dart';
 import 'package:danim/map.dart' as map;
 //import 'exampleResource.dart';\
 
-//임시 이동시간 배열
-List<int> moving_time_ex = [1, 2, 1, 1, 3, 2, 1, 1];
 
 class Preset extends StatelessWidget {
   List<List<List<Place>>> pathList;
+  int transit = 0;
 
-  Preset(this.pathList);
+  Preset(this.pathList, this.transit);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class Preset extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            Timetable(path: pathList[i][0])))
+                                            Timetable(preset: pathList[i], transit: transit)))
                               })),
                   Positioned(
                       right: -20,

@@ -588,15 +588,7 @@ class _MapState extends State<Map> {
         var places=location.split(', ');
         String placeName=places[places.length-1];
         placeList.add(Place(placeName, lat, lang));
-        getRestaurant(lat, lang);
-        getCafe(lat, lang);
-        getAccommodation(lat, lang);
         setState(() {
-          addRestMarker();
-          addCafeMarker();
-          addAccommodationMarker();
-          addMarker();
-          addPoly();
         });
         setState(() {
         });

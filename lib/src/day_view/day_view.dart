@@ -23,6 +23,9 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 import '../../map.dart' as map;
 
 class DayView<T extends Object?> extends StatefulWidget {
+
+
+
   /// A function that returns a [Widget] that determines appearance of each
   /// cell in day calendar.
   final EventTileBuilder<T>? eventTileBuilder;
@@ -178,13 +181,13 @@ class DayView<T extends Object?> extends StatefulWidget {
     this.onDateLongPress,
     this.minuteSlotSize = MinuteSlotSize.minutes60,
   })  : assert(timeLineOffset >= 0,
-            "timeLineOffset must be greater than or equal to 0"),
+  "timeLineOffset must be greater than or equal to 0"),
         assert(width == null || width > 0,
-            "Calendar width must be greater than 0."),
+        "Calendar width must be greater than 0."),
         assert(timeLineWidth == null || timeLineWidth > 0,
-            "Time line width must be greater than 0."),
+        "Time line width must be greater than 0."),
         assert(
-            heightPerMinute > 0, "Height per minute must be greater than 0."),
+        heightPerMinute > 0, "Height per minute must be greater than 0."),
         super(key: key);
 
   @override
@@ -223,6 +226,10 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
 
   final _scrollConfiguration = EventScrollConfiguration<T>();
 
+  DateTime getCurrentDate() {
+    return _currentDate;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -253,11 +260,11 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
       _controller = newController;
 
       _controller!
-        // Removes existing callback.
+      // Removes existing callback.
         ..removeListener(_reloadCallback)
 
-        // Reloads the view if there is any change in controller or
-        // user adds new events.
+      // Reloads the view if there is any change in controller or
+      // user adds new events.
         ..addListener(_reloadCallback);
     }
 
@@ -304,9 +311,6 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
     super.dispose();
   }
 
-  NaverMapController? mapController;
-  MapType _mapType = MapType.Basic;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -320,73 +324,54 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+
               _dayTitleBuilder(_currentDate),
               Expanded(
                 child: SingleChildScrollView(
                     controller: _scrollController,
-                    child: Column(children: [
-                      Container(
-                        height: 300,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black45)),
-                      ),
-                      SizedBox(
-                        height: 200,
-                        child: Container(
-                          child: (NaverMap(
-                            onMapCreated: (controller) {
-                              setState(() {
-                                mapController = controller;
-                              });
-                            },
-                            initialCameraPosition: CameraPosition(
-                                bearing: 0.0,
-                                target: LatLng(33.371964, 126.543512),
-                                tilt: 0.0,
-                                zoom: 8.0),
-                            mapType: _mapType,
-                            markers: map.markers,
-                            pathOverlays: map.pathOverlays,
-                          )),
-                        ),
-                      ),
+                    child: Column(
+                        children: [
 
-                      // 지도 들어갈 자리 !!
+                          Container(
+                            height: 300,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black45)
+                            ),
 
-                      SizedBox(
-                        height: _height,
-                        child: PageView.builder(
-                          itemCount: _totalDays,
-                          controller: _pageController,
-                          onPageChanged: _onPageChange,
-                          itemBuilder: (_, index) {
-                            final date = DateTime(_minDate.year, _minDate.month,
-                                _minDate.day + index);
+                          )
+                          // 지도 들어갈 자리 !!
 
-                            return ValueListenableBuilder(
-                                valueListenable: _scrollConfiguration,
-                                builder: (_, __, ___) => InternalDayViewPage<T>(
-                                      key: ValueKey(_hourHeight.toString() +
-                                          date.toString()),
+                          ,SizedBox(
+                            height: _height,
+                            child: PageView.builder(
+                              itemCount: _totalDays,
+                              controller: _pageController,
+                              onPageChanged: _onPageChange,
+                              itemBuilder: (_, index) {
+                                final date = DateTime(_minDate.year, _minDate.month,
+                                    _minDate.day + index);
+
+                                return ValueListenableBuilder(
+                                    valueListenable: _scrollConfiguration,
+                                    builder: (_, __, ___) => InternalDayViewPage<T>(
+                                      key: ValueKey(
+                                          _hourHeight.toString() + date.toString()),
                                       width: _width,
                                       liveTimeIndicatorSettings:
-                                          _liveTimeIndicatorSettings,
+                                      _liveTimeIndicatorSettings,
                                       timeLineBuilder: _timeLineBuilder,
                                       eventTileBuilder: _eventTileBuilder,
                                       heightPerMinute: widget.heightPerMinute,
-                                      hourIndicatorSettings:
-                                          _hourIndicatorSettings,
+                                      hourIndicatorSettings: _hourIndicatorSettings,
                                       date: date,
                                       onTileTap: widget.onEventTap,
                                       onDateLongPress: widget.onDateLongPress,
-                                      showLiveLine:
-                                          widget.showLiveTimeLineInAllDays ||
-                                              date.compareWithoutTime(
-                                                  DateTime.now()),
+                                      showLiveLine: widget
+                                          .showLiveTimeLineInAllDays ||
+                                          date.compareWithoutTime(DateTime.now()),
                                       timeLineOffset: widget.timeLineOffset,
                                       timeLineWidth: _timeLineWidth,
-                                      verticalLineOffset:
-                                          widget.verticalLineOffset,
+                                      verticalLineOffset: widget.verticalLineOffset,
                                       showVerticalLine: widget.showVerticalLine,
                                       height: _height,
                                       controller: controller,
@@ -394,11 +379,12 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
                                       eventArranger: _eventArranger,
                                       minuteSlotSize: widget.minuteSlotSize,
                                       scrollNotifier: _scrollConfiguration,
-                                    ));
-                          },
-                        ),
-                      ),
-                    ])),
+                                    ))
+                                ;
+                              },
+                            ),
+                          ),])
+                ),
               ),
             ],
           ),
@@ -441,7 +427,7 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
         );
 
     assert(_liveTimeIndicatorSettings.height < _hourHeight,
-        "liveTimeIndicator height must be less than minuteHeight * 60");
+    "liveTimeIndicator height must be less than minuteHeight * 60");
 
     _hourIndicatorSettings = widget.hourIndicatorSettings ??
         HourIndicatorSettings(
@@ -451,7 +437,7 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
         );
 
     assert(_hourIndicatorSettings.height < _hourHeight,
-        "hourIndicator height must be less than minuteHeight * 60");
+    "hourIndicator height must be less than minuteHeight * 60");
   }
 
   void _calculateHeights() {
@@ -489,9 +475,9 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
     _maxDate = (widget.maxDay ?? CalendarConstants.maxDate).withoutTime;
 
     assert(
-      !_maxDate.isBefore(_minDate),
-      "Minimum date should be less than maximum date.\n"
-      "Provided minimum date: $_minDate, maximum date: $_maxDate",
+    !_maxDate.isBefore(_minDate),
+    "Minimum date should be less than maximum date.\n"
+        "Provided minimum date: $_minDate, maximum date: $_maxDate",
     );
 
     _totalDays = _maxDate.getDayDifference(_minDate) + 1;
@@ -507,12 +493,12 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
   /// [widget.eventTileBuilder] is null
   ///
   Widget _defaultEventTileBuilder(
-    DateTime date,
-    List<CalendarEventData<T>> events,
-    Rect boundary,
-    DateTime startDuration,
-    DateTime endDuration,
-  ) {
+      DateTime date,
+      List<CalendarEventData<T>> events,
+      Rect boundary,
+      DateTime startDuration,
+      DateTime endDuration,
+      ) {
     if (events.isNotEmpty)
       return RoundedEventTile(
         borderRadius: BorderRadius.circular(10.0),
@@ -574,9 +560,9 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
   ///
   ///
   void nextPage({Duration? duration, Curve? curve}) => _pageController.nextPage(
-        duration: duration ?? widget.pageTransitionDuration,
-        curve: curve ?? widget.pageTransitionCurve,
-      );
+    duration: duration ?? widget.pageTransitionDuration,
+    curve: curve ?? widget.pageTransitionCurve,
+  );
 
   /// Animate to previous page
   ///
