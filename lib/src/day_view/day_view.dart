@@ -20,7 +20,7 @@ import '../modals.dart';
 import '../typedefs.dart';
 import '_internal_day_view_page.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
-import '../../map.dart' as map;
+import 'package:danim/map.dart';
 
 class DayView<T extends Object?> extends StatefulWidget {
 
@@ -310,7 +310,8 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
     _pageController.dispose();
     super.dispose();
   }
-
+  NaverMapController? mapController;
+  MapType _mapType = MapType.Basic;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -337,7 +338,21 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black45)
                             ),
-
+                              child: NaverMap(
+                                onMapCreated: (mcontroller) {
+                                  setState(() {
+                                    mapController = mcontroller;
+                                  });
+                                },
+                                initialCameraPosition: CameraPosition(
+                                    bearing: 0.0,
+                                    target: LatLng(33.371964, 126.543512),
+                                    tilt: 0.0,
+                                    zoom: 8.0),
+                                mapType: _mapType,
+                                markers: markers,
+                                pathOverlays: pathOverlays,
+                              )
                           )
                           // 지도 들어갈 자리 !!
 
