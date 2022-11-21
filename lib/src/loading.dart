@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:danim/src/fixInfo.dart';
 import 'package:danim/src/preset.dart';
+import 'package:danim/src/start_end_day.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ import 'package:danim/firebase_read_write.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/user.dart';
 
+import 'accomodationInfo.dart';
 import 'date_selectlist.dart';
 
 class Loading extends StatefulWidget {
@@ -67,29 +70,31 @@ class _LoadingState extends State<Loading> {
     bool houseCheck = false;
     //임시 숙소
     Place? house = Place(
-        "제주신라호텔",
-        33.2475582,
-        126.4081161,
-        0,
+        accomodation,
+        accomodation_lati,
+        accomodation_long,
+        10,
         1,
         [0, 1, 0, 0, 0, 0, 0],
         [0, 1, 0, 1],
         [0, 1, 0, 0, 1, 0],
         [0, 1, 0, 1, 0, 1, 1, 0, 1],
         [0, 1, 0, 0]);
-    //임시 selectList
+
+    //selectList
     List selectList = selectedList;
 
 
-    //임시 도시
+    //도시
     String city = "제주도";
+
 
     if (!houseCheck) {
       house = null;
     }
 
     List<List<List<Place>>> path_ex =
-        await loadPath(city, house, selectList, [], [], [9, 18], 5, 3);
+        await loadPath(city, house, selectList, fixTourSpotNameList, fixDateList, [7, 20], 5, endDay.difference(startDay).inDays +1);
     Timer(Duration(seconds: 5), () {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Preset(path_ex, widget.transit)));

@@ -29,10 +29,10 @@ Future<List<List<int>>> createDrivingTimeList (List<List<Place>> preset) async {
 }
 
 //대중교통 이동시간 리스트 생성
-Future<List<List<TransitTime>>> createTransitTimeList( List<List<Place>> preset ) async {
+Future<List<List<int>>> createTransitTimeList( List<List<Place>> preset ) async {
 
   TransitTime transitTime;
-  List<List<TransitTime>> transitTimeList = [
+  List<List<int>> transitTimeList = [
     for(int i=0; i<preset.length; i++)
       []
   ];
@@ -43,6 +43,7 @@ Future<List<List<TransitTime>>> createTransitTimeList( List<List<Place>> preset 
 
       transitTime = (await getTransitDuration(preset[i][j].latitude, preset[i][j].longitude,
           preset[i][j + 1].latitude, preset[i][j + 1].longitude));
+      transitTimeList[i].add(transitTime.transitDuration);
 
     }
 

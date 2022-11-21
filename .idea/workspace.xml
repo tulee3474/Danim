@@ -10,11 +10,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48d0c55b-fa7a-4ea5-8117-8a4d5a966085" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/map.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/map.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/foodRecommend.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/foodRecommend.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/app.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/app.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/attractionFix.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/attractionFix.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/courseDetail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/courseDetail.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/createMovingTimeList.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/createMovingTimeList.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/loading.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/loading.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/preset.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/preset.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/start_end_day.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/start_end_day.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/timetable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/timetable.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,5 +100,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

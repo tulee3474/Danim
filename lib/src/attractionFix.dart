@@ -1,6 +1,7 @@
 
 
 import 'package:danim/src/date_selectlist.dart';
+import 'package:danim/src/fixInfo.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/start_end_day.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,14 +30,15 @@ class AttractionFix extends StatefulWidget{
 }
 
 class _AttractionFixState extends State<AttractionFix> {
-  int attractionNum = 3;
 
-  List<TextEditingController> tourSpotName = []; //여기에 관광지 이름 저장
-  List<int> onWhatDate = []; //여기에 어떤 날에 갈 지 저장
+  String fixTourSpotName = '';
+
 
   int dayNum = endDay.difference(startDay).inDays;
+  int dayIndex =0;
 
   get mapController => null;
+  TextEditingController fixDateController = TextEditingController();
 
 
   @override
@@ -85,7 +87,6 @@ class _AttractionFixState extends State<AttractionFix> {
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: Divider(color: Colors.grey, thickness: 2.0)),
 
-              for(int i = 0; i < attractionNum; i++)
 
                 Row(
                     children: [Container(
@@ -132,6 +133,10 @@ class _AttractionFixState extends State<AttractionFix> {
                             var places=location.split(', ');
                             String placeName=places[places.length-1];
                             print('$placeName placeName');
+
+                            //관광지 이름
+                            fixTourSpotName = placeName;
+
                             placeList.add(Place(placeName, lat, lang, 60, 20, selectedList[0], selectedList[1], selectedList[2], selectedList[3], selectedList[4]));
                             setState(() {
                             });
@@ -160,6 +165,7 @@ class _AttractionFixState extends State<AttractionFix> {
                         width: 50,
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                         child: TextField(
+                          controller: fixDateController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                             ),
@@ -172,7 +178,19 @@ class _AttractionFixState extends State<AttractionFix> {
               Container(
                   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                   child: ElevatedButton(
+
                       onPressed: () {
+
+                        //픽스할 관광지 저장
+                        fixTourSpotNameList.add(fixTourSpotName);
+
+                        //픽스할 날짜 저장
+                        fixDateList.add(int.parse(fixDateController.text));
+
+                        //픽스 정보 잘 들어갔는지 출력
+                        print(fixTourSpotNameList);
+                        print(fixDateList);
+
                         Navigator.push(context,
                             MaterialPageRoute(
                                 builder: (context) => Loading(widget.transit)));
@@ -186,9 +204,8 @@ class _AttractionFixState extends State<AttractionFix> {
         )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            attractionNum++;
-          });
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AttractionFix(widget.transit)));
         },
         child: Icon(Icons.add)
       )

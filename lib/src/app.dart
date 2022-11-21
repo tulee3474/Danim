@@ -4,7 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+import 'package:google_maps_webservice/directions.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:intl/intl.dart';
+import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:danim/src/courseDetail.dart';
 import 'package:danim/src/myPage.dart';
@@ -12,8 +17,12 @@ import 'package:danim/src/start_end_day.dart';
 
 import 'package:danim/src/login.dart';
 
+import '../map.dart';
+import '../route_ai.dart';
+import 'accomodationInfo.dart';
 import 'community.dart';
 import 'date_selectlist.dart';
+import 'fixInfo.dart';
 
 
 void main() {
@@ -29,6 +38,9 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+
+
+
   TextEditingController _startDateController = TextEditingController();
   TextEditingController _endDateController = TextEditingController();
   TextEditingController _accomodationController = TextEditingController();
@@ -73,13 +85,38 @@ class _AppState extends State<App> {
                       children: [
                         ElevatedButton(
                             onPressed: () {
+
+                              //숙소정보 초기화
+                              accomodation = '';
+                              accomodation_lati = 0;
+                              accomodation_long = 0;
+
+                              //selectedList 초기화
+                              selectedList =[
+                                [0, 0, 0, 0, 0, 0, 0],
+                                [0, 0, 0, 0],
+                                [0, 0, 0, 0, 0, 0],
+                                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                [0, 0, 0, 0]
+                              ];
+
+                              //픽스 관광지 정보 초기화
+                              fixTourSpotNameList = [];
+                              fixDateList = [];
+
+                              //가는 날, 오는 날 초기화
+                              startDay = DateTime.now();
+                              endDay = DateTime.now();
+
                               showDialog(
                                   context: context,
                                   barrierDismissible: true,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                        content: SizedBox(
-                                          height: 450.0,
+                                        content: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child:SizedBox(
+                                          height: 600.0,
                                           width: 300,
                                           child: Column(children: <Widget>[
                                             Column(children: <Widget>[
@@ -238,11 +275,78 @@ class _AppState extends State<App> {
 
                                             ),
 
-                                            Container(
-                                                padding: EdgeInsets.fromLTRB(0,10,0,0),
-                                                child: TextField(
-                                                  controller: _accomodationController,
+                                            InkWell(
+                                                onTap: () async {
+                                                  var place = await PlacesAutocomplete.show(
+                                                    context: context,
+                                                    apiKey: 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                                                    mode: Mode.overlay,
+                                                    language: "kr",
+                                                    //types: [],
+                                                    //strictbounds: false,
+                                                    components: [Component(Component.country, 'kr')],
+                                                    //google_map_webservice package
+                                                    //onError: (err){
+                                                    //  print(err);
+                                                    //},
+                                                  );
 
+                                                  if(place != null){
+                                                    setState(() {
+                                                      location = place.description.toString();
+                                                    });
+
+                                                    //form google_maps_webservice package
+                                                    final plist = GoogleMapsPlaces(apiKey:'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                                                      apiHeaders: await GoogleApiHeaders().getHeaders(),
+                                                      //from google_api_headers package
+                                                    );
+
+                                                    String placeid = place.placeId ?? "0";
+
+                                                    final detail = await plist.getDetailsByPlaceId(placeid);
+                                                    final geometry = detail.result.geometry!;
+                                                    final lat = geometry.location.lat;
+                                                    final lang = geometry.location.lng;
+                                                    var newlatlang = LatLng(lat, lang);
+                                                    latLen.add(newlatlang);
+
+                                                    //move map camera to selected place with animation
+                                                    //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
+                                                    var places=location.split(', ');
+                                                    String placeName=places[places.length-1];
+                                                    print('placeName: $placeName');
+
+                                                    //숙소 정보 업데이트
+                                                    accomodation = placeName;
+                                                    accomodation_lati = lat;
+                                                    accomodation_long = lang;
+
+
+
+                                                    //관광지 이름
+                                                    var fixTourSpotName = placeName;
+
+                                                    placeList.add(Place(placeName, lat, lang, 60, 20, selectedList[0], selectedList[1], selectedList[2], selectedList[3], selectedList[4]));
+                                                    setState(() {
+                                                    });
+                                                    setState(() {
+                                                    });
+                                                  }
+                                                },
+                                                child:Padding(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Card(
+                                                    child: Container(
+                                                        padding: EdgeInsets.all(0),
+                                                        width: MediaQuery.of(context).size.width - 40,
+                                                        child: ListTile(
+                                                          title:Text(location, style: TextStyle(fontSize: 18),),
+                                                          trailing: Icon(Icons.search),
+                                                          dense: true,
+                                                        )
+                                                    ),
+                                                  ),
                                                 )
                                             ),
 
@@ -256,14 +360,23 @@ class _AppState extends State<App> {
                                                 child: ElevatedButton(
                                                     onPressed: () {
 
-                                                      //selectedList 초기화
-                                                      selectedList =[
-                                                      [0, 0, 0, 0, 0, 0, 0],
-                                                      [0, 0, 0, 0],
-                                                      [0, 0, 0, 0, 0, 0],
-                                                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                                      [0, 0, 0, 0]
-                                                      ];
+
+
+
+
+                                                      //인풋값들 출력 확인
+                                                      //숙소값, 가는날, 오는만 있어야 정상.
+
+                                                      print("accomodation : ${accomodation}");
+                                                      print("accomo latitude: $accomodation_lati");
+                                                      print("accomo longitude: $accomodation_long");
+                                                      print("selectedList : ${selectedList}");
+                                                      print("fixTourSpotNameList: ${fixTourSpotNameList}");
+                                                      print("fixDateList : ${fixDateList}");
+                                                      print("startDay : $startDay");
+                                                      print("endDay: $endDay");
+
+                                                      print("며칠? ${endDay.difference(startDay).inDays +1}");
 
                                                       Navigator.push(
                                                           context,
@@ -290,7 +403,7 @@ class _AppState extends State<App> {
                                                     },
                                                     child: Text('혼자 짤래요')))
                                           ]),
-                                        ));
+                                        )));
                                   });
                             },
                             child: Text('새 코스'),
@@ -479,6 +592,7 @@ class _AppState extends State<App> {
                         //print(args.toString());
 
                         endDay = DateTime.parse(args.toString());
+                        endDay = endDay.add(Duration(hours:23,minutes:59,milliseconds: 59, microseconds: 59));
 
                         //convertDateTimeDisplay(_startDateController.text, '가는날');
 

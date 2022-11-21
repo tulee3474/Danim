@@ -511,6 +511,10 @@ class _CourseDetailState extends State<CourseDetail> {
                 padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                 child: ElevatedButton(
                     onPressed: () {
+
+                      //selectedList 업데이트 됐는지 출력
+                      print("selectedList: $selectedList");
+
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => AttractionFix(transit)));
                     },

@@ -49,6 +49,7 @@ class Preset extends StatelessWidget {
                                 map.addPoly(pathList[i]);
 
 
+                                if(transit ==0 ){
 
                                   List<List<int>> movingTimeList = [
                                     for(int i=0; i<pathList[i].length; i++)
@@ -62,10 +63,10 @@ class Preset extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            Timetable(preset: pathList[i],  movingTimeList: movingTimeList,)));
+                                            Timetable(preset: pathList[i], transit: transit, movingTimeList: movingTimeList,)));}
 
 
-                                /*
+
                                 else {
                                   List<List<int>> movingTimeList = [
                                     for(int i=0; i<pathList[i].length; i++)
@@ -81,7 +82,7 @@ class Preset extends StatelessWidget {
                                           builder: (context) =>
                                               Timetable(preset: pathList[i], transit: transit, movingTimeList: movingTimeList,)));}
 
-                                */
+
 
 
 
