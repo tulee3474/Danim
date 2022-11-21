@@ -318,9 +318,9 @@ class NaverMapState extends State<Map> {
                   //addRestMarker();
                   //addCafeMarker();
                   //addAccommodationMarker();
-                  getRestaurant(lat, lang);
-                  getCafe(lat, lang);
-                  getAccommodation(lat, lang);
+                  //getRestaurant(lat, lang);
+                  //getCafe(lat, lang);
+                  //getAccommodation(lat, lang);
                   //addMarker(placeName, lat, lang);
                   //addPoly(Colors.pink);
                 });

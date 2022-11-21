@@ -27,7 +27,7 @@ import '../widgets/date_time_selector.dart';
 import 'date_selectlist.dart';
 import 'foodRecommend.dart';
 import 'package:danim/route.dart';
-
+import 'package:danim/nearby.dart';
 
 
 
@@ -387,17 +387,17 @@ class _TimetableState extends State<Timetable>{
                   child: FloatingActionButton(
                     child: Icon(Icons.fastfood_rounded),
                     elevation: 8,
-                    onPressed: () => {
-                      print(events)
+                    onPressed: () async {
+                      //print(events)
+                      List<Restaurant> restList=await getRestaurant(33.2448521,126.5718032, 33.2506678,126.4167726);
 
-                      /*
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   FoodRecommend())
-                                  )
-                       */
+                                  );
+
 
                     },
                   )

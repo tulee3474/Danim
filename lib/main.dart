@@ -6,8 +6,12 @@ import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:danim/src/app.dart';
-
+import 'nearby.dart';
 Future<void> main() async {
+  List<Restaurant> restList=await getRestaurant(33.2448521,126.5718032, 33.2506678,126.4167726);
+  for(int i=0;i<restList.length;i++) {
+    print('${restList[i].restName} ${restList[i].restCategory}\n');
+  }
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
