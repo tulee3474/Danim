@@ -390,7 +390,7 @@ class _TimetableState extends State<Timetable>{
                     onPressed: () async {
                       //print(events)
                       List<Restaurant> restList=await getRestaurant(33.2448521,126.5718032, 33.2506678,126.4167726);
-
+                      addRestMarker(restList);
                       Navigator.push(
                           context,
                           MaterialPageRoute(

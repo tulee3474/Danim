@@ -48,6 +48,21 @@ void addMarker(List<List<Place>> pathList) {
   }
 }
 
+void addRestMarker(List<Restaurant> restList) {
+  for(int i=0;i<restList.length;i++) {
+    markers.add(Marker(
+      markerId: restList[i].restName,
+      position: LatLng(restList[i].restLat, restList[i].restLong),
+      infoWindow: '${restList[i].restName}\n${restList[i].restCategory}',
+      captionColor: Colors.purple,
+      captionHaloColor: Colors.purple,
+      iconTintColor: Colors.purple,
+      width: 20,
+      height: 20,
+    ));
+  }
+}
+
 void addPoly(List<List<Place>> pathList) {
   latLen.clear();
   latLen2.clear();

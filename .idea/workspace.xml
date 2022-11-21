@@ -13,7 +13,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/map.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/map.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/nearby.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/nearby.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/foodRecommend.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/foodRecommend.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/timetable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/timetable.dart" afterDir="false" />
     </list>
