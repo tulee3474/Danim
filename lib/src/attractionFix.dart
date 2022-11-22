@@ -182,10 +182,12 @@ class _AttractionFixState extends State<AttractionFix> {
                       onPressed: () {
 
                         //픽스할 관광지 저장
-                        fixTourSpotNameList.add(fixTourSpotName);
+                        if(fixTourSpotName != ''){
+                        fixTourSpotNameList.add(fixTourSpotName);}
 
                         //픽스할 날짜 저장
-                        fixDateList.add(int.parse(fixDateController.text));
+                        if(fixDateController.text != ''){
+                        fixDateList.add(int.parse(fixDateController.text));}
 
                         //픽스 정보 잘 들어갔는지 출력
                         print(fixTourSpotNameList);
