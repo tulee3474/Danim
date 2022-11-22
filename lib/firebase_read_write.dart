@@ -197,9 +197,15 @@ class ReadController extends GetxController {
       [0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0]
     ];
+
+    print(index);
     var data;
-    data = await db.collection('Users').doc(docCode)
-      ..collection('selectList').doc(index.toString()).get();
+    data = await db
+        .collection('Users')
+        .doc(docCode)
+        .collection('selectList')
+        .doc(index.toString())
+        .get();
 
     List<dynamic> partner2 = data.data()!['partner'];
     for (int i = 0; i < partner2.length; i++) {

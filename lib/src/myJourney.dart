@@ -123,8 +123,8 @@ class _MyJourneyState extends State<MyJourney> {
                                             readData.placeNumList[p] as int;
                                       }
 
-                                      int traveledPlaceNum = readData
-                                          .placeNumList[placeNum] as int;
+                                      int traveledPlaceNum =
+                                          readData.placeNumList[index] as int;
 
                                       for (int p = placeNum;
                                           p < placeNum + traveledPlaceNum;
@@ -155,70 +155,62 @@ class _MyJourneyState extends State<MyJourney> {
                 //여기서 timetable 다시 띄우기
 
                 List<List<Place>> oldPreset = [
-                  for(int i=0; i< widget.dates[1].difference(widget.dates[0]).inDays +1; i++)
+                  for (int i = 0;
+                      i <
+                          widget.dates[1].difference(widget.dates[0]).inDays +
+                              1;
+                      i++)
                     []
-                ];// 프리셋 초기화
+                ]; // 프리셋 초기화
 
                 List<DateTime> dateList = [];
 
-                for(int i=0; i<widget.dates[1].difference(widget.dates[0]).inDays +1; i++ ){
+                for (int i = 0;
+                    i < widget.dates[1].difference(widget.dates[0]).inDays + 1;
+                    i++) {
+                  dateList.add(DateTime(widget.dates[0].year,
+                      widget.dates[0].month, widget.dates[0].day + i));
+                } // 날짜 리스트
 
-                  dateList.add(DateTime(widget.dates[0].year, widget.dates[0].month, widget.dates[0].day + i ));
-
-                }// 날짜 리스트
-
-                for(int i=0; i<dateList.length; i++){
-
-                  for(int j=0; j<journey.length; j++){
-                    if(dates[i].year == journey[j].date.year && dates[i].month == journey[j].date.month && dates[i].day == journey[j].date.day){
-
-                      oldPreset[i].add(
-                        Place(
+                for (int i = 0; i < dateList.length; i++) {
+                  for (int j = 0; j < journey.length; j++) {
+                    if (dates[i].year == journey[j].date.year &&
+                        dates[i].month == journey[j].date.month &&
+                        dates[i].day == journey[j].date.day) {
+                      oldPreset[i].add(Place(
                           journey[j].title,
                           35.5,
                           127,
-                          journey[j].endTime.difference(journey[j].startTime).inMinutes,
+                          journey[j]
+                              .endTime
+                              .difference(journey[j].startTime)
+                              .inMinutes,
                           60,
-                            [0, 0, 0, 0, 0, 0, 0],
-                            [0, 0, 0, 0],
-                            [0, 0, 0, 0, 0, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                            [0, 0, 0, 0]
-                        )
-                      );
-
+                          [0, 0, 0, 0, 0, 0, 0],
+                          [0, 0, 0, 0],
+                          [0, 0, 0, 0, 0, 0],
+                          [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                          [0, 0, 0, 0]));
                     }
                   }
-
                 }
 
                 //타임테이블 생성
 
+                List<List<int>> movingTimeList = [
+                  for (int i = 0; i < oldPreset.length; i++) []
+                ];
 
+                movingTimeList = await createDrivingTimeList(oldPreset);
 
-                  List<List<int>> movingTimeList = [
-                    for(int i=0; i<oldPreset.length; i++)
-                      []
-                  ];
-
-                  movingTimeList = await createDrivingTimeList(oldPreset);
-
-
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              Timetable(preset: oldPreset, transit: 0, movingTimeList: movingTimeList,)));
-
-
-
-
-
-
-
-
-
-
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Timetable(
+                              preset: oldPreset,
+                              transit: 0,
+                              movingTimeList: movingTimeList,
+                            )));
               })
         ]),
       ),
