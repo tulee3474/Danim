@@ -35,7 +35,6 @@ import 'package:danim/firebase_read_write.dart';
 import 'package:danim/src/login.dart';
 import 'package:danim/src/user.dart';
 
-
 /*
 
 // 자차 이동시간 리스트 생성
@@ -210,8 +209,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
         timeIndex = transitEndTime;
       }
 
-      if (timeIndex.compareTo(DateTime(dayIndex.year, dayIndex.month,
-              dayIndex.day, endDayTime)) >
+      if (timeIndex.compareTo(DateTime(
+              dayIndex.year, dayIndex.month, dayIndex.day, endDayTime)) >
           0) {
         break;
       }
@@ -272,35 +271,28 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
   return events;
 }
 
-
-
-
 //mealTimeList 생성
 
-List<DateTime> createMealTimeList (List<CalendarEventData<Event>> events){
-
+List<DateTime> createMealTimeList(List<CalendarEventData<Event>> events) {
   List<DateTime> mealTimeList = [];
 
-  for(int i=0; i< events.length; i++){
-    if(events[i].title == '식사시간'){
+  for (int i = 0; i < events.length; i++) {
+    if (events[i].title == '식사시간') {
       mealTimeList.add(events[i].startTime);
     }
   }
 
-
   return mealTimeList;
-
 }
-
 
 //식사시간 앞 뒤 관광지 위도 경도 저장 배열
 
-List<List<double>> createNearMealLocationList (List<CalendarEventData<Event>> events, List<List<Place>> preset){
-
-  List<List<double>> nearMealLocationList = [[],[]];// 위도, 경도
+List<List<double>> createNearMealLocationList(
+    List<CalendarEventData<Event>> events, List<List<Place>> preset) {
+  List<List<double>> nearMealLocationList = [[], []]; // 위도, 경도
   List<String> nearMealName = [];
 
-  for(int i=2; i<events.length-1; i++) {
+  for (int i = 2; i < events.length - 1; i++) {
     //타이틀 가져옴
     if (events[i].title == "식사시간") {
       nearMealName.add(events[i - 2].title);
@@ -311,37 +303,26 @@ List<List<double>> createNearMealLocationList (List<CalendarEventData<Event>> ev
 
     //타이틀 비교해서 위도 경도 만들기
 
-
     //여기 고쳐야됨 .....
 
-    for(int m =0; m<nearMealName.length; m++){
-    for (int i = 0; i < preset.length; i++) {
-      for (int j = 0; j < preset[i].length; j++) {
+    for (int m = 0; m < nearMealName.length; m++) {
+      for (int i = 0; i < preset.length; i++) {
+        for (int j = 0; j < preset[i].length; j++) {
+          if (nearMealName[m] == preset[i][j].name) {
+            nearMealLocationList[0].add(preset[i][j].latitude);
+            nearMealLocationList[1].add(preset[i][j].longitude);
 
-        if(nearMealName[m] == preset[i][j].name){
-
-          nearMealLocationList[0].add(preset[i][j].latitude);
-          nearMealLocationList[1].add(preset[i][j].longitude);
-
-          break;
-
-
+            break;
+          }
         }
-
       }
     }
-  }
 
     //print('nearMealLocations : $nearMealLocationList');
 
-
-
   }
 
-
-
   return nearMealLocationList;
-
 }
 
 class Timetable extends StatefulWidget {
@@ -358,7 +339,6 @@ class Timetable extends StatefulWidget {
   DateTime currentDate = startDay;
   List<List<int>> movingTimeList;
 
-
   @override
   _TimetableState createState() => _TimetableState();
 }
@@ -369,12 +349,10 @@ class _TimetableState extends State<Timetable> {
   late List<CalendarEventData<Event>> events =
       createEventList(widget.preset, startDay, endDay, widget.movingTimeList);
   late List<DateTime> mealTimes = createMealTimeList(events);
-  late List<List<double>> nearMealLocationList = createNearMealLocationList(events, widget.preset);
+  late List<List<double>> nearMealLocationList =
+      createNearMealLocationList(events, widget.preset);
 
   String isSaved = '';
-
-
-
 
   @override
   void initState() {
@@ -388,11 +366,11 @@ class _TimetableState extends State<Timetable> {
     super.dispose();
   }
 
-  List<DateTime> getMealTimeList(){
+  List<DateTime> getMealTimeList() {
     return mealTimes;
   }
 
-  List<List<double>> getNearMealLocation(){
+  List<List<double>> getNearMealLocation() {
     return nearMealLocationList;
   }
 
@@ -465,12 +443,12 @@ class _TimetableState extends State<Timetable> {
                                               // 현재 events 저장
                                               //print('$eventsForDB');결
 
+                                              //임시 토큰!
                                               token = 'docCodeTest1';
-
 
                                               if (token!.length > 1) {
                                                 ReadController read =
-                                                ReadController();
+                                                    ReadController();
                                                 User userData = await read
                                                     .fb_read_user(token);
                                                 userData.travelList
@@ -479,13 +457,13 @@ class _TimetableState extends State<Timetable> {
                                                 int placeSum = 0;
                                                 List<String> placeLi = [];
                                                 for (int p = 0;
-                                                p < getPreset().length;
-                                                p++) {
+                                                    p < getPreset().length;
+                                                    p++) {
                                                   placeSum +=
                                                       getPreset()[p].length;
                                                   for (int q = 0;
-                                                  q < getPreset()[p].length;
-                                                  q++) {
+                                                      q < getPreset()[p].length;
+                                                      q++) {
                                                     placeLi.add(
                                                         getPreset()[p][q].name);
                                                   }
@@ -493,9 +471,9 @@ class _TimetableState extends State<Timetable> {
                                                 userData.placeNumList
                                                     .add(placeSum);
                                                 userData.traveledPlaceList =
-                                                List.from(userData
-                                                    .traveledPlaceList)
-                                                  ..addAll(placeLi);
+                                                    List.from(userData
+                                                        .traveledPlaceList)
+                                                      ..addAll(placeLi);
                                                 userData.eventNumList
                                                     .add(eventsForDB.length);
                                                 userData.eventList = List.from(
@@ -516,25 +494,18 @@ class _TimetableState extends State<Timetable> {
                                               print('pathlist saved');
 
                                               showDialog(
-                                              context: context,
-                                              barrierDismissible: true,
-                                                  builder: (BuildContext context) {
-
-                                                return AlertDialog(
-                                                  content: SizedBox(
-                                                    width: 150,
-                                                    height: 50,
-                                                    child: Container(
-                                                      child: Text('Saved')
-                                                  )
-                                                  )
-                                                );
-                                                  }
-
-                                              );
-
-
-
+                                                  context: context,
+                                                  barrierDismissible: true,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                        content: SizedBox(
+                                                            width: 150,
+                                                            height: 50,
+                                                            child: Container(
+                                                                child: Text(
+                                                                    'Saved'))));
+                                                  });
                                             },
                                             child: Text("코스 저장")))
                                   ])),
@@ -617,7 +588,6 @@ class _DayViewWidgetState extends State<DayViewWidget> {
       width: widget.width,
       onEventTap: (event, date) async {
         if (event[0].title == '식사시간') {
-
           List<DateTime> mealTimes = widget.getMealTimes();
           List<List<double>> nearMealLocations = widget.getNearMealLocations();
 
@@ -626,45 +596,31 @@ class _DayViewWidgetState extends State<DayViewWidget> {
           print(nearMealLocations[0].length);
           print(nearMealLocations[1].length);
 
-
           int mealNum = 0;
 
-          for(int i=0; i<mealTimes.length; i++){
-            if(mealTimes[i].compareTo(event[0].startTime) == 0){
+          for (int i = 0; i < mealTimes.length; i++) {
+            if (mealTimes[i].compareTo(event[0].startTime) == 0) {
               mealNum = i;
             }
           }
 
-          double lat1 = nearMealLocations[0][mealNum*2];
-          double lat2 = nearMealLocations[0][mealNum*2+1];
-          double lon1 = nearMealLocations[1][mealNum*2];
-          double lon2 = nearMealLocations[1][mealNum*2+1];
+          double lat1 = nearMealLocations[0][mealNum * 2];
+          double lat2 = nearMealLocations[0][mealNum * 2 + 1];
+          double lon1 = nearMealLocations[1][mealNum * 2];
+          double lon2 = nearMealLocations[1][mealNum * 2 + 1];
 
           print(lat1);
           print(lon1);
           print(lat2);
           print(lon2);
 
-
-
-
-          List<Restaurant> restList = await getRestaurant(
-              lat1, lon1, lat2, lon2);
+          List<Restaurant> restList =
+              await getRestaurant(lat1, lon1, lat2, lon2);
           addRestMarker(restList);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => FoodRecommend()));
-
-
-
-
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => FoodRecommend()));
         } else if (event[0].title == '이동') {
-
-
-
         } else {
-
           String tourInformation = '';
           tourInformation = await getTourInfo(event[0].title);
 
@@ -783,8 +739,6 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                         print("pathlist updated");
                                         print(event);
                                       })),
-
-
                             ]))));
               });
         }
@@ -1228,12 +1182,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       title: 'dummy',
                       date: DateTime.now(),
                       startTime: DateTime.now(),
-                  endTime: DateTime.now().add(Duration(hours:1)));
+                      endTime: DateTime.now().add(Duration(hours: 1)));
                   CalendarEventData<Event> eventAfter = CalendarEventData(
                       title: 'dummy',
                       date: DateTime.now(),
                       startTime: DateTime.now(),
-                      endTime: DateTime.now().add(Duration(hours:1)));
+                      endTime: DateTime.now().add(Duration(hours: 1)));
 
                   Place newPlace = Place(
                       '${newEvent.title}',
@@ -1301,19 +1255,19 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     }
                   }
 
-                  List<List<int>> movingTimeList  = [];
+                  List<List<int>> movingTimeList = [];
 
                   if (widget.transit == 0) {
                     movingTimeList =
-                    (await createDrivingTimeList(presetToBeUpdated));
+                        (await createDrivingTimeList(presetToBeUpdated));
                   } else {
                     movingTimeList =
-                    (await createTransitTimeList(presetToBeUpdated));
+                        (await createTransitTimeList(presetToBeUpdated));
                   }
 
                   //print(movingTimeList);
 
-                  if(movingTimeList.isEmpty){
+                  if (movingTimeList.isEmpty) {
                     print('movimgTimeList is empty');
                   }
 

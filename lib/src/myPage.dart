@@ -20,8 +20,12 @@ var readData;
 List<List<CalendarEventData>> journeys = [];
 Future readUserData(docCode) async {
   var read = ReadController();
+  print('qdwq');
 
   readData = await read.fb_read_user(docCode) as User;
+  //readData = await read.fb_read_user('docCodeTest1') as User;
+
+  print(readData.name);
 
   journeys = []; //혹시 모르니 초기화 한번
 
