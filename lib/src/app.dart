@@ -448,7 +448,12 @@ class _AppState extends State<App> {
                             ElevatedButton(
                                 onPressed: () async {
                                   //임시 텍스트
-                                  await readUserData("docCodeTest1");
+                                  if (token == '') {
+                                    await readUserData("docCodeTest123");
+                                  } else {
+                                    await readUserData(token as String);
+                                  }
+
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

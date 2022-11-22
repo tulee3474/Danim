@@ -210,7 +210,7 @@ class RouteAI {
       double latDiff = targetPlace.latitude - beforePlace.latitude;
       double longDiff = targetPlace.longitude - beforePlace.longitude;
 
-      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 12000;
+      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 18000;
 
       sum -= distance.toInt(); // - 거리 계산
 
@@ -692,7 +692,6 @@ class RouteAI {
                   [0, 0, 0, 0]);
               fixedPlaceList.add(readData);
               placeListCopy.removeWhere((item) => item.name == readData.name);
-
             }
           }
         }

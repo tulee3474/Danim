@@ -28,7 +28,7 @@ void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
   CalendarEventData temp;
 
   List<String> eventStringList = [];
-
+  print(docCode);
   FirebaseFirestore.instance.collection('Users').doc(docCode).set({
     'name': name,
     'travelList': travelList,
@@ -39,8 +39,22 @@ void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
     'diaryList': diaryList,
   }, SetOptions(merge: true));
 
+  String title;
+
   for (int i = 0; i < eventList.length; i++) {
-    eventStringList.add(eventList[i].title);
+    title = eventList[i].title;
+    if (eventList[i].title == "이동" || eventList[i].title == "식사시간") {
+      if (i < 10) {
+        title = eventList[i].title + i.toString() + '!';
+      } else if (i < 100) {
+        title = eventList[i].title + i.toString() + '@';
+      } else if (i < 1000) {
+        title = eventList[i].title + i.toString() + '#';
+      } else {
+        title = eventList[i].title + i.toString() + '%';
+      }
+    }
+    eventStringList.add(title);
     int date = eventList[i].date.year * 10000 +
         eventList[i].date.month * 100 +
         eventList[i].date.day;
@@ -148,6 +162,7 @@ class ReadController extends GetxController {
 
     var data2;
     List<dynamic> eventStringList2 = data.data()!['eventStringList'];
+
     CalendarEventData temp;
 
     List<CalendarEventData> eventList = [];
@@ -161,6 +176,16 @@ class ReadController extends GetxController {
           .get();
 
       String title = data2.data()!['title'] as String;
+
+      if (title.substring(title.length - 1) == '!') {
+        title = title.substring(0, title.length - 2);
+      } else if (title.substring(title.length - 1) == '@') {
+        title = title.substring(0, title.length - 3);
+      } else if (title.substring(title.length - 1) == '#') {
+        title = title.substring(0, title.length - 4);
+      } else if (title.substring(title.length - 1) == '%') {
+        title = title.substring(0, title.length - 5);
+      }
       List<int> date = parseDate(data2.data()!['date'] as int);
       List<int> startTime = parseTime(data2.data()!['startTime'] as int);
       List<int> endTime = parseTime(data2.data()!['endTime'] as int);

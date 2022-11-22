@@ -75,7 +75,7 @@ class _MyJourneyState extends State<MyJourney> {
                                         print("1");
                                         rate = 1;
                                       },
-                                      child: Text('2')),
+                                      child: Text('1')),
                                   ElevatedButton(
                                       onPressed: () {
                                         print("2");

@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'dart:core';
+import 'dart:math';
 
 import 'package:danim/calendar_view.dart';
 import 'package:danim/src/event_CalendarEventData_switch.dart';
@@ -444,52 +445,77 @@ class _TimetableState extends State<Timetable> {
                                               //print('$eventsForDB');결
 
                                               //임시 토큰!
-                                              token = 'docCodeTest1';
-
-                                              if (token!.length > 1) {
-                                                ReadController read =
-                                                    ReadController();
-                                                User userData = await read
-                                                    .fb_read_user(token);
-                                                userData.travelList
-                                                    .add("제주도"); //임시 city 고정
-                                                //1일차, 2일차 수만큼 반복
-                                                int placeSum = 0;
-                                                List<String> placeLi = [];
-                                                for (int p = 0;
-                                                    p < getPreset().length;
-                                                    p++) {
-                                                  placeSum +=
-                                                      getPreset()[p].length;
-                                                  for (int q = 0;
-                                                      q < getPreset()[p].length;
-                                                      q++) {
-                                                    placeLi.add(
-                                                        getPreset()[p][q].name);
-                                                  }
-                                                }
-                                                userData.placeNumList
-                                                    .add(placeSum);
-                                                userData.traveledPlaceList =
-                                                    List.from(userData
-                                                        .traveledPlaceList)
-                                                      ..addAll(placeLi);
-                                                userData.eventNumList
-                                                    .add(eventsForDB.length);
-                                                userData.eventList = List.from(
-                                                    userData.eventList)
-                                                  ..addAll(eventsForDB);
-                                                fb_write_user(
-                                                    token,
-                                                    userData.name,
-                                                    userData.travelList,
-                                                    userData.placeNumList,
-                                                    userData.traveledPlaceList,
-                                                    userData.eventNumList,
-                                                    selectedList, //전역변수라서, 차후에 문제생길수도
-                                                    userData.eventList,
-                                                    userData.diaryList);
+                                              if (token == '') {
+                                                //int 최대치는 약 21억
+                                                token = (Random().nextInt(
+                                                            2100000000) +
+                                                        1)
+                                                    .toString();
                                               }
+                                              print(token);
+                                              print(token as String);
+
+                                              ReadController read =
+                                                  ReadController();
+                                              User userData;
+                                              try {
+                                                userData = await read
+                                                    .fb_read_user(token);
+                                              } catch (e) {
+                                                print(token);
+                                                print(token as String);
+                                                userData = User(
+                                                  token as String,
+                                                  token as String,
+                                                  [],
+                                                  [],
+                                                  [],
+                                                  [],
+                                                  [],
+                                                  [],
+                                                );
+                                              }
+                                              print(userData.docCode);
+
+                                              userData.travelList
+                                                  .add("제주도"); //임시 city 고정
+                                              //1일차, 2일차 수만큼 반복
+                                              int placeSum = 0;
+                                              List<String> placeLi = [];
+                                              for (int p = 0;
+                                                  p < getPreset().length;
+                                                  p++) {
+                                                placeSum +=
+                                                    getPreset()[p].length;
+                                                for (int q = 0;
+                                                    q < getPreset()[p].length;
+                                                    q++) {
+                                                  placeLi.add(
+                                                      getPreset()[p][q].name);
+                                                }
+                                              }
+                                              userData.placeNumList
+                                                  .add(placeSum);
+                                              userData.traveledPlaceList =
+                                                  List.from(userData
+                                                      .traveledPlaceList)
+                                                    ..addAll(placeLi);
+                                              userData.eventNumList
+                                                  .add(eventsForDB.length);
+                                              userData.eventList =
+                                                  List.from(userData.eventList)
+                                                    ..addAll(eventsForDB);
+                                              userData.diaryList.add("");
+                                              fb_write_user(
+                                                  userData.docCode,
+                                                  userData.name,
+                                                  userData.travelList,
+                                                  userData.placeNumList,
+                                                  userData.traveledPlaceList,
+                                                  userData.eventNumList,
+                                                  selectedList, //전역변수라서, 차후에 문제생길수도
+                                                  userData.eventList,
+                                                  userData.diaryList);
 
                                               print('pathlist saved');
 
@@ -503,8 +529,10 @@ class _TimetableState extends State<Timetable> {
                                                             width: 150,
                                                             height: 50,
                                                             child: Container(
-                                                                child: Text(
-                                                                    'Saved'))));
+                                                                child: Text('Saved as : ' +
+                                                                    userData
+                                                                        .docCode
+                                                                        .toString()))));
                                                   });
                                             },
                                             child: Text("코스 저장")))

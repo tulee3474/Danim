@@ -36,10 +36,6 @@ Future readUserData(docCode) async {
     for (int j = 0; j < readData.eventNumList[i]; j++) {
       tempList.add(readData.eventList[j + jSave] as CalendarEventData);
     }
-    print(tempList[2].startTime);
-    print(tempList[2].endTime);
-    print(tempList[3].startTime);
-    print(tempList[3].endTime);
     journeys.add(tempList);
     jSave = readData.eventNumList[i];
   }
