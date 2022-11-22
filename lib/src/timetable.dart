@@ -89,7 +89,12 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
   int startDayTime = 7;
   int endDayTime = 21;
 
-  int timeIndex = startDayTime;
+  bool lunch = false;
+  bool dinner = false;
+
+  //int timeIndex = startDayTime;
+  DateTime timeIndex = DateTime(startDay.year, startDay.month, startDay.day,
+      startDayTime, 0); //처음 타임인덱스 값
   int minuteIndex = 0;
   DateTime dayIndex = startDay;
   //int moving_time = 0;
@@ -106,8 +111,19 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
 
   for (int i = 0; i < preset.length; i++) {
     for (int j = 0; j < preset[i].length; j++) {
-      if ((11 <= timeIndex && timeIndex < 14) ||
-          (17 <= timeIndex && timeIndex < 20)) {
+      if (timeIndex.compareTo(DateTime(
+                  dayIndex.year, dayIndex.month, dayIndex.day, 11, 0)) >=
+              0 &&
+          timeIndex.compareTo(DateTime(
+                  dayIndex.year, dayIndex.month, dayIndex.day, 14, 0)) <
+              0 &&
+          !lunch) {
+        lunch = true;
+
+        DateTime mealEndTime = DateTime(dayIndex.year, dayIndex.month,
+                dayIndex.day, timeIndex.hour, timeIndex.minute)
+            .add(Duration(hours: 1));
+
         events.add(CalendarEventData(
             title: '식사시간',
             date: dayIndex,
@@ -117,20 +133,90 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
               dayIndex.year,
               dayIndex.month,
               dayIndex.day,
-              timeIndex,
-              minuteIndex,
-            ) as DateTime,
-            endTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
-                timeIndex += 2, minuteIndex) as DateTime,
+              timeIndex.hour,
+              timeIndex.minute,
+            ),
+            endTime: mealEndTime,
             color: Colors.orangeAccent));
+
+        timeIndex = mealEndTime;
+
+        DateTime transitEndTime = DateTime(dayIndex.year, dayIndex.month,
+            dayIndex.day, timeIndex.hour, timeIndex.minute + 30);
+        DateTime transitEndTimeUpdated = transitEndTime;
+
+        events.add(CalendarEventData(
+            title: '이동',
+            date: dayIndex,
+            event: Event(title: '이동'),
+            description: '',
+            startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                timeIndex.hour, timeIndex.minute),
+            endTime: transitEndTime,
+            color: Colors.grey));
+
+        timeIndex = transitEndTime;
       }
 
-      if (timeIndex >= endDayTime) {
+      if (timeIndex.compareTo(DateTime(
+                  dayIndex.year, dayIndex.month, dayIndex.day, 17, 0)) >=
+              0 &&
+          timeIndex.compareTo(DateTime(
+                  dayIndex.year, dayIndex.month, dayIndex.day, 20, 0)) <
+              0 &&
+          !dinner) {
+        dinner = true;
+
+        DateTime mealEndTime = DateTime(dayIndex.year, dayIndex.month,
+                dayIndex.day, timeIndex.hour, timeIndex.minute)
+            .add(Duration(hours: 1));
+
+        events.add(CalendarEventData(
+            title: '식사시간',
+            date: dayIndex,
+            event: Event(title: '식사시간'),
+            description: '',
+            startTime: DateTime(
+              dayIndex.year,
+              dayIndex.month,
+              dayIndex.day,
+              timeIndex.hour,
+              timeIndex.minute,
+            ),
+            endTime: mealEndTime,
+            color: Colors.orangeAccent));
+
+        timeIndex = mealEndTime;
+
+        DateTime transitEndTime = DateTime(dayIndex.year, dayIndex.month,
+            dayIndex.day, timeIndex.hour, timeIndex.minute + 30);
+        DateTime transitEndTimeUpdated = transitEndTime;
+
+        events.add(CalendarEventData(
+            title: '이동',
+            date: dayIndex,
+            event: Event(title: '이동'),
+            description: '',
+            startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                timeIndex.hour, timeIndex.minute),
+            endTime: transitEndTime,
+            color: Colors.grey));
+
+        timeIndex = transitEndTime;
+      }
+
+      if (timeIndex.compareTo(DateTime(dayIndex.year, dayIndex.month,
+              dayIndex.day, timeIndex.hour, timeIndex.minute)) >
+          0) {
         break;
       }
 
-      DateTime tourEndTime = DateTime(dayIndex.year, dayIndex.month,
-          dayIndex.day, timeIndex, minuteIndex + preset[i][j].takenTime);
+      DateTime tourEndTime = DateTime(
+          dayIndex.year,
+          dayIndex.month,
+          dayIndex.day,
+          timeIndex.hour,
+          timeIndex.minute + preset[i][j].takenTime);
       DateTime tourEndTimeUpdated = tourEndTime;
 
       events
@@ -140,34 +226,20 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             event: Event(title: '${preset[i][j].name}'),
             description: '',
             startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
-                timeIndex, minuteIndex),
+                timeIndex.hour, timeIndex.minute),
             endTime: tourEndTimeUpdated));
 
-      timeIndex = tourEndTimeUpdated.hour;
-      minuteIndex = tourEndTimeUpdated.minute;
+      timeIndex = tourEndTimeUpdated;
 
-      if ((11 <= timeIndex && timeIndex < 14) ||
-          (17 <= timeIndex && timeIndex < 20)) {
-        events.add(CalendarEventData(
-            title: '식사시간',
-            date: dayIndex,
-            event: Event(title: '식사시간'),
-            description: '',
-            startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
-                timeIndex, minuteIndex),
-            endTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
-                timeIndex += 2, minuteIndex),
-            color: Colors.orangeAccent));
-      }
-
-      if (timeIndex >= endDayTime) {
+      if (timeIndex.compareTo(DateTime(dayIndex.year, dayIndex.month,
+              dayIndex.day, timeIndex.hour, timeIndex.minute)) >
+          0) {
         break;
       }
 
-
       if (j < preset[i].length - 1) {
         DateTime transitEndTime = DateTime(dayIndex.year, dayIndex.month,
-            dayIndex.day, timeIndex, minuteIndex + moving_time[i][j]);
+            dayIndex.day, timeIndex.hour, timeIndex.minute + moving_time[i][j]);
         DateTime transitEndTimeUpdated = transitEndTime;
 
         events.add(CalendarEventData(
@@ -176,21 +248,95 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             event: Event(title: '이동'),
             description: '',
             startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
-                timeIndex, minuteIndex),
+                timeIndex.hour, timeIndex.minute),
             endTime: transitEndTimeUpdated,
             color: Colors.grey));
 
-        timeIndex = transitEndTimeUpdated.hour;
-        minuteIndex = transitEndTimeUpdated.minute;
+        timeIndex = transitEndTimeUpdated;
       }
     }
 
     dayIndex = dayIndex.add(Duration(days: 1));
-    timeIndex = startDayTime;
-    minuteIndex = 0;
+    timeIndex =
+        DateTime(dayIndex.year, dayIndex.month, dayIndex.day, startDayTime, 0);
+
+    lunch = false;
+    dinner = false;
   }
 
   return events;
+}
+
+
+
+
+//mealTimeList 생성
+
+List<DateTime> createMealTimeList (List<CalendarEventData<Event>> events){
+
+  List<DateTime> mealTimeList = [];
+
+  for(int i=0; i< events.length; i++){
+    if(events[i].title == '식사시간'){
+      mealTimeList.add(events[i].startTime);
+    }
+  }
+
+
+  return mealTimeList;
+
+}
+
+
+//식사시간 앞 뒤 관광지 위도 경도 저장 배열
+
+List<List<double>> createNearMealLocationList (List<CalendarEventData<Event>> events, List<List<Place>> preset){
+
+  List<List<double>> nearMealLocationList = [[],[]];// 위도, 경도
+  List<String> nearMealName = [];
+
+  for(int i=2; i<events.length-1; i++) {
+    //타이틀 가져옴
+    if (events[i].title == "식사시간") {
+      nearMealName.add(events[i - 2].title);
+      nearMealName.add(events[i + 2].title);
+
+      print('nearMealName : $nearMealName');
+    }
+
+    //타이틀 비교해서 위도 경도 만들기
+
+
+    //여기 고쳐야됨 .....
+
+    for(int m =0; m<nearMealName.length; m++){
+    for (int i = 0; i < preset.length; i++) {
+      for (int j = 0; j < preset[i].length; j++) {
+
+        if(nearMealName[m] == preset[i][j].name){
+
+          nearMealLocationList[0].add(preset[i][j].latitude);
+          nearMealLocationList[1].add(preset[i][j].longitude);
+
+          break;
+
+
+        }
+
+      }
+    }
+  }
+
+    //print('nearMealLocations : $nearMealLocationList');
+
+
+
+  }
+
+
+
+  return nearMealLocationList;
+
 }
 
 class Timetable extends StatefulWidget {
@@ -207,6 +353,7 @@ class Timetable extends StatefulWidget {
   DateTime currentDate = startDay;
   List<List<int>> movingTimeList;
 
+
   @override
   _TimetableState createState() => _TimetableState();
 }
@@ -216,6 +363,10 @@ class _TimetableState extends State<Timetable> {
 
   late List<CalendarEventData<Event>> events =
       createEventList(widget.preset, startDay, endDay, widget.movingTimeList);
+  late List<DateTime> mealTimes = createMealTimeList(events);
+  late List<List<double>> nearMealLocationList = createNearMealLocationList(events, widget.preset);
+
+
 
   @override
   void initState() {
@@ -227,6 +378,14 @@ class _TimetableState extends State<Timetable> {
   void dispose() {
     _CourseNameController.dispose();
     super.dispose();
+  }
+
+  List<DateTime> getMealTimeList(){
+    return mealTimes;
+  }
+
+  List<List<double>> getNearMealLocation(){
+    return nearMealLocationList;
   }
 
   int getTransit() {
@@ -329,28 +488,14 @@ class _TimetableState extends State<Timetable> {
                           .add(event);
                     },
                   )),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: FloatingActionButton(
-                    child: Icon(Icons.fastfood_rounded),
-                    elevation: 8,
-                    onPressed: () async {
-                      //print(events)
-                      List<Restaurant> restList = await getRestaurant(
-                          33.2448521, 126.5718032, 33.2506678, 126.4167726);
-                      addRestMarker(restList);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FoodRecommend()));
-                    },
-                  ))
             ]),
             body: DayViewWidget(
               transit: widget.transit,
               getPreset: getPreset,
               getEvents: getEvents,
               getMovingTimeList: getMovingTimeList,
+              getMealTimes: getMealTimeList,
+              getNearMealLocations: getNearMealLocation,
             )));
   }
 }
@@ -362,6 +507,8 @@ class DayViewWidget extends StatefulWidget {
   final Function() getPreset;
   final Function() getEvents;
   final Function() getMovingTimeList;
+  final Function() getMealTimes;
+  final Function() getNearMealLocations;
   int transit = 0;
 
   DayViewWidget(
@@ -371,7 +518,9 @@ class DayViewWidget extends StatefulWidget {
       required this.transit,
       required this.getPreset,
       required this.getEvents,
-      required this.getMovingTimeList})
+      required this.getMovingTimeList,
+      required this.getMealTimes,
+      required this.getNearMealLocations})
       : super(key: key);
 
   @override
@@ -387,121 +536,174 @@ class _DayViewWidgetState extends State<DayViewWidget> {
       maxDay: endDay,
       key: widget.state,
       width: widget.width,
-      onEventTap: (event, date) => showDialog(
-          context: context,
-          barrierDismissible: true,
-          builder: (BuildContext context) {
-            return AlertDialog(
-                content: SizedBox(
-                    height: 350,
-                    child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Column(children: [
-                          Container(child: Text('${event}')),
-                          Container(
-                              padding: EdgeInsets.fromLTRB(0, 240, 0, 0),
-                              child: ElevatedButton(
-                                  child: Text("코스에서 삭제"),
-                                  onPressed: () async {
-                                    //pathlist에서 삭제해서 업데이트 해야함
+      onEventTap: (event, date) async {
+        if (event[0].title == '식사시간') {
 
-                                    List<List<Place>> presetToBeUpdated =
-                                        widget.getPreset();
-                                    List<CalendarEventData<Event>>
-                                        eventsToBeUpdated = widget.getEvents();
-                                    List<List<Place>> presetUpdated = [
-                                      for (int i = 0;
-                                          i < presetToBeUpdated.length;
-                                          i++)
-                                        []
-                                    ];
+          List<DateTime> mealTimes = widget.getMealTimes();
+          List<List<double>> nearMealLocations = widget.getNearMealLocations();
 
-                                    int indexPreset = 0;
-                                    int indexEvents = 0;
-                                    int indexPath = 0;
+          print(mealTimes);
+          print(nearMealLocations);
+          print(nearMealLocations[0].length);
+          print(nearMealLocations[1].length);
 
-                                    for (int i = 0;
-                                        i < eventsToBeUpdated.length;
-                                        i++) {
-                                      if (eventsToBeUpdated[i].title ==
-                                          event[0].title) {
-                                        eventsToBeUpdated.removeAt(i);
-                                      }
-                                    }
 
-                                    while (indexEvents <
-                                            eventsToBeUpdated.length &&
-                                        indexPreset <
-                                            presetToBeUpdated.length) {
-                                      print("while");
-                                      if (eventsToBeUpdated[indexEvents]
-                                              .title ==
-                                          '식사시간') {
-                                        indexEvents++;
-                                      } else if (eventsToBeUpdated[indexEvents]
-                                              .title ==
-                                          '이동') {
-                                        indexEvents++;
-                                      } else {
-                                        if (eventsToBeUpdated[indexEvents]
-                                                .title !=
-                                            presetToBeUpdated[indexPreset]
-                                                    [indexPath]
-                                                .name) {
-                                          indexPath++;
+          int mealNum = 0;
 
-                                          if (indexPath >=
-                                              presetToBeUpdated[indexPreset]
-                                                  .length) {
-                                            indexPreset++;
-                                            indexPath = 0;
-                                          }
-                                        } else {
-                                          presetUpdated[indexPreset].add(
-                                              presetToBeUpdated[indexPreset]
-                                                  [indexPath]);
-                                          indexEvents++;
-                                          indexPath++;
+          for(int i=0; i<mealTimes.length; i++){
+            if(mealTimes[i].compareTo(event[0].startTime) == 0){
+              mealNum = i;
+            }
+          }
 
-                                          print("여기까지옴");
+          double lat1 = nearMealLocations[0][mealNum*2];
+          double lat2 = nearMealLocations[0][mealNum*2+1];
+          double lon1 = nearMealLocations[1][mealNum*2];
+          double lon2 = nearMealLocations[1][mealNum*2+1];
 
-                                          if (indexPath >=
-                                              presetToBeUpdated[indexPreset]
-                                                  .length) {
-                                            indexPreset++;
-                                            indexPath = 0;
+          print(lat1);
+          print(lon1);
+          print(lat2);
+          print(lon2);
+
+
+
+
+          List<Restaurant> restList = await getRestaurant(
+              lat1, lon1, lat2, lon2);
+          addRestMarker(restList);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FoodRecommend()));
+
+
+
+
+        } else if (event[0].title == '이동') {
+
+
+
+        } else {
+          showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    content: SizedBox(
+                        height: 350,
+                        child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(children: [
+                              Container(child: Text('${event}')),
+                              Container(
+                                  padding: EdgeInsets.fromLTRB(0, 240, 0, 0),
+                                  child: ElevatedButton(
+                                      child: Text("코스에서 삭제"),
+                                      onPressed: () async {
+                                        //pathlist에서 삭제해서 업데이트 해야함
+
+                                        List<List<Place>> presetToBeUpdated =
+                                            widget.getPreset();
+                                        List<CalendarEventData<Event>>
+                                            eventsToBeUpdated =
+                                            widget.getEvents();
+                                        List<List<Place>> presetUpdated = [
+                                          for (int i = 0;
+                                              i < presetToBeUpdated.length;
+                                              i++)
+                                            []
+                                        ];
+
+                                        int indexPreset = 0;
+                                        int indexEvents = 0;
+                                        int indexPath = 0;
+
+                                        for (int i = 0;
+                                            i < eventsToBeUpdated.length;
+                                            i++) {
+                                          if (eventsToBeUpdated[i].title ==
+                                              event[0].title) {
+                                            eventsToBeUpdated.removeAt(i);
                                           }
                                         }
-                                      }
-                                    }
 
-                                    List<List<int>> movingTimeList;
+                                        while (indexEvents <
+                                                eventsToBeUpdated.length &&
+                                            indexPreset <
+                                                presetToBeUpdated.length) {
+                                          print("while");
+                                          if (eventsToBeUpdated[indexEvents]
+                                                  .title ==
+                                              '식사시간') {
+                                            indexEvents++;
+                                          } else if (eventsToBeUpdated[
+                                                      indexEvents]
+                                                  .title ==
+                                              '이동') {
+                                            indexEvents++;
+                                          } else {
+                                            if (eventsToBeUpdated[indexEvents]
+                                                    .title !=
+                                                presetToBeUpdated[indexPreset]
+                                                        [indexPath]
+                                                    .name) {
+                                              indexPath++;
 
-                                    if (widget.transit == 0) {
-                                      movingTimeList =
-                                          await createDrivingTimeList(
-                                              presetUpdated);
-                                    } else {
-                                      movingTimeList =
-                                          await createTransitTimeList(
-                                              presetUpdated);
-                                    }
+                                              if (indexPath >=
+                                                  presetToBeUpdated[indexPreset]
+                                                      .length) {
+                                                indexPreset++;
+                                                indexPath = 0;
+                                              }
+                                            } else {
+                                              presetUpdated[indexPreset].add(
+                                                  presetToBeUpdated[indexPreset]
+                                                      [indexPath]);
+                                              indexEvents++;
+                                              indexPath++;
 
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Timetable(
-                                                  preset: presetUpdated,
-                                                  movingTimeList:
-                                                      movingTimeList,
-                                                  transit: widget.transit,
-                                                )));
+                                              print("여기까지옴");
 
-                                    print("pathlist updated");
-                                    print(event);
-                                  }))
-                        ]))));
-          }),
+                                              if (indexPath >=
+                                                  presetToBeUpdated[indexPreset]
+                                                      .length) {
+                                                indexPreset++;
+                                                indexPath = 0;
+                                              }
+                                            }
+                                          }
+                                        }
+
+                                        List<List<int>> movingTimeList;
+
+                                        if (widget.transit == 0) {
+                                          movingTimeList =
+                                              await createDrivingTimeList(
+                                                  presetUpdated);
+                                        } else {
+                                          movingTimeList =
+                                              await createTransitTimeList(
+                                                  presetUpdated);
+                                        }
+
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Timetable(
+                                                      preset: presetUpdated,
+                                                      movingTimeList:
+                                                          movingTimeList,
+                                                      transit: widget.transit,
+                                                    )));
+
+                                        print("pathlist updated");
+                                        print(event);
+                                      }))
+                            ]))));
+              });
+        }
+      },
       showLiveTimeLineInAllDays: false,
     ));
   }
@@ -598,7 +800,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
   }
 */
 
-
   void _displayColorPicker() {
     var color = _color;
     showDialog(
@@ -660,7 +861,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
   void initState() {
     super.initState();
 
-
     _descriptionNode = FocusNode();
     _dateNode = FocusNode();
 
@@ -672,7 +872,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   @override
   void dispose() {
-
     _descriptionNode.dispose();
     _dateNode.dispose();
 
@@ -930,13 +1129,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   print(presetToBeUpdated);
                   //원래 코스 로드 완료
 
-
                   List<CalendarEventData<Event>> eventsToBeUpdated =
                       widget.getEvents();
                   print(eventsToBeUpdated);
                   //원래 이벤트리스트 로드 완료
-
-
 
                   CalendarEventData<Event> eventBefore = CalendarEventData(
                       title: 'dummy',
@@ -1015,9 +1211,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   List<List<int>> movingTimeList = [];
 
                   if (widget.transit == 0) {
-                    movingTimeList = await createDrivingTimeList(presetToBeUpdated);
+                    movingTimeList =
+                        await createDrivingTimeList(presetToBeUpdated);
                   } else {
-                    movingTimeList = await createTransitTimeList(presetToBeUpdated);
+                    movingTimeList =
+                        await createTransitTimeList(presetToBeUpdated);
                   }
 
                   print(movingTimeList);

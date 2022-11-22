@@ -9,17 +9,22 @@ Future<void> feedback(
     city, traveledPlaceList, selectList, starPoint, review) async {
   //traveledPlaceList List<String>
 
-  List<Place> placeList = [];
+  List<Place> pointingPlaceList = [];
 
   var read = ReadController();
   for (int f = 0; f < traveledPlaceList.length; f++) {
-    Place readData = await read.fb_read_one_place(city, traveledPlaceList[f]);
-    placeList.add(readData);
+    Place readData;
+    try {
+      readData = await read.fb_read_one_place(city, traveledPlaceList[f]);
+      pointingPlaceList.add(readData);
+    } catch (e) {
+      continue;
+    }
   }
 
   //각 성향 점수 += (별점-4) * 선택 유무
-  for (int i = 0; i < placeList.length; i++) {
-    Place place = placeList[i];
+  for (int i = 0; i < pointingPlaceList.length; i++) {
+    Place place = pointingPlaceList[i];
     for (int y = 0; y < selectList[0].length; y++) {
       place.partner[y] += (starPoint - 4) * selectList[0][y] as int;
       if (place.partner[y] < 0) {
