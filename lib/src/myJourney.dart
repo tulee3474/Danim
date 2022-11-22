@@ -1,10 +1,14 @@
 import 'package:danim/calendar_view.dart';
+import 'package:danim/src/place.dart';
+import 'package:danim/src/timetable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
 import 'package:danim/feedback_point.dart';
 import 'package:danim/firebase_read_write.dart';
 import 'package:danim/src/myPage.dart';
+
+import 'createMovingTimeList.dart';
 
 class MyJourney extends StatefulWidget {
   List<CalendarEventData> journey = [];
@@ -147,8 +151,74 @@ class _MyJourneyState extends State<MyJourney> {
               child: Icon(Icons.rate_review)),
           TextButton(
               child: Icon(Icons.trip_origin),
-              onPressed: () {
+              onPressed: () async {
                 //여기서 timetable 다시 띄우기
+
+                List<List<Place>> oldPreset = [
+                  for(int i=0; i< widget.dates[1].difference(widget.dates[0]).inDays +1; i++)
+                    []
+                ];// 프리셋 초기화
+
+                List<DateTime> dateList = [];
+
+                for(int i=0; i<widget.dates[1].difference(widget.dates[0]).inDays +1; i++ ){
+
+                  dateList.add(DateTime(widget.dates[0].year, widget.dates[0].month, widget.dates[0].day + i ));
+
+                }// 날짜 리스트
+
+                for(int i=0; i<dateList.length; i++){
+
+                  for(int j=0; j<journey.length; j++){
+                    if(dates[i].year == journey[j].date.year && dates[i].month == journey[j].date.month && dates[i].day == journey[j].date.day){
+
+                      oldPreset[i].add(
+                        Place(
+                          journey[j].title,
+                          35.5,
+                          127,
+                          journey[j].endTime.difference(journey[j].startTime).inMinutes,
+                          60,
+                            [0, 0, 0, 0, 0, 0, 0],
+                            [0, 0, 0, 0],
+                            [0, 0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                            [0, 0, 0, 0]
+                        )
+                      );
+
+                    }
+                  }
+
+                }
+
+                //타임테이블 생성
+
+
+
+                  List<List<int>> movingTimeList = [
+                    for(int i=0; i<oldPreset.length; i++)
+                      []
+                  ];
+
+                  movingTimeList = await createDrivingTimeList(oldPreset);
+
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              Timetable(preset: oldPreset, transit: 0, movingTimeList: movingTimeList,)));
+
+
+
+
+
+
+
+
+
+
               })
         ]),
       ),

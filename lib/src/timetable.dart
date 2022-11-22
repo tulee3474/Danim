@@ -206,7 +206,7 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
       }
 
       if (timeIndex.compareTo(DateTime(dayIndex.year, dayIndex.month,
-              dayIndex.day, timeIndex.hour, timeIndex.minute)) >
+              dayIndex.day, endDayTime)) >
           0) {
         break;
       }
@@ -958,6 +958,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
                       //새로운 이벤트의 타이틀
                       _title = placeName;
+
+                      //newPlace의 위도
+                      newPlaceLat = lat;
+                      newPlaceLon = lang;
+
                       print(_title);
 
                       placeList.add(Place(
@@ -1137,16 +1142,18 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   CalendarEventData<Event> eventBefore = CalendarEventData(
                       title: 'dummy',
                       date: DateTime.now(),
-                      startTime: DateTime.now());
+                      startTime: DateTime.now(),
+                  endTime: DateTime.now().add(Duration(hours:1)));
                   CalendarEventData<Event> eventAfter = CalendarEventData(
                       title: 'dummy',
                       date: DateTime.now(),
-                      startTime: DateTime.now());
+                      startTime: DateTime.now(),
+                      endTime: DateTime.now().add(Duration(hours:1)));
 
                   Place newPlace = Place(
                       '${newEvent.title}',
-                      33.4,
-                      43.2,
+                      newPlaceLat,
+                      newPlaceLon,
                       _endTime.difference(_startTime).inMinutes,
                       30,
                       [10, 20, 30, 40, 50, 60, 70],
@@ -1204,23 +1211,28 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         presetToBeUpdated[i].insert(j + 1, newPlace);
 
                         print("path updated");
+                        print(presetToBeUpdated);
                       }
                     }
                   }
 
-                  List<List<int>> movingTimeList = [];
+                  List<List<int>> movingTimeList  = [];
 
                   if (widget.transit == 0) {
                     movingTimeList =
-                        await createDrivingTimeList(presetToBeUpdated);
+                    (await createDrivingTimeList(presetToBeUpdated));
                   } else {
                     movingTimeList =
-                        await createTransitTimeList(presetToBeUpdated);
+                    (await createTransitTimeList(presetToBeUpdated));
                   }
 
-                  print(movingTimeList);
+                  //print(movingTimeList);
 
-                  Navigator.push(
+                  if(movingTimeList.isEmpty){
+                    print('movimgTimeList is empty');
+                  }
+
+                  await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => Timetable(

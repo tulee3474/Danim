@@ -21,7 +21,7 @@ class CalendarEventData<T extends Object?> {
   /// Defines the end time of the event.
   /// [endTime] and [startTime] defines time on same day.
   /// This is required when you are using [CalendarEventData] for [DayView]
-  final DateTime? endTime;
+  final DateTime endTime;
 
   /// Title of the event.
   final String title;
@@ -45,7 +45,7 @@ class CalendarEventData<T extends Object?> {
     this.event,
     this.color = Colors.blue,
     required this.startTime,
-    this.endTime,
+    required this.endTime,
     DateTime? endDate,
     required this.date,
   }) : _endDate = endDate;
