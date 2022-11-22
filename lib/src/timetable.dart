@@ -371,6 +371,9 @@ class _TimetableState extends State<Timetable> {
   late List<DateTime> mealTimes = createMealTimeList(events);
   late List<List<double>> nearMealLocationList = createNearMealLocationList(events, widget.preset);
 
+  String isSaved = '';
+
+
 
 
   @override
@@ -508,7 +511,25 @@ class _TimetableState extends State<Timetable> {
                                                     userData.diaryList);
                                               }
 
-                                              print("saved");
+                                              print('pathlist saved');
+
+                                              showDialog(
+                                              context: context,
+                                              barrierDismissible: true,
+                                                  builder: (BuildContext context) {
+
+                                                return AlertDialog(
+                                                  content: SizedBox(
+                                                    width: 150,
+                                                    height: 50,
+                                                    child: Container(
+                                                      child: Text('Saved')
+                                                  )
+                                                  )
+                                                );
+                                                  }
+
+                                              );
 
 
 
@@ -759,7 +780,9 @@ class _DayViewWidgetState extends State<DayViewWidget> {
 
                                         print("pathlist updated");
                                         print(event);
-                                      }))
+                                      })),
+
+
                             ]))));
               });
         }
