@@ -30,6 +30,10 @@ import 'date_selectlist.dart';
 import 'foodRecommend.dart';
 import 'package:danim/route.dart';
 import 'package:danim/nearby.dart';
+import 'package:danim/firebase_read_write.dart';
+import 'package:danim/src/login.dart';
+import 'package:danim/src/user.dart';
+
 
 /*
 
@@ -445,7 +449,7 @@ class _TimetableState extends State<Timetable> {
                                         padding:
                                             EdgeInsets.fromLTRB(0, 30, 0, 0),
                                         child: ElevatedButton(
-                                            onPressed: () {
+                                            onPressed: () async {
                                               //List<CalendarEventData<Event>> 에서 List<CalendarEventData> 로 변환 !!
                                               List<CalendarEventData>
                                                   eventsForDB = [];
@@ -455,7 +459,56 @@ class _TimetableState extends State<Timetable> {
 
                                               //여기서 DB 연결 !!!
                                               // 현재 events 저장
-                                              print('$eventsForDB');
+                                              //print('$eventsForDB');
+
+
+                                              if (token!.length > 1) {
+                                                ReadController read =
+                                                ReadController();
+                                                User userData = await read
+                                                    .fb_read_user(token);
+                                                userData.travelList
+                                                    .add("제주도"); //임시 city 고정
+                                                //1일차, 2일차 수만큼 반복
+                                                int placeSum = 0;
+                                                List<String> placeLi = [];
+                                                for (int p = 0;
+                                                p < getPreset().length;
+                                                p++) {
+                                                  placeSum +=
+                                                      getPreset()[p].length;
+                                                  for (int q = 0;
+                                                  q < getPreset()[p].length;
+                                                  q++) {
+                                                    placeLi.add(
+                                                        getPreset()[p][q].name);
+                                                  }
+                                                }
+                                                userData.placeNumList
+                                                    .add(placeSum);
+                                                userData.traveledPlaceList =
+                                                List.from(userData
+                                                    .traveledPlaceList)
+                                                  ..addAll(placeLi);
+                                                userData.eventNumList
+                                                    .add(eventsForDB.length);
+                                                userData.eventList = List.from(
+                                                    userData.eventList)
+                                                  ..addAll(eventsForDB);
+                                                fb_write_user(
+                                                    token,
+                                                    userData.name,
+                                                    userData.travelList,
+                                                    userData.placeNumList,
+                                                    userData.traveledPlaceList,
+                                                    userData.eventNumList,
+                                                    selectedList, //전역변수라서, 차후에 문제생길수도
+                                                    userData.eventList,
+                                                    userData.diaryList);
+                                              }
+
+
+
                                             },
                                             child: Text("코스 저장")))
                                   ])),

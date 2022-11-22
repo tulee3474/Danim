@@ -54,6 +54,8 @@ dependencies:
   google_maps_webservice: ^0.0.19-nullsafety.5
   flutter_google_places_hoc081098: ^1.1.0-nullsafety.5
   naver_map_plugin: ^0.9.6
+  firebase_auth: ^3.11.2
+  google_sign_in: ^5.4.2
 
 dev_dependencies:
   flutter_test:

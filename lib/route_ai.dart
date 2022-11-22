@@ -691,6 +691,8 @@ class RouteAI {
                   [0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 0, 0, 0]);
               fixedPlaceList.add(readData);
+              placeListCopy.removeWhere((item) => item.name == readData.name);
+
             }
           }
         }
