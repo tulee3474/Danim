@@ -463,7 +463,9 @@ class _TimetableState extends State<Timetable> {
 
                                               //여기서 DB 연결 !!!
                                               // 현재 events 저장
-                                              //print('$eventsForDB');
+                                              //print('$eventsForDB');결
+
+                                              token = 'docCodeTest1';
 
 
                                               if (token!.length > 1) {
