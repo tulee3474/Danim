@@ -552,7 +552,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   Color _color = Colors.blue;
 
-  late FocusNode _titleNode;
+  String _titleNode = '';
 
   late FocusNode _descriptionNode;
 
@@ -565,6 +565,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   late TextEditingController _endTimeController;
   //late TextEditingController _endDateController;
 
+  /*
   void _createEvent() {
     if (!(_form.currentState?.validate() ?? true)) return;
 
@@ -585,7 +586,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
     widget.onEventAdd?.call(event);
     _resetForm();
-  }
+  }*/
+
+  /*
 
   void _resetForm() {
     _form.currentState?.reset();
@@ -593,6 +596,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
     _endTimeController.text = "";
     _startTimeController.text = "";
   }
+*/
+
 
   void _displayColorPicker() {
     var color = _color;
@@ -655,7 +660,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   void initState() {
     super.initState();
 
-    _titleNode = FocusNode();
+
     _descriptionNode = FocusNode();
     _dateNode = FocusNode();
 
@@ -667,7 +672,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   @override
   void dispose() {
-    _titleNode.dispose();
+
     _descriptionNode.dispose();
     _dateNode.dispose();
 
@@ -754,6 +759,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
                       //새로운 이벤트의 타이틀
                       _title = placeName;
+                      print(_title);
 
                       placeList.add(Place(
                           placeName,
@@ -791,7 +797,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
               Row(
                 children: [
-                  Expanded(child: Text('날짜 : ' + '${widget.currentDate}')),
+                  Expanded(child: Text('날짜 : ' + '${startDay}')),
                   SizedBox(width: 20.0),
                 ],
               ),
@@ -902,7 +908,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   _form.currentState?.save();
 
                   final newEvent = CalendarEventData<Event>(
-                    date: widget.currentDate,
+                    date: startDay,
                     color: _color,
                     endTime: _endTime,
                     startTime: _startTime,
@@ -914,10 +920,21 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   );
 
                   print('${newEvent.date}');
+                  print(newEvent.title);
+                  print("${newEvent.startTime}");
+                  print("${newEvent.endTime}");
+
+                  //newEvent 생성까지 완료.
 
                   List<List<Place>> presetToBeUpdated = widget.getPreset();
+                  print(presetToBeUpdated);
+                  //원래 코스 로드 완료
+
+
                   List<CalendarEventData<Event>> eventsToBeUpdated =
                       widget.getEvents();
+                  print(eventsToBeUpdated);
+                  //원래 이벤트리스트 로드 완료
 
 
 
@@ -941,6 +958,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       [10, 20, 30, 40, 50, 60],
                       [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110],
                       [10, 20, 30, 40]);
+
+                  print(newPlace);
+                  //newPlace 생성 완료
 
                   /*
                   for(int i=0; i< eventsToBeUpdated.length; i++){
@@ -975,6 +995,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         if (eventsToBeUpdated[i].startTime.hour <
                             newEvent.startTime.hour) {
                           eventBefore = eventsToBeUpdated[i];
+                          print(eventBefore.title);
+                          //eventBefore 찾기 완료
                         }
                       }
                     }
@@ -990,15 +1012,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     }
                   }
 
-                  List<List<int>> movingTimeList;
+                  List<List<int>> movingTimeList = [];
 
                   if (widget.transit == 0) {
-                    movingTimeList =
-                        await createDrivingTimeList(presetToBeUpdated);
+                    movingTimeList = await createDrivingTimeList(presetToBeUpdated);
                   } else {
-                    movingTimeList =
-                        await createTransitTimeList(presetToBeUpdated);
+                    movingTimeList = await createTransitTimeList(presetToBeUpdated);
                   }
+
+                  print(movingTimeList);
 
                   Navigator.push(
                       context,

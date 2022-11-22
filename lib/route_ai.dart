@@ -683,7 +683,7 @@ class RouteAI {
                   fixedPlaceNameList[f],
                   lat,
                   long,
-                  1,
+                  60,
                   0,
                   [0, 0, 0, 0, 0, 0, 0],
                   [0, 0, 0, 0],
