@@ -68,6 +68,11 @@ class _LoadingState extends State<Loading> {
 
   qqqq() async {
     bool houseCheck = false;
+    if(accomodation != ''){
+      houseCheck = true;
+    }
+
+    print(houseCheck);
     //임시 숙소
     Place? house = Place(
         accomodation,
