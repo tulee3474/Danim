@@ -23,6 +23,7 @@ import '../../map.dart' as map;
 
 import '../map.dart';
 import '../route_ai.dart';
+import '../tourinfo.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/date_time_selector.dart';
 import 'createMovingTimeList.dart';
@@ -638,6 +639,10 @@ class _DayViewWidgetState extends State<DayViewWidget> {
 
 
         } else {
+
+          String tourInformation = '';
+          tourInformation = await getTourInfo(event[0].title);
+
           showDialog(
               context: context,
               barrierDismissible: true,
@@ -648,7 +653,7 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                         child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: Column(children: [
-                              Container(child: Text('${event}')),
+                              Container(child: Text(tourInformation)),
                               Container(
                                   padding: EdgeInsets.fromLTRB(0, 240, 0, 0),
                                   child: ElevatedButton(
