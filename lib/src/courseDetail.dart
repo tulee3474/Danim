@@ -77,7 +77,7 @@ class _CourseDetailState extends State<CourseDetail> {
                           {transit = 0, print(transit)}),
                   ElevatedButton(
                       child:
-                          Text('대중교툥', style: TextStyle(color: Colors.black)),
+                          Text('대중교통', style: TextStyle(color: Colors.black)),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith(getColor)),

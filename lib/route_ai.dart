@@ -210,7 +210,7 @@ class RouteAI {
       double latDiff = targetPlace.latitude - beforePlace.latitude;
       double longDiff = targetPlace.longitude - beforePlace.longitude;
 
-      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 18000;
+      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 25000;
 
       sum -= distance.toInt(); // - 거리 계산
 
