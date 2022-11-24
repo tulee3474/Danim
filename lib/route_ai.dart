@@ -608,9 +608,9 @@ class RouteAI {
     int timeLimit = 0;
     List time = [];
 
-    //시간 지정 안했을 경우 하루당 9시간( 12 - 3 = 9 )
+    //시간 지정 안했을 경우 하루당 10시간
     if (timeLimitArray == null) {
-      timeLimit = 9 * 60;
+      timeLimit = 10 * 60;
       for (int d = 0; d < nDay; d++) {
         time.add(timeLimit);
       }
@@ -631,7 +631,7 @@ class RouteAI {
         timeLimit = timeLimit * 60;
         time.add(timeLimit);
         for (int d = 0; d < nDay - 2; d++) {
-          timeLimit = 9 * 60;
+          timeLimit = 10 * 60;
           time.add(timeLimit);
         }
         timeLimit = (timeLimitArray[1] as int) - 8;
