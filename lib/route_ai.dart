@@ -148,7 +148,7 @@ class RouteAI {
     int sum = 0;
 
     //각 성향 카테고리별 가중치, weight[5]는 popular, 인기관광지 점수
-    List weight = [15, 15, 15, 15, 15, 0.3];
+    List weight = [15, 15, 15, 15, 15, 1.5];
     List listSum = [0, 0, 0, 0, 0];
     //각 성향 점수 * 가중치 * 선택 유무
     // for (int x = 0; x < 5; x++) {
@@ -200,7 +200,7 @@ class RouteAI {
       }
     }
 
-    sum += (targetPlace.popular * weight[5].ceil()) as int; //인기관광지 지표 포함하기
+    sum += ((targetPlace.popular * weight[5]).ceil()) as int; //인기관광지 지표 포함하기
 
     if (beforePlace != null) {
       //더미는 스킵
@@ -210,7 +210,7 @@ class RouteAI {
       double latDiff = targetPlace.latitude - beforePlace.latitude;
       double longDiff = targetPlace.longitude - beforePlace.longitude;
 
-      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 25000;
+      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 20000;
 
       sum -= distance.toInt(); // - 거리 계산
 
