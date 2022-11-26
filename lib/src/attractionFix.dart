@@ -127,7 +127,7 @@ class _AttractionFixState extends State<AttractionFix> {
                             final lat = geometry.location.lat;
                             final lang = geometry.location.lng;
                             var newlatlang = LatLng(lat, lang);
-                            latLen.add(newlatlang);
+                            //latLen.add(newlatlang);
 
                             //move map camera to selected place with animation
                             //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));

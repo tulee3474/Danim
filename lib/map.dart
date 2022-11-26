@@ -8,13 +8,15 @@ import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'route_ai.dart';
-
+List<Color> colorList=[
+  Colors.pink,Colors.orange,Colors.yellow,Colors.green,Colors.blue,Colors.indigo,Colors.purple,Colors.black
+];
 // list of locations to display polylines
-List<LatLng> latLen = [
+List<List<LatLng>> latLen = [[],[],[],[],[],[],[],[],[],[]
   //const LatLng(37.507941, 127.009686),
   //const LatLng(37.302263, 126.977977)
 ];
-List<LatLng> latLen2 = [
+List<LatLng> accommodationLatLen = [
   //const LatLng(37.507941, 127.009686),
   //const LatLng(37.302263, 126.977977)
 ];
@@ -64,10 +66,16 @@ void addRestMarker(List<Restaurant> restList) {
 }
 
 void addPoly(List<List<Place>> pathList) {
-  latLen.clear();
-  latLen2.clear();
-  latLen3.clear();
-  for (int i = 0; i < pathList[0].length; i++) {
+  pathOverlays.clear();
+  for (int i = 0; i < pathList.length; i++) {
+    latLen[i].clear();
+    for (int j=0;j<pathList[i].length;j++) {
+      latLen[i].add(LatLng(pathList[i][j].latitude, pathList[i][j].longitude));
+    }
+    pathOverlays.add(PathOverlay(PathOverlayId('path$i'), latLen[i],
+        color: colorList[i], width: 7, outlineWidth: 0));
+  }
+  /*for (int i = 0; i < pathList[0].length; i++) {
     latLen.add(LatLng(pathList[0][i].latitude, pathList[0][i].longitude));
   }
   for (int i = 0; i < pathList[1].length; i++) {
@@ -81,7 +89,7 @@ void addPoly(List<List<Place>> pathList) {
   pathOverlays.add(PathOverlay(PathOverlayId('path2'), latLen2,
       color: Colors.pink, width: 7, outlineWidth: 0));
   pathOverlays.add(PathOverlay(PathOverlayId('path3'), latLen3,
-      color: Colors.deepOrange, width: 7, outlineWidth: 0));
+      color: Colors.deepOrange, width: 7, outlineWidth: 0));*/
 }
 
 class Map extends StatefulWidget {
@@ -314,7 +322,7 @@ class NaverMapState extends State<Map> {
                 final lat = geometry.location.lat;
                 final lang = geometry.location.lng;
                 var newlatlang = LatLng(lat, lang);
-                latLen.add(newlatlang);
+                //latLen.add(newlatlang);
                 setState(() {
                   CameraPosition cameraPosition = CameraPosition(
                       bearing: 0.0, target: newlatlang, tilt: 0.0, zoom: 14.0);

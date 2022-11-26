@@ -299,7 +299,7 @@ class _AppState extends State<App> {
                                                                 var newlatlang =
                                                                     LatLng(lat,
                                                                         lang);
-                                                                latLen.add(
+                                                                accommodationLatLen.add(
                                                                     newlatlang);
 
                                                                 //move map camera to selected place with animation

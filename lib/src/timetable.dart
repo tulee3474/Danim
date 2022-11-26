@@ -949,7 +949,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
     super.dispose();
   }
-
+  String location3 = "Search Location";
   @override
   Widget build(BuildContext context) {
     _TimetableState? parent =
@@ -1000,7 +1000,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
                     if (place != null) {
                       setState(() {
-                        location = place.description.toString();
+                        location3 = place.description.toString();
                       });
 
                       //form google_maps_webservice package
@@ -1016,11 +1016,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       final lat = geometry.location.lat;
                       final lang = geometry.location.lng;
                       var newlatlang = LatLng(lat, lang);
-                      latLen.add(newlatlang);
+                      //latLen.add(newlatlang);
 
                       //move map camera to selected place with animation
                       //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
-                      var places = location.split(', ');
+                      var places = location3.split(', ');
                       String placeName = places[places.length - 1];
 
                       //새로운 이벤트의 타이틀
@@ -1046,6 +1046,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       setState(() {});
                       setState(() {});
                     }
+                    else{
+                      setState(() {
+                        location3 = "Search Location";
+                      });
+                    }
                   },
                   child: Padding(
                     padding: EdgeInsets.all(15),
@@ -1055,7 +1060,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           width: MediaQuery.of(context).size.width - 40,
                           child: ListTile(
                             title: Text(
-                              location,
+                              location3,
                               style: TextStyle(fontSize: 18),
                             ),
                             trailing: Icon(Icons.search),
