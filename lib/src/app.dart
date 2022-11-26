@@ -347,6 +347,11 @@ class _AppState extends State<App> {
                                                                 setState(() {});
                                                                 setState(() {});
                                                               }
+                                                              else{
+                                                                setState(() {
+                                                                  location = "Search Location";
+                                                                });
+                                                              }
                                                             },
                                                             child: Padding(
                                                               padding:

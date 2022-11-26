@@ -51,7 +51,7 @@ class _AttractionFixState extends State<AttractionFix> {
 
   }
 
-
+  String location2 = "Search Location";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,9 +108,10 @@ class _AttractionFixState extends State<AttractionFix> {
                             //},
                           );
 
+
                           if(place != null){
                             setState(() {
-                              location = place.description.toString();
+                              location2 = place.description.toString();
                             });
 
                             //form google_maps_webservice package
@@ -130,7 +131,7 @@ class _AttractionFixState extends State<AttractionFix> {
 
                             //move map camera to selected place with animation
                             //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
-                            var places=location.split(', ');
+                            var places=location2.split(', ');
                             String placeName=places[places.length-1];
                             print('$placeName placeName');
 
@@ -143,6 +144,11 @@ class _AttractionFixState extends State<AttractionFix> {
                             setState(() {
                             });
                           }
+                          else{
+                            setState(() {
+                              location2 = "Search Location";
+                            });
+                          }
                         },
                         child:Padding(
                           padding: EdgeInsets.all(15),
@@ -151,7 +157,7 @@ class _AttractionFixState extends State<AttractionFix> {
                                 padding: EdgeInsets.all(0),
                                 width: MediaQuery.of(context).size.width - 40,
                                 child: ListTile(
-                                  title:Text(location, style: TextStyle(fontSize: 18),),
+                                  title:Text(location2, style: TextStyle(fontSize: 18),),
                                   trailing: Icon(Icons.search),
                                   dense: true,
                                 )
