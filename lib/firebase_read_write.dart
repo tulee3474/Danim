@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:danim/calendar_view.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/user.dart';
+import 'package:danim/src/post.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/event.dart';
@@ -100,8 +101,26 @@ void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
   }, SetOptions(merge: true));
 }
 
-void fb_write_place(city, name, latitude, longitude, takenTime, popular,
+void fb_update_place(city, name, latitude, longitude, takenTime, popular,
     partner, concept, play, tour, season) {
+  //합쳐쓰기
+  FirebaseFirestore.instance.collection(city).doc(name).set({
+    'latitude': latitude,
+    'longitude': longitude,
+    'takenTime': takenTime,
+    'popular': popular,
+    'partner': partner,
+    'concept': concept,
+    'play': play,
+    'tour': tour,
+    'season': season,
+  }, SetOptions(merge: true));
+}
+
+void fb_add_place(city, name, latitude, longitude, takenTime, popular, partner,
+    concept, play, tour, season) {
+  //CollectionReference points = FirebaseFirestore.instance.collection('points');
+
   //덮어쓰기
   // FirebaseFirestore.instance.collection('points').doc(city).set({
   //   'name': name,
@@ -121,6 +140,57 @@ void fb_write_place(city, name, latitude, longitude, takenTime, popular,
     'tour': tour,
     'season': season,
   }, SetOptions(merge: true));
+
+  //관광지 목록에 이름 작성
+  FirebaseFirestore.instance.collection(city).doc("관광지목록").update({
+    "관광지": FieldValue.arrayUnion([name]),
+  });
+
+  print("파이어베이스 업로드 완료");
+}
+
+void fb_add_post(postTitle, postNum, postWriter) {
+  //합쳐쓰기
+  FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).set({
+    'postTitle': postTitle,
+    'postNum': postNum,
+    'postWriter': postWriter,
+    'commentList': [], //첫 작성이니까
+    'commentWriterList': [], //첫 작성이니까
+    'recommendList': [], //첫 작성이니까
+    'recommendNum': 0,
+  }, SetOptions(merge: true));
+
+  //관광지 목록에 이름 작성
+  FirebaseFirestore.instance.collection("커뮤니티").doc("게시물목록").update({
+    "게시물": FieldValue.arrayUnion([postTitle]),
+  });
+
+  print("파이어베이스 업로드 완료");
+}
+
+void fb_add_comment(postTitle, comment, commentWriter) {
+  FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).update({
+    "commentList": FieldValue.arrayUnion([comment]),
+  });
+
+  FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).update({
+    "commentWriterList": FieldValue.arrayUnion([commentWriter]),
+  });
+
+  print("파이어베이스 업로드 완료");
+}
+
+void fb_add_recommend(postTitle, recommender, recommendNum) {
+  FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).update({
+    "recommendList": FieldValue.arrayUnion([recommender]),
+  });
+
+  FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).set({
+    'recommendNum': recommendNum + 1,
+  }, SetOptions(merge: true));
+
+  print("파이어베이스 업로드 완료");
 }
 
 //Read하는 부분
@@ -322,6 +392,70 @@ class ReadController extends GetxController {
         partner, concept, play, tour, season);
 
     return placedata;
+  }
+
+  //커뮤니티 Read
+  Future<List> fb_read_all_post() async {
+    List<Post> data = [];
+
+    List<String> postList = await fb_read_post_list() as List<String>;
+
+    for (int i = 0; i < postList.length; i++) {
+      Post read_data = await fb_read_one_post(postList[i]);
+      data.add(read_data);
+    }
+
+    return data;
+  }
+
+  Future<List> fb_read_post_list() async {
+    var data = await db.collection("커뮤니티").doc("게시물목록").get();
+
+    List<String> postList = [];
+    for (int i = 0; i < data.data()!['게시물'].length; i++) {
+      postList.add(data.data()!['게시물'][i]);
+    }
+    return postList;
+  }
+
+  Future<Post> fb_read_one_post(name) async {
+    var data = await db.collection('커뮤니티').doc(name).get();
+
+    String postTitle = data.data()!['postTitle'] as String;
+    int postNum = data.data()!['postNum'] as int;
+    String postWriter = data.data()!['postWriter'] as String;
+    int recommendNum = data.data()!['recommendNum'] as int;
+
+    //Error: Expected a value of type 'List<int>', but got one of type 'List<dynamic>'
+    //위 에러 때문에 하나식 일일히 형변환함. 리스트를 통으로 형변환하면 에러
+    List<dynamic> commentList2 = data.data()!['commentList'];
+    List<String> commentList = [];
+    for (int i = 0; i < commentList2.length; i++) {
+      commentList.add(commentList2[i] as String);
+    }
+    List<dynamic> commentWriterList2 = data.data()!['commentWriterList'];
+    List<String> commentWriterList = [];
+    for (int i = 0; i < commentWriterList2.length; i++) {
+      commentWriterList.add(commentWriterList2[i] as String);
+    }
+
+    List<dynamic> recommendList2 = data.data()!['recommendList'];
+    List<String> recommendList = [];
+    for (int i = 0; i < recommendList2.length; i++) {
+      recommendList.add(recommendList2[i] as String);
+    }
+
+    Post postData = Post(
+      postTitle,
+      postNum,
+      postWriter,
+      commentList,
+      commentWriterList,
+      recommendList,
+      recommendNum,
+    );
+
+    return postData;
   }
 
   List<int> parseDate(date) {

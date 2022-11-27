@@ -65,7 +65,7 @@ Future<void> feedback(
         place.season[y] = 100;
       }
     }
-    fb_write_place(
+    fb_update_place(
         city,
         place.name,
         place.latitude,

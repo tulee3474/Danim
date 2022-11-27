@@ -299,8 +299,9 @@ class _AppState extends State<App> {
                                                                 var newlatlang =
                                                                     LatLng(lat,
                                                                         lang);
-                                                                accommodationLatLen.add(
-                                                                    newlatlang);
+                                                                accommodationLatLen
+                                                                    .add(
+                                                                        newlatlang);
 
                                                                 //move map camera to selected place with animation
                                                                 //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
@@ -346,10 +347,10 @@ class _AppState extends State<App> {
                                                                         4]));
                                                                 setState(() {});
                                                                 setState(() {});
-                                                              }
-                                                              else{
+                                                              } else {
                                                                 setState(() {
-                                                                  location = "Search Location";
+                                                                  location =
+                                                                      "Search Location";
                                                                 });
                                                               }
                                                             },
@@ -472,13 +473,14 @@ class _AppState extends State<App> {
                                     ),
                                     minimumSize: Size(100, 100))),
                             ElevatedButton(
-                                onPressed: () => {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Community()))
-                                    },
+                                onPressed: () async {
+                                  await readPostData();
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Community()));
+                                },
                                 child: Text('커뮤니티'),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.lightBlue,

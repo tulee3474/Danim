@@ -223,93 +223,91 @@ class _TmpPageState extends State<MyHomePage> {
               // 버튼 두개 만들기
               children: [
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       print('ElevatedButton - onPressed');
-                      List travelList1 = ["서울", "제주도"];
-                      List placeNumList1 = [2, 4];
-                      List traveledPlaceList1 = [
-                        "남산",
-                        "경복궁",
-                        "금악오름",
-                        "성산일출봉",
-                        "우도",
-                        "카멜리아힐"
-                      ];
-                      List eventNumList1 = [2, 4];
-                      List eventList1 = [
-                        CalendarEventData(
-                          title: '남산',
-                          date: DateTime(2022, 5, 14),
-                          event: Event(title: '남산'),
-                          description: '',
-                          startTime: DateTime(2022, 5, 14, 13),
-                          endTime: DateTime(2022, 5, 14, 15),
-                        ),
+//                       List travelList1 = ["서울", "제주도"];
+//                       List placeNumList1 = [2, 4];
+//                       List traveledPlaceList1 = [
+//                         "남산",
+//                         "경복궁",
+//                         "금악오름",
+//                         "성산일출봉",
+//                         "우도",
+//                         "카멜리아힐"
+//                       ];
+//                       List eventNumList1 = [2, 4];
+//                       List eventList1 = [
+//                         CalendarEventData(
+//                           title: '남산',
+//                           date: DateTime(2022, 5, 14),
+//                           event: Event(title: '남산'),
+//                           description: '',
+//                           startTime: DateTime(2022, 5, 14, 13),
+//                           endTime: DateTime(2022, 5, 14, 15),
+//                         ),
 
-                        CalendarEventData(
-                          title: '경복궁',
-                          date: DateTime(2022, 5, 14),
-                          event: Event(title: '경복궁'),
-                          description: '',
-                          startTime: DateTime(2022, 5, 14, 15),
-                          endTime: DateTime(2022, 5, 14, 17),
-                        ),
+//                         CalendarEventData(
+//                           title: '경복궁',
+//                           date: DateTime(2022, 5, 14),
+//                           event: Event(title: '경복궁'),
+//                           description: '',
+//                           startTime: DateTime(2022, 5, 14, 15),
+//                           endTime: DateTime(2022, 5, 14, 17),
+//                         ),
 
-                        CalendarEventData(
-                          title: '금악오름',
-                          date: DateTime(2022, 5, 15),
-                          event: Event(title: '금악오름'),
-                          description: '',
-                          startTime: DateTime(2022, 5, 15, 13),
-                          endTime: DateTime(2022, 5, 15, 15),
-                        ),
+//                         CalendarEventData(
+//                           title: '금악오름',
+//                           date: DateTime(2022, 5, 15),
+//                           event: Event(title: '금악오름'),
+//                           description: '',
+//                           startTime: DateTime(2022, 5, 15, 13),
+//                           endTime: DateTime(2022, 5, 15, 15),
+//                         ),
 
-//
+// //
 
-                        CalendarEventData(
-                          title: '성산일출봉',
-                          date: DateTime(2022, 6, 7),
-                          event: Event(title: '성산일출봉'),
-                          description: '',
-                          startTime: DateTime(2022, 6, 7, 13),
-                          endTime: DateTime(2022, 6, 7, 15),
-                        ),
-                        CalendarEventData(
-                          title: '우도',
-                          date: DateTime(2022, 6, 7),
-                          event: Event(title: '우도'),
-                          description: '',
-                          startTime: DateTime(2022, 6, 7, 13),
-                          endTime: DateTime(2022, 5, 14, 15),
-                        ),
-                        CalendarEventData(
-                          title: '카멜리아힐',
-                          date: DateTime(2022, 6, 8),
-                          event: Event(title: '카멜리아힐'),
-                          description: '',
-                          startTime: DateTime(2022, 6, 8, 13),
-                          endTime: DateTime(2022, 6, 8, 15),
-                        )
-                      ];
-                      //임시 selectList
-                      List selectList1 = [
-                        [0, 1, 0, 0, 0, 0, 0],
-                        [0, 1, 0, 1],
-                        [0, 1, 0, 0, 1, 0],
-                        [0, 1, 0, 1, 0, 1, 1, 0, 1],
-                        [0, 1, 0, 0]
-                      ];
-                      List diaryList1 = ["일기1", "일기2"];
-                      fb_write_user(
-                          point_city_ctrl.text,
-                          point_name_ctrl.text,
-                          travelList1,
-                          placeNumList1,
-                          traveledPlaceList1,
-                          eventNumList1,
-                          selectList1,
-                          eventList1,
-                          diaryList1);
+//                         CalendarEventData(
+//                           title: '성산일출봉',
+//                           date: DateTime(2022, 6, 7),
+//                           event: Event(title: '성산일출봉'),
+//                           description: '',
+//                           startTime: DateTime(2022, 6, 7, 13),
+//                           endTime: DateTime(2022, 6, 7, 15),
+//                         ),
+//                         CalendarEventData(
+//                           title: '우도',
+//                           date: DateTime(2022, 6, 7),
+//                           event: Event(title: '우도'),
+//                           description: '',
+//                           startTime: DateTime(2022, 6, 7, 13),
+//                           endTime: DateTime(2022, 5, 14, 15),
+//                         ),
+//                         CalendarEventData(
+//                           title: '카멜리아힐',
+//                           date: DateTime(2022, 6, 8),
+//                           event: Event(title: '카멜리아힐'),
+//                           description: '',
+//                           startTime: DateTime(2022, 6, 8, 13),
+//                           endTime: DateTime(2022, 6, 8, 15),
+//                         )
+//                       ];
+//                       //임시 selectList
+//                       List selectList1 = [
+//                         [0, 1, 0, 0, 0, 0, 0],
+//                         [0, 1, 0, 1],
+//                         [0, 1, 0, 0, 1, 0],
+//                         [0, 1, 0, 1, 0, 1, 1, 0, 1],
+//                         [0, 1, 0, 0]
+//                       ];
+//                       List diaryList1 = ["일기1", "일기2"];
+                      //fb_add_post("첫번째 게시글", 0, "token1");
+                      fb_add_comment("첫번째 게시글", "첫번째 댓글", "token1");
+                      fb_add_recommend("첫번째 게시글", "token1", 0);
+                      var readData;
+                      var read = ReadController();
+
+                      readData = await read.fb_read_all_post(); // List<Post>
+                      print(readData[0].postTitle);
                       resetCtrl();
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Firebase에 데이터 전송 완료')));
