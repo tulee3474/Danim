@@ -637,13 +637,16 @@ class _DayViewWidgetState extends State<DayViewWidget> {
           double lon1 = nearMealLocations[1][mealNum * 2];
           double lon2 = nearMealLocations[1][mealNum * 2 + 1];
 
-          print(lat1);
+          /*print(lat1);
           print(lon1);
           print(lat2);
-          print(lon2);
+          print(lon2);*/
 
           List<Restaurant> restList =
               await getRestaurant(lat1, lon1, lat2, lon2);
+          for(int i=0;i<restList.length;i++) {
+            print('${restList[i].restName}\n');
+          }
           addRestMarker(restList);
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => FoodRecommend()));
@@ -753,7 +756,8 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                               await createTransitTimeList(
                                                   presetUpdated);
                                         }
-
+                                        map.addMarker(presetUpdated);
+                                        map.addPoly(presetUpdated);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -1299,7 +1303,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   }
 
                   //print(movingTimeList);
-
+                  map.addMarker(presetToBeUpdated);
+                  map.addPoly(presetToBeUpdated);
                   if (movingTimeList.isEmpty) {
                     print('movimgTimeList is empty');
                   }

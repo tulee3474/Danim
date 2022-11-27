@@ -25,9 +25,9 @@ List<LatLng> latLen3 = [
   //const LatLng(37.302263, 126.977977)
 ];
 
-final List<Marker> markers = [];
-final Set<PathOverlay> pathOverlays = {};
-
+List<Marker> markers = [];
+Set<PathOverlay> pathOverlays = {};
+List<List<Place>> pathTemp=[];
 /*void addMarker(String placeName, double lat, double lng) {
   markers.add(Marker(
     markerId: placeName,
@@ -37,6 +37,7 @@ final Set<PathOverlay> pathOverlays = {};
 }*/
 void addMarker(List<List<Place>> pathList) {
   markers.clear();
+  pathTemp=pathList;
   for (int i = 0; i < pathList.length; i++) {
     for (int j = 0; j < pathList[i].length; j++) {
       markers.add(Marker(
@@ -51,6 +52,8 @@ void addMarker(List<List<Place>> pathList) {
 }
 
 void addRestMarker(List<Restaurant> restList) {
+  markers.clear();
+  addMarker(pathTemp);
   for(int i=0;i<restList.length;i++) {
     markers.add(Marker(
       markerId: restList[i].restName,

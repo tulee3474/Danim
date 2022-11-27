@@ -7,7 +7,13 @@ import '../components/image_data.dart';
 import 'package:danim/map.dart';
 import 'package:danim/nearby.dart';
 import 'package:danim/src/timetable.dart';
-class FoodRecommend extends StatelessWidget {
+class FoodRecommend extends StatefulWidget {
+  const FoodRecommend({super.key});
+
+  @override
+  FoodRecommendState createState() => FoodRecommendState();
+}
+class FoodRecommendState extends State<FoodRecommend> {
   NaverMapController? mapController;
   MapType _mapType = MapType.Basic;
 
@@ -27,11 +33,11 @@ class FoodRecommend extends StatelessWidget {
         ),
         body: Container(
             child: NaverMap(
-              /*onMapCreated: (mcontroller) {
+              onMapCreated: (mcontroller) {
                 setState(() {
                   mapController = mcontroller;
                 });
-              },*/
+              },
               initialCameraPosition: CameraPosition(
                   bearing: 0.0,
                   target: LatLng(33.371964, 126.543512),
