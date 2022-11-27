@@ -2,7 +2,7 @@ import 'package:danim/src/app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
-
+import 'package:flutter/services.dart';
 import '../components/image_data.dart';
 import 'package:danim/map.dart';
 import 'package:danim/nearby.dart';
@@ -19,7 +19,17 @@ class FoodRecommendState extends State<FoodRecommend> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    //WillPopScope는 사용자가 빽키를 눌렀을때 작동되는 위젯
+    return WillPopScope(
+        onWillPop: () {
+          setState(() {
+            addMarker(pathTemp);
+            addPoly(pathTemp);
+          });
+          return Future(() => true);
+        },
+    child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -46,6 +56,7 @@ class FoodRecommendState extends State<FoodRecommend> {
               mapType: _mapType,
               markers: markers,
               pathOverlays: pathOverlays,
-            )));
+            ))));
   }
 }
+

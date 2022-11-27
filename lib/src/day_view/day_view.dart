@@ -342,10 +342,6 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
                                 onMapCreated: (mcontroller) {
                                   setState(() {
                                     mapController = mcontroller;
-
-                                    //markers.clear();
-
-                                    addMarker(pathTemp);
                                   });
                                 },
                                 initialCameraPosition: CameraPosition(
