@@ -150,32 +150,6 @@ class RouteAI {
     //각 성향 카테고리별 가중치, weight[5]는 popular, 인기관광지 점수
     List weight = [15, 15, 15, 15, 15, 1.5];
     List listSum = [0, 0, 0, 0, 0];
-    //각 성향 점수 * 가중치 * 선택 유무
-    // for (int x = 0; x < 5; x++) {
-    //   for (int y = 0; y < selectList[x].length; y++) {
-    //     if (x == 0) {
-    //       listSum[0] +=
-    //           targetPlace.partner[y] * weight[x] * selectList[x][y] as int;
-    //     } else if (x == 1) {
-    //       listSum[1] +=
-    //           targetPlace.concept[y] * weight[x] * selectList[x][y] as int;
-    //     } else if (x == 2) {
-    //       listSum[2] +=
-    //           targetPlace.play[y] * weight[x] * selectList[x][y] as int;
-    //     } else if (x == 3) {
-    //       listSum[3] +=
-    //           targetPlace.tour[y] * weight[x] * selectList[x][y] as int;
-    //     } else if (x == 4) {
-    //       listSum[4] +=
-    //           targetPlace.season[y] * weight[x] * selectList[x][y] as int;
-    //     } else {
-    //       print("알 수 없는 에러");
-    //     }
-    //   }
-    //   if (count[x] > 0) {
-    //     sum += (listSum[x] / count[x]).ceil() as int;
-    //   }
-    // }
 
     for (int y = 0; y < selectList[0].length; y++) {
       listSum[0] +=
@@ -210,7 +184,7 @@ class RouteAI {
       double latDiff = targetPlace.latitude - beforePlace.latitude;
       double longDiff = targetPlace.longitude - beforePlace.longitude;
 
-      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 20000;
+      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 50000;
 
       sum -= distance.toInt(); // - 거리 계산
 
@@ -655,14 +629,15 @@ class RouteAI {
         //숙소를 지정해두지 않았을 경우
         else {
           //모든 관광지의 시간을 제외한 point를 탐색
-          point.add(place_point(selectList, null, placeListCopy[0]));
-          for (int i = 1; i < placeListCopy.length; i++) {
-            point.add(place_point(selectList, null, placeListCopy[i]));
+          for (int f = 0; f < placeListCopy.length; f++) {
+            point.add(place_point(selectList, null, placeListCopy[f]));
           }
           //점수를 기준으로 sort해서 시작 관광지를 numPreset * day만큼 추출
           List pointCopy = new List.from(point);
           pointCopy.sort();
-          int index = point.indexOf(pointCopy[i]); //출발지의 Index
+          //출발지의 Index, 프리셋마다 다르게 시작하기 위함
+          int index = point.indexOf(
+              pointCopy[pointCopy.length - 1 - (numPreset as int) * 3]);
           firstPlace = Place.clone(placeListCopy[index]);
         }
 
