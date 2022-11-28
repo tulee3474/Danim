@@ -74,6 +74,9 @@ void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
         .doc(eventStringList[i])
         .set({
       'title': eventStringList[i],
+      //위도, 경도 추가 - write부분
+      'latitude': eventList[i].latitude,
+      'longitude': eventList[i].longitude,
       'date': date,
       'description': eventList[i].description,
       'startTime': startTime,
@@ -259,9 +262,16 @@ class ReadController extends GetxController {
       List<int> date = parseDate(data2.data()!['date'] as int);
       List<int> startTime = parseTime(data2.data()!['startTime'] as int);
       List<int> endTime = parseTime(data2.data()!['endTime'] as int);
+      //위도, 경도 추가 - read부분
+      double latitude = data.data()!['latitude'] as double;
+      double longitude = data.data()!['longitude'] as double;
       temp = CalendarEventData(
         title: title,
         date: DateTime(date[0], date[1], date[2]),
+
+        //위도, 경도 추가 - read부분
+        latitude: latitude,
+        longitude: longitude,
         event: Event(title: title),
         description: data2.data()!['description'] as String,
         startTime:
