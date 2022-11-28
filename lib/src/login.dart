@@ -43,7 +43,7 @@ class Login extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  /*Text(
                     'Easy',
                     style: TextStyle(
                         fontSize: 40,
@@ -93,7 +93,7 @@ class Login extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.all(40.0),
-              ),
+              ),*/
 // 구글 로그인
               SignInButton(
                 Buttons.Google,
@@ -122,10 +122,10 @@ class Login extends StatelessWidget {
                 },
               ),
             ],
-          ),
-        ),
+          //),
+        ),]
       ),
-    );
+    )));
   }
 
   Future _handleSignIn() async {
@@ -170,10 +170,10 @@ class Login extends StatelessWidget {
 // 이메일 로그인 및 가입화면
 class Email extends StatefulWidget {
   @override
-  _EmailState createState() => _EmailState();
+  EmailState createState() => EmailState();
 }
 
-class _EmailState extends State<Email> {
+class EmailState extends State<Email> {
   final _email = TextEditingController();
   final _passWd = TextEditingController();
 
