@@ -34,6 +34,10 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Colors.blue,
             titleTextStyle: TextStyle(color: Colors.black),
           )),
+      routes: {
+        '/app': (context) => App(),
+        '/mea': (context) => const MyHomePage(),
+      },
       home: App(),
       //home: const Map(),
       //home: const MyHomePage(),
