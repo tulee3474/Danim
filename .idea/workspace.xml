@@ -11,7 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="48d0c55b-fa7a-4ea5-8117-8a4d5a966085" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/firebase_read_write.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/firebase_read_write.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/app.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/app.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/login.dart" afterDir="false" />

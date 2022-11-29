@@ -40,8 +40,8 @@ final userReference = FirebaseFirestore.instance.collection('users');
 
 //final DateTime timestamp = DateTime.now();
 User? currentUser;
-String? userName='';
-String? userEmail='';
+String? userName='익명 로그인';
+String? userEmail=' ';
 class App extends StatefulWidget {
   @override
   State<App> createState() => _AppState();

@@ -29,8 +29,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       home:Temp(),
+      theme: ThemeData(
+          primarySwatch: Colors.green,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.blue,
+            titleTextStyle: TextStyle(color: Colors.black),
+          )),
     );
 
   }
