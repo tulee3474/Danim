@@ -30,18 +30,21 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: Temp(),
+      //home: Temp(),
       theme: ThemeData(
-          primarySwatch: Colors.green,
+          //primarySwatch: Colors.green,
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: Color.fromRGBO(194, 233, 252, 1)),
+          brightness: Brightness.light,
           appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.blue,
+            backgroundColor: Color.fromRGBO(194, 233, 252, 1),
             titleTextStyle: TextStyle(color: Colors.black),
           )),
       routes: {
         '/app': (context) => App(),
         '/mea': (context) => const MyHomePage(),
       },
-      //home: App(),
+      home: App(),
       //home: const Map(),
       //home: const MyHomePage(),
     );

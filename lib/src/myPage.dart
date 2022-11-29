@@ -52,7 +52,8 @@ class MyPage extends StatelessWidget {
           title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/app');
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                  //첫화면까지 팝해버리는거임
                 },
                 child: Image.asset(IconsPath.house,
                     fit: BoxFit.contain, height: 20))

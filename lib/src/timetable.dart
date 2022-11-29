@@ -413,9 +413,10 @@ class _TimetableState extends State<Timetable> {
               title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      //첫화면까지 팝해버리는거임
                     },
-                    child: Image.asset(IconsPath.back,
+                    child: Image.asset(IconsPath.house,
                         fit: BoxFit.contain, height: 20)),
                 TextButton(
                     onPressed: () {
@@ -982,7 +983,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
         title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
           TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/app');
+                Navigator.popUntil(context, (route) => route.isFirst);
+                //첫화면까지 팝해버리는거임
               },
               child:
                   Image.asset(IconsPath.house, fit: BoxFit.contain, height: 20))

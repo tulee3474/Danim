@@ -8,7 +8,6 @@ import 'package:danim/map.dart' as map;
 import '../route.dart';
 //import 'exampleResource.dart';\
 
-
 class Preset extends StatelessWidget {
   List<List<List<Place>>> pathList;
   int transit = 0;
@@ -23,9 +22,10 @@ class Preset extends StatelessWidget {
           title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                  //첫화면까지 팝해버리는거임
                 },
-                child: Image.asset(IconsPath.back,
+                child: Image.asset(IconsPath.house,
                     fit: BoxFit.contain, height: 20))
           ]),
         ),
@@ -41,53 +41,43 @@ class Preset extends StatelessWidget {
                               '${pathList[i][0][0].name} + ${pathList[i][0][1].name}...'),
                           //이거 나중에 인덱스 초기화 에러 조심할 것! 관광지 갯수가 적으면..
                           onPressed: () async {
+                            map.addMarker(pathList[i]);
+                            map.addPoly(pathList[i]);
 
+                            if (transit == 0) {
+                              List<List<int>> movingTimeList = [
+                                for (int i = 0; i < pathList[i].length; i++) []
+                              ];
 
+                              movingTimeList =
+                                  await createDrivingTimeList(pathList[i]);
 
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Timetable(
+                                            preset: pathList[i],
+                                            transit: transit,
+                                            movingTimeList: movingTimeList,
+                                          )));
+                            } else {
+                              List<List<int>> movingTimeList = [
+                                for (int i = 0; i < pathList[i].length; i++) []
+                              ];
 
-                                map.addMarker(pathList[i]);
-                                map.addPoly(pathList[i]);
+                              movingTimeList =
+                                  await createTransitTimeList(pathList[i]);
 
-
-                                if(transit ==0 ){
-
-                                  List<List<int>> movingTimeList = [
-                                    for(int i=0; i<pathList[i].length; i++)
-                                      []
-                                  ];
-
-                                  movingTimeList = await createDrivingTimeList(pathList[i]);
-
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Timetable(preset: pathList[i], transit: transit, movingTimeList: movingTimeList,)));}
-
-
-
-                                else {
-                                  List<List<int>> movingTimeList = [
-                                    for(int i=0; i<pathList[i].length; i++)
-                                      []
-                                  ];
-
-                                  movingTimeList = await createTransitTimeList(pathList[i]);
-
-
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              Timetable(preset: pathList[i], transit: transit, movingTimeList: movingTimeList,)));}
-
-
-
-
-
-
-                              })),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Timetable(
+                                            preset: pathList[i],
+                                            transit: transit,
+                                            movingTimeList: movingTimeList,
+                                          )));
+                            }
+                          })),
                   Positioned(
                       right: -20,
                       child: Container(
