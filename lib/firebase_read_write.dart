@@ -270,9 +270,10 @@ class ReadController extends GetxController {
         date: DateTime(date[0], date[1], date[2]),
 
         //위도, 경도 추가 - read부분
-        //latitude: latitude,
-        //longitude: longitude,
+        latitude: latitude,
+        longitude: longitude,
         event: Event(title: title),
+
         description: data2.data()!['description'] as String,
         startTime:
             DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),

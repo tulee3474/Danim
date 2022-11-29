@@ -10,12 +10,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48d0c55b-fa7a-4ea5-8117-8a4d5a966085" name="Changes" comment="">
+<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/map.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/map.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/app.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/app.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/day_view/day_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/day_view/day_view.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/login.dart" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/lib/src/preset.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/preset.dart" afterDir="false" />
+=======
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/firebase_read_write.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/firebase_read_write.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/calendar_event_data.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/calendar_event_data.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/event_CalendarEventData_switch.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/event_CalendarEventData_switch.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/myJourney.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/myJourney.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/timetable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/timetable.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+>>>>>>> Stashed changes
+>>>>>>> 0606d86277079220f34eb039cdf158bf8d67887e
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,5 +117,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

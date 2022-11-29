@@ -6,6 +6,7 @@ import 'package:danim/src/place.dart';
 import 'package:danim/map.dart' as map;
 
 import '../route.dart';
+import 'courseSelected.dart';
 //import 'exampleResource.dart';\
 
 
@@ -42,8 +43,16 @@ class Preset extends StatelessWidget {
                               '${pathList[i][0][0].name} + ${pathList[i][0][1].name}...'),
                           //이거 나중에 인덱스 초기화 에러 조심할 것! 관광지 갯수가 적으면..
                           onPressed: () async {
-                            map.addMarker(pathList[i]);
-                            map.addPoly(pathList[i]);
+
+                            //선택한 코스 전역변수에 저장
+                            course_selected = pathList[i];
+
+
+
+
+
+                            //map.addMarker(pathList[i]);
+                            //map.addPoly(pathList[i]);
 
                             if (transit == 0) {
                               List<List<int>> movingTimeList = [

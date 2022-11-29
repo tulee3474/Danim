@@ -27,6 +27,7 @@ import '../route_ai.dart';
 import '../tourinfo.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/date_time_selector.dart';
+import 'courseSelected.dart';
 import 'createMovingTimeList.dart';
 import 'date_selectlist.dart';
 import 'foodRecommend.dart';
@@ -134,6 +135,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '식사시간'),
             description: '',
+            latitude : 0,
+            longitude: 0,
             startTime: DateTime(
               dayIndex.year,
               dayIndex.month,
@@ -155,6 +158,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '이동'),
             description: '',
+            latitude:0,
+            longitude:0,
             startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
                 timeIndex.hour, timeIndex.minute),
             endTime: transitEndTime,
@@ -181,6 +186,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '식사시간'),
             description: '',
+            latitude:0,
+            longitude:0,
             startTime: DateTime(
               dayIndex.year,
               dayIndex.month,
@@ -202,6 +209,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '이동'),
             description: '',
+            latitude:0,
+            longitude:0,
             startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
                 timeIndex.hour, timeIndex.minute),
             endTime: transitEndTime,
@@ -230,6 +239,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '${preset[i][j].name}'),
             description: '',
+            latitude: preset[i][j].latitude,
+            longitude: preset[i][j].longitude,
             startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
                 timeIndex.hour, timeIndex.minute),
             endTime: tourEndTimeUpdated));
@@ -252,6 +263,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '이동'),
             description: '',
+            latitude: 0,
+            longitude: 0,
             startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
                 timeIndex.hour, timeIndex.minute),
             endTime: transitEndTimeUpdated,
@@ -304,7 +317,6 @@ List<List<double>> createNearMealLocationList(
 
     //타이틀 비교해서 위도 경도 만들기
 
-    //여기 고쳐야됨 .....
 
     for (int m = 0; m < nearMealName.length; m++) {
       for (int i = 0; i < preset.length; i++) {
@@ -648,7 +660,7 @@ class _DayViewWidgetState extends State<DayViewWidget> {
           for (int i = 0; i < restList.length; i++) {
             print('${restList[i].restName}\n');
           }
-          addRestMarker(restList);
+          map.addRestMarker(restList);
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => FoodRecommend()));
         } else if (event[0].title == '이동') {
@@ -757,8 +769,8 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                               await createTransitTimeList(
                                                   presetUpdated);
                                         }
-                                        map.addMarker(presetUpdated);
-                                        map.addPoly(presetUpdated);
+                                        map.addMarker(presetUpdated[course_selected_day_index]);
+                                        map.addPoly(presetUpdated[course_selected_day_index]);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -821,6 +833,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
   late DateTime _endTime;
 
   String _title = "";
+
+  double _latitude = 0;
+
+  double _longitude = 0;
 
   String _description = "";
 
@@ -1038,8 +1054,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       var places = location3.split(', ');
                       String placeName = places[places.length - 1];
 
-                      //새로운 이벤트의 타이틀
+                      //새로운 이벤트의 타이틀, 위도, 경도
                       _title = placeName;
+                      _latitude = lat;
+                      _longitude = lang;
 
                       //newPlace의 위도
                       newPlaceLat = lat;
@@ -1204,6 +1222,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     startTime: _startTime,
                     description: _description,
                     title: _title,
+                    latitude: _latitude,
+                    longitude: _longitude,
                     event: Event(
                       title: _title,
                     ),
@@ -1228,10 +1248,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   CalendarEventData<Event> eventBefore = CalendarEventData(
                       title: 'dummy',
                       date: DateTime.now(),
+                      latitude: 0,
+                      longitude :0,
                       startTime: DateTime.now(),
                       endTime: DateTime.now().add(Duration(hours: 1)));
                   CalendarEventData<Event> eventAfter = CalendarEventData(
                       title: 'dummy',
+                      latitude: 0,
+                      longitude:0,
                       date: DateTime.now(),
                       startTime: DateTime.now(),
                       endTime: DateTime.now().add(Duration(hours: 1)));
@@ -1313,8 +1337,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   }
 
                   //print(movingTimeList);
-                  map.addMarker(presetToBeUpdated);
-                  map.addPoly(presetToBeUpdated);
+                  map.addMarker(presetToBeUpdated[course_selected_day_index]);
+                  map.addPoly(presetToBeUpdated[course_selected_day_index]);
                   if (movingTimeList.isEmpty) {
                     print('movimgTimeList is empty');
                   }
