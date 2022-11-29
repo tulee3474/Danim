@@ -174,13 +174,13 @@ class _MyJourneyState extends State<MyJourney> {
 
                 for (int i = 0; i < dateList.length; i++) {
                   for (int j = 0; j < journey.length; j++) {
-                    if (dates[i].year == journey[j].date.year &&
+                    if ((dates[i].year == journey[j].date.year &&
                         dates[i].month == journey[j].date.month &&
-                        dates[i].day == journey[j].date.day) {
+                        dates[i].day == journey[j].date.day) && (journey[j].title != '이동') && (journey[j].title != '식사시간')) {
                       oldPreset[i].add(Place(
                           journey[j].title,
-                          35.5,
-                          127,
+                          journey[j].latitude,
+                          journey[j].longitude,
                           journey[j]
                               .endTime
                               .difference(journey[j].startTime)

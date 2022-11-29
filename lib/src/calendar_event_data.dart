@@ -38,11 +38,16 @@ class CalendarEventData<T extends Object?> {
 
   final DateTime? _endDate;
 
+  final double latitude;
+  final double longitude;
+
   /// Stores all the events on [date]
   const CalendarEventData({
     required this.title,
     this.description = "",
     this.event,
+    required this.latitude,
+    required this.longitude,
     this.color = Colors.blue,
     required this.startTime,
     required this.endTime,

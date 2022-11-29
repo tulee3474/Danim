@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:danim/src/date_selectlist.dart';
 import 'package:flutter/material.dart';
 
 import '../calendar_constants.dart';
@@ -12,6 +13,7 @@ import '../calendar_event_data.dart';
 import '../components/day_view_components.dart';
 import '../components/event_scroll_notifier.dart';
 import '../constants.dart';
+import '../courseSelected.dart';
 import '../enumerations.dart';
 import '../event_arrangers/event_arrangers.dart';
 import '../event_controller.dart';
@@ -247,6 +249,16 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
     _pageController = PageController(initialPage: _currentIndex);
     _eventArranger = widget.eventArranger ?? SideEventArranger<T>();
     _assignBuilders();
+
+
+
+    course_selected_day_index = _currentIndex;
+
+    print(course_selected_day_index);
+
+    addMarker(course_selected[course_selected_day_index]);
+    addPoly(course_selected[course_selected_day_index]);
+
   }
 
   @override
@@ -481,7 +493,10 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
       _currentDate = _maxDate;
     }
 
+
     _currentIndex = _currentDate.getDayDifference(_minDate);
+
+
   }
 
   /// Sets the minimum and maximum dates for current view.
@@ -562,6 +577,15 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
           _currentDate.day + (index - _currentIndex),
         );
         _currentIndex = index;
+
+        course_selected_day_index = _currentIndex;
+
+        print(course_selected_day_index);
+
+        addMarker(course_selected[course_selected_day_index]);
+        addPoly(course_selected[course_selected_day_index]);
+
+
       });
     }
     widget.onPageChange?.call(_currentDate, _currentIndex);
