@@ -644,7 +644,7 @@ class _DayViewWidgetState extends State<DayViewWidget> {
 
           List<Restaurant> restList =
               await getRestaurant(lat1, lon1, lat2, lon2);
-          for(int i=0;i<restList.length;i++) {
+          for (int i = 0; i < restList.length; i++) {
             print('${restList[i].restName}\n');
           }
           addRestMarker(restList);
@@ -953,6 +953,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
     super.dispose();
   }
+
   String location3 = "Search Location";
   @override
   Widget build(BuildContext context) {
@@ -970,14 +971,22 @@ class _CreateEventPageState extends State<CreateEventPage> {
             color: AppColors.black,
           ),
         ),
-        title: Text(
-          "관광지 추가",
-          style: TextStyle(
-            color: AppColors.black,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        // title: Text(
+        //   "관광지 추가",
+        //   style: TextStyle(
+        //     color: AppColors.black,
+        //     fontSize: 20.0,
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        // ),
+        title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/app');
+              },
+              child:
+                  Image.asset(IconsPath.house, fit: BoxFit.contain, height: 20))
+        ]),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
@@ -1049,8 +1058,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           selectedList[4]));
                       setState(() {});
                       setState(() {});
-                    }
-                    else{
+                    } else {
                       setState(() {
                         location3 = "Search Location";
                       });

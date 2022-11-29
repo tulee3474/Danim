@@ -54,7 +54,7 @@ class MyPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, '/app');
                 },
-                child: Image.asset(IconsPath.back,
+                child: Image.asset(IconsPath.house,
                     fit: BoxFit.contain, height: 20))
           ]),
         ),

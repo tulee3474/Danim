@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 ////파란 줄을 없애기 위한 빠른 수정
 
+import 'package:danim/src/login.dart';
+import 'package:danim/temp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Danim (다님)',
+      home: Temp(),
       theme: ThemeData(
           primarySwatch: Colors.green,
           appBarTheme: const AppBarTheme(
@@ -38,7 +41,7 @@ class _MyAppState extends State<MyApp> {
         '/app': (context) => App(),
         '/mea': (context) => const MyHomePage(),
       },
-      home: App(),
+      //home: App(),
       //home: const Map(),
       //home: const MyHomePage(),
     );

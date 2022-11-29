@@ -53,10 +53,10 @@ class _MyJourneyState extends State<MyJourney> {
         title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
           TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/app');
               },
-              child:
-                  Image.asset(IconsPath.back, fit: BoxFit.contain, height: 20)),
+              child: Image.asset(IconsPath.house,
+                  fit: BoxFit.contain, height: 20)),
           TextButton(
               onPressed: () {
                 showDialog(

@@ -43,7 +43,7 @@ class Login extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  /*Text(
                     'Easy',
                     style: TextStyle(
                         fontSize: 40,
@@ -93,7 +93,7 @@ class Login extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.all(40.0),
-              ),
+              ),*/
 // 구글 로그인
               SignInButton(
                 Buttons.Google,
@@ -121,11 +121,25 @@ class Login extends StatelessWidget {
                   await Get.to(() => Email()); //widget.user
                 },
               ),
+              SizedBox(
+                height: 10,
+              ),
+                  SignInButton(
+                    Buttons.Yahoo,
+                    onPressed: () async {
+                      FirebaseAuth.instance.signInAnonymously();
+                      token=FirebaseAuth.instance.currentUser?.uid;
+                      Login();
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
             ],
-          ),
-        ),
+          //),
+        ),]
       ),
-    );
+    )));
   }
 
   Future _handleSignIn() async {
@@ -170,13 +184,12 @@ class Login extends StatelessWidget {
 // 이메일 로그인 및 가입화면
 class Email extends StatefulWidget {
   @override
-  _EmailState createState() => _EmailState();
+  EmailState createState() => EmailState();
 }
 
-class _EmailState extends State<Email> {
+class EmailState extends State<Email> {
   final _email = TextEditingController();
   final _passWd = TextEditingController();
-
   @override
   void dispose() {
     _email.dispose();
@@ -193,7 +206,7 @@ class _EmailState extends State<Email> {
           iconTheme: IconThemeData(
             color: Colors.white,
           ),
-          title: Text('Sign in with Email',
+          title: Text('이메일로 로그인',
               style: TextStyle(color: Colors.white)
           ),
         ),
@@ -206,7 +219,7 @@ class _EmailState extends State<Email> {
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Email',
+                    labelText: '이메일',
                   ),
                   controller: _email,
                 ),
@@ -216,13 +229,14 @@ class _EmailState extends State<Email> {
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Password',
+                    labelText: '비밀번호',
                   ),
                   controller: _passWd,
                   obscureText: true,
                 ),
               ),
               Padding(padding: EdgeInsets.all(16.0)),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -235,7 +249,7 @@ class _EmailState extends State<Email> {
                         _login(email: _email.text.trim(), passWord: _passWd.text.trim());
                         App();
                       },
-                      label: Text("Log in"),
+                      label: Text("로그인"),
                       icon: Icon(Icons.login),
                     ),
                   ),
@@ -247,7 +261,7 @@ class _EmailState extends State<Email> {
                         print('Sign up --------------');
                         _signUp(email: _email.text.trim(), passWord: _passWd.text.trim());
                       },
-                      label: Text("Sign up"),
+                      label: Text("회원가입"),
                       icon: Icon(Icons.edit),
                     ),
                   )

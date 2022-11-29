@@ -53,9 +53,9 @@ class Community extends StatelessWidget {
           title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/app');
                 },
-                child: Image.asset(IconsPath.back,
+                child: Image.asset(IconsPath.house,
                     fit: BoxFit.contain, height: 20))
           ]),
         ),

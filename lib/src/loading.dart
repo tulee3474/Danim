@@ -25,7 +25,7 @@ import 'accomodationInfo.dart';
 import 'date_selectlist.dart';
 
 class Loading extends StatefulWidget {
-   Loading(this.transit,{super.key});
+  Loading(this.transit, {super.key});
 
   int transit = 0;
 
@@ -68,7 +68,7 @@ class _LoadingState extends State<Loading> {
 
   qqqq() async {
     bool houseCheck = false;
-    if(accomodation != ''){
+    if (accomodation != '') {
       houseCheck = true;
     }
 
@@ -89,20 +89,27 @@ class _LoadingState extends State<Loading> {
     //selectList
     List selectList = selectedList;
 
-
     //도시
     String city = "제주도";
-
 
     if (!houseCheck) {
       house = null;
     }
 
-    List<List<List<Place>>> path_ex =
-        await loadPath(city, house, selectList, fixTourSpotNameList, fixDateList, [7, 20], 5, endDay.difference(startDay).inDays +1);
+    List<List<List<Place>>> path_ex = await loadPath(
+        city,
+        house,
+        selectList,
+        fixTourSpotNameList,
+        fixDateList,
+        [7, 20],
+        5,
+        endDay.difference(startDay).inDays + 1);
     Timer(Duration(seconds: 5), () {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Preset(path_ex, widget.transit)));
+          context,
+          MaterialPageRoute(
+              builder: (context) => Preset(path_ex, widget.transit)));
     });
   }
 
@@ -124,9 +131,9 @@ class _LoadingState extends State<Loading> {
           title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/app');
                 },
-                child: Image.asset(IconsPath.back,
+                child: Image.asset(IconsPath.house,
                     fit: BoxFit.contain, height: 20))
           ]),
         ),

@@ -19,4 +19,5 @@ class IconsPath {
   static String get logo => 'assets/images/logo.png';
   static String get menu => 'assets/images/menu.png';
   static String get back => 'assets/images/back.png';
+  static String get house => 'assets/images/house.png';
 }
