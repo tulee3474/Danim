@@ -1142,7 +1142,7 @@ class _AppState extends State<App> {
                                                                           border:
                                                                               OutlineInputBorder(),
                                                                           labelText:
-                                                                              '지역'))),
+                                                                              '여행 지역'))),
                                                               Container(
                                                                 width: 180.0,
                                                                 child: SafeArea(
@@ -1243,10 +1243,30 @@ class _AppState extends State<App> {
                                                             ]),
                                                         Container(
                                                             padding: EdgeInsets
-                                                                .fromLTRB(0, 10,
+                                                                .fromLTRB(0, 50,
                                                                     0, 0),
-                                                            child: Text(
-                                                                "미리 정해놓은 숙소가 있다면 알려주세요")),
+                                                            child: Column(
+                                                              children: const [
+                                                                Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8.0),
+                                                                  child: Text(
+                                                                    "미리 정해놓은 숙소가 있다면,",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "Neo"),
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "입력해주세요!",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Neo"),
+                                                                )
+                                                              ],
+                                                            )),
                                                         InkWell(
                                                             onTap: () async {
                                                               var place =
@@ -1398,10 +1418,11 @@ class _AppState extends State<App> {
                                                               ),
                                                             )),
                                                         Container(
-                                                            width: 100.0,
-                                                            padding: EdgeInsets
-                                                                .fromLTRB(0, 30,
-                                                                    0, 0),
+                                                            width: 120.0,
+                                                            height: 50.0,
+                                                            // padding: EdgeInsets
+                                                            //     .fromLTRB(0, 30,
+                                                            //         0, 0),
                                                             child:
                                                                 ElevatedButton(
                                                                     onPressed:
@@ -1435,9 +1456,21 @@ class _AppState extends State<App> {
                                                                               builder: (context) => CourseDetail()));
                                                                     },
                                                                     child: Text(
-                                                                        '추천코스'))),
+                                                                      '추천코스',
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontFamily:
+                                                                              "Neo"),
+                                                                    ))),
                                                         Container(
-                                                            width: 100.0,
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(
+                                                                  0, 10, 0, 0),
+                                                        ),
+                                                        Container(
+                                                            width: 120.0,
+                                                            height: 50.0,
                                                             child:
                                                                 ElevatedButton(
                                                                     onPressed:
@@ -1455,17 +1488,24 @@ class _AppState extends State<App> {
 */
                                                                     },
                                                                     child: Text(
-                                                                        '혼자 짤래요')))
+                                                                        '혼자 짤래요',
+                                                                        style: TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            fontFamily: "Neo"))))
                                                       ]),
                                                 )));
                                       });
                                 },
                                 child: Text(
                                   '새 코스',
-                                  style: TextStyle(fontFamily: "Neo"),
+                                  style: TextStyle(
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.lightBlue,
+                                    primary: Color.fromARGB(255, 78, 194, 252),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
@@ -1486,10 +1526,13 @@ class _AppState extends State<App> {
                                 },
                                 child: Text(
                                   '내 여행',
-                                  style: TextStyle(fontFamily: "Neo"),
+                                  style: TextStyle(
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.lightBlue,
+                                    primary: Color.fromARGB(255, 78, 194, 252),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
@@ -1505,10 +1548,13 @@ class _AppState extends State<App> {
                                 },
                                 child: Text(
                                   '커뮤니티',
-                                  style: TextStyle(fontFamily: "Neo"),
+                                  style: TextStyle(
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.lightBlue,
+                                    primary: Color.fromARGB(255, 78, 194, 252),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
