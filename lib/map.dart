@@ -16,11 +16,8 @@ List<List<LatLng>> latLen = [[],[],[],[],[],[],[],[],[],[]
   //const LatLng(37.507941, 127.009686),
   //const LatLng(37.302263, 126.977977)
 ];
+//List<LatLng> latLen=[];
 List<LatLng> accommodationLatLen = [
-  //const LatLng(37.507941, 127.009686),
-  //const LatLng(37.302263, 126.977977)
-];
-List<LatLng> latLen3 = [
   //const LatLng(37.507941, 127.009686),
   //const LatLng(37.302263, 126.977977)
 ];
@@ -28,13 +25,8 @@ List<LatLng> latLen3 = [
 List<Marker> markers = [];
 Set<PathOverlay> pathOverlays = {};
 List<List<Place>> pathTemp=[];
-/*void addMarker(String placeName, double lat, double lng) {
-  markers.add(Marker(
-    markerId: placeName,
-    position: LatLng(lat, lng),
-    infoWindow: placeName,
-  ));
-}*/
+//List<Place> pathTemp=[];
+
 void addMarker(List<List<Place>> pathList) {
   markers.clear();
   pathTemp=pathList;
@@ -50,6 +42,21 @@ void addMarker(List<List<Place>> pathList) {
     }
   }
 }
+/*
+void addMarker(List<Place> pathList) {
+  markers.clear();
+  pathTemp=pathList;
+  for (int i = 0; i < pathList.length; i++) {
+      markers.add(Marker(
+        markerId: pathList[i].name,
+        position: LatLng(pathList[i].latitude, pathList[i].longitude),
+        infoWindow: pathList[i].name,
+        width: 20,
+        height: 20,
+      ));
+    }
+  }
+}*/
 
 void addRestMarker(List<Restaurant> restList) {
   markers.clear();
@@ -78,22 +85,19 @@ void addPoly(List<List<Place>> pathList) {
     pathOverlays.add(PathOverlay(PathOverlayId('path$i'), latLen[i],
         color: colorList[i], width: 7, outlineWidth: 0));
   }
-  /*for (int i = 0; i < pathList[0].length; i++) {
-    latLen.add(LatLng(pathList[0][i].latitude, pathList[0][i].longitude));
-  }
-  for (int i = 0; i < pathList[1].length; i++) {
-    latLen2.add(LatLng(pathList[1][i].latitude, pathList[1][i].longitude));
-  }
-  for (int i = 0; i < pathList[2].length; i++) {
-    latLen3.add(LatLng(pathList[2][i].latitude, pathList[2][i].longitude));
-  }
-  pathOverlays.add(PathOverlay(PathOverlayId('path1'), latLen,
-      color: Colors.green, width: 7, outlineWidth: 0));
-  pathOverlays.add(PathOverlay(PathOverlayId('path2'), latLen2,
-      color: Colors.pink, width: 7, outlineWidth: 0));
-  pathOverlays.add(PathOverlay(PathOverlayId('path3'), latLen3,
-      color: Colors.deepOrange, width: 7, outlineWidth: 0));*/
 }
+/*
+void addPoly(List<Place> pathList) {
+  pathOverlays.clear();
+  latLen.clear();
+  int i=0;
+  for (i = 0; i < pathList.length; i++) {
+      latLen.add(LatLng(pathList[i].latitude, pathList[i].longitude));
+    }
+    pathOverlays.add(PathOverlay(PathOverlayId('path$i'), latLen,
+        color: colorList[i], width: 7, outlineWidth: 0));
+  }
+}*/
 
 class Map extends StatefulWidget {
   const Map({super.key});

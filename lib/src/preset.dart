@@ -8,10 +8,11 @@ import 'package:danim/map.dart' as map;
 import '../route.dart';
 //import 'exampleResource.dart';\
 
+
 class Preset extends StatelessWidget {
   List<List<List<Place>>> pathList;
   int transit = 0;
-
+  //Preset(pathList, this.transit);
   Preset(this.pathList, this.transit);
 
   @override

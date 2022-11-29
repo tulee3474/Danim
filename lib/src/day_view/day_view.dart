@@ -21,6 +21,7 @@ import '../typedefs.dart';
 import '_internal_day_view_page.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:danim/map.dart';
+import 'package:danim/src/preset.dart';
 
 class DayView<T extends Object?> extends StatefulWidget {
 
@@ -562,6 +563,7 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
           _currentDate.day + (index - _currentIndex),
         );
         _currentIndex = index;
+        //addMarker(pathList[index])
       });
     }
     widget.onPageChange?.call(_currentDate, _currentIndex);

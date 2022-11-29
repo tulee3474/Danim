@@ -1080,10 +1080,10 @@ class _AppState extends State<App> {
                   onTap: () => {
                         //로그아웃
                         FirebaseAuth.instance.signOut(),
-                        googleSignIn.signOut()
-
-                        //Navigator.push(context,
-                        //MaterialPageRoute(builder: (context) => Login()))
+                        googleSignIn.signOut(),
+                        //Login()
+                        Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Login()))
                       }),
             ])),
             body: SingleChildScrollView(
