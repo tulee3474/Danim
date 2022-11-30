@@ -1,6 +1,7 @@
 import 'package:danim/calendar_view.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/timetable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
@@ -10,18 +11,24 @@ import 'package:danim/src/myPage.dart';
 
 import 'createMovingTimeList.dart';
 
+
+
+
+
+
 class MyJourney extends StatefulWidget {
   List<CalendarEventData> journey = [];
   List<DateTime> dates = [];
   int index = -1;
+  String previousDiary = '';
 
-  MyJourney(this.journey, this.dates, this.index);
+  MyJourney(this.journey, this.dates, this.index, this.previousDiary);
 
   @override
-  State<MyJourney> createState() => _MyJourneyState(journey, dates, index);
+  State<MyJourney> createState() => _MyJourneyState(journey, dates, index, previousDiary);
 }
 
-
+//첫날, 끝날 기준으로 그 사이 날짜들 다 저장하는 리스트 생성하는 함수
 List<DateTime> createDateList (List<DateTime> dates){
 
   List<DateTime> dateList = [];
@@ -38,8 +45,9 @@ List<DateTime> createDateList (List<DateTime> dates){
 class _MyJourneyState extends State<MyJourney> {
   List<CalendarEventData> journey = [];//calendarEventData 리스트 한 여행에 대한.
   List<DateTime> dates = [];// 첫날, 마지막날 있음
-  List<String> diaries = [];
-  int index = -1;
+  List<String> diary = [];
+  int index = -1;//몇번째인지 인덱스
+  String previousDiary = '';
   late List<DateTime> dateList = createDateList(dates);
 
 
@@ -48,8 +56,8 @@ class _MyJourneyState extends State<MyJourney> {
       TextEditingController(); //코스 리뷰 저장되는 컨트롤러
   int rate = 4; //코스 별점, 4점 기준이라 기본 4점으로 저장함.
 
-  _MyJourneyState(this.journey, this.dates, this.index);
-
+  _MyJourneyState(this.journey, this.dates, this.index, this.previousDiary);
+/*
   List<TextEditingController> createTextController(dateList) {
     List<TextEditingController> textControllers = [];
 
@@ -59,8 +67,21 @@ class _MyJourneyState extends State<MyJourney> {
     return textControllers;
   }
 
-  late List<TextEditingController> textControllers =
-      createTextController(dateList);
+
+ */
+  TextEditingController textController = TextEditingController();
+
+  initState(){
+    super.initState();
+
+    textController = TextEditingController(text: previousDiary);
+
+  }
+
+  dispose(){
+    textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,10 +240,18 @@ class _MyJourneyState extends State<MyJourney> {
                   }
                 }
 
-                //타임테이블 생성
+                //타임테이블 생성 잘 됐나 출력
 
-                print('lati : ${oldPreset[0][0].latitude}');
+                for(int i=0; i<oldPreset.length; i++){
+                  for(int j=0; j<oldPreset[i].length;j++){
+                    print('${i}째 날 ${j}째 코스 : ${oldPreset[i][j].name}');
+                  }
+                }
+
+                //print('lati : ${oldPreset[0][0].latitude}');
                 //print(oldPreset[0][0].longitude);
+
+
                 List<List<int>> movingTimeList = [
                   for (int i = 0; i < oldPreset.length; i++) []
                 ];
@@ -264,18 +293,18 @@ class _MyJourneyState extends State<MyJourney> {
             Container(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Divider(color: Colors.grey, thickness: 2.0)),
-            for (int i = 0; i < dateList.length; i++)
+
               Container(
                   child: Column(children: [
                 Container(
                     padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                    child: Text('${dateList[i]}')),
+                    child: Text('${dateList[0]} - ${dateList[dateList.length-1]}')),
                 SizedBox(
                     width: 200,
                     height: 400,
                     child: TextFormField(
-                      controller: textControllers[i],
-                      //initialValue: "이전에 저장된 일기"
+                      controller: textController,
+
                     ))
               ])),
             Container(
@@ -283,12 +312,28 @@ class _MyJourneyState extends State<MyJourney> {
                 child: ElevatedButton(
                     child: Text('저장'),
                     onPressed: () {
-                      for (int i = 0; i < dateList.length; i++) {
-                        diaries.add(textControllers[i].text);
-                      }
-                      fb_write_diary(readData.docCode, diaries);
+
+                        diary.add(textController.text);
+
+                      fb_write_diary(readData.docCode, diary);
+
+                      showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            content: SizedBox(
+                              width: 300,
+                              height: 150,
+                              child: Center(
+                                child: Text("일기가 저장되었습니다.")
+                              )
+                            )
+                          );
+                        }
+                      );
                       //여기서 DB로 넘기면 됨 !!!!!
-                      //일기 출력은 구현 안된거 같음. db에서 일기 가져오는 곳이 없음
+                      //일기 출력 구현 했음.
                       //print(diaries);
                     }))
           ])),

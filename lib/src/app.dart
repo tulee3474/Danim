@@ -488,16 +488,26 @@ class _AppState extends State<App> {
                                                                         List<List<Place>>
                                                                             emptyPreset =
                                                                             [
-                                                                          []
+                                                                              for(int i=0; i<endDay.difference(startDay).inDays + 1; i++)
+                                                                                []
                                                                         ];
 
-                                                                        /*
+                                                                        List<List<int>> emptyMovingTime = [
+                                                                          for(int i=0; i<endDay.difference(startDay).inDays + 1; i++)
+                                                                            []
+                                                                        ];
+
+
+                                                                        print(
+                                                                            "startDay : $startDay");
+                                                                        print(
+                                                                            "endDay: $endDay");
                                                         Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
                                                                 builder: (context) =>
-                                                                    Timetable(preset: emptyPreset,transit: 0)));
-        */
+                                                                    Timetable(preset: emptyPreset,transit: 0, movingTimeList: emptyMovingTime,)));
+
                                                                       },
                                                                       child: Text(
                                                                           '혼자 짤래요',

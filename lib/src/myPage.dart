@@ -18,11 +18,13 @@ import 'myJourney.dart';
 var readData;
 //User readData;
 List<List<CalendarEventData>> journeys = [];
+List<String> diaries = [];
 Future readUserData(docCode) async {
   var read = ReadController();
   print('qdwq');
 
   journeys = []; //혹시 모르니 초기화 한번
+  diaries = [];
 
   try {
     readData = await read.fb_read_user(docCode) as User;
@@ -38,6 +40,11 @@ Future readUserData(docCode) async {
       journeys.add(tempList);
       jSave = readData.eventNumList[i];
     }
+
+    for (int i=0; i<readData.diaryList.length; i++){
+      diaries.add(readData.diaryList[i]);
+    }
+
   } catch (e) {
     print("저장된 코스가 없습니다.");
   }
@@ -89,10 +96,16 @@ class MyPage extends StatelessWidget {
                         '${journeys[i][journeys[i].length - 1].date.day}'),
                     onPressed: () {
 
-                      print('journeys_title : ${journeys[i][0].title}');
+                      print('journeys_위도 마이페이지에서 확인 : ${journeys[i][0].latitude}');
 
 
                       print('journeys_위도 마이페이지에서 확인 : ${journeys[i][0].latitude}');
+
+                      //이미 저장된 일기 있는지 확인
+                      String previousDiary = '';
+                      if(i < diaries.length){
+                        previousDiary = diaries[i];
+                      }
 
 
                       Navigator.push(
@@ -104,7 +117,8 @@ class MyPage extends StatelessWidget {
                                     journeys[i][0].date,
                                     journeys[i][journeys[i].length - 1].date
                                   ],
-                                  i)));
+                                  i,
+                              previousDiary)));
                       //i 인덱스도 넣어줌
                     }))
         ]));

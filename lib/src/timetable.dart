@@ -1202,6 +1202,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     }
                   }
 
+                  if(presetToBeUpdated[course_selected_day_index].length == 0){
+                    presetToBeUpdated[course_selected_day_index].add(newPlace);
+                    print("path created");
+                    print(presetToBeUpdated);
+
+                  }
+                  else{
                   for (int i = 0; i < presetToBeUpdated.length; i++) {
                     for (int j = 0; j < presetToBeUpdated[i].length; j++) {
                       if (presetToBeUpdated[i][j].name == eventBefore.title) {
@@ -1211,7 +1218,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         print(presetToBeUpdated);
                       }
                     }
-                  }
+                  }}
 
                   List<List<int>> movingTimeList = [];
 

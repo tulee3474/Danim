@@ -649,6 +649,7 @@ class RouteAI {
             //fixedPlaceDayList의 원소가 d+1(n일차)와 같을때만
             if (fixDateList[f] == d + 1) {
                //Place readData =
+
                //    await read.fb_read_one_place(city, fixTourSpotList[f]);
               //LatLng tmp = await getLocation(fixTourSpotList[f].name);
               //double lat = tmp.latitude; //좌표읽어오기
@@ -660,19 +661,20 @@ class RouteAI {
                       fixTourSpotList[f].name,
                   fixTourSpotList[f].latitude,
                   fixTourSpotList[f].longitude,
-                  60,
-                  0,
-                  [0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0]);
+                      60,
+                      0,
+                      [0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0]);
+
+
               fixedPlaceList.add(readData);
               placeListCopy.removeWhere((item) => item.name == readData.name);
             }
           }
         }
-
 
 
         //초기 path 만들기

@@ -584,8 +584,9 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
 
         print(course_selected_day_index);
 
+        if(course_selected != [[]]){
         addMarker(course_selected[course_selected_day_index]);
-        addPoly(course_selected[course_selected_day_index]);
+        addPoly(course_selected[course_selected_day_index]);}
 
       });
     }
