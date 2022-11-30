@@ -825,7 +825,7 @@ class CreateEventPage extends StatefulWidget {
 }
 
 class _CreateEventPageState extends State<CreateEventPage> {
-  //DateTime _startDate = DateTime.now();
+  DateTime _startDate = startDay.add(Duration(days:course_selected_day_index));
   //late DateTime _endDate;
 
   String newPlaceName = '';
@@ -1109,7 +1109,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
               Row(
                 children: [
-                  Expanded(child: Text('날짜 : ' + '${startDay}')),
+                  Expanded(child: Text('날짜 : ' + '${_startDate}')),
                   SizedBox(width: 20.0),
                 ],
               ),
@@ -1220,7 +1220,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   _form.currentState?.save();
 
                   final newEvent = CalendarEventData<Event>(
-                    date: startDay,
+                    date: _startDate,
                     color: _color,
                     endTime: _endTime,
                     startTime: _startTime,

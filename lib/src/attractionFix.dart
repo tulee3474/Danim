@@ -26,6 +26,8 @@ class AttractionFix extends StatefulWidget {
 
 class _AttractionFixState extends State<AttractionFix> {
   String fixTourSpotName = '';
+  double fixTourSpotLat = 0.0;
+  double fixTourSpotLon = 0.0;
 
   int dayNum = endDay.difference(startDay).inDays;
   int dayIndex = 0;
@@ -121,8 +123,13 @@ class _AttractionFixState extends State<AttractionFix> {
                             String placeName = places[places.length - 1];
                             print('$placeName placeName');
 
-                            //관광지 이름
-                            fixTourSpotName = placeName;
+                            //관광지 이름, 위도, 경도 저장
+                            setState(() {
+                              fixTourSpotName = placeName;
+                              fixTourSpotLat = lat;
+                              fixTourSpotLon = lang;
+                            });
+
 
                             placeList.add(Place(
                                 placeName,
@@ -174,7 +181,21 @@ class _AttractionFixState extends State<AttractionFix> {
                       onPressed: () {
                         //픽스할 관광지 저장
                         if (fixTourSpotName != '') {
-                          fixTourSpotNameList.add(fixTourSpotName);
+                          fixTourSpotList.add(
+                            Place(
+                              fixTourSpotName,
+                              fixTourSpotLat,
+                              fixTourSpotLon,
+                                60,
+                                20,
+                                selectedList[0],
+                                selectedList[1],
+                                selectedList[2],
+                                selectedList[3],
+                                selectedList[4]
+
+                            )
+                          );
                         }
 
                         //픽스할 날짜 저장
@@ -183,8 +204,9 @@ class _AttractionFixState extends State<AttractionFix> {
                         }
 
                         //픽스 정보 잘 들어갔는지 출력
-                        print(fixTourSpotNameList);
-                        print(fixDateList);
+                        if(fixTourSpotList.length >0){
+                        print('픽스 관광지 이름: ' + fixTourSpotList[0].name);
+                        print(fixDateList);}
 
                         Navigator.push(
                             context,

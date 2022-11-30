@@ -100,7 +100,7 @@ class _LoadingState extends State<Loading> {
         city,
         house,
         selectList,
-        fixTourSpotNameList,
+        fixTourSpotList,
         fixDateList,
         [7, 20],
         5,

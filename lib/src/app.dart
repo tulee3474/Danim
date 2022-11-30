@@ -113,7 +113,7 @@ class _AppState extends State<App> {
                                   ];
 
                                   //픽스 관광지 정보 초기화
-                                  fixTourSpotNameList = [];
+                                  fixTourSpotList = [];
                                   fixDateList = [];
 
                                   //가는 날, 오는 날 초기화
@@ -440,7 +440,7 @@ class _AppState extends State<App> {
                                                                       print(
                                                                           "selectedList : ${selectedList}");
                                                                       print(
-                                                                          "fixTourSpotNameList: ${fixTourSpotNameList}");
+                                                                          "fixTourSpotList: ${fixTourSpotList}");
                                                                       print(
                                                                           "fixDateList : ${fixDateList}");
                                                                       print(

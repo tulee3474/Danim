@@ -168,7 +168,7 @@ class DayView<T extends Object?> extends StatefulWidget {
     this.maxDay,
     this.initialDay,
     this.hourIndicatorSettings,
-    this.heightPerMinute = 0.7,
+    this.heightPerMinute = 1.3,
     this.timeLineBuilder,
     this.timeLineWidth,
     this.timeLineOffset = 0,
