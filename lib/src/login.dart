@@ -44,21 +44,7 @@ class Login extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Easy',
-                    style: TextStyle(
-                        fontSize: 40,
-                        color: Color.fromRGBO(38, 100, 100, 1.0),
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    child: Icon(
-                      Icons.star,
-                      size: 50,
-                      color: Colors.orangeAccent,
-                    ),
-                  ),
-                  Text(
-                    'Funny',
+                    'Danim',
                     style: TextStyle(
                         fontSize: 40,
                         color: Color.fromRGBO(38, 100, 100, 1.0),
@@ -69,34 +55,11 @@ class Login extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(10.0),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Play',
-                    style:
-                    TextStyle(fontSize: 20, color: Colors.black38, fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    child: Icon(
-                      Icons.local_library,
-                      size: 25,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  Text(
-                    'Study',
-                    style:
-                    TextStyle(fontSize: 20, color: Colors.black38, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
               Padding(
                 padding: EdgeInsets.all(40.0),
               ),
 // 구글 로그인
-              SignInButton(
-                Buttons.Google,
+              ElevatedButton(
                 onPressed: () {
                   _mobile // 모바일 함수와 웹 함수가 다름
                       ? _handleSignIn().then((user) {
@@ -110,37 +73,106 @@ class Login extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => App()));
                   });
                 },
+
+                child: Row(
+                  //spaceEvenly: 요소들을 균등하게 배치하는 속성
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Image.asset('assets/images/google_logo.png'),
+                    Text('구글 로그인',
+                      style: TextStyle(color: Colors.black87, fontSize: 15.0),
+                    ),
+                    Opacity(
+                      opacity: 0.0,
+                      child: Image.asset('assets/images/google_logo.png'),
+                    ),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  //shadowColor: Colors.black, 그림자 추가하는 속성
+
+                  minimumSize: Size.fromHeight(50), // 높이만 50으로 설정
+                  elevation: 1.0,
+                  shape: RoundedRectangleBorder(
+                    // shape : 버튼의 모양을 디자인 하는 기능
+                      borderRadius: BorderRadius.circular(4.0)),
+                ),
               ),
               SizedBox(
-                height: 10,
+                height: 10.0,
               ),
-
 // Email 로그인
-              SignInButton(
-                Buttons.Email,
+              ElevatedButton(
                 onPressed: () async {
-                  print('------- Email authorization');
                   await Get.to(() => Email()); //widget.user
                 },
+
+                child: Row(
+                  //spaceEvenly: 요소들을 균등하게 배치하는 속성
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Image.asset('assets/images/mail_logo.png'),
+                    Text('이메일 로그인',
+                      style: TextStyle(color: Colors.black87, fontSize: 15.0),
+                    ),
+                    Opacity(
+                      opacity: 0.0,
+                      child: Image.asset('assets/images/mail_logo.png'),
+                    ),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  //shadowColor: Colors.black, 그림자 추가하는 속성
+
+                  minimumSize: Size.fromHeight(50), // 높이만 50으로 설정
+                  elevation: 1.0,
+                  shape: RoundedRectangleBorder(
+                    // shape : 버튼의 모양을 디자인 하는 기능
+                      borderRadius: BorderRadius.circular(4.0)),
+                ),
               ),
               SizedBox(
-                height: 10,
+                height: 10.0,
               ),
-                  SignInButton(
-                    Buttons.Yahoo,
-                    onPressed: () async {
-                      await signInAnon();
-                      /*FirebaseAuth.instance.signInAnonymously();
-                      print('asd\n');
-                      print(FirebaseAuth.instance.currentUser);
-                      token=FirebaseAuth.instance.currentUser?.uid;*/
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => App()));
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+//익명로그인
+              ElevatedButton(
+                onPressed: () async {
+                  await signInAnon();
+
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => App()));
+                },
+                child: Row(
+                  //spaceEvenly: 요소들을 균등하게 배치하는 속성
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Image.asset('assets/images/guest_logo.png'),
+                    Text('익명 로그인',
+                      style: TextStyle(color: Colors.black87, fontSize: 15.0),
+                    ),
+                    Opacity(
+                      opacity: 0.0,
+                      child: Image.asset('assets/images/guest_logo.png'),
+                    ),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  //shadowColor: Colors.black, 그림자 추가하는 속성
+
+                  minimumSize: Size.fromHeight(50), // 높이만 50으로 설정
+                  elevation: 1.0,
+                  shape: RoundedRectangleBorder(
+                    // shape : 버튼의 모양을 디자인 하는 기능
+                      borderRadius: BorderRadius.circular(4.0)),
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+
             ],
           //),
         ),
@@ -189,8 +221,8 @@ class Login extends StatelessWidget {
       UserCredential result = await _auth.signInAnonymously();
       User? user = result.user;
       token=user?.uid;
-      userName='익명 로그인 $token';
-      userEmail='';
+      userName='익명 로그인';
+      //userEmail=token;
       print('asdf $token');
       return user;
     } catch (e) {
@@ -267,8 +299,10 @@ class EmailState extends State<Email> {
                       onPressed: () {
                         print('Log in --------------');
                         _login(email: _email.text.trim(), passWord: _passWd.text.trim());
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => App()));
+                        //Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+
+                        //Navigator.push(context,
+                        //    MaterialPageRoute(builder: (context) => App()));
                       },
                       label: Text("로그인"),
                       icon: Icon(Icons.login),
@@ -281,8 +315,9 @@ class EmailState extends State<Email> {
                       onPressed: () {
                         print('Sign up --------------');
                         _signUp(email: _email.text.trim(), passWord: _passWd.text.trim());
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Email()));
+                        _login(email: _email.text.trim(), passWord: _passWd.text.trim());
+                        //Navigator.push(context,
+                        //    MaterialPageRoute(builder: (context) => Email()));
                       },
                       label: Text("회원가입"),
                       icon: Icon(Icons.edit),
@@ -331,8 +366,11 @@ class EmailState extends State<Email> {
           .signInWithEmailAndPassword(email: email, password: passWord)
           .then((value) => Get.back(result: value));
       token=FirebaseAuth.instance.currentUser?.uid;
-      userName=" ";
-      userEmail=FirebaseAuth.instance.currentUser?.email;
+      //userName=FirebaseAuth.instance.currentUser?.uid;
+      userName=FirebaseAuth.instance.currentUser?.email;
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => App()));
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         print(e.code.toString());

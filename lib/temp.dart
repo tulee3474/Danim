@@ -26,6 +26,9 @@ class _TempState extends State<Temp> {
               print('asdf ${snapshot.data}');
               token=FirebaseAuth.instance.currentUser?.uid;
               userName=FirebaseAuth.instance.currentUser?.displayName;
+              if (userName==null) {
+                userName=' ';
+              }
               userEmail=FirebaseAuth.instance.currentUser?.email;
               print('asdfasf $token $userName $userEmail');
               return App();
