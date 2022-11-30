@@ -96,7 +96,7 @@ class _LoadingState extends State<Loading> {
     }
 
     List<List<List<Place>>> path_ex = await loadPath(city, house, selectList,
-        [7, 20], 5, endDay.difference(startDay).inDays + 1);
+        [dayStartingTime.hour, dayEndingTime.hour], 5, endDay.difference(startDay).inDays + 1);
 
     Timer(Duration(seconds: 5), () {
       Navigator.push(

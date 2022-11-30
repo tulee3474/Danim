@@ -38,8 +38,8 @@ import 'package:danim/src/user.dart';
 
 List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
     DateTime startDay, DateTime endDay, List<List<int>> moving_time) {
-  int startDayTime = 7;
-  int endDayTime = 21;
+  int startDayTime = dayStartingTime.hour;
+  int endDayTime = dayEndingTime.hour;
 
   bool lunch = false;
   bool dinner = false;
@@ -118,7 +118,7 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
                   dayIndex.year, dayIndex.month, dayIndex.day, 17, 0)) >=
               0 &&
           timeIndex.compareTo(DateTime(
-                  dayIndex.year, dayIndex.month, dayIndex.day, 20, 0)) <
+                  dayIndex.year, dayIndex.month, dayIndex.day, 22, 0)) <
               0 &&
           !dinner) {
         dinner = true;

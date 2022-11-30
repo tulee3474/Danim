@@ -21,8 +21,11 @@ import 'package:danim/src/start_end_day.dart';
 
 import 'package:danim/src/login.dart';
 
+import '../app_colors.dart';
+import '../constants.dart';
 import '../map.dart';
 import '../route_ai.dart';
+import '../widgets/date_time_selector.dart';
 import 'accomodationInfo.dart';
 import 'community.dart';
 import 'date_selectlist.dart';
@@ -54,7 +57,12 @@ class _AppState extends State<App> {
   TextEditingController _endDateController = TextEditingController();
   TextEditingController _accomodationController = TextEditingController();
 
+  TextEditingController _startTimeController = TextEditingController();
+
+  TextEditingController _endTimeController = TextEditingController();
+
   DateTime? tempPickedDate;
+  final GlobalKey<FormState> _form = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +145,9 @@ class _AppState extends State<App> {
                                                   child: SizedBox(
                                                     height: 600.0,
                                                     width: 300,
-                                                    child: Column(
+                                                    child: Form(
+                                                    key: _form,
+                                                    child:Column(
                                                         children: <Widget>[
                                                           Column(
                                                               children: <
@@ -249,6 +259,52 @@ class _AppState extends State<App> {
 
                                                                 ////
                                                               ]),
+
+                                                          Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: DateTimeSelectorFormField(
+                                                                  controller: _startTimeController,
+                                                                  decoration: AppConstants.inputDecoration.copyWith(
+                                                                    labelText: "시작 시간",
+                                                                  ),
+                                                                  validator: (value) {
+                                                                    if (value == null || value == "")
+                                                                      return "Please select start time.";
+
+                                                                    return null;
+                                                                  },
+                                                                  onSave: (date) => dayStartingTime = date,
+                                                                  textStyle: TextStyle(
+                                                                    color: AppColors.black,
+                                                                    fontSize: 17.0,
+                                                                  ),
+                                                                  type: DateTimeSelectionType.time,
+                                                                ),
+                                                              ),
+                                                              SizedBox(width: 20.0),
+                                                              Expanded(
+                                                                child: DateTimeSelectorFormField(
+                                                                  controller: _endTimeController,
+                                                                  decoration: AppConstants.inputDecoration.copyWith(
+                                                                    labelText: "종료 시간",
+                                                                  ),
+                                                                  validator: (value) {
+                                                                    if (value == null || value == "")
+                                                                      return "Please select end time.";
+
+                                                                    return null;
+                                                                  },
+                                                                  onSave: (date) => dayEndingTime = date,
+                                                                  textStyle: TextStyle(
+                                                                    color: AppColors.black,
+                                                                    fontSize: 17.0,
+                                                                  ),
+                                                                  type: DateTimeSelectionType.time,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                           Container(
                                                               padding:
                                                                   EdgeInsets
@@ -441,6 +497,8 @@ class _AppState extends State<App> {
                                                                         //인풋값들 출력 확인
                                                                         //숙소값, 가는날, 오는만 있어야 정상.
 
+                                                                            _form.currentState?.save();
+
                                                                         print(
                                                                             "accomodation : ${accomodation}");
                                                                         print(
@@ -457,6 +515,11 @@ class _AppState extends State<App> {
                                                                             "startDay : $startDay");
                                                                         print(
                                                                             "endDay: $endDay");
+                                                                        print(
+                                                                            "dayStartingTime: $dayStartingTime");
+
+                                                                        print(
+                                                                            "dayEndingTime: $dayEndingTime");
 
                                                                         print(
                                                                             "며칠? ${endDay.difference(startDay).inDays + 1}");
@@ -515,7 +578,7 @@ class _AppState extends State<App> {
                                                                               fontWeight: FontWeight.bold,
                                                                               fontFamily: "Neo"))))
                                                         ]),
-                                                  )));
+                                                  ))));
                                         });
                                   },
                                   child: Text(
