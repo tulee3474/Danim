@@ -21,11 +21,28 @@ class MyJourney extends StatefulWidget {
   State<MyJourney> createState() => _MyJourneyState(journey, dates, index);
 }
 
+
+List<DateTime> createDateList (List<DateTime> dates){
+
+  List<DateTime> dateList = [];
+
+  for(int i=0; i<dates[1].difference(dates[0]).inDays + 1; i++){
+
+    dateList.add(dates[0].add(Duration(days: i)));
+
+  }
+
+  return dateList;
+}
+
 class _MyJourneyState extends State<MyJourney> {
-  List<CalendarEventData> journey = [];
-  List<DateTime> dates = [];
+  List<CalendarEventData> journey = [];//calendarEventData 리스트 한 여행에 대한.
+  List<DateTime> dates = [];// 첫날, 마지막날 있음
   List<String> diaries = [];
   int index = -1;
+  late List<DateTime> dateList = createDateList(dates);
+
+
 
   TextEditingController courseReview =
       TextEditingController(); //코스 리뷰 저장되는 컨트롤러
@@ -33,17 +50,17 @@ class _MyJourneyState extends State<MyJourney> {
 
   _MyJourneyState(this.journey, this.dates, this.index);
 
-  List<TextEditingController> createTextController(dates) {
+  List<TextEditingController> createTextController(dateList) {
     List<TextEditingController> textControllers = [];
 
-    for (int i = 0; i < dates.length; i++) {
-      textControllers.add(TextEditingController());
+    for (int i = 0; i < dateList.length; i++) {
+      textControllers.add(TextEditingController(text: '이전에 저장한 일기...'));
     }
     return textControllers;
   }
 
   late List<TextEditingController> textControllers =
-      createTextController(dates);
+      createTextController(dateList);
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +171,10 @@ class _MyJourneyState extends State<MyJourney> {
               onPressed: () async {
                 //여기서 timetable 다시 띄우기
 
+                for(int i=0; i< journey.length; i++){
+                  print('journey_lat : ${journey[i].title}');
+                }
+
                 List<List<Place>> oldPreset = [
                   for (int i = 0;
                       i <
@@ -163,8 +184,9 @@ class _MyJourneyState extends State<MyJourney> {
                     []
                 ]; // 프리셋 초기화
 
-                List<DateTime> dateList = [];
+               // List<DateTime> dateList = [];
 
+                /*
                 for (int i = 0;
                     i < widget.dates[1].difference(widget.dates[0]).inDays + 1;
                     i++) {
@@ -172,11 +194,13 @@ class _MyJourneyState extends State<MyJourney> {
                       widget.dates[0].month, widget.dates[0].day + i));
                 } // 날짜 리스트
 
+                 */
+
                 for (int i = 0; i < dateList.length; i++) {
                   for (int j = 0; j < journey.length; j++) {
-                    if ((dates[i].year == journey[j].date.year &&
-                        dates[i].month == journey[j].date.month &&
-                        dates[i].day == journey[j].date.day) && (journey[j].title != '이동') && (journey[j].title != '식사시간')) {
+                    if ((dateList[i].year == journey[j].date.year &&
+                        dateList[i].month == journey[j].date.month &&
+                        dateList[i].day == journey[j].date.day) && (journey[j].title != '이동') && (journey[j].title != '식사시간')) {
                       oldPreset[i].add(Place(
                           journey[j].title,
                           journey[j].latitude,
@@ -197,12 +221,18 @@ class _MyJourneyState extends State<MyJourney> {
 
                 //타임테이블 생성
 
+                print('lati : ${oldPreset[0][0].latitude}');
+                //print(oldPreset[0][0].longitude);
                 List<List<int>> movingTimeList = [
                   for (int i = 0; i < oldPreset.length; i++) []
                 ];
 
                 movingTimeList = await createDrivingTimeList(oldPreset);
 
+                print(oldPreset);
+                print(movingTimeList);
+
+                /*
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -211,6 +241,7 @@ class _MyJourneyState extends State<MyJourney> {
                               transit: 0,
                               movingTimeList: movingTimeList,
                             )));
+                */
               })
         ]),
       ),
@@ -233,17 +264,18 @@ class _MyJourneyState extends State<MyJourney> {
             Container(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Divider(color: Colors.grey, thickness: 2.0)),
-            for (int i = 0; i < dates.length; i++)
+            for (int i = 0; i < dateList.length; i++)
               Container(
                   child: Column(children: [
                 Container(
                     padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                    child: Text('${dates[i]}')),
+                    child: Text('${dateList[i]}')),
                 SizedBox(
                     width: 200,
                     height: 400,
-                    child: TextField(
+                    child: TextFormField(
                       controller: textControllers[i],
+                      //initialValue: "이전에 저장된 일기"
                     ))
               ])),
             Container(
@@ -251,7 +283,7 @@ class _MyJourneyState extends State<MyJourney> {
                 child: ElevatedButton(
                     child: Text('저장'),
                     onPressed: () {
-                      for (int i = 0; i < dates.length; i++) {
+                      for (int i = 0; i < dateList.length; i++) {
                         diaries.add(textControllers[i].text);
                       }
                       fb_write_diary(readData.docCode, diaries);

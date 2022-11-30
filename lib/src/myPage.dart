@@ -86,6 +86,9 @@ class MyPage extends StatelessWidget {
                         '.' +
                         '${journeys[i][journeys[i].length - 1].date.day}'),
                     onPressed: () {
+
+                      print('journeys_title : ${journeys[i][0].title}');
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(

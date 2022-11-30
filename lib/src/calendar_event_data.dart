@@ -57,6 +57,9 @@ class CalendarEventData<T extends Object?> {
 
   DateTime get endDate => _endDate ?? date;
 
+
+
+
   Map<String, dynamic> toJson() => {
     "date": date,
     "startTime": startTime,

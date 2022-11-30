@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:core';
 import 'dart:math';
 
 import 'package:danim/calendar_view.dart';
@@ -37,58 +36,6 @@ import 'package:danim/firebase_read_write.dart';
 import 'package:danim/src/login.dart';
 import 'package:danim/src/user.dart';
 
-/*
-
-// 자차 이동시간 리스트 생성
-Future<List<List<int>>> createDrivingTimeList (List<List<Place>> preset) async {
-
-  List<List<int>> drivingTimeList = [
-    for(int i=0; i<preset.length; i++)
-      []
-  ];
-  int movingTime = 0;
-
-  //자차 이동시간 받아오기
-
-    for (int i = 0; i < preset.length; i++) {
-      for (int j = 0; j < preset[i].length - 1; j++) {
-        movingTime = (await getDrivingDuration(
-            preset[i][j].latitude, preset[i][j].longitude,
-            preset[i][j + 1].latitude, preset[i][j + 1].longitude));
-        drivingTimeList[i].add(movingTime);
-      }
-    }
-
-
-  return await drivingTimeList;
-}
-
-//대중교통 이동시간 리스트 생성
-Future<List<List<TransitTime>>> createTransitTimeList( List<List<Place>> preset ) async {
-
-  TransitTime transitTime;
-  List<List<TransitTime>> transitTimeList = [
-    for(int i=0; i<preset.length; i++)
-      []
-  ];
-
-  for(int i=0; i<preset.length; i++){
-
-    for(int j=0; j<preset[i].length-1; j++){
-
-      transitTime = (await getTransitDuration(preset[i][j].latitude, preset[i][j].longitude,
-      preset[i][j + 1].latitude, preset[i][j + 1].longitude));
-
-    }
-
-  }
-
-
-  return transitTimeList;
-
-}
-
-*/
 
 List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
     DateTime startDay, DateTime endDay, List<List<int>> moving_time) {
@@ -285,58 +232,7 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
   return events;
 }
 
-//mealTimeList 생성
 
-List<DateTime> createMealTimeList(List<CalendarEventData<Event>> events) {
-  List<DateTime> mealTimeList = [];
-
-  for (int i = 0; i < events.length; i++) {
-    if (events[i].title == '식사시간') {
-      mealTimeList.add(events[i].startTime);
-    }
-  }
-
-  return mealTimeList;
-}
-
-//식사시간 앞 뒤 관광지 위도 경도 저장 배열
-
-List<List<double>> createNearMealLocationList(
-    List<CalendarEventData<Event>> events, List<List<Place>> preset) {
-  List<List<double>> nearMealLocationList = [[], []]; // 위도, 경도
-  List<String> nearMealName = [];
-
-  for (int i = 2; i < events.length - 1; i++) {
-    //타이틀 가져옴
-    if (events[i].title == "식사시간") {
-      nearMealName.add(events[i - 2].title);
-      nearMealName.add(events[i + 2].title);
-
-      print('nearMealName : $nearMealName');
-    }
-
-    //타이틀 비교해서 위도 경도 만들기
-
-
-    for (int m = 0; m < nearMealName.length; m++) {
-      for (int i = 0; i < preset.length; i++) {
-        for (int j = 0; j < preset[i].length; j++) {
-          if (nearMealName[m] == preset[i][j].name) {
-            nearMealLocationList[0].add(preset[i][j].latitude);
-            nearMealLocationList[1].add(preset[i][j].longitude);
-
-            break;
-          }
-        }
-      }
-    }
-
-    //print('nearMealLocations : $nearMealLocationList');
-
-  }
-
-  return nearMealLocationList;
-}
 
 class Timetable extends StatefulWidget {
   Timetable(
@@ -361,30 +257,20 @@ class _TimetableState extends State<Timetable> {
 
   late List<CalendarEventData<Event>> events =
       createEventList(widget.preset, startDay, endDay, widget.movingTimeList);
-  late List<DateTime> mealTimes = createMealTimeList(events);
-  late List<List<double>> nearMealLocationList =
-      createNearMealLocationList(events, widget.preset);
+
 
   String isSaved = '';
 
   @override
   void initState() {
     super.initState();
-    //events = await createEventList(widget.preset, startDay, endDay, widget.transit);
+
   }
 
   @override
   void dispose() {
     _CourseNameController.dispose();
     super.dispose();
-  }
-
-  List<DateTime> getMealTimeList() {
-    return mealTimes;
-  }
-
-  List<List<double>> getNearMealLocation() {
-    return nearMealLocationList;
   }
 
   int getTransit() {
@@ -585,8 +471,7 @@ class _TimetableState extends State<Timetable> {
               getPreset: getPreset,
               getEvents: getEvents,
               getMovingTimeList: getMovingTimeList,
-              getMealTimes: getMealTimeList,
-              getNearMealLocations: getNearMealLocation,
+
             )));
   }
 }
@@ -598,20 +483,18 @@ class DayViewWidget extends StatefulWidget {
   final Function() getPreset;
   final Function() getEvents;
   final Function() getMovingTimeList;
-  final Function() getMealTimes;
-  final Function() getNearMealLocations;
+
   int transit = 0;
 
-  DayViewWidget(
-      {Key? key,
-      this.state,
-      this.width,
-      required this.transit,
-      required this.getPreset,
-      required this.getEvents,
-      required this.getMovingTimeList,
-      required this.getMealTimes,
-      required this.getNearMealLocations})
+  DayViewWidget({Key? key,
+    this.state,
+    this.width,
+    required this.transit,
+    required this.getPreset,
+    required this.getEvents,
+    required this.getMovingTimeList,
+
+  })
       : super(key: key);
 
   @override
@@ -619,6 +502,9 @@ class DayViewWidget extends StatefulWidget {
 }
 
 class _DayViewWidgetState extends State<DayViewWidget> {
+
+  late List<CalendarEventData<Event>> events = widget.getEvents();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -629,31 +515,21 @@ class _DayViewWidgetState extends State<DayViewWidget> {
       width: widget.width,
       onEventTap: (event, date) async {
         if (event[0].title == '식사시간') {
-          List<DateTime> mealTimes = widget.getMealTimes();
-          List<List<double>> nearMealLocations = widget.getNearMealLocations();
+          //여기에 다시 구현
 
-          print(mealTimes);
-          print(nearMealLocations);
-          print(nearMealLocations[0].length);
-          print(nearMealLocations[1].length);
+          int mealIndex = 0;
 
-          int mealNum = 0;
-
-          for (int i = 0; i < mealTimes.length; i++) {
-            if (mealTimes[i].compareTo(event[0].startTime) == 0) {
-              mealNum = i;
+          for(int i=0; i<events.length; i++){
+            if(event[0].startTime.compareTo(events[i].startTime) == 0){
+              mealIndex = i;
             }
           }
 
-          double lat1 = nearMealLocations[0][mealNum * 2];
-          double lat2 = nearMealLocations[0][mealNum * 2 + 1];
-          double lon1 = nearMealLocations[1][mealNum * 2];
-          double lon2 = nearMealLocations[1][mealNum * 2 + 1];
+          double lat1 = events[mealIndex-2].latitude;
+          double lon1 = events[mealIndex-2].longitude;
+          double lat2 = events[mealIndex+2].latitude;
+          double lon2 = events[mealIndex+2].longitude;
 
-          /*print(lat1);
-          print(lon1);
-          print(lat2);
-          print(lon2);*/
 
           List<Restaurant> restList =
               await getRestaurant(lat1, lon1, lat2, lon2);
@@ -1368,331 +1244,3 @@ class _CreateEventPageState extends State<CreateEventPage> {
     );
   }
 }
-
-/*
-
-class AddEventWidget extends StatefulWidget {
-  final void Function(CalendarEventData<Event>)? onEventAdd;
-
-
-  const AddEventWidget({
-    Key? key,
-    this.onEventAdd,
-  }) : super(key: key);
-
-  @override
-  _AddEventWidgetState createState() => _AddEventWidgetState();
-}
-
-class _AddEventWidgetState extends State<AddEventWidget> {
-  DateTime _startDate = DateTime(2022,11,10);
-  //late DateTime _endDate;
-
-  DateTime? _startTime;
-
-  DateTime? _endTime;
-
-  String _title = "";
-
-  String _description = "";
-
-  Color _color = Colors.blue;
-
-  late FocusNode _titleNode;
-
-  late FocusNode _descriptionNode;
-
-  late FocusNode _dateNode;
-
-  final GlobalKey<FormState> _form = GlobalKey();
-
-  //late TextEditingController _startDateController;
-  late TextEditingController _startTimeController;
-  late TextEditingController _endTimeController;
-  //late TextEditingController _endDateController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _titleNode = FocusNode();
-    _descriptionNode = FocusNode();
-    _dateNode = FocusNode();
-
-    //_startDateController = TextEditingController();
-    //_endDateController = TextEditingController();
-    _startTimeController = TextEditingController();
-    _endTimeController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _titleNode.dispose();
-    _descriptionNode.dispose();
-    _dateNode.dispose();
-
-    //_startDateController.dispose();
-    //_endDateController.dispose();
-    _startTimeController.dispose();
-    _endTimeController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _form,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            decoration: AppConstants.inputDecoration.copyWith(
-              labelText: "관광지 검색",
-            ),
-            style: TextStyle(
-              color: AppColors.black,
-              fontSize: 17.0,
-            ),
-            onSaved: (value) => _title = value?.trim() ?? "",
-            validator: (value) {
-              if (value == null || value == "")
-                return "관광지명을 검색하세요";
-
-              return null;
-            },
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.next,
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: Text('날짜 : '+'${_startDate}'
-                  )),
-
-
-              SizedBox(width: 20.0),
-
-            ],
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: DateTimeSelectorFormField(
-                  controller: _startTimeController,
-                  decoration: AppConstants.inputDecoration.copyWith(
-                    labelText: "시작 시간",
-                  ),
-                  validator: (value) {
-                    if (value == null || value == "")
-                      return "Please select start time.";
-
-                    return null;
-                  },
-                  onSave: (date) => _startTime = date,
-                  textStyle: TextStyle(
-                    color: AppColors.black,
-                    fontSize: 17.0,
-                  ),
-                  type: DateTimeSelectionType.time,
-                ),
-              ),
-              SizedBox(width: 20.0),
-              Expanded(
-                child: DateTimeSelectorFormField(
-                  controller: _endTimeController,
-                  decoration: AppConstants.inputDecoration.copyWith(
-                    labelText: "종료 시간",
-                  ),
-                  validator: (value) {
-                    if (value == null || value == "")
-                      return "Please select end time.";
-
-                    return null;
-                  },
-                  onSave: (date) => _endTime = date,
-                  textStyle: TextStyle(
-                    color: AppColors.black,
-                    fontSize: 17.0,
-                  ),
-                  type: DateTimeSelectionType.time,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 15,
-          ),
-
-
-          TextFormField(
-            focusNode: _descriptionNode,
-            style: TextStyle(
-              color: AppColors.black,
-              fontSize: 17.0,
-            ),
-            keyboardType: TextInputType.multiline,
-            textInputAction: TextInputAction.newline,
-            selectionControls: MaterialTextSelectionControls(),
-            minLines: 1,
-            maxLines: 10,
-            maxLength: 1000,
-            validator: (value) {
-              if (value == null || value.trim() == "")
-                return "Please enter event description.";
-
-              return null;
-            },
-            onSaved: (value) => _description = value?.trim() ?? "",
-            decoration: AppConstants.inputDecoration.copyWith(
-              hintText: "Event Description",
-            ),
-          )
-
-          ,
-          SizedBox(
-            height: 15.0,
-          ),
-          Row(
-            children: [
-              Text(
-                "색상: ",
-                style: TextStyle(
-                  color: AppColors.black,
-                  fontSize: 17,
-                ),
-              ),
-              GestureDetector(
-                onTap: _displayColorPicker,
-                child: CircleAvatar(
-                  radius: 15,
-                  backgroundColor: _color,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          CustomButton(
-            onTap: () {
-/*
-              context.read<PathInformation>().insertPath(  Place(
-              '신사역',
-              2,
-              33.4,
-              43.2,
-              30,
-              [10, 20, 30, 40, 50, 60, 70],
-              [10, 20, 30, 40, 50],
-              [10, 20, 30, 40, 50, 60],
-              [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110],
-              [10, 20, 30, 40]
-              ));
-              final move = context.watch<PathInformation>().;
-              print(move);
-
-*/
-
-            },
-            title: "관광지 추가",
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _createEvent() {
-    if (!(_form.currentState?.validate() ?? true)) return;
-
-    _form.currentState?.save();
-
-    final event = CalendarEventData<Event>(
-      date: _startDate,
-      color: _color,
-      endTime: _endTime,
-      startTime: _startTime,
-      description: _description,
-      endDate: _startDate,
-      title: _title,
-      event: Event(
-        title: _title,
-      ),
-    );
-
-    widget.onEventAdd?.call(event);
-    _resetForm();
-  }
-
-  void _resetForm() {
-    _form.currentState?.reset();
-    //_startDateController.text = "";
-    _endTimeController.text = "";
-    _startTimeController.text = "";
-  }
-
-  void _displayColorPicker() {
-    var color = _color;
-    showDialog(
-      context: context,
-      useSafeArea: true,
-      barrierColor: Colors.black26,
-      builder: (_) => SimpleDialog(
-        clipBehavior: Clip.hardEdge,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          side: BorderSide(
-            color: AppColors.bluishGrey,
-            width: 2,
-          ),
-        ),
-        contentPadding: EdgeInsets.all(20.0),
-        children: [
-          Text(
-            "Event Color",
-            style: TextStyle(
-              color: AppColors.black,
-              fontSize: 25.0,
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 20.0),
-            height: 1.0,
-            color: AppColors.bluishGrey,
-          ),
-          ColorPicker(
-            displayThumbColor: true,
-            enableAlpha: false,
-            pickerColor: _color,
-            onColorChanged: (c) {
-              color = c;
-            },
-          ),
-          Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: 50.0, bottom: 30.0),
-              child: CustomButton(
-                title: "Select",
-                onTap: () {
-                  if (mounted)
-                    setState(() {
-                      _color = color;
-                    });
-                  context.pop();
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
- */

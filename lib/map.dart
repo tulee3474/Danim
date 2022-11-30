@@ -66,6 +66,7 @@ void addPoly(List<Place> pathList) {
 void addRestMarker(List<Restaurant> restList) {
   markers.clear();
   addMarker(pathTemp);
+
   for(int i=0;i<restList.length;i++) {
     markers.add(Marker(
       markerId: restList[i].restName,
