@@ -22,22 +22,24 @@ Future readUserData(docCode) async {
   var read = ReadController();
   print('qdwq');
 
-  readData = await read.fb_read_user(docCode) as User;
-  //readData = await read.fb_read_user('docCodeTest1') as User;
-
-  print(readData.name);
-
   journeys = []; //혹시 모르니 초기화 한번
 
-  int jSave = 0;
+  try {
+    readData = await read.fb_read_user(docCode) as User;
+    //readData = await read.fb_read_user('docCodeTest1') as User;
+    print(readData.name);
+    int jSave = 0;
 
-  for (int i = 0; i < readData.eventNumList.length; i++) {
-    List<CalendarEventData> tempList = [];
-    for (int j = 0; j < readData.eventNumList[i]; j++) {
-      tempList.add(readData.eventList[j + jSave] as CalendarEventData);
+    for (int i = 0; i < readData.eventNumList.length; i++) {
+      List<CalendarEventData> tempList = [];
+      for (int j = 0; j < readData.eventNumList[i]; j++) {
+        tempList.add(readData.eventList[j + jSave] as CalendarEventData);
+      }
+      journeys.add(tempList);
+      jSave = readData.eventNumList[i];
     }
-    journeys.add(tempList);
-    jSave = readData.eventNumList[i];
+  } catch (e) {
+    print("저장된 코스가 없습니다.");
   }
 }
 
@@ -86,7 +88,6 @@ class MyPage extends StatelessWidget {
                         '.' +
                         '${journeys[i][journeys[i].length - 1].date.day}'),
                     onPressed: () {
-
                       print('journeys_title : ${journeys[i][0].title}');
 
                       Navigator.push(
