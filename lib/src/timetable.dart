@@ -769,8 +769,12 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                               await createTransitTimeList(
                                                   presetUpdated);
                                         }
-                                        map.addMarker(presetUpdated[course_selected_day_index]);
-                                        map.addPoly(presetUpdated[course_selected_day_index]);
+                                        setState(() {
+                                          course_selected=presetUpdated;
+                                          //map.addMarker(presetUpdated[course_selected_day_index]);
+                                          //map.addPoly(presetUpdated[course_selected_day_index]);
+                                        });
+
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -1337,12 +1341,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   }
 
                   //print(movingTimeList);
-                  map.addMarker(presetToBeUpdated[course_selected_day_index]);
-                  map.addPoly(presetToBeUpdated[course_selected_day_index]);
+
                   if (movingTimeList.isEmpty) {
                     print('movimgTimeList is empty');
                   }
-
+                  setState(() {
+                    course_selected=presetToBeUpdated;
+                    //map.addMarker(presetToBeUpdated[course_selected_day_index]);
+                    //map.addPoly(presetToBeUpdated[course_selected_day_index]);
+                  });
                   await Navigator.push(
                       context,
                       MaterialPageRoute(

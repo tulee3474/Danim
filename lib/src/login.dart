@@ -267,7 +267,8 @@ class EmailState extends State<Email> {
                       onPressed: () {
                         print('Log in --------------');
                         _login(email: _email.text.trim(), passWord: _passWd.text.trim());
-                        App();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => App()));
                       },
                       label: Text("로그인"),
                       icon: Icon(Icons.login),
@@ -280,6 +281,8 @@ class EmailState extends State<Email> {
                       onPressed: () {
                         print('Sign up --------------');
                         _signUp(email: _email.text.trim(), passWord: _passWd.text.trim());
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Email()));
                       },
                       label: Text("회원가입"),
                       icon: Icon(Icons.edit),
@@ -328,7 +331,7 @@ class EmailState extends State<Email> {
           .signInWithEmailAndPassword(email: email, password: passWord)
           .then((value) => Get.back(result: value));
       token=FirebaseAuth.instance.currentUser?.uid;
-      userName=FirebaseAuth.instance.currentUser?.displayName;
+      userName=" ";
       userEmail=FirebaseAuth.instance.currentUser?.email;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {

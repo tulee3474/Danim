@@ -22,12 +22,12 @@ class _TempState extends State<Temp> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else {
-            print(snapshot.data);
-            token=FirebaseAuth.instance.currentUser?.uid;
-            userName=FirebaseAuth.instance.currentUser?.displayName;
-            userEmail=FirebaseAuth.instance.currentUser?.email;
-            print('$token $userName $userEmail');
             if (snapshot.hasData) {
+              print('asdf ${snapshot.data}');
+              token=FirebaseAuth.instance.currentUser?.uid;
+              userName=FirebaseAuth.instance.currentUser?.displayName;
+              userEmail=FirebaseAuth.instance.currentUser?.email;
+              print('asdfasf $token $userName $userEmail');
               return App();
             }
             else {

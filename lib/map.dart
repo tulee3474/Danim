@@ -1,3 +1,4 @@
+import 'package:danim/src/courseSelected.dart';
 import 'package:flutter/material.dart';
 import 'nearby.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
@@ -49,12 +50,18 @@ void addMarker(List<Place> pathList) {
 void addPoly(List<Place> pathList) {
   pathOverlays.clear();
   latLen.clear();
-  int i=0;
-  for (i = 0; i < pathList.length; i++) {
+  //print(pathList[i].name);
+  for (int i = 0; i < pathList.length; i++) {
     latLen.add(LatLng(pathList[i].latitude, pathList[i].longitude));
+    //print(pathList[i].name);
   }
-  pathOverlays.add(PathOverlay(PathOverlayId('path$i'), latLen,
-      color: colorList[i], width: 7, outlineWidth: 0));
+  if(latLen.length>1) {
+    pathOverlays.add(
+        PathOverlay(PathOverlayId('path$course_selected_day_index'), latLen,
+            color: colorList[course_selected_day_index],
+            width: 7,
+            outlineWidth: 0));
+  }
 }
 void addRestMarker(List<Restaurant> restList) {
   markers.clear();

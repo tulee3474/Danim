@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
         '/app': (context) => App(),
         '/mea': (context) => const MyHomePage(),
       },
-      home: App(),
+      home: Temp(),
       //home: const Map(),
       //home: const MyHomePage(),
     );

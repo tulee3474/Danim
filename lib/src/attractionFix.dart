@@ -39,7 +39,9 @@ class _AttractionFixState extends State<AttractionFix> {
   }
 
   @override
-  void dispose() {}
+  void dispose() {
+    super.dispose();
+  }
 
   String location2 = "Search Location";
   @override
