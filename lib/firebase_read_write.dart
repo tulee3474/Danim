@@ -283,6 +283,9 @@ class ReadController extends GetxController {
       eventList.add(temp);
     }
 
+    //경도출력확인
+   print('fb_위도: ${eventList[0].latitude}');
+
     List<dynamic> diaryList2 = data.data()!['diaryList'];
     List<String> diaryList = [];
     for (int i = 0; i < diaryList2.length; i++) {

@@ -130,6 +130,16 @@ class _LoadingState extends State<Loading> {
                     fit: BoxFit.contain, height: 20))
           ]),
         ),
-        body: Center(child: SpinKitRing(color: Colors.grey)));
+        body: Column(children: [
+
+          Container(padding: EdgeInsets.fromLTRB(0, 100, 0, 0))
+          ,Center(
+              child: SpinKitRing(color: Colors.grey)),
+          Center(
+              child: Container(
+            padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+            child: Text("최대 1분까지 소요될 수 있습니다."),
+          ))
+        ]));
   }
 }

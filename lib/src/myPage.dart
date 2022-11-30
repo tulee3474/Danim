@@ -88,7 +88,12 @@ class MyPage extends StatelessWidget {
                         '.' +
                         '${journeys[i][journeys[i].length - 1].date.day}'),
                     onPressed: () {
+
                       print('journeys_title : ${journeys[i][0].title}');
+
+
+                      print('journeys_위도 마이페이지에서 확인 : ${journeys[i][0].latitude}');
+
 
                       Navigator.push(
                           context,

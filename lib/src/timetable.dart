@@ -36,7 +36,6 @@ import 'package:danim/firebase_read_write.dart';
 import 'package:danim/src/login.dart';
 import 'package:danim/src/user.dart';
 
-
 List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
     DateTime startDay, DateTime endDay, List<List<int>> moving_time) {
   int startDayTime = 7;
@@ -82,7 +81,7 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '식사시간'),
             description: '',
-            latitude : 0,
+            latitude: 0,
             longitude: 0,
             startTime: DateTime(
               dayIndex.year,
@@ -105,8 +104,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '이동'),
             description: '',
-            latitude:0,
-            longitude:0,
+            latitude: 0,
+            longitude: 0,
             startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
                 timeIndex.hour, timeIndex.minute),
             endTime: transitEndTime,
@@ -133,8 +132,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '식사시간'),
             description: '',
-            latitude:0,
-            longitude:0,
+            latitude: 0,
+            longitude: 0,
             startTime: DateTime(
               dayIndex.year,
               dayIndex.month,
@@ -156,8 +155,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             date: dayIndex,
             event: Event(title: '이동'),
             description: '',
-            latitude:0,
-            longitude:0,
+            latitude: 0,
+            longitude: 0,
             startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
                 timeIndex.hour, timeIndex.minute),
             endTime: transitEndTime,
@@ -232,8 +231,6 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
   return events;
 }
 
-
-
 class Timetable extends StatefulWidget {
   Timetable(
       {Key? key,
@@ -258,13 +255,11 @@ class _TimetableState extends State<Timetable> {
   late List<CalendarEventData<Event>> events =
       createEventList(widget.preset, startDay, endDay, widget.movingTimeList);
 
-
   String isSaved = '';
 
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -341,7 +336,16 @@ class _TimetableState extends State<Timetable> {
 
                                               //여기서 DB 연결 !!!
                                               // 현재 events 저장
-                                              //print('$eventsForDB');결
+                                              //print('$eventsForDB');
+
+
+                                              for(int i=0; i<events.length;i++){
+                                                print('저장하기 전 이벤트 위도 경도 출력 ${i} : ${events[i].latitude} , ${events[i].longitude}');
+                                              }
+
+                                              for(int i=0; i<eventsForDB.length;i++){
+                                                print('저장하기 전 db이벤트 위도 경도 출력 ${i} : ${eventsForDB[i].latitude} , ${eventsForDB[i].longitude}');
+                                              }
 
                                               //임시 토큰!
                                               if (token == '') {
@@ -471,7 +475,6 @@ class _TimetableState extends State<Timetable> {
               getPreset: getPreset,
               getEvents: getEvents,
               getMovingTimeList: getMovingTimeList,
-
             )));
   }
 }
@@ -486,23 +489,21 @@ class DayViewWidget extends StatefulWidget {
 
   int transit = 0;
 
-  DayViewWidget({Key? key,
+  DayViewWidget({
+    Key? key,
     this.state,
     this.width,
     required this.transit,
     required this.getPreset,
     required this.getEvents,
     required this.getMovingTimeList,
-
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   @override
   _DayViewWidgetState createState() => _DayViewWidgetState();
 }
 
 class _DayViewWidgetState extends State<DayViewWidget> {
-
   late List<CalendarEventData<Event>> events = widget.getEvents();
 
   @override
@@ -519,26 +520,32 @@ class _DayViewWidgetState extends State<DayViewWidget> {
 
           int mealIndex = 0;
 
-          for(int i=0; i<events.length; i++){
-            if(event[0].startTime.compareTo(events[i].startTime) == 0){
+          for (int i = 0; i < events.length; i++) {
+            if (event[0].startTime.compareTo(events[i].startTime) == 0) {
               mealIndex = i;
             }
           }
 
-          double lat1 = events[mealIndex-2].latitude;
-          double lon1 = events[mealIndex-2].longitude;
-          double lat2 = events[mealIndex+2].latitude;
-          double lon2 = events[mealIndex+2].longitude;
+          if ((mealIndex - 2) >= 0 && (mealIndex + 2) < events.length) {
+            double lat1 = events[mealIndex - 2].latitude;
+            double lon1 = events[mealIndex - 2].longitude;
+            double lat2 = events[mealIndex + 2].latitude;
+            double lon2 = events[mealIndex + 2].longitude;
 
-
-          List<Restaurant> restList =
-              await getRestaurant(lat1, lon1, lat2, lon2);
-          for (int i = 0; i < restList.length; i++) {
-            print('${restList[i].restName}\n');
+            List<Restaurant> restList =
+                await getRestaurant(lat1, lon1, lat2, lon2);
+            for (int i = 0; i < restList.length; i++) {
+              print('${restList[i].restName}\n');
+            }
+            map.addRestMarker(restList);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => FoodRecommend()));
           }
-          map.addRestMarker(restList);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => FoodRecommend()));
+
+          else{
+            print("전후 관광지가 없습니다.");
+          }
+
         } else if (event[0].title == '이동') {
         } else {
           String tourInformation = '';
@@ -646,7 +653,7 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                                   presetUpdated);
                                         }
                                         setState(() {
-                                          course_selected=presetUpdated;
+                                          course_selected = presetUpdated;
                                           //map.addMarker(presetUpdated[course_selected_day_index]);
                                           //map.addPoly(presetUpdated[course_selected_day_index]);
                                         });
@@ -701,7 +708,7 @@ class CreateEventPage extends StatefulWidget {
 }
 
 class _CreateEventPageState extends State<CreateEventPage> {
-  DateTime _startDate = startDay.add(Duration(days:course_selected_day_index));
+  DateTime _startDate = startDay.add(Duration(days: course_selected_day_index));
   //late DateTime _endDate;
 
   String newPlaceName = '';
@@ -1129,13 +1136,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       title: 'dummy',
                       date: DateTime.now(),
                       latitude: 0,
-                      longitude :0,
+                      longitude: 0,
                       startTime: DateTime.now(),
                       endTime: DateTime.now().add(Duration(hours: 1)));
                   CalendarEventData<Event> eventAfter = CalendarEventData(
                       title: 'dummy',
                       latitude: 0,
-                      longitude:0,
+                      longitude: 0,
                       date: DateTime.now(),
                       startTime: DateTime.now(),
                       endTime: DateTime.now().add(Duration(hours: 1)));
@@ -1222,7 +1229,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     print('movimgTimeList is empty');
                   }
                   setState(() {
-                    course_selected=presetToBeUpdated;
+                    course_selected = presetToBeUpdated;
                     //map.addMarker(presetToBeUpdated[course_selected_day_index]);
                     //map.addPoly(presetToBeUpdated[course_selected_day_index]);
                   });

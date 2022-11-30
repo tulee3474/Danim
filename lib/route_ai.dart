@@ -648,14 +648,16 @@ class RouteAI {
           for (int f = 0; f < fixTourSpotList.length; f++) {
             //fixedPlaceDayList의 원소가 d+1(n일차)와 같을때만
             if (fixDateList[f] == d + 1) {
-              // Place readData =
-              //     await read.fb_read_one_place(city, fixedPlaceNameList[f]);
-              //LatLng tmp = await getLocation(fixedPlaceNameList[f]);
+               //Place readData =
+               //    await read.fb_read_one_place(city, fixTourSpotList[f]);
+              //LatLng tmp = await getLocation(fixTourSpotList[f].name);
               //double lat = tmp.latitude; //좌표읽어오기
 
               //double long = tmp.longitude; //좌표읽어오기
-              Place readData = Place(
-                  fixTourSpotList[f].name,
+              //Place readData = Place(
+                  Place readData = Place(
+
+                      fixTourSpotList[f].name,
                   fixTourSpotList[f].latitude,
                   fixTourSpotList[f].longitude,
                   60,
@@ -670,6 +672,8 @@ class RouteAI {
             }
           }
         }
+
+
 
         //초기 path 만들기
         List<Place> initializePath = await initialize_greedy(
