@@ -13,6 +13,7 @@ import 'package:danim/src/place.dart';
 import 'package:danim/src/user.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import "package:http/http.dart" as http;
+import 'package:danim/src/fixinfo.dart';
 
 String apiKEY = 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI';
 String placeURL =
@@ -560,8 +561,8 @@ class RouteAI {
   }
 
   //main part
-  Future<List<List<List<Place>>>> route_search(city, house, fixedPlaceNameList,
-      fixedPlaceDayList, selectList, timeLimitArray, numPreset, nDay) async {
+  Future<List<List<List<Place>>>> route_search(
+      city, house, selectList, timeLimitArray, numPreset, nDay) async {
     // await안쓰면 이 함수 따로 돌리고 넘어가서, placeList에 원소 안넣은 상태로 코드돌림
 
     //selectList 선순회
@@ -643,21 +644,21 @@ class RouteAI {
 
         fixedPlaceList = [];
 
-        if (fixedPlaceNameList.length > 0) {
+        if (fixTourSpotList.length > 0) {
           var read = ReadController();
-          for (int f = 0; f < fixedPlaceNameList.length; f++) {
+          for (int f = 0; f < fixTourSpotList.length; f++) {
             //fixedPlaceDayList의 원소가 d+1(n일차)와 같을때만
-            if (fixedPlaceDayList[f] == d + 1) {
+            if (fixDateList[f] == d + 1) {
               // Place readData =
               //     await read.fb_read_one_place(city, fixedPlaceNameList[f]);
-              LatLng tmp = await getLocation(fixedPlaceNameList[f]);
-              double lat = tmp.latitude; //좌표읽어오기
+              //LatLng tmp = await getLocation(fixedPlaceNameList[f]);
+              //double lat = tmp.latitude; //좌표읽어오기
 
-              double long = tmp.longitude; //좌표읽어오기
+              //double long = tmp.longitude; //좌표읽어오기
               Place readData = Place(
-                  fixedPlaceNameList[f],
-                  lat,
-                  long,
+                  fixTourSpotList[f].name,
+                  fixTourSpotList[f].latitude,
+                  fixTourSpotList[f].longitude,
                   60,
                   0,
                   [0, 0, 0, 0, 0, 0, 0],
@@ -670,6 +671,9 @@ class RouteAI {
             }
           }
         }
+        print(fixTourSpotList[0].name);
+        print(fixDateList);
+        print(fixedPlaceList[0].name);
 
         //초기 path 만들기
         List<Place> initializePath = await initialize_greedy(

@@ -84,7 +84,7 @@ class _AppState extends State<App> {
                         googleSignIn.signOut(),
                         //Login()
                         Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Login()))
+                            MaterialPageRoute(builder: (context) => Login()))
                       }),
             ])),
             body: SingleChildScrollView(
