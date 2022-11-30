@@ -70,7 +70,7 @@ void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
     FirebaseFirestore.instance
         .collection('Users')
         .doc(docCode)
-        .collection('event')
+        .collection('event' + travelList.length.toString())
         .doc(eventStringList[i])
         .set({
       'title': eventStringList[i],
@@ -239,52 +239,52 @@ class ReadController extends GetxController {
     CalendarEventData temp;
 
     List<CalendarEventData> eventList = [];
+    for (int j = 0; j < travelList.length; j++) {
+      int iSave = 0;
+      for (int i = 0; i < eventNumList[j]; i++) {
+        data2 = await db
+            .collection('Users')
+            .doc(docCode)
+            .collection('event' + (j + 1).toString())
+            .doc(eventStringList2[i + iSave] as String)
+            .get();
 
-    for (int i = 0; i < eventStringList2.length; i++) {
-      data2 = await db
-          .collection('Users')
-          .doc(docCode)
-          .collection('event')
-          .doc(eventStringList2[i] as String)
-          .get();
+        String title = data2.data()!['title'] as String;
 
-      String title = data2.data()!['title'] as String;
-
-      if (title.substring(title.length - 1) == '!') {
-        title = title.substring(0, title.length - 2);
-      } else if (title.substring(title.length - 1) == '@') {
-        title = title.substring(0, title.length - 3);
-      } else if (title.substring(title.length - 1) == '#') {
-        title = title.substring(0, title.length - 4);
-      } else if (title.substring(title.length - 1) == '%') {
-        title = title.substring(0, title.length - 5);
-      }
-      List<int> date = parseDate(data2.data()!['date'] as int);
-      List<int> startTime = parseTime(data2.data()!['startTime'] as int);
-      List<int> endTime = parseTime(data2.data()!['endTime'] as int);
-      //위도, 경도 추가 - read부분
-      double latitude = data.data()!['latitude'] as double;
-      double longitude = data.data()!['longitude'] as double;
-      temp = CalendarEventData(
-        title: title,
-        date: DateTime(date[0], date[1], date[2]),
-
+        if (title.substring(title.length - 1) == '!') {
+          title = title.substring(0, title.length - 2);
+        } else if (title.substring(title.length - 1) == '@') {
+          title = title.substring(0, title.length - 3);
+        } else if (title.substring(title.length - 1) == '#') {
+          title = title.substring(0, title.length - 4);
+        } else if (title.substring(title.length - 1) == '%') {
+          title = title.substring(0, title.length - 5);
+        }
+        List<int> date = parseDate(data2.data()!['date'] as int);
+        List<int> startTime = parseTime(data2.data()!['startTime'] as int);
+        List<int> endTime = parseTime(data2.data()!['endTime'] as int);
         //위도, 경도 추가 - read부분
-        latitude: latitude,
-        longitude: longitude,
-        event: Event(title: title),
+        double latitude = data.data()!['latitude'] as double;
+        double longitude = data.data()!['longitude'] as double;
+        temp = CalendarEventData(
+          title: title,
+          date: DateTime(date[0], date[1], date[2]),
 
-        description: data2.data()!['description'] as String,
-        startTime:
-            DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
-        endTime:
-            DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
-      );
-      eventList.add(temp);
+          //위도, 경도 추가 - read부분
+          latitude: latitude,
+          longitude: longitude,
+          event: Event(title: title),
+
+          description: data2.data()!['description'] as String,
+          startTime:
+              DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
+          endTime:
+              DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
+        );
+        eventList.add(temp);
+      }
+      iSave += eventNumList[j];
     }
-
-    //경도출력확인
-   print('fb_위도: ${eventList[0].latitude}');
 
     List<dynamic> diaryList2 = data.data()!['diaryList'];
     List<String> diaryList = [];

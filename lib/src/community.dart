@@ -53,7 +53,7 @@ class Community extends StatelessWidget {
           title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/app');
+                  Navigator.popUntil(context, (route) => route.isFirst);
                 },
                 child: Image.asset(IconsPath.house,
                     fit: BoxFit.contain, height: 20))
