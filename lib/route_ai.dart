@@ -13,7 +13,6 @@ import 'package:danim/src/place.dart';
 import 'package:danim/src/user.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import "package:http/http.dart" as http;
-import 'package:danim/src/fixinfo.dart';
 
 String apiKEY = 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI';
 String placeURL =
@@ -561,8 +560,8 @@ class RouteAI {
   }
 
   //main part
-  Future<List<List<List<Place>>>> route_search(
-      city, house, selectList, timeLimitArray, numPreset, nDay) async {
+  Future<List<List<List<Place>>>> route_search(city, house, selectList,
+      fixTourSpotList, fixDateList, timeLimitArray, numPreset, nDay) async {
     // await안쓰면 이 함수 따로 돌리고 넘어가서, placeList에 원소 안넣은 상태로 코드돌림
 
     //selectList 선순회
@@ -671,9 +670,6 @@ class RouteAI {
             }
           }
         }
-        print(fixTourSpotList[0].name);
-        print(fixDateList);
-        print(fixedPlaceList[0].name);
 
         //초기 path 만들기
         List<Place> initializePath = await initialize_greedy(

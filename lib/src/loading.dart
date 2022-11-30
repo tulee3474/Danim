@@ -34,8 +34,8 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  Future<List<List<List<Place>>>> loadPath(city, house, selectList,
-      fixedPlaceList, fixedDayList, timeLimitArray, numPreset, nDay) async {
+  Future<List<List<List<Place>>>> loadPath(
+      city, house, selectList, timeLimitArray, numPreset, nDay) async {
     var ai = RouteAI(); //RouteAI 클래스 생성
 
     List<List<List<Place>>> read_data;
@@ -44,9 +44,8 @@ class _LoadingState extends State<Loading> {
     stopwatch.start();
 
     await ai.data_loading(city as String);
-
-    read_data = (await ai.route_search(
-            city, house, selectList, timeLimitArray, numPreset, nDay))
+    read_data = (await ai.route_search(city, house, selectList, fixTourSpotList,
+            fixDateList, timeLimitArray, numPreset, nDay))
         .cast<List<List<Place>>>();
 
     for (int i = 0; i < read_data.length; i++) {
@@ -96,15 +95,9 @@ class _LoadingState extends State<Loading> {
       house = null;
     }
 
-    List<List<List<Place>>> path_ex = await loadPath(
-        city,
-        house,
-        selectList,
-        fixTourSpotList,
-        fixDateList,
-        [7, 20],
-        5,
-        endDay.difference(startDay).inDays + 1);
+    List<List<List<Place>>> path_ex = await loadPath(city, house, selectList,
+        [7, 20], 5, endDay.difference(startDay).inDays + 1);
+
     Timer(Duration(seconds: 5), () {
       Navigator.push(
           context,

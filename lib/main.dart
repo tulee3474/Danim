@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Color.fromRGBO(194, 233, 252, 1),
             titleTextStyle: TextStyle(color: Colors.black),
           )),
+      debugShowCheckedModeBanner: false,
       routes: {
         '/app': (context) => App(),
         '/mea': (context) => const MyHomePage(),
