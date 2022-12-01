@@ -261,7 +261,7 @@ class _MyJourneyState extends State<MyJourney> {
                 print(oldPreset);
                 print(movingTimeList);
 
-                /*
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -270,7 +270,7 @@ class _MyJourneyState extends State<MyJourney> {
                               transit: 0,
                               movingTimeList: movingTimeList,
                             )));
-                */
+
               })
         ]),
       ),

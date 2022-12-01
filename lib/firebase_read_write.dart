@@ -281,7 +281,7 @@ class ReadController extends GetxController {
           startTime:
               DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
           endTime:
-              DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
+              DateTime(endTime[0], endTime[1], endTime[2], endTime[3]),
         );
         eventList.add(temp);
       }

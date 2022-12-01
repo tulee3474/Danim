@@ -31,16 +31,26 @@ class Preset extends StatelessWidget {
                     fit: BoxFit.contain, height: 20))
           ]),
         ),
-        body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Center(
-                child: Column(children: <Widget>[
+        body:  Column(
+                children:[
+
+                  Container(height: 400,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black45),
+
+                      ),
+                      child:Container() // 여기서 지도 넣으면 돼!! 컨테이너 대신에 네이버맵 넣으면 될듯
+                  )
+                  ,
+            Row(children: <Widget>[
               for (int i = 0; i < pathList.length; i++)
                 Stack(children: [
-                  Container(
+                  Padding(
+                    
+                      padding: EdgeInsets.fromLTRB(11,0,0,0),
                       child: ElevatedButton(
                           child: Text(
-                              '${pathList[i][0][0].name} + ${pathList[i][0][1].name}...'),
+                              '${i+1}'),
                           //이거 나중에 인덱스 초기화 에러 조심할 것! 관광지 갯수가 적으면..
                           onPressed: () async {
 
@@ -96,6 +106,7 @@ class Preset extends StatelessWidget {
                                   Icon(Icons.arrow_forward, color: Colors.red),
                               onPressed: () => {print(pathList[i])})))
                 ]),
-            ]))));
+              
+            ])]));
   }
 }
