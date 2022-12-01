@@ -97,7 +97,6 @@ class _LoadingState extends State<Loading> {
 
     List<List<List<Place>>> path_ex = await loadPath(city, house, selectList,
         [dayStartingTime.hour, dayEndingTime.hour], 5, endDay.difference(startDay).inDays + 1);
-
     Timer(Duration(seconds: 5), () {
       Navigator.push(
           context,
@@ -108,6 +107,7 @@ class _LoadingState extends State<Loading> {
 
   @override
   initState() {
+    super.initState();
     qqqq();
   }
 

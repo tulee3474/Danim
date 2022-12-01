@@ -31,8 +31,42 @@ List<LatLng> latLen3 = [
 ];
 List<LatLng> latLen=[];
 List<Place> pathTemp=[];
-
+List<List<LatLng>> presetLatLen=[[],[],[],[],[],[],[],[],[],[]];
 String location="장소를 검색하세요";
+void addPresetMarker(List<List<Place>> pathList) {
+  markers.clear();
+  print(pathList);
+  //pathTemp=pathList;
+  print(pathList.length);
+  for (int i = 0; i < pathList.length; i++) {
+    for (int j=0;j<pathList[i].length;j++) {
+      markers.add(Marker(
+        markerId: pathList[i][j].name,
+        position: LatLng(pathList[i][j].latitude, pathList[i][j].longitude),
+        infoWindow: pathList[i][j].name,
+        width: 20,
+        height: 20,
+      ));
+    }
+  }
+}
+void addPresetPoly(List<List<Place>> pathList) {
+  pathOverlays.clear();
+  for(int i=0;i<pathList.length;i++) {
+    presetLatLen[i].clear();
+    for (int j=0;j<pathList[i].length;j++) {
+        presetLatLen[i].add(LatLng(pathList[i][j].latitude,pathList[i][j].longitude));
+      }
+      if(presetLatLen[i].length>1) {
+        pathOverlays.add(
+          PathOverlay(PathOverlayId('path$i'), presetLatLen[i],
+              color: colorList[i],
+              width: 7,
+              outlineWidth: 0));
+    }
+  }
+
+}
 void addMarker(List<Place> pathList) {
   markers.clear();
   pathTemp=pathList;
