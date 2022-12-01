@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:danim/calendar_view.dart';
@@ -180,15 +181,15 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
       DateTime tourEndTimeUpdated = tourEndTime;
 
       events.add(CalendarEventData(
-            title: '${preset[i][j].name}',
-            date: dayIndex,
-            event: Event(title: '${preset[i][j].name}'),
-            description: '',
-            latitude: preset[i][j].latitude,
-            longitude: preset[i][j].longitude,
-            startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
-                timeIndex.hour, timeIndex.minute),
-            endTime: tourEndTimeUpdated));
+          title: '${preset[i][j].name}',
+          date: dayIndex,
+          event: Event(title: '${preset[i][j].name}'),
+          description: '',
+          latitude: preset[i][j].latitude,
+          longitude: preset[i][j].longitude,
+          startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+              timeIndex.hour, timeIndex.minute),
+          endTime: tourEndTimeUpdated));
 
       timeIndex = tourEndTimeUpdated;
 
@@ -302,14 +303,24 @@ class _TimetableState extends State<Timetable> {
         child: Scaffold(
             appBar: AppBar(
               elevation: 0,
-              title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.popUntil(context, (route) => route.isFirst);
-                      //첫화면까지 팝해버리는거임
-                    },
-                    child: Image.asset(IconsPath.house,
-                        fit: BoxFit.contain, height: 20)),
+              title: InkWell(
+                // onTap: () {
+                //   Navigator.popUntil(context, (route) => route.isFirst);
+                // },
+                child: Transform(
+                  transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(IconsPath.logo,
+                            fit: BoxFit.contain, height: 40)
+                      ]),
+                ),
+              ),
+              actions: [
+                //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
+                //이곳에 한개 이상의 위젯들을 가진다.
+
                 TextButton(
                     onPressed: () {
                       showDialog(
@@ -337,13 +348,18 @@ class _TimetableState extends State<Timetable> {
                                               // 현재 events 저장
                                               //print('$eventsForDB');
 
-
-                                              for(int i=0; i<events.length;i++){
-                                                print('저장하기 전 이벤트 위도 경도 출력 ${i} : ${events[i].latitude} , ${events[i].longitude}');
+                                              for (int i = 0;
+                                                  i < events.length;
+                                                  i++) {
+                                                print(
+                                                    '저장하기 전 이벤트 위도 경도 출력 ${i} : ${events[i].latitude} , ${events[i].longitude}');
                                               }
 
-                                              for(int i=0; i<eventsForDB.length;i++){
-                                                print('저장하기 전 db이벤트 위도 경도 출력 ${i} : ${eventsForDB[i].latitude} , ${eventsForDB[i].longitude}');
+                                              for (int i = 0;
+                                                  i < eventsForDB.length;
+                                                  i++) {
+                                                print(
+                                                    '저장하기 전 db이벤트 위도 경도 출력 ${i} : ${eventsForDB[i].latitude} , ${eventsForDB[i].longitude}');
                                               }
 
                                               //임시 토큰!
@@ -428,22 +444,55 @@ class _TimetableState extends State<Timetable> {
                                                       (BuildContext context) {
                                                     return AlertDialog(
                                                         content: SizedBox(
-                                                            width: 150,
-                                                            height: 50,
-                                                            child: Container(
-                                                                child: Text('Saved as : ' +
-                                                                    userData
-                                                                        .docCode
-                                                                        .toString()))));
+                                                            width: 250,
+                                                            height: 200,
+                                                            child: Column(
+                                                              children: [
+                                                                Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8.0),
+                                                                  child: Container(
+                                                                      child: Text('Saved as : ' +
+                                                                          userData
+                                                                              .docCode
+                                                                              .toString())),
+                                                                ),
+                                                                Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8.0),
+                                                                  child: Container(
+                                                                      child: Text('메인 화면으로 돌아갑니다.',
+                                                                          style: TextStyle(
+                                                                            fontFamily:
+                                                                                "Neo",
+                                                                          ))),
+                                                                ),
+                                                              ],
+                                                            )));
                                                   });
+                                              sleep(Duration(seconds: 1));
+                                              Navigator.popUntil(context,
+                                                  (route) => route.isFirst);
+                                              //첫화면까지 팝해버리는거임
                                             },
                                             child: Text("코스 저장")))
                                   ])),
                             );
                           });
                     },
-                    child: Icon(Icons.save))
-              ]),
+                    child: Icon(Icons.save)),
+                TextButton(
+                    onPressed: () {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      //첫화면까지 팝해버리는거임
+                    },
+                    child: Image.asset(IconsPath.house,
+                        fit: BoxFit.contain, height: 30)),
+              ],
             ),
             floatingActionButton: Stack(children: [
               Align(
@@ -539,12 +588,9 @@ class _DayViewWidgetState extends State<DayViewWidget> {
             map.addRestMarker(restList);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => FoodRecommend()));
-          }
-
-          else{
+          } else {
             print("전후 관광지가 없습니다.");
           }
-
         } else if (event[0].title == '이동') {
         } else {
           String tourInformation = '';
@@ -1201,23 +1247,23 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     }
                   }
 
-                  if(presetToBeUpdated[course_selected_day_index].length == 0){
+                  if (presetToBeUpdated[course_selected_day_index].length ==
+                      0) {
                     presetToBeUpdated[course_selected_day_index].add(newPlace);
                     print("path created");
                     print(presetToBeUpdated);
+                  } else {
+                    for (int i = 0; i < presetToBeUpdated.length; i++) {
+                      for (int j = 0; j < presetToBeUpdated[i].length; j++) {
+                        if (presetToBeUpdated[i][j].name == eventBefore.title) {
+                          presetToBeUpdated[i].insert(j + 1, newPlace);
 
-                  }
-                  else{
-                  for (int i = 0; i < presetToBeUpdated.length; i++) {
-                    for (int j = 0; j < presetToBeUpdated[i].length; j++) {
-                      if (presetToBeUpdated[i][j].name == eventBefore.title) {
-                        presetToBeUpdated[i].insert(j + 1, newPlace);
-
-                        print("path updated");
-                        print(presetToBeUpdated);
+                          print("path updated");
+                          print(presetToBeUpdated);
+                        }
                       }
                     }
-                  }}
+                  }
 
                   List<List<int>> movingTimeList = [];
 

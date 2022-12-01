@@ -54,9 +54,9 @@ class _CourseDetailState extends State<CourseDetail> {
         appBar: AppBar(
           elevation: 0,
           title: InkWell(
-            onTap: () {
-              Navigator.popUntil(context, (route) => route.isFirst);
-            },
+            // onTap: () {
+            //   Navigator.popUntil(context, (route) => route.isFirst);
+            // },
             child: Transform(
               transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
               child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -64,6 +64,25 @@ class _CourseDetailState extends State<CourseDetail> {
               ]),
             ),
           ),
+          actions: [
+            //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
+            //이곳에 한개 이상의 위젯들을 가진다.
+
+            TextButton(
+                onPressed: () {
+                  //Navigator.popUntil(context, (route) => route.isFirst);
+                  //첫화면까지 팝해버리는거임
+                },
+                child: Image.asset(IconsPath.count2,
+                    fit: BoxFit.contain, width: 60, height: 50)),
+            TextButton(
+                onPressed: () {
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                  //첫화면까지 팝해버리는거임
+                },
+                child: Image.asset(IconsPath.house,
+                    fit: BoxFit.contain, height: 30)),
+          ],
         ),
         body: Padding(
           padding: EdgeInsets.all(20.0),
@@ -71,6 +90,19 @@ class _CourseDetailState extends State<CourseDetail> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: <Widget>[
+                  Container(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: Text('당신의 여행 성향을 골라주세요!',
+                          style: TextStyle(
+                            color: Colors.black,
+                            letterSpacing: 2.0,
+                            fontSize: 20.0,
+                            fontFamily: "Neo",
+                            fontWeight: FontWeight.bold,
+                          ))),
+                  Container(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: Divider(color: Colors.grey, thickness: 2.0)),
                   Container(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: Text('이번 여행, 어떤 교통수단을 이용하세요?',
@@ -87,7 +119,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('자차',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -96,7 +130,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('대중교통',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -104,8 +140,15 @@ class _CourseDetailState extends State<CourseDetail> {
                             onPressed: () => {transit = 1, print(transit)})
                       ])),
                   Container(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Divider(color: Colors.grey, thickness: 2.0)),
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF4F4F4),
+                      border: Border(
+                        top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
+                      ),
+                    ),
+                  ),
                   Container(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: Text('이번 여행, 누구와 떠나시나요?',
@@ -123,7 +166,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('혼자여행',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -138,7 +183,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('커플여행',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -153,7 +200,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('우정여행',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -168,7 +217,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('가족여행',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -185,7 +236,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('효도여행',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -200,7 +253,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('어린자녀와',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -215,7 +270,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('반려견과',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -231,8 +288,15 @@ class _CourseDetailState extends State<CourseDetail> {
                     ]),
                   ),
                   Container(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Divider(color: Colors.grey, thickness: 2.0)),
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF4F4F4),
+                      border: Border(
+                        top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
+                      ),
+                    ),
+                  ),
                   Container(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: Text('이번 여행의 테마는 무엇인가요?',
@@ -249,7 +313,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('힐링',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -264,7 +330,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('액티비티',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -279,7 +347,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('배움이 있는',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -294,7 +364,9 @@ class _CourseDetailState extends State<CourseDetail> {
                         ElevatedButton(
                             child: Text('맛있는',
                                 style: TextStyle(
-                                    fontFamily: "Neo", color: Colors.black)),
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith(
@@ -308,8 +380,15 @@ class _CourseDetailState extends State<CourseDetail> {
                                 })
                       ])),
                   Container(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Divider(color: Colors.grey, thickness: 2.0)),
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF4F4F4),
+                      border: Border(
+                        top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
+                      ),
+                    ),
+                  ),
                   Container(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: Text('이번 여행에서 어떤 것들을 하고 싶으세요?',
@@ -327,7 +406,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('레저스포츠',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -342,7 +423,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('문화시설',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -357,7 +440,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('사진',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -372,7 +457,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('이색체험',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -389,7 +476,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('문화체험',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -404,7 +493,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('역사',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -419,8 +510,15 @@ class _CourseDetailState extends State<CourseDetail> {
                         ])
                       ])),
                   Container(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Divider(color: Colors.grey, thickness: 2.0)),
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF4F4F4),
+                      border: Border(
+                        top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
+                      ),
+                    ),
+                  ),
                   Container(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: Text('이번 여행, 어떤 곳들을 가고 싶으세요?',
@@ -438,7 +536,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('바다',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -453,7 +553,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('산',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -468,7 +570,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('드라이브코스',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -483,7 +587,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ElevatedButton(
                               child: Text('산책',
                                   style: TextStyle(
-                                      fontFamily: "Neo", color: Colors.black)),
+                                      fontFamily: "Neo",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.resolveWith(
@@ -502,6 +608,7 @@ class _CourseDetailState extends State<CourseDetail> {
                                 child: Text('쇼핑',
                                     style: TextStyle(
                                         fontFamily: "Neo",
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black)),
                                 style: ButtonStyle(
                                     backgroundColor:
@@ -518,6 +625,7 @@ class _CourseDetailState extends State<CourseDetail> {
                                 child: Text('실내여행지',
                                     style: TextStyle(
                                         fontFamily: "Neo",
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black)),
                                 style: ButtonStyle(
                                     backgroundColor:
@@ -534,6 +642,7 @@ class _CourseDetailState extends State<CourseDetail> {
                                 child: Text('시티투어',
                                     style: TextStyle(
                                         fontFamily: "Neo",
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black)),
                                 style: ButtonStyle(
                                     backgroundColor:
@@ -548,48 +657,58 @@ class _CourseDetailState extends State<CourseDetail> {
                                     }),
                           ],
                         ),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                                child: Text('지역축제',
-                                    style: TextStyle(
-                                        fontFamily: "Neo",
-                                        color: Colors.black)),
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.resolveWith(
-                                            getColor)),
-                                onPressed: () => {
-                                      if (selectedList[3][7] == 0)
-                                        {selectedList[3][7] = 1}
-                                      else
-                                        {selectedList[3][7] = 0},
-                                      print(selectedList[3][7])
-                                    }),
-                            ElevatedButton(
-                                child: Text('전통한옥',
-                                    style: TextStyle(
-                                        fontFamily: "Neo",
-                                        color: Colors.black)),
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.resolveWith(
-                                            getColor)),
-                                onPressed: () => {
-                                      if (selectedList[3][8] == 0)
-                                        {selectedList[3][8] = 1}
-                                      else
-                                        {selectedList[3][8] = 0},
-                                      print(selectedList[3][8])
-                                    })
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     ElevatedButton(
+                        //         child: Text('지역축제',
+                        //             style: TextStyle(
+                        //                 fontFamily: "Neo",
+                        //                 fontWeight: FontWeight.bold,
+                        //                 color: Colors.black)),
+                        //         style: ButtonStyle(
+                        //             backgroundColor:
+                        //                 MaterialStateProperty.resolveWith(
+                        //                     getColor)),
+                        //         onPressed: () => {
+                        //               if (selectedList[3][7] == 0)
+                        //                 {selectedList[3][7] = 1}
+                        //               else
+                        //                 {selectedList[3][7] = 0},
+                        //               print(selectedList[3][7])
+                        //             }),
+                        //     ElevatedButton(
+                        //         child: Text('전통한옥',
+                        //             style: TextStyle(
+                        //                 fontFamily: "Neo",
+                        //                 fontWeight: FontWeight.bold,
+                        //                 color: Colors.black)),
+                        //         style: ButtonStyle(
+                        //             backgroundColor:
+                        //                 MaterialStateProperty.resolveWith(
+                        //                     getColor)),
+                        //         onPressed: () => {
+                        //               if (selectedList[3][8] == 0)
+                        //                 {selectedList[3][8] = 1}
+                        //               else
+                        //                 {selectedList[3][8] = 0},
+                        //               print(selectedList[3][8])
+                        //             })
+                        //   ],
+                        // ),
                       ])),
                   Container(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Divider(color: Colors.grey, thickness: 2.0)),
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF4F4F4),
+                      border: Border(
+                        top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
+                      ),
+                    ),
+                  ),
                   Container(
                       width: 150.0,
+                      height: 70,
                       padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: ElevatedButton(
                           onPressed: () {
@@ -606,6 +725,7 @@ class _CourseDetailState extends State<CourseDetail> {
                             '다음 단계',
                             style: TextStyle(
                               fontFamily: "Neo",
+                              fontWeight: FontWeight.bold,
                             ),
                           )))
                 ],

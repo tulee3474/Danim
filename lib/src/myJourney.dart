@@ -11,11 +11,6 @@ import 'package:danim/src/myPage.dart';
 
 import 'createMovingTimeList.dart';
 
-
-
-
-
-
 class MyJourney extends StatefulWidget {
   List<CalendarEventData> journey = [];
   List<DateTime> dates = [];
@@ -25,32 +20,28 @@ class MyJourney extends StatefulWidget {
   MyJourney(this.journey, this.dates, this.index, this.previousDiary);
 
   @override
-  State<MyJourney> createState() => _MyJourneyState(journey, dates, index, previousDiary);
+  State<MyJourney> createState() =>
+      _MyJourneyState(journey, dates, index, previousDiary);
 }
 
 //첫날, 끝날 기준으로 그 사이 날짜들 다 저장하는 리스트 생성하는 함수
-List<DateTime> createDateList (List<DateTime> dates){
-
+List<DateTime> createDateList(List<DateTime> dates) {
   List<DateTime> dateList = [];
 
-  for(int i=0; i<dates[1].difference(dates[0]).inDays + 1; i++){
-
+  for (int i = 0; i < dates[1].difference(dates[0]).inDays + 1; i++) {
     dateList.add(dates[0].add(Duration(days: i)));
-
   }
 
   return dateList;
 }
 
 class _MyJourneyState extends State<MyJourney> {
-  List<CalendarEventData> journey = [];//calendarEventData 리스트 한 여행에 대한.
-  List<DateTime> dates = [];// 첫날, 마지막날 있음
+  List<CalendarEventData> journey = []; //calendarEventData 리스트 한 여행에 대한.
+  List<DateTime> dates = []; // 첫날, 마지막날 있음
   List<String> diary = [];
-  int index = -1;//몇번째인지 인덱스
+  int index = -1; //몇번째인지 인덱스
   String previousDiary = '';
   late List<DateTime> dateList = createDateList(dates);
-
-
 
   TextEditingController courseReview =
       TextEditingController(); //코스 리뷰 저장되는 컨트롤러
@@ -71,14 +62,13 @@ class _MyJourneyState extends State<MyJourney> {
  */
   TextEditingController textController = TextEditingController();
 
-  initState(){
+  initState() {
     super.initState();
 
     textController = TextEditingController(text: previousDiary);
-
   }
 
-  dispose(){
+  dispose() {
     textController.dispose();
     super.dispose();
   }
@@ -88,13 +78,21 @@ class _MyJourneyState extends State<MyJourney> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/app');
-              },
-              child: Image.asset(IconsPath.house,
-                  fit: BoxFit.contain, height: 20)),
+        title: InkWell(
+          // onTap: () {
+          //   Navigator.popUntil(context, (route) => route.isFirst);
+          // },
+          child: Transform(
+            transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
+            ]),
+          ),
+        ),
+        actions: [
+          //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
+          //이곳에 한개 이상의 위젯들을 가진다.
+
           TextButton(
               onPressed: () {
                 showDialog(
@@ -186,13 +184,16 @@ class _MyJourneyState extends State<MyJourney> {
                               ])));
                     });
               },
-              child: Icon(Icons.rate_review)),
+              child:
+                  Image.asset(IconsPath.rate, fit: BoxFit.contain, height: 30)),
+
           TextButton(
-              child: Icon(Icons.trip_origin),
+              child: Image.asset(IconsPath.journey,
+                  fit: BoxFit.contain, height: 30),
               onPressed: () async {
                 //여기서 timetable 다시 띄우기
 
-                for(int i=0; i< journey.length; i++){
+                for (int i = 0; i < journey.length; i++) {
                   print('journey_lat : ${journey[i].title}');
                 }
 
@@ -205,7 +206,7 @@ class _MyJourneyState extends State<MyJourney> {
                     []
                 ]; // 프리셋 초기화
 
-               // List<DateTime> dateList = [];
+                // List<DateTime> dateList = [];
 
                 /*
                 for (int i = 0;
@@ -220,8 +221,10 @@ class _MyJourneyState extends State<MyJourney> {
                 for (int i = 0; i < dateList.length; i++) {
                   for (int j = 0; j < journey.length; j++) {
                     if ((dateList[i].year == journey[j].date.year &&
-                        dateList[i].month == journey[j].date.month &&
-                        dateList[i].day == journey[j].date.day) && (journey[j].title != '이동') && (journey[j].title != '식사시간')) {
+                            dateList[i].month == journey[j].date.month &&
+                            dateList[i].day == journey[j].date.day) &&
+                        (journey[j].title != '이동') &&
+                        (journey[j].title != '식사시간')) {
                       oldPreset[i].add(Place(
                           journey[j].title,
                           journey[j].latitude,
@@ -242,15 +245,14 @@ class _MyJourneyState extends State<MyJourney> {
 
                 //타임테이블 생성 잘 됐나 출력
 
-                for(int i=0; i<oldPreset.length; i++){
-                  for(int j=0; j<oldPreset[i].length;j++){
+                for (int i = 0; i < oldPreset.length; i++) {
+                  for (int j = 0; j < oldPreset[i].length; j++) {
                     print('${i}째 날 ${j}째 코스 : ${oldPreset[i][j].name}');
                   }
                 }
 
                 //print('lati : ${oldPreset[0][0].latitude}');
                 //print(oldPreset[0][0].longitude);
-
 
                 List<List<int>> movingTimeList = [
                   for (int i = 0; i < oldPreset.length; i++) []
@@ -261,7 +263,6 @@ class _MyJourneyState extends State<MyJourney> {
                 print(oldPreset);
                 print(movingTimeList);
 
-
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -270,9 +271,15 @@ class _MyJourneyState extends State<MyJourney> {
                               transit: 0,
                               movingTimeList: movingTimeList,
                             )));
-
-              })
-        ]),
+              }),
+          TextButton(
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+                //첫화면까지 팝해버리는거임
+              },
+              child: Image.asset(IconsPath.house,
+                  fit: BoxFit.contain, height: 30)),
+        ],
       ),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -293,45 +300,39 @@ class _MyJourneyState extends State<MyJourney> {
             Container(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Divider(color: Colors.grey, thickness: 2.0)),
-
+            Container(
+                child: Column(children: [
               Container(
-                  child: Column(children: [
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                    child: Text('${dateList[0]} - ${dateList[dateList.length-1]}')),
-                SizedBox(
-                    width: 200,
-                    height: 400,
-                    child: TextFormField(
-                      controller: textController,
-
-                    ))
-              ])),
+                  padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                  child: Text(
+                      '${dateList[0]} - ${dateList[dateList.length - 1]}')),
+              SizedBox(
+                  width: 200,
+                  height: 400,
+                  child: TextFormField(
+                    controller: textController,
+                  ))
+            ])),
             Container(
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: ElevatedButton(
                     child: Text('저장'),
                     onPressed: () {
-
-                        diary.add(textController.text);
+                      diary.add(textController.text);
 
                       fb_write_diary(readData.docCode, diary);
 
                       showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (BuildContext context){
-                          return AlertDialog(
-                            content: SizedBox(
-                              width: 300,
-                              height: 150,
-                              child: Center(
-                                child: Text("일기가 저장되었습니다.")
-                              )
-                            )
-                          );
-                        }
-                      );
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                                content: SizedBox(
+                                    width: 300,
+                                    height: 150,
+                                    child:
+                                        Center(child: Text("일기가 저장되었습니다."))));
+                          });
                       //여기서 DB로 넘기면 됨 !!!!!
                       //일기 출력 구현 했음.
                       //print(diaries);

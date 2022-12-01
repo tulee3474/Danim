@@ -95,8 +95,13 @@ class _LoadingState extends State<Loading> {
       house = null;
     }
 
-    List<List<List<Place>>> path_ex = await loadPath(city, house, selectList,
-        [dayStartingTime.hour, dayEndingTime.hour], 5, endDay.difference(startDay).inDays + 1);
+    List<List<List<Place>>> path_ex = await loadPath(
+        city,
+        house,
+        selectList,
+        [dayStartingTime.hour, dayEndingTime.hour],
+        5,
+        endDay.difference(startDay).inDays + 1);
     Timer(Duration(seconds: 5), () {
       Navigator.push(
           context,
@@ -121,20 +126,40 @@ class _LoadingState extends State<Loading> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          title: InkWell(
+            // onTap: () {
+            //   Navigator.popUntil(context, (route) => route.isFirst);
+            // },
+            child: Transform(
+              transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
+              ]),
+            ),
+          ),
+          actions: [
+            //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
+            //이곳에 한개 이상의 위젯들을 가진다.
+
             TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/app');
+                  //Navigator.popUntil(context, (route) => route.isFirst);
+                  //첫화면까지 팝해버리는거임
+                },
+                child: Image.asset(IconsPath.count4,
+                    fit: BoxFit.contain, width: 60, height: 50)),
+            TextButton(
+                onPressed: () {
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                  //첫화면까지 팝해버리는거임
                 },
                 child: Image.asset(IconsPath.house,
-                    fit: BoxFit.contain, height: 20))
-          ]),
+                    fit: BoxFit.contain, height: 30)),
+          ],
         ),
         body: Column(children: [
-
-          Container(padding: EdgeInsets.fromLTRB(0, 100, 0, 0))
-          ,Center(
-              child: SpinKitRing(color: Colors.grey)),
+          Container(padding: EdgeInsets.fromLTRB(0, 100, 0, 0)),
+          Center(child: SpinKitRing(color: Colors.grey)),
           Center(
               child: Container(
             padding: EdgeInsets.fromLTRB(0, 50, 0, 0),

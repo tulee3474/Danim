@@ -17,9 +17,6 @@ import 'newPost.dart';
 
 var readData; //List<Post>가 들어올 변수
 
-
-
-
 Future readPostData() async {
   var read = ReadController();
 
@@ -36,7 +33,15 @@ class Post {
   int recommendNum = 0;
   String postContent = '';
 
-  Post(this.postTitle, this.postNum, this.postWriter, this.commentList,this.commentWriterList, this.recommendList, this.recommendNum, this.postContent); // 좋아요 수
+  Post(
+      this.postTitle,
+      this.postNum,
+      this.postWriter,
+      this.commentList,
+      this.commentWriterList,
+      this.recommendList,
+      this.recommendNum,
+      this.postContent); // 좋아요 수
 }
 
 List<Post> posts = readData;
@@ -68,62 +73,70 @@ class Community extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            TextButton(
-                onPressed: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: Image.asset(IconsPath.house,
-                    fit: BoxFit.contain, height: 20))
-          ]),
+      appBar: AppBar(
+        elevation: 0,
+        title: InkWell(
+          // onTap: () {
+          //   Navigator.popUntil(context, (route) => route.isFirst);
+          // },
+          child: Transform(
+            transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
+            ]),
+          ),
         ),
-        body: SingleChildScrollView(
-    scrollDirection: Axis.vertical,
-    child:Column(
-          children:[
-            Container(
-              padding: EdgeInsets.fromLTRB(0,20,0,0),
-              child: Text("글 목록")
-            ),
+        actions: [
+          //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
+          //이곳에 한개 이상의 위젯들을 가진다.
 
+          TextButton(
+              onPressed: () {
+                //Navigator.popUntil(context, (route) => route.isFirst);
+                //첫화면까지 팝해버리는거임
+              },
+              child: Image.asset(IconsPath.count4,
+                  fit: BoxFit.contain, width: 60, height: 50)),
+          TextButton(
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+                //첫화면까지 팝해버리는거임
+              },
+              child: Image.asset(IconsPath.house,
+                  fit: BoxFit.contain, height: 30)),
+        ],
+      ),
+      body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(children: [
+            Container(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0), child: Text("글 목록")),
             Container(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Divider(color: Colors.grey, thickness: 2.0)),
-
-            for(int i=0; i<posts.length; i++)
+            for (int i = 0; i < posts.length; i++)
               Container(
-                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  child: Text('${posts[i].postNum + 1}. ${posts[i].postTitle}'),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                WrittenPost(posts[i])));
-                  },
-                )
-              )
-
-
-
-
-          ]
-        )),
-
-    floatingActionButton: FloatingActionButton(
-      child:Icon(Icons.add),
-      elevation: 0,
+                  padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    child:
+                        Text('${posts[i].postNum + 1}. ${posts[i].postTitle}'),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WrittenPost(posts[i])));
+                    },
+                  ))
+          ])),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        elevation: 0,
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      NewPost()));
+              context, MaterialPageRoute(builder: (context) => NewPost()));
         },
-    ),);
+      ),
+    );
   }
 }
