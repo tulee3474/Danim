@@ -218,9 +218,10 @@ class Login extends StatelessWidget {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User? user = result.user;
-      token = user?.uid;
-      userName = '익명 로그인';
-      userEmail = '';
+
+      token=user?.uid;
+      userName='익명 로그인';
+      userEmail=' ';
       print('asdf $token');
       return user;
     } catch (e) {

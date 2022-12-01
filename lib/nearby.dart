@@ -4,6 +4,7 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 
 String kakaoURL = 'https://dapi.kakao.com/v2/local/search/keyword.json?';
 String apiKEY = '8b345cc6f29414a95b06e3ea40b1dfca';
+List<String> compareList=[];
 
 class Restaurant {
   String restName = '';
@@ -64,12 +65,16 @@ Future<List<Restaurant>> getRestaurant(double lat1,double lng1, double lat2, dou
       String responseData = utf8.decode(response.bodyBytes);
       var responseBody = jsonDecode(responseData);
       var list = responseBody["documents"];
+      compareList.clear();
       for (int i=0;i<list.length;i++) {
         String restaurantName=list[i]["place_name"];
-        String restaurantCategory=list[i]["category_name"];
-        double restaurantLat=double.parse(list[i]["y"]);
-        double restaurantLong=double.parse(list[i]["x"]);
-        restaurantList.add(Restaurant(restaurantName, restaurantCategory, restaurantLat, restaurantLong));
+        if (!compareList.contains(restaurantName)) {
+          compareList.add(restaurantName);
+          String restaurantCategory=list[i]["category_name"];
+          double restaurantLat=double.parse(list[i]["y"]);
+          double restaurantLong=double.parse(list[i]["x"]);
+          restaurantList.add(Restaurant(restaurantName, restaurantCategory, restaurantLat, restaurantLong));
+        }
       }
     }
   }
