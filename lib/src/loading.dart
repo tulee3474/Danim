@@ -112,7 +112,7 @@ class _LoadingState extends State<Loading> {
 
   @override
   initState() {
-    super.initState();
+    //super.initState();
     qqqq();
   }
 
