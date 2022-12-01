@@ -45,7 +45,9 @@ class _AttractionFixState extends State<AttractionFix> {
     super.dispose();
   }
 
+
   String location2 = "장소를 입력해주세요.";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

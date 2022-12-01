@@ -39,7 +39,7 @@ class Post {
   Post(this.postTitle, this.postNum, this.postWriter, this.commentList,this.commentWriterList, this.recommendList, this.recommendNum, this.postContent); // 좋아요 수
 }
 
-List<Post> posts = [];
+List<Post> posts = readData;
 
 /*
   //Post 객체 구성 - readData[0], readData[1] 이런식으로 쓰면 돼!

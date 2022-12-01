@@ -261,25 +261,26 @@ class ReadController extends GetxController {
           title = title.substring(0, title.length - 5);
         }
         List<int> date = parseDate(data2.data()!['date'] as int);
+
         List<int> startTime = parseTime(data2.data()!['startTime'] as int);
         List<int> endTime = parseTime(data2.data()!['endTime'] as int);
         //위도, 경도 추가 - read부분
-        double latitude = data2.data()!['latitude'] as double;
-        double longitude = data2.data()!['longitude'] as double;
+        var latitude = data2.data()!['latitude'];
+        //print('asdf $latitude');
+        var longitude = data2.data()!['longitude'];
         temp = CalendarEventData(
           title: title,
           date: DateTime(date[0], date[1], date[2]),
 
           //위도, 경도 추가 - read부분
-          latitude: latitude,
+          latitude: latitude as double,
           longitude: longitude,
           event: Event(title: title),
 
           description: data2.data()!['description'] as String,
           startTime:
               DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
-          endTime:
-              DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
+          endTime: DateTime(endTime[0], endTime[1], endTime[2], endTime[3]),
         );
         eventList.add(temp);
       }

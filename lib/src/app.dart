@@ -618,14 +618,19 @@ class _AppState extends State<App> {
                                     style: TextStyle(
                                       fontFamily: "Neo",
                                       fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 78, 194, 252),
                                     ),
                                   ),
                                   style: ElevatedButton.styleFrom(
                                       primary:
-                                          Color.fromARGB(255, 78, 194, 252),
+                                          Color.fromARGB(255, 215, 240, 253),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
+                                        side: BorderSide(
+                                            width: 2.0,
+                                            color: Color.fromARGB(
+                                                255, 78, 194, 252)),
                                       ),
                                       minimumSize: Size(100, 100))),
                               ElevatedButton(
@@ -647,10 +652,12 @@ class _AppState extends State<App> {
                                     style: TextStyle(
                                       fontFamily: "Neo",
                                       fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 78, 194, 252),
                                     ),
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                      primary: Colors.white,
+                                      primary:
+                                          Color.fromARGB(255, 215, 240, 253),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -674,63 +681,112 @@ class _AppState extends State<App> {
                                     style: TextStyle(
                                       fontFamily: "Neo",
                                       fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 78, 194, 252),
                                     ),
                                   ),
                                   style: ElevatedButton.styleFrom(
                                       primary:
-                                          Color.fromARGB(255, 78, 194, 252),
+                                          Color.fromARGB(255, 215, 240, 253),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                       ),
+                                      side: BorderSide(
+                                          width: 2.0,
+                                          color: Color.fromARGB(
+                                              255, 78, 194, 252)),
                                       minimumSize: Size(100, 100)))
                             ])),
                     Container(
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                        width: 400,
-                        child: Divider(color: Colors.grey, thickness: 2.0)),
-                    Column(children: [
-                      Container(
-                          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          child: Text('# 지금, 당신 근처에',
-                              style: TextStyle(
-                                color: Colors.black,
-                                letterSpacing: 2.0,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Neo",
-                              ))),
-                      SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(children: [
-                            Image.asset('assets/images/jenu1.jpeg',
-                                width: 300, height: 200),
-                            Image.asset('assets/images/jeju2.jpeg',
-                                width: 300, height: 200)
-                          ])),
-                      Container(
-                          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                          width: 400,
-                          child: Divider(color: Colors.grey, thickness: 2.0)),
-                      Container(
-                          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          child: Text('# 만연한 가을, 단풍 속으로',
-                              style: TextStyle(
-                                color: Colors.black,
-                                letterSpacing: 2.0,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Neo",
-                              ))),
-                      SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(children: [
-                            Image.asset('assets/images/jeju3.jpeg',
-                                width: 300, height: 200),
-                            Image.asset('assets/images/jeju2.jpeg',
-                                width: 300, height: 200)
-                          ])),
-                    ])
+                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      height: 7,
+                      decoration: BoxDecoration(
+                        color: Color(0xffF4F4F4),
+                        border: Border(
+                          top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
+                        ),
+                      ),
+                    ),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('#지금, 당신 근처에',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        letterSpacing: 2.0,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Neo",
+                                      )),
+                                  SizedBox(height: 3),
+                                  Text('당신에게 딱 맞는 여행지를 추천해요',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        letterSpacing: 2.0,
+                                        fontSize: 10.0,
+                                        fontFamily: "Neo",
+                                      )),
+                                ],
+                              )),
+                          SizedBox(width: 0, height: 10),
+                          SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(children: [
+                                Image.asset('assets/images/jenu1.jpeg',
+                                    width: 300, height: 200),
+                                Image.asset('assets/images/jeju2.jpeg',
+                                    width: 300, height: 200)
+                              ])),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                            height: 7,
+                            decoration: BoxDecoration(
+                              color: Color(0xffF4F4F4),
+                              border: Border(
+                                top: BorderSide(
+                                    width: 1.0, color: Color(0xffD4D4D4)),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('#만연한 가을, 단풍 속으로',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      letterSpacing: 2.0,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Neo",
+                                    )),
+                                SizedBox(height: 3),
+                                Text('다시 오지 않을 올해 가을을 느껴봐요',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      letterSpacing: 2.0,
+                                      fontSize: 10.0,
+                                      fontFamily: "Neo",
+                                    )),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 0, height: 10),
+                          SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(children: [
+                                Image.asset('assets/images/jeju3.jpeg',
+                                    width: 300, height: 200),
+                                Image.asset('assets/images/jeju2.jpeg',
+                                    width: 300, height: 200)
+                              ])),
+                        ])
                   ]))),
         ),
         onWillPop: () async {
