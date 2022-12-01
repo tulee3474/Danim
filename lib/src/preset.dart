@@ -13,6 +13,7 @@ import 'courseSelected.dart';
 class Preset extends StatelessWidget {
   List<List<List<Place>>> pathList;
   int transit = 0;
+  int presetIndex = 0; //디폴트값 0
   //Preset(pathList, this.transit);
   Preset(this.pathList, this.transit);
 
@@ -52,51 +53,12 @@ class Preset extends StatelessWidget {
                           child: Text(
                               '${i+1}'),
                           //이거 나중에 인덱스 초기화 에러 조심할 것! 관광지 갯수가 적으면..
-                          onPressed: () async {
-
-                            //선택한 코스 전역변수에 저장
-                            course_selected = pathList[i];
+                          onPressed: () {
 
 
+                            presetIndex = i;
+                            print("selected preset: ${i+1}");
 
-
-
-                            //map.addMarker(pathList[i]);
-                            //map.addPoly(pathList[i]);
-
-                            if (transit == 0) {
-                              List<List<int>> movingTimeList = [
-                                for (int i = 0; i < pathList[i].length; i++) []
-                              ];
-
-                              movingTimeList =
-                                  await createDrivingTimeList(pathList[i]);
-
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Timetable(
-                                            preset: pathList[i],
-                                            transit: transit,
-                                            movingTimeList: movingTimeList,
-                                          )));
-                            } else {
-                              List<List<int>> movingTimeList = [
-                                for (int i = 0; i < pathList[i].length; i++) []
-                              ];
-
-                              movingTimeList =
-                                  await createTransitTimeList(pathList[i]);
-
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Timetable(
-                                            preset: pathList[i],
-                                            transit: transit,
-                                            movingTimeList: movingTimeList,
-                                          )));
-                            }
                           })),
                   Positioned(
                       right: -20,
@@ -107,6 +69,57 @@ class Preset extends StatelessWidget {
                               onPressed: () => {print(pathList[i])})))
                 ]),
               
-            ])]));
+            ]),
+
+                Center(
+                  child: ElevatedButton(
+                    child: Text('프리셋 선택'),
+                    onPressed: () async {
+
+                      //선택한 코스 전역변수에 저장
+                      course_selected = pathList[presetIndex];
+
+
+                      if (transit == 0) {
+                        List<List<int>> movingTimeList = [
+                          for (int i = 0; i < pathList[presetIndex].length; i++) []
+                        ];
+
+                        movingTimeList =
+                            await createDrivingTimeList(pathList[presetIndex]);
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Timetable(
+                                  preset: pathList[presetIndex],
+                                  transit: transit,
+                                  movingTimeList: movingTimeList,
+                                )));
+                      } else {
+                        List<List<int>> movingTimeList = [
+                          for (int i = 0; i < pathList[presetIndex].length; i++) []
+                        ];
+
+                        movingTimeList =
+                            await createTransitTimeList(pathList[presetIndex]);
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Timetable(
+                                  preset: pathList[presetIndex],
+                                  transit: transit,
+                                  movingTimeList: movingTimeList,
+                                )));
+                      }
+
+
+                    }
+                  )
+                )
+
+
+                ]));
   }
 }
