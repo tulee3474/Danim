@@ -179,8 +179,7 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
           timeIndex.minute + preset[i][j].takenTime);
       DateTime tourEndTimeUpdated = tourEndTime;
 
-      events
-        ..add(CalendarEventData(
+      events.add(CalendarEventData(
             title: '${preset[i][j].name}',
             date: dayIndex,
             event: Event(title: '${preset[i][j].name}'),
