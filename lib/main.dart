@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
       //home: Temp(),
       theme: ThemeData(
           //primarySwatch: Colors.green,
+          scaffoldBackgroundColor: Color.fromARGB(255, 245, 250, 253),
           colorScheme:
               ColorScheme.fromSeed(seedColor: Color.fromRGBO(194, 233, 252, 1)),
           brightness: Brightness.light,

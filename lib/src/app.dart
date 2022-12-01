@@ -88,6 +88,7 @@ class _AppState extends State<App> {
               endDrawer: Drawer(
                   child: ListView(padding: EdgeInsets.zero, children: [
                 UserAccountsDrawerHeader(
+                    arrowColor: Color.fromARGB(255, 78, 194, 252),
                     accountName: Text('$userName'),
                     accountEmail: Text('$userEmail')),
                 ListTile(
@@ -149,8 +150,8 @@ class _AppState extends State<App> {
                                             child: SingleChildScrollView(
                                                 scrollDirection: Axis.vertical,
                                                 child: SizedBox(
-                                                    height: 600.0,
-                                                    width: 300,
+                                                    height: 660.0,
+                                                    width: 330,
                                                     child: Form(
                                                       key: _form,
                                                       child: Column(
@@ -247,82 +248,88 @@ class _AppState extends State<App> {
 
                                                                   ////
                                                                 ]),
-                                                            Row(
-                                                              children: [
-                                                                Expanded(
-                                                                  child:
-                                                                      DateTimeSelectorFormField(
-                                                                    controller:
-                                                                        _startTimeController,
-                                                                    decoration: AppConstants
-                                                                        .inputDecoration
-                                                                        .copyWith(
-                                                                      labelText:
-                                                                          "시작 시간",
-                                                                    ),
-                                                                    validator:
-                                                                        (value) {
-                                                                      if (value ==
-                                                                              null ||
-                                                                          value ==
-                                                                              "")
-                                                                        return "Please select start time.";
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                          10.0),
+                                                              child: Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child:
+                                                                        DateTimeSelectorFormField(
+                                                                      controller:
+                                                                          _startTimeController,
+                                                                      decoration: AppConstants
+                                                                          .inputDecoration
+                                                                          .copyWith(
+                                                                        labelText:
+                                                                            "시작 시간",
+                                                                      ),
+                                                                      validator:
+                                                                          (value) {
+                                                                        if (value ==
+                                                                                null ||
+                                                                            value ==
+                                                                                "")
+                                                                          return "Please select start time.";
 
-                                                                      return null;
-                                                                    },
-                                                                    onSave: (date) =>
-                                                                        dayStartingTime =
-                                                                            date,
-                                                                    textStyle:
-                                                                        TextStyle(
-                                                                      color: AppColors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          17.0,
+                                                                        return null;
+                                                                      },
+                                                                      onSave: (date) =>
+                                                                          dayStartingTime =
+                                                                              date,
+                                                                      textStyle:
+                                                                          TextStyle(
+                                                                        color: AppColors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            17.0,
+                                                                      ),
+                                                                      type: DateTimeSelectionType
+                                                                          .time,
                                                                     ),
-                                                                    type: DateTimeSelectionType
-                                                                        .time,
                                                                   ),
-                                                                ),
-                                                                SizedBox(
-                                                                    width:
-                                                                        20.0),
-                                                                Expanded(
-                                                                  child:
-                                                                      DateTimeSelectorFormField(
-                                                                    controller:
-                                                                        _endTimeController,
-                                                                    decoration: AppConstants
-                                                                        .inputDecoration
-                                                                        .copyWith(
-                                                                      labelText:
-                                                                          "종료 시간",
-                                                                    ),
-                                                                    validator:
-                                                                        (value) {
-                                                                      if (value ==
-                                                                              null ||
-                                                                          value ==
-                                                                              "")
-                                                                        return "Please select end time.";
+                                                                  SizedBox(
+                                                                      width:
+                                                                          20.0),
+                                                                  Expanded(
+                                                                    child:
+                                                                        DateTimeSelectorFormField(
+                                                                      controller:
+                                                                          _endTimeController,
+                                                                      decoration: AppConstants
+                                                                          .inputDecoration
+                                                                          .copyWith(
+                                                                        labelText:
+                                                                            "종료 시간",
+                                                                      ),
+                                                                      validator:
+                                                                          (value) {
+                                                                        if (value ==
+                                                                                null ||
+                                                                            value ==
+                                                                                "")
+                                                                          return "Please select end time.";
 
-                                                                      return null;
-                                                                    },
-                                                                    onSave: (date) =>
-                                                                        dayEndingTime =
-                                                                            date,
-                                                                    textStyle:
-                                                                        TextStyle(
-                                                                      color: AppColors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          17.0,
+                                                                        return null;
+                                                                      },
+                                                                      onSave: (date) =>
+                                                                          dayEndingTime =
+                                                                              date,
+                                                                      textStyle:
+                                                                          TextStyle(
+                                                                        color: AppColors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            17.0,
+                                                                      ),
+                                                                      type: DateTimeSelectionType
+                                                                          .time,
                                                                     ),
-                                                                    type: DateTimeSelectionType
-                                                                        .time,
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
                                                             Container(
                                                                 padding:

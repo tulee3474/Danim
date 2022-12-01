@@ -45,8 +45,7 @@ class _AttractionFixState extends State<AttractionFix> {
     super.dispose();
   }
 
-
-  String location2 = "장소를 입력해주세요.";
+  String location2 = "장소를 입력해주세요";
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +147,7 @@ class _AttractionFixState extends State<AttractionFix> {
                           setState(() {});
                         } else {
                           setState(() {
-                            location2 = "장소를 입력해주세요.";
+                            location2 = "장소를 입력해주세요";
                           });
                         }
                       },
@@ -162,9 +161,8 @@ class _AttractionFixState extends State<AttractionFix> {
                                 title: Text(
                                   location2,
                                   style: TextStyle(
-                                      fontFamily: "Neo",
-                                      fontSize: 18,
-                                      color: Colors.black),
+                                    fontSize: 18,
+                                  ),
                                 ),
                                 trailing: Icon(Icons.search),
                                 dense: true,
