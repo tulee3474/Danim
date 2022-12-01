@@ -41,16 +41,22 @@ Future readUserData(docCode) async {
       jSave = readData.eventNumList[i];
     }
 
-    for (int i=0; i<readData.diaryList.length; i++){
+    for (int i = 0; i < readData.diaryList.length; i++) {
       diaries.add(readData.diaryList[i]);
     }
-
   } catch (e) {
     print("저장된 코스가 없습니다.");
   }
 }
 
 //지금 DB에 넣어놓은 데이터가 시간순이 아니라 이상하게 보일 수 있음.
+
+/*
+!!! 다른 사람 코스 불러오는 함수
+
+Future<User> fb_read_other_course(String docCodeNum)
+    docCodeNum - docCode/num 형태, num은 1, 2, 3, 4 - event뒤의 숫자와 동일
+*/
 
 class MyPage extends StatelessWidget {
   @override
@@ -95,18 +101,17 @@ class MyPage extends StatelessWidget {
                         '.' +
                         '${journeys[i][journeys[i].length - 1].date.day}'),
                     onPressed: () {
+                      print(
+                          'journeys_위도 마이페이지에서 확인 : ${journeys[i][0].latitude}');
 
-                      print('journeys_위도 마이페이지에서 확인 : ${journeys[i][0].latitude}');
-
-
-                      print('journeys_위도 마이페이지에서 확인 : ${journeys[i][0].latitude}');
+                      print(
+                          'journeys_위도 마이페이지에서 확인 : ${journeys[i][0].latitude}');
 
                       //이미 저장된 일기 있는지 확인
                       String previousDiary = '';
-                      if(i < diaries.length){
+                      if (i < diaries.length) {
                         previousDiary = diaries[i];
                       }
-
 
                       Navigator.push(
                           context,
@@ -118,7 +123,7 @@ class MyPage extends StatelessWidget {
                                     journeys[i][journeys[i].length - 1].date
                                   ],
                                   i,
-                              previousDiary)));
+                                  previousDiary)));
                       //i 인덱스도 넣어줌
                     }))
         ]));

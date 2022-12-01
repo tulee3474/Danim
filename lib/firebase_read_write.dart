@@ -201,6 +201,115 @@ class ReadController extends GetxController {
   final db = FirebaseFirestore.instance;
   //var data;
 
+  Future<User> fb_read_other_course(String docCodeNum) async {
+    //docCodeNum - docCode/num 형태, num은 1, 2, 3, 4 - event뒤의 숫자와 동일
+
+    List<String> tempList = docCodeNum.split('/');
+
+    String docCode = tempList[0];
+
+    int docNum = tempList[1] as int;
+
+    docNum -= 1; //num은 1, 2, 3, 4 형태니까 하나빼준다
+
+    var data = await db.collection('Users').doc(docCode).get();
+
+    String name = data.data()!['name'] as String;
+
+    //Error: Expected a value of type 'List<int>', but got one of type 'List<dynamic>'
+    //위 에러 때문에 하나식 일일히 형변환함. 리스트를 통으로 형변환하면 에러
+
+    List<dynamic> travelList2 = data.data()!['travelList'];
+    List<String> travelList = [];
+    travelList.add(travelList2[docNum] as String);
+
+    List<dynamic> placeNumList2 = data.data()!['placeNumList'];
+    List<int> placeNumList = [];
+    placeNumList.add(placeNumList2[docNum] as int);
+
+    //갯수 계산 - traveledPlaceList때문
+    int placeDocIndex = 0;
+    for (int i = 0; i < docNum; i++) {
+      placeDocIndex += placeNumList2[i] as int;
+    }
+
+    List<dynamic> traveledPlaceList2 = data.data()!['traveledPlaceList'];
+    List<String> traveledPlaceList = [];
+    for (int i = placeDocIndex; i < placeDocIndex + placeNumList[0]; i++) {
+      traveledPlaceList.add(traveledPlaceList2[i] as String);
+    }
+
+    List<dynamic> eventNumList2 = data.data()!['eventNumList'];
+    List<int> eventNumList = [];
+    eventNumList.add(eventNumList2[docNum] as int);
+
+    var data2;
+    List<dynamic> eventStringList2 = data.data()!['eventStringList'];
+
+    CalendarEventData temp;
+
+    List<CalendarEventData> eventList = [];
+
+    //갯수 계산 - eventList때문
+    int eventDocIndex = 0;
+    for (int j = 0; j < docNum; j++) {
+      eventDocIndex += eventNumList2[j] as int;
+    }
+
+    for (int i = 0; i < eventNumList[0]; i++) {
+      data2 = await db
+          .collection('Users')
+          .doc(docCode)
+          .collection('event' + (docNum + 1).toString()) //여기서만 다시 +1
+          .doc(eventStringList2[i + eventDocIndex] as String)
+          .get();
+
+      String title = data2.data()!['title'] as String;
+
+      if (title.substring(title.length - 1) == '!') {
+        title = title.substring(0, title.length - 2);
+      } else if (title.substring(title.length - 1) == '@') {
+        title = title.substring(0, title.length - 3);
+      } else if (title.substring(title.length - 1) == '#') {
+        title = title.substring(0, title.length - 4);
+      } else if (title.substring(title.length - 1) == '%') {
+        title = title.substring(0, title.length - 5);
+      }
+      List<int> date = parseDate(data2.data()!['date'] as int);
+
+      List<int> startTime = parseTime(data2.data()!['startTime'] as int);
+      List<int> endTime = parseTime(data2.data()!['endTime'] as int);
+      //위도, 경도 추가 - read부분
+      var latitude = data2.data()!['latitude'];
+      //print('asdf $latitude');
+      var longitude = data2.data()!['longitude'];
+      temp = CalendarEventData(
+        title: title,
+        date: DateTime(date[0], date[1], date[2]),
+
+        //위도, 경도 추가 - read부분
+        latitude: latitude as double,
+        longitude: longitude,
+        event: Event(title: title),
+
+        description: data2.data()!['description'] as String,
+        startTime:
+            DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
+        endTime: DateTime(endTime[0], endTime[1], endTime[2], endTime[3]),
+      );
+      eventList.add(temp);
+    }
+
+    List<dynamic> diaryList2 = data.data()!['diaryList'];
+    List<String> diaryList = [];
+    diaryList.add(diaryList2[docNum] as String);
+
+    User userData = User(docCode, name, travelList, placeNumList,
+        traveledPlaceList, eventNumList, eventList, diaryList);
+
+    return userData;
+  }
+
   Future<User> fb_read_user(docCode) async {
     var data = await db.collection('Users').doc(docCode).get();
 
