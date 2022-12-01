@@ -264,8 +264,8 @@ class ReadController extends GetxController {
         List<int> startTime = parseTime(data2.data()!['startTime'] as int);
         List<int> endTime = parseTime(data2.data()!['endTime'] as int);
         //위도, 경도 추가 - read부분
-        double latitude = data.data()!['latitude'] as double;
-        double longitude = data.data()!['longitude'] as double;
+        double latitude = data2.data()!['latitude'] as double;
+        double longitude = data2.data()!['longitude'] as double;
         temp = CalendarEventData(
           title: title,
           date: DateTime(date[0], date[1], date[2]),
@@ -287,7 +287,7 @@ class ReadController extends GetxController {
     }
 
     //경도출력확인
-   print('fb_위도: ${eventList[0].latitude}');
+    print('fb_위도: ${eventList[0].latitude}');
 
     List<dynamic> diaryList2 = data.data()!['diaryList'];
     List<String> diaryList = [];

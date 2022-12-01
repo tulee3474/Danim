@@ -75,10 +75,15 @@ class _AppState extends State<App> {
                     statusBarColor: Color.fromRGBO(194, 233, 252, 1),
                     statusBarBrightness: Brightness.light,
                     statusBarIconBrightness: Brightness.light),
-                title:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 60)
-                ]),
+                title: Transform(
+                  transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(IconsPath.logo,
+                            fit: BoxFit.contain, height: 40) // height 60->40
+                      ]),
+                ),
               ),
               endDrawer: Drawer(
                   child: ListView(padding: EdgeInsets.zero, children: [
@@ -105,7 +110,7 @@ class _AppState extends State<App> {
                   scrollDirection: Axis.vertical,
                   child: Column(children: <Widget>[
                     Container(
-                        padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                         child: ButtonBar(
                             alignment: MainAxisAlignment.center,
                             buttonPadding: EdgeInsets.all(20),
@@ -139,446 +144,473 @@ class _AppState extends State<App> {
                                         barrierDismissible: true,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                              content: SingleChildScrollView(
-                                                  scrollDirection:
-                                                      Axis.vertical,
-                                                  child: SizedBox(
+                                              content: Padding(
+                                            padding: EdgeInsets.all(10.0),
+                                            child: SingleChildScrollView(
+                                                scrollDirection: Axis.vertical,
+                                                child: SizedBox(
                                                     height: 600.0,
                                                     width: 300,
                                                     child: Form(
-                                                    key: _form,
-                                                    child:Column(
-                                                        children: <Widget>[
-                                                          Column(
-                                                              children: <
-                                                                  Widget>[
-                                                                Container(
+                                                      key: _form,
+                                                      child: Column(
+                                                          children: <Widget>[
+                                                            Column(
+                                                                children: <
+                                                                    Widget>[
+                                                                  Container(
+                                                                      width:
+                                                                          180.0,
+                                                                      child: TextFormField(
+                                                                          initialValue:
+                                                                              "제주도",
+                                                                          decoration: InputDecoration(
+                                                                              border: OutlineInputBorder(),
+                                                                              labelText: '여행 지역'))),
+                                                                  Container(
                                                                     width:
-                                                                        180.0,
-                                                                    child: TextFormField(
-                                                                        initialValue:
-                                                                            "제주도",
-                                                                        decoration: InputDecoration(
-                                                                            border:
-                                                                                OutlineInputBorder(),
-                                                                            labelText:
-                                                                                '여행 지역'))),
-                                                                Container(
-                                                                  width: 180.0,
-                                                                  child:
-                                                                      SafeArea(
-                                                                          child:
-                                                                              Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            15,
-                                                                        right:
-                                                                            15),
-                                                                    child: Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Padding(
-                                                                              padding: const EdgeInsets.only(top: 10)),
-                                                                          GestureDetector(
-                                                                              onTap: () {
-                                                                                HapticFeedback.mediumImpact();
-                                                                                _selectedDataCalendar_startDay(context);
-                                                                              },
-                                                                              child: AbsorbPointer(
-                                                                                  child: Container(
-                                                                                width: MediaQuery.of(context).size.width,
-                                                                                padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
-                                                                                child: TextFormField(
-                                                                                  style: TextStyle(fontSize: 16),
-                                                                                  decoration: InputDecoration(
-                                                                                    contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                                                                    isDense: true,
-                                                                                    hintText: "가는 날",
-                                                                                    enabledBorder: UnderlineInputBorder(
-                                                                                      borderSide: BorderSide(color: Colors.grey),
+                                                                        120.0,
+                                                                    child:
+                                                                        SafeArea(
+                                                                      child: Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Padding(padding: const EdgeInsets.only(top: 10)),
+                                                                            GestureDetector(
+                                                                                onTap: () {
+                                                                                  HapticFeedback.mediumImpact();
+                                                                                  _selectedDataCalendar_startDay(context);
+                                                                                },
+                                                                                child: AbsorbPointer(
+                                                                                    child: Container(
+                                                                                  width: MediaQuery.of(context).size.width,
+                                                                                  padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
+                                                                                  child: TextFormField(
+                                                                                    style: TextStyle(fontSize: 16),
+                                                                                    decoration: InputDecoration(
+                                                                                      contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                                                                      isDense: true,
+                                                                                      hintText: "가는 날",
+                                                                                      enabledBorder: UnderlineInputBorder(
+                                                                                        borderSide: BorderSide(color: Colors.grey),
+                                                                                      ),
+                                                                                      focusedBorder: UnderlineInputBorder(
+                                                                                        borderSide: BorderSide(color: Colors.red),
+                                                                                      ),
                                                                                     ),
-                                                                                    focusedBorder: UnderlineInputBorder(
-                                                                                      borderSide: BorderSide(color: Colors.red),
-                                                                                    ),
+                                                                                    controller: _startDateController,
                                                                                   ),
-                                                                                  controller: _startDateController,
-                                                                                ),
-                                                                              )))
-                                                                        ]),
-                                                                  )),
-                                                                ),
+                                                                                )))
+                                                                          ]),
+                                                                    ),
+                                                                  ),
 
-                                                                Container(
-                                                                  width: 180.0,
-                                                                  child:
-                                                                      SafeArea(
-                                                                          child:
-                                                                              Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            15,
-                                                                        right:
-                                                                            15),
-                                                                    child: Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Padding(
-                                                                              padding: const EdgeInsets.only(top: 10)),
-                                                                          GestureDetector(
-                                                                              onTap: () {
-                                                                                HapticFeedback.mediumImpact();
-                                                                                _selectedDataCalendar_endDay(context);
-                                                                              },
-                                                                              child: AbsorbPointer(
-                                                                                  child: Container(
-                                                                                width: MediaQuery.of(context).size.width,
-                                                                                padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
-                                                                                child: TextFormField(
-                                                                                  style: TextStyle(fontSize: 16),
-                                                                                  decoration: InputDecoration(
-                                                                                    contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                                                                    isDense: true,
-                                                                                    hintText: "오는 날",
-                                                                                    enabledBorder: UnderlineInputBorder(
-                                                                                      borderSide: BorderSide(color: Colors.grey),
+                                                                  Container(
+                                                                    width:
+                                                                        120.0,
+                                                                    child:
+                                                                        SafeArea(
+                                                                      child: Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Padding(padding: const EdgeInsets.only(top: 10)),
+                                                                            GestureDetector(
+                                                                                onTap: () {
+                                                                                  HapticFeedback.mediumImpact();
+                                                                                  _selectedDataCalendar_endDay(context);
+                                                                                },
+                                                                                child: AbsorbPointer(
+                                                                                    child: Container(
+                                                                                  width: MediaQuery.of(context).size.width,
+                                                                                  padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
+                                                                                  child: TextFormField(
+                                                                                    style: TextStyle(fontSize: 16),
+                                                                                    decoration: InputDecoration(
+                                                                                      contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                                                                      isDense: true,
+                                                                                      hintText: "오는 날",
+                                                                                      enabledBorder: UnderlineInputBorder(
+                                                                                        borderSide: BorderSide(color: Colors.grey),
+                                                                                      ),
+                                                                                      focusedBorder: UnderlineInputBorder(
+                                                                                        borderSide: BorderSide(color: Colors.red),
+                                                                                      ),
                                                                                     ),
-                                                                                    focusedBorder: UnderlineInputBorder(
-                                                                                      borderSide: BorderSide(color: Colors.red),
-                                                                                    ),
+                                                                                    controller: _endDateController,
                                                                                   ),
-                                                                                  controller: _endDateController,
-                                                                                ),
-                                                                              )))
-                                                                        ]),
-                                                                  )),
+                                                                                )))
+                                                                          ]),
+                                                                    ),
+                                                                  ),
+
+                                                                  ////
+                                                                ]),
+                                                            Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  child:
+                                                                      DateTimeSelectorFormField(
+                                                                    controller:
+                                                                        _startTimeController,
+                                                                    decoration: AppConstants
+                                                                        .inputDecoration
+                                                                        .copyWith(
+                                                                      labelText:
+                                                                          "시작 시간",
+                                                                    ),
+                                                                    validator:
+                                                                        (value) {
+                                                                      if (value ==
+                                                                              null ||
+                                                                          value ==
+                                                                              "")
+                                                                        return "Please select start time.";
+
+                                                                      return null;
+                                                                    },
+                                                                    onSave: (date) =>
+                                                                        dayStartingTime =
+                                                                            date,
+                                                                    textStyle:
+                                                                        TextStyle(
+                                                                      color: AppColors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          17.0,
+                                                                    ),
+                                                                    type: DateTimeSelectionType
+                                                                        .time,
+                                                                  ),
                                                                 ),
+                                                                SizedBox(
+                                                                    width:
+                                                                        20.0),
+                                                                Expanded(
+                                                                  child:
+                                                                      DateTimeSelectorFormField(
+                                                                    controller:
+                                                                        _endTimeController,
+                                                                    decoration: AppConstants
+                                                                        .inputDecoration
+                                                                        .copyWith(
+                                                                      labelText:
+                                                                          "종료 시간",
+                                                                    ),
+                                                                    validator:
+                                                                        (value) {
+                                                                      if (value ==
+                                                                              null ||
+                                                                          value ==
+                                                                              "")
+                                                                        return "Please select end time.";
 
-                                                                ////
-                                                              ]),
-
-                                                          Row(
-                                                            children: [
-                                                              Expanded(
-                                                                child: DateTimeSelectorFormField(
-                                                                  controller: _startTimeController,
-                                                                  decoration: AppConstants.inputDecoration.copyWith(
-                                                                    labelText: "시작 시간",
+                                                                      return null;
+                                                                    },
+                                                                    onSave: (date) =>
+                                                                        dayEndingTime =
+                                                                            date,
+                                                                    textStyle:
+                                                                        TextStyle(
+                                                                      color: AppColors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          17.0,
+                                                                    ),
+                                                                    type: DateTimeSelectionType
+                                                                        .time,
                                                                   ),
-                                                                  validator: (value) {
-                                                                    if (value == null || value == "")
-                                                                      return "Please select start time.";
-
-                                                                    return null;
-                                                                  },
-                                                                  onSave: (date) => dayStartingTime = date,
-                                                                  textStyle: TextStyle(
-                                                                    color: AppColors.black,
-                                                                    fontSize: 17.0,
-                                                                  ),
-                                                                  type: DateTimeSelectionType.time,
                                                                 ),
-                                                              ),
-                                                              SizedBox(width: 20.0),
-                                                              Expanded(
-                                                                child: DateTimeSelectorFormField(
-                                                                  controller: _endTimeController,
-                                                                  decoration: AppConstants.inputDecoration.copyWith(
-                                                                    labelText: "종료 시간",
-                                                                  ),
-                                                                  validator: (value) {
-                                                                    if (value == null || value == "")
-                                                                      return "Please select end time.";
+                                                              ],
+                                                            ),
+                                                            Container(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .fromLTRB(
+                                                                            0,
+                                                                            20,
+                                                                            0,
+                                                                            0),
+                                                                child: Column(
+                                                                  children: const [
+                                                                    Padding(
+                                                                      padding:
+                                                                          EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          Text(
+                                                                        "미리 정해놓은 숙소가 있다면,",
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                "Neo"),
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      "입력해주세요!",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Neo"),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  var place =
+                                                                      await PlacesAutocomplete
+                                                                          .show(
+                                                                    context:
+                                                                        context,
+                                                                    apiKey:
+                                                                        'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                                                                    mode: Mode
+                                                                        .overlay,
+                                                                    language:
+                                                                        "kr",
+                                                                    //types: [],
+                                                                    //strictbounds: false,
+                                                                    components: [
+                                                                      Component(
+                                                                          Component
+                                                                              .country,
+                                                                          'kr')
+                                                                    ],
+                                                                    //google_map_webservice package
+                                                                    //onError: (err){
+                                                                    //  print(err);
+                                                                    //},
+                                                                  );
 
-                                                                    return null;
-                                                                  },
-                                                                  onSave: (date) => dayEndingTime = date,
-                                                                  textStyle: TextStyle(
-                                                                    color: AppColors.black,
-                                                                    fontSize: 17.0,
+                                                                  if (place !=
+                                                                      null) {
+                                                                    setState(
+                                                                        () {
+                                                                      location = place
+                                                                          .description
+                                                                          .toString();
+                                                                    });
+
+                                                                    //form google_maps_webservice package
+                                                                    final plist =
+                                                                        GoogleMapsPlaces(
+                                                                      apiKey:
+                                                                          'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                                                                      apiHeaders:
+                                                                          await GoogleApiHeaders()
+                                                                              .getHeaders(),
+                                                                      //from google_api_headers package
+                                                                    );
+
+                                                                    String
+                                                                        placeid =
+                                                                        place.placeId ??
+                                                                            "0";
+
+                                                                    final detail =
+                                                                        await plist
+                                                                            .getDetailsByPlaceId(placeid);
+                                                                    final geometry = detail
+                                                                        .result
+                                                                        .geometry!;
+                                                                    final lat =
+                                                                        geometry
+                                                                            .location
+                                                                            .lat;
+                                                                    final lang =
+                                                                        geometry
+                                                                            .location
+                                                                            .lng;
+                                                                    var newlatlang =
+                                                                        LatLng(
+                                                                            lat,
+                                                                            lang);
+                                                                    accommodationLatLen
+                                                                        .add(
+                                                                            newlatlang);
+
+                                                                    //move map camera to selected place with animation
+                                                                    //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
+                                                                    var places =
+                                                                        location
+                                                                            .split(', ');
+                                                                    String
+                                                                        placeName =
+                                                                        places[places.length -
+                                                                            1];
+                                                                    print(
+                                                                        'placeName: $placeName');
+
+                                                                    //숙소 정보 업데이트
+                                                                    accomodation =
+                                                                        placeName;
+                                                                    accomodation_lati =
+                                                                        lat;
+                                                                    accomodation_long =
+                                                                        lang;
+
+                                                                    //관광지 이름
+                                                                    var fixTourSpotName =
+                                                                        placeName;
+
+                                                                    placeList.add(Place(
+                                                                        placeName,
+                                                                        lat,
+                                                                        lang,
+                                                                        60,
+                                                                        20,
+                                                                        selectedList[
+                                                                            0],
+                                                                        selectedList[
+                                                                            1],
+                                                                        selectedList[
+                                                                            2],
+                                                                        selectedList[
+                                                                            3],
+                                                                        selectedList[
+                                                                            4]));
+                                                                    setState(
+                                                                        () {});
+                                                                    setState(
+                                                                        () {});
+                                                                  } else {
+                                                                    setState(
+                                                                        () {
+                                                                      location =
+                                                                          "Search Location";
+                                                                    });
+                                                                  }
+                                                                },
+                                                                child: Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              15),
+                                                                  child: Card(
+                                                                    child: Container(
+                                                                        padding: EdgeInsets.all(0),
+                                                                        width: MediaQuery.of(context).size.width - 40,
+                                                                        child: ListTile(
+                                                                          title:
+                                                                              Text(
+                                                                            location,
+                                                                            style:
+                                                                                TextStyle(fontSize: 18),
+                                                                          ),
+                                                                          trailing:
+                                                                              Icon(Icons.search),
+                                                                          dense:
+                                                                              true,
+                                                                        )),
                                                                   ),
-                                                                  type: DateTimeSelectionType.time,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Container(
+                                                                )),
+                                                            Container(
+                                                                width: 120.0,
+                                                                height: 50.0,
+                                                                // padding: EdgeInsets
+                                                                //     .fromLTRB(0, 30,
+                                                                //         0, 0),
+                                                                child:
+                                                                    ElevatedButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          //인풋값들 출력 확인
+                                                                          //숙소값, 가는날, 오는만 있어야 정상.
+
+                                                                          _form
+                                                                              .currentState
+                                                                              ?.save();
+
+                                                                          print(
+                                                                              "accomodation : ${accomodation}");
+                                                                          print(
+                                                                              "accomo latitude: $accomodation_lati");
+                                                                          print(
+                                                                              "accomo longitude: $accomodation_long");
+                                                                          print(
+                                                                              "selectedList : ${selectedList}");
+                                                                          print(
+                                                                              "fixTourSpotList: ${fixTourSpotList}");
+                                                                          print(
+                                                                              "fixDateList : ${fixDateList}");
+                                                                          print(
+                                                                              "startDay : $startDay");
+                                                                          print(
+                                                                              "endDay: $endDay");
+                                                                          print(
+                                                                              "dayStartingTime: $dayStartingTime");
+
+                                                                          print(
+                                                                              "dayEndingTime: $dayEndingTime");
+
+                                                                          print(
+                                                                              "며칠? ${endDay.difference(startDay).inDays + 1}");
+
+                                                                          Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(builder: (context) => CourseDetail()));
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          '추천코스',
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontFamily: "Neo"),
+                                                                        ))),
+                                                            Container(
                                                               padding:
                                                                   EdgeInsets
                                                                       .fromLTRB(
                                                                           0,
-                                                                          50,
+                                                                          10,
                                                                           0,
                                                                           0),
-                                                              child: Column(
-                                                                children: const [
-                                                                  Padding(
-                                                                    padding:
-                                                                        EdgeInsets.all(
-                                                                            8.0),
-                                                                    child: Text(
-                                                                      "미리 정해놓은 숙소가 있다면,",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              "Neo"),
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                    "입력해주세요!",
-                                                                    style: TextStyle(
-                                                                        fontFamily:
-                                                                            "Neo"),
-                                                                  )
-                                                                ],
-                                                              )),
-                                                          InkWell(
-                                                              onTap: () async {
-                                                                var place =
-                                                                    await PlacesAutocomplete
-                                                                        .show(
-                                                                  context:
-                                                                      context,
-                                                                  apiKey:
-                                                                      'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
-                                                                  mode: Mode
-                                                                      .overlay,
-                                                                  language:
-                                                                      "kr",
-                                                                  //types: [],
-                                                                  //strictbounds: false,
-                                                                  components: [
-                                                                    Component(
-                                                                        Component
-                                                                            .country,
-                                                                        'kr')
-                                                                  ],
-                                                                  //google_map_webservice package
-                                                                  //onError: (err){
-                                                                  //  print(err);
-                                                                  //},
-                                                                );
+                                                            ),
+                                                            Container(
+                                                                width: 120.0,
+                                                                height: 50.0,
+                                                                child:
+                                                                    ElevatedButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          List<List<Place>>
+                                                                              emptyPreset =
+                                                                              [
+                                                                            for (int i = 0;
+                                                                                i < endDay.difference(startDay).inDays + 1;
+                                                                                i++)
+                                                                              []
+                                                                          ];
 
-                                                                if (place !=
-                                                                    null) {
-                                                                  setState(() {
-                                                                    location = place
-                                                                        .description
-                                                                        .toString();
-                                                                  });
+                                                                          List<List<int>>
+                                                                              emptyMovingTime =
+                                                                              [
+                                                                            for (int i = 0;
+                                                                                i < endDay.difference(startDay).inDays + 1;
+                                                                                i++)
+                                                                              []
+                                                                          ];
 
-                                                                  //form google_maps_webservice package
-                                                                  final plist =
-                                                                      GoogleMapsPlaces(
-                                                                    apiKey:
-                                                                        'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
-                                                                    apiHeaders:
-                                                                        await GoogleApiHeaders()
-                                                                            .getHeaders(),
-                                                                    //from google_api_headers package
-                                                                  );
-
-                                                                  String
-                                                                      placeid =
-                                                                      place.placeId ??
-                                                                          "0";
-
-                                                                  final detail =
-                                                                      await plist
-                                                                          .getDetailsByPlaceId(
-                                                                              placeid);
-                                                                  final geometry =
-                                                                      detail
-                                                                          .result
-                                                                          .geometry!;
-                                                                  final lat =
-                                                                      geometry
-                                                                          .location
-                                                                          .lat;
-                                                                  final lang =
-                                                                      geometry
-                                                                          .location
-                                                                          .lng;
-                                                                  var newlatlang =
-                                                                      LatLng(
-                                                                          lat,
-                                                                          lang);
-                                                                  accommodationLatLen
-                                                                      .add(
-                                                                          newlatlang);
-
-                                                                  //move map camera to selected place with animation
-                                                                  //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
-                                                                  var places =
-                                                                      location.split(
-                                                                          ', ');
-                                                                  String
-                                                                      placeName =
-                                                                      places[
-                                                                          places.length -
-                                                                              1];
-                                                                  print(
-                                                                      'placeName: $placeName');
-
-                                                                  //숙소 정보 업데이트
-                                                                  accomodation =
-                                                                      placeName;
-                                                                  accomodation_lati =
-                                                                      lat;
-                                                                  accomodation_long =
-                                                                      lang;
-
-                                                                  //관광지 이름
-                                                                  var fixTourSpotName =
-                                                                      placeName;
-
-                                                                  placeList.add(Place(
-                                                                      placeName,
-                                                                      lat,
-                                                                      lang,
-                                                                      60,
-                                                                      20,
-                                                                      selectedList[
-                                                                          0],
-                                                                      selectedList[
-                                                                          1],
-                                                                      selectedList[
-                                                                          2],
-                                                                      selectedList[
-                                                                          3],
-                                                                      selectedList[
-                                                                          4]));
-                                                                  setState(
-                                                                      () {});
-                                                                  setState(
-                                                                      () {});
-                                                                } else {
-                                                                  setState(() {
-                                                                    location =
-                                                                        "Search Location";
-                                                                  });
-                                                                }
-                                                              },
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            15),
-                                                                child: Card(
-                                                                  child: Container(
-                                                                      padding: EdgeInsets.all(0),
-                                                                      width: MediaQuery.of(context).size.width - 40,
-                                                                      child: ListTile(
-                                                                        title:
-                                                                            Text(
-                                                                          location,
-                                                                          style:
-                                                                              TextStyle(fontSize: 18),
-                                                                        ),
-                                                                        trailing:
-                                                                            Icon(Icons.search),
-                                                                        dense:
-                                                                            true,
-                                                                      )),
-                                                                ),
-                                                              )),
-                                                          Container(
-                                                              width: 120.0,
-                                                              height: 50.0,
-                                                              // padding: EdgeInsets
-                                                              //     .fromLTRB(0, 30,
-                                                              //         0, 0),
-                                                              child:
-                                                                  ElevatedButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        //인풋값들 출력 확인
-                                                                        //숙소값, 가는날, 오는만 있어야 정상.
-
-                                                                            _form.currentState?.save();
-
-                                                                        print(
-                                                                            "accomodation : ${accomodation}");
-                                                                        print(
-                                                                            "accomo latitude: $accomodation_lati");
-                                                                        print(
-                                                                            "accomo longitude: $accomodation_long");
-                                                                        print(
-                                                                            "selectedList : ${selectedList}");
-                                                                        print(
-                                                                            "fixTourSpotList: ${fixTourSpotList}");
-                                                                        print(
-                                                                            "fixDateList : ${fixDateList}");
-                                                                        print(
-                                                                            "startDay : $startDay");
-                                                                        print(
-                                                                            "endDay: $endDay");
-                                                                        print(
-                                                                            "dayStartingTime: $dayStartingTime");
-
-                                                                        print(
-                                                                            "dayEndingTime: $dayEndingTime");
-
-                                                                        print(
-                                                                            "며칠? ${endDay.difference(startDay).inDays + 1}");
-
-                                                                        Navigator.push(
-                                                                            context,
-                                                                            MaterialPageRoute(builder: (context) => CourseDetail()));
-                                                                      },
-                                                                      child:
-                                                                          Text(
-                                                                        '추천코스',
-                                                                        style: TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontFamily: "Neo"),
-                                                                      ))),
-                                                          Container(
-                                                            padding: EdgeInsets
-                                                                .fromLTRB(0, 10,
-                                                                    0, 0),
-                                                          ),
-                                                          Container(
-                                                              width: 120.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  ElevatedButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        List<List<Place>>
-                                                                            emptyPreset =
-                                                                            [
-                                                                              for(int i=0; i<endDay.difference(startDay).inDays + 1; i++)
-                                                                                []
-                                                                        ];
-
-                                                                        List<List<int>> emptyMovingTime = [
-                                                                          for(int i=0; i<endDay.difference(startDay).inDays + 1; i++)
-                                                                            []
-                                                                        ];
-
-
-                                                                        print(
-                                                                            "startDay : $startDay");
-                                                                        print(
-                                                                            "endDay: $endDay");
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    Timetable(preset: emptyPreset,transit: 0, movingTimeList: emptyMovingTime,)));
-
-                                                                      },
-                                                                      child: Text(
-                                                                          '혼자 짤래요',
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontFamily: "Neo"))))
-                                                        ]),
-                                                  ))));
+                                                                          print(
+                                                                              "startDay : $startDay");
+                                                                          print(
+                                                                              "endDay: $endDay");
+                                                                          Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(
+                                                                                  builder: (context) => Timetable(
+                                                                                        preset: emptyPreset,
+                                                                                        transit: 0,
+                                                                                        movingTimeList: emptyMovingTime,
+                                                                                      )));
+                                                                        },
+                                                                        child: Text(
+                                                                            '혼자 짤래요',
+                                                                            style:
+                                                                                TextStyle(fontWeight: FontWeight.bold, fontFamily: "Neo"))))
+                                                          ]),
+                                                    ))),
+                                          ));
                                         });
                                   },
                                   child: Text(
@@ -618,12 +650,15 @@ class _AppState extends State<App> {
                                     ),
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                      primary:
-                                          Color.fromARGB(255, 78, 194, 252),
+                                      primary: Colors.white,
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                       ),
+                                      side: BorderSide(
+                                          width: 2.0,
+                                          color: Color.fromARGB(
+                                              255, 78, 194, 252)),
                                       minimumSize: Size(100, 100))),
                               ElevatedButton(
                                   onPressed: () async {
