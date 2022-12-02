@@ -171,7 +171,7 @@ class _AppState extends State<App> {
                                                                               labelText: '여행 지역'))),
                                                                   Container(
                                                                     width:
-                                                                        120.0,
+                                                                        130.0,
                                                                     child:
                                                                         SafeArea(
                                                                       child: Column(
@@ -210,7 +210,7 @@ class _AppState extends State<App> {
 
                                                                   Container(
                                                                     width:
-                                                                        120.0,
+                                                                        130.0,
                                                                     child:
                                                                         SafeArea(
                                                                       child: Column(
