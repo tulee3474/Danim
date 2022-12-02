@@ -101,8 +101,8 @@ class _MyJourneyState extends State<MyJourney> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                           content: SizedBox(
-                              height: 350.0,
-                              width: 300,
+                              width: 50.0,
+                              height: 50.0,
                               child: Column(children: [
                                 Text("이 코스 어떠셨나요?"),
                                 Row(children: [
