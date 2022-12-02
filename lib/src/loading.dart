@@ -102,7 +102,7 @@ class _LoadingState extends State<Loading> {
         [dayStartingTime.hour, dayEndingTime.hour],
         5,
         endDay.difference(startDay).inDays + 1);
-    Timer(Duration(seconds: 2), () {
+    Timer(Duration(seconds: 0), () {
       Navigator.push(
           context,
           MaterialPageRoute(

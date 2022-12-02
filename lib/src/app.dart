@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:danim/src/loadingMyPage.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/timetable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -643,16 +644,17 @@ class _AppState extends State<App> {
                               ElevatedButton(
                                   onPressed: () async {
                                     //임시 텍스트
-                                    if (token == '') {
-                                      await readUserData("docCodeTest123");
-                                    } else {
-                                      await readUserData(token as String);
-                                    }
+                                    // if (token == '') {
+                                    //   await readUserData("docCodeTest123");
+                                    // } else {
+                                    //   await readUserData(token as String);
+                                    // }
 
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => MyPage()));
+                                            builder: (context) =>
+                                                LoadingMyPage()));
                                   },
                                   child: Text(
                                     '내 여행',
