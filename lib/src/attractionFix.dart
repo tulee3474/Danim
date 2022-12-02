@@ -101,6 +101,7 @@ class _AttractionFixState extends State<AttractionFix> {
                             child: Text("Warning!",
                                 style: TextStyle(
                                   fontFamily: "Neo",
+                                  fontWeight: FontWeight.bold,
                                 ))),
                       ),
                       Padding(
@@ -109,6 +110,7 @@ class _AttractionFixState extends State<AttractionFix> {
                             child: Text(message,
                                 style: TextStyle(
                                   fontFamily: "Neo",
+                                  fontWeight: FontWeight.bold,
                                 ))),
                       ),
                     ],
@@ -162,6 +164,7 @@ class _AttractionFixState extends State<AttractionFix> {
                   child: Text('꼭 방문하길 원하는 장소가 있으신가요?',
                       style: TextStyle(
                         color: Colors.black,
+                        fontFamily: "Neo",
                         letterSpacing: 2.0,
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
@@ -171,6 +174,7 @@ class _AttractionFixState extends State<AttractionFix> {
                   child: Text('예) 관광지, 카페, 맛집 등등',
                       style: TextStyle(
                         color: Colors.black,
+                        fontFamily: "Neo",
                         letterSpacing: 2.0,
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold,
@@ -185,6 +189,7 @@ class _AttractionFixState extends State<AttractionFix> {
                     style: TextStyle(
                       color: Colors.black,
                       letterSpacing: 2.0,
+                      fontFamily: "Neo",
                       fontSize: 15.0,
                       fontWeight: FontWeight.bold,
                     )),
@@ -301,6 +306,7 @@ class _AttractionFixState extends State<AttractionFix> {
                     style: TextStyle(
                       color: Colors.black,
                       letterSpacing: 2.0,
+                      fontFamily: "Neo",
                       fontSize: 15.0,
                       fontWeight: FontWeight.bold,
                     )),

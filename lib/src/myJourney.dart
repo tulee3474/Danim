@@ -101,8 +101,8 @@ class _MyJourneyState extends State<MyJourney> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                           content: SizedBox(
-                              width: 50.0,
-                              height: 50.0,
+                              height: 350.0,
+                              width: 350.0,
                               child: Column(children: [
                                 Text("이 코스 어떠셨나요?"),
                                 Row(children: [
@@ -141,7 +141,7 @@ class _MyJourneyState extends State<MyJourney> {
                                   controller: courseReview,
                                   decoration: InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: '리뷰'),
+                                      labelText: '리뷰 작성 (선택)'),
                                 ),
                                 ElevatedButton(
                                     onPressed: () async {
@@ -180,7 +180,11 @@ class _MyJourneyState extends State<MyJourney> {
                                       //print('${courseReview.text}'); //리뷰
                                       //print('${journey}');
                                     },
-                                    child: Text("리뷰 저장"))
+                                    child: Text("리뷰 저장",
+                                        style: TextStyle(
+                                          fontFamily: "Neo",
+                                          fontWeight: FontWeight.bold,
+                                        )))
                               ])));
                     });
               },

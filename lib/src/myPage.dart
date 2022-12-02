@@ -114,6 +114,7 @@ class MyPage extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black,
                           letterSpacing: 2.0,
+                          fontFamily: 'Neo',
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
                         ))),
