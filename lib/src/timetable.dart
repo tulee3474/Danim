@@ -474,7 +474,7 @@ class _TimetableState extends State<Timetable> {
                                                               ],
                                                             )));
                                                   });
-                                              sleep(Duration(seconds: 1));
+                                              sleep(Duration(seconds: 3));
                                               Navigator.popUntil(context,
                                                   (route) => route.isFirst);
                                               //첫화면까지 팝해버리는거임

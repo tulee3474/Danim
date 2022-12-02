@@ -638,6 +638,19 @@ class RouteAI {
           //출발지의 Index, 프리셋마다 다르게 시작하기 위함
           int index = point.indexOf(
               pointCopy[pointCopy.length - 1 - (numPreset as int) * 4]);
+
+          if (index < 0) {
+            index = point.indexOf(
+                pointCopy[pointCopy.length - 1 - (numPreset as int) * 3]);
+          }
+          if (index < 0) {
+            index = point.indexOf(
+                pointCopy[pointCopy.length - 1 - (numPreset as int) * 2]);
+          }
+          if (index < 0) {
+            index = point
+                .indexOf(pointCopy[pointCopy.length - 1 - (numPreset as int)]);
+          }
           firstPlace = Place.clone(placeListCopy[index]);
         }
 

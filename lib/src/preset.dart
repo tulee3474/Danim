@@ -50,26 +50,26 @@ class _PresetState extends State<Preset> {
     MaterialStateProperty.resolveWith(getColor)
   ];
 
-  List<TextStyle> presetButtonTextColorList = [
-    TextStyle(
-      color: Colors.black,
-    ),
-    TextStyle(
-      color: Colors.black,
-    ),
-    TextStyle(
-      color: Colors.black,
-    ),
-    TextStyle(
-      color: Colors.black,
-    ),
-    TextStyle(
-      color: Colors.black,
-    ),
-    TextStyle(
-      color: Colors.black,
-    )
-  ];
+  // List<TextStyle> presetButtonTextColorList = [
+  //   TextStyle(
+  //     color: Colors.black,
+  //   ),
+  //   TextStyle(
+  //     color: Colors.black,
+  //   ),
+  //   TextStyle(
+  //     color: Colors.black,
+  //   ),
+  //   TextStyle(
+  //     color: Colors.black,
+  //   ),
+  //   TextStyle(
+  //     color: Colors.black,
+  //   ),
+  //   TextStyle(
+  //     color: Colors.black,
+  //   )
+  // ];
 
   void switchPresetButtonColor(int index, int type) {
     if (type == 1) {

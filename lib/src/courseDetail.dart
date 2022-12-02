@@ -144,7 +144,7 @@ class _CourseDetailState extends State<CourseDetail> {
                           style: TextStyle(
                             color: Colors.black,
                             letterSpacing: 2.0,
-                            fontSize: 20.0,
+                            fontSize: 18.0,
                             fontFamily: "Neo",
                             fontWeight: FontWeight.bold,
                           ))),
