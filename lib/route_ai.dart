@@ -637,7 +637,7 @@ class RouteAI {
           pointCopy.sort();
           //출발지의 Index, 프리셋마다 다르게 시작하기 위함
           int index = point.indexOf(
-              pointCopy[pointCopy.length - 1 - (numPreset as int) * 3]);
+              pointCopy[pointCopy.length - 1 - (numPreset as int) * 4]);
           firstPlace = Place.clone(placeListCopy[index]);
         }
 
@@ -648,34 +648,31 @@ class RouteAI {
           for (int f = 0; f < fixTourSpotList.length; f++) {
             //fixedPlaceDayList의 원소가 d+1(n일차)와 같을때만
             if (fixDateList[f] == d + 1) {
-               //Place readData =
+              //Place readData =
 
-               //    await read.fb_read_one_place(city, fixTourSpotList[f]);
+              //    await read.fb_read_one_place(city, fixTourSpotList[f]);
               //LatLng tmp = await getLocation(fixTourSpotList[f].name);
               //double lat = tmp.latitude; //좌표읽어오기
 
               //double long = tmp.longitude; //좌표읽어오기
               //Place readData = Place(
-                  Place readData = Place(
-
-                      fixTourSpotList[f].name,
+              Place readData = Place(
+                  fixTourSpotList[f].name,
                   fixTourSpotList[f].latitude,
                   fixTourSpotList[f].longitude,
-                      60,
-                      0,
-                      [0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0]);
-
+                  60,
+                  0,
+                  [0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0]);
 
               fixedPlaceList.add(readData);
               placeListCopy.removeWhere((item) => item.name == readData.name);
             }
           }
         }
-
 
         //초기 path 만들기
         List<Place> initializePath = await initialize_greedy(

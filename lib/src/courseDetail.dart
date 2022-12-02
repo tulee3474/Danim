@@ -38,6 +38,54 @@ class _CourseDetailState extends State<CourseDetail> {
       return Colors.white;
   }
 
+  //List<MaterialStateProperty<Color>> backgrouneColorList = List.generate(28, (MaterialStateProperty.resolveWith(getColor)) => []);
+  List<MaterialStateProperty<Color>> backgrouneColorList = [
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+  ];
+
+  void switchBackgroundColor(int index, int type) {
+    if (type == 1) {
+      setState(() {
+        backgrouneColorList[index] = MaterialStateProperty.resolveWith(
+            (states) => Color.fromARGB(255, 78, 194, 252));
+      });
+    } else if (type == 0) {
+      setState(() {
+        backgrouneColorList[index] =
+            MaterialStateProperty.resolveWith(getColor);
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         // appBar: AppBar(
@@ -123,10 +171,16 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
-                            onPressed: () => {transit = 0, print(transit)}),
+                                backgroundColor: backgrouneColorList[0]),
+                            onPressed: () => {
+                                  transit = 0,
+                                  print(transit),
+                                  setState(() {
+                                    switchBackgroundColor(0, 1);
+                                    switchBackgroundColor(1, 0);
+                                  })
+                                }),
+                        // MaterialStatePropertyColor.fromARGB(255, 78, 194, 252)]
                         ElevatedButton(
                             child: Text('대중교통',
                                 style: TextStyle(
@@ -134,10 +188,15 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
-                            onPressed: () => {transit = 1, print(transit)})
+                                backgroundColor: backgrouneColorList[1]),
+                            onPressed: () => {
+                                  transit = 1,
+                                  print(transit),
+                                  setState(() {
+                                    switchBackgroundColor(1, 1);
+                                    switchBackgroundColor(0, 0);
+                                  })
+                                })
                       ])),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -170,14 +229,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[2]),
                             onPressed: () => {
                                   if (selectedList[0][0] == 0)
-                                    {selectedList[0][0] = 1}
+                                    {
+                                      selectedList[0][0] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(2, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[0][0] = 0},
+                                    {
+                                      selectedList[0][0] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(2, 0);
+                                      })
+                                    },
                                   print(selectedList[0][0])
                                 }),
                         ElevatedButton(
@@ -187,14 +254,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[3]),
                             onPressed: () => {
                                   if (selectedList[0][1] == 0)
-                                    {selectedList[0][1] = 1}
+                                    {
+                                      selectedList[0][1] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(3, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[0][1] = 0},
+                                    {
+                                      selectedList[0][1] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(3, 0);
+                                      })
+                                    },
                                   print(selectedList[0][1])
                                 }),
                         ElevatedButton(
@@ -204,14 +279,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[4]),
                             onPressed: () => {
                                   if (selectedList[0][2] == 0)
-                                    {selectedList[0][2] = 1}
+                                    {
+                                      selectedList[0][2] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(4, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[0][2] = 0},
+                                    {
+                                      selectedList[0][2] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(4, 0);
+                                      })
+                                    },
                                   print(selectedList[0][2])
                                 }),
                         ElevatedButton(
@@ -221,14 +304,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[5]),
                             onPressed: () => {
                                   if (selectedList[0][3] == 0)
-                                    {selectedList[0][3] = 1}
+                                    {
+                                      selectedList[0][3] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(5, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[0][3] = 0},
+                                    {
+                                      selectedList[0][3] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(5, 0);
+                                      })
+                                    },
                                   print(selectedList[0][3])
                                 }),
                       ]),
@@ -240,14 +331,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[6]),
                             onPressed: () => {
                                   if (selectedList[0][4] == 0)
-                                    {selectedList[0][4] = 1}
+                                    {
+                                      selectedList[0][4] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(6, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[0][4] = 0},
+                                    {
+                                      selectedList[0][4] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(6, 0);
+                                      })
+                                    },
                                   print(selectedList[0][4])
                                 }),
                         ElevatedButton(
@@ -257,14 +356,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[7]),
                             onPressed: () => {
                                   if (selectedList[0][5] == 0)
-                                    {selectedList[0][5] = 1}
+                                    {
+                                      selectedList[0][5] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(7, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[0][5] = 0},
+                                    {
+                                      selectedList[0][5] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(7, 0);
+                                      })
+                                    },
                                   print(selectedList[0][5])
                                 }),
                         ElevatedButton(
@@ -274,14 +381,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[8]),
                             onPressed: () => {
                                   if (selectedList[0][6] == 0)
-                                    {selectedList[0][6] = 1}
+                                    {
+                                      selectedList[0][6] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(8, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[0][6] = 0},
+                                    {
+                                      selectedList[0][6] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(8, 0);
+                                      })
+                                    },
                                   print(selectedList[0][6])
                                 })
                       ])
@@ -317,14 +432,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[9]),
                             onPressed: () => {
                                   if (selectedList[1][0] == 0)
-                                    {selectedList[1][0] = 1}
+                                    {
+                                      selectedList[1][0] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(9, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[1][0] = 0},
+                                    {
+                                      selectedList[1][0] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(9, 0);
+                                      })
+                                    },
                                   print(selectedList[1][0])
                                 }),
                         ElevatedButton(
@@ -334,14 +457,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[10]),
                             onPressed: () => {
                                   if (selectedList[1][1] == 0)
-                                    {selectedList[1][1] = 1}
+                                    {
+                                      selectedList[1][1] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(10, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[1][1] = 0},
+                                    {
+                                      selectedList[1][1] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(10, 0);
+                                      })
+                                    },
                                   print(selectedList[1][1])
                                 }),
                         ElevatedButton(
@@ -351,14 +482,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[11]),
                             onPressed: () => {
                                   if (selectedList[1][2] == 0)
-                                    {selectedList[1][2] = 1}
+                                    {
+                                      selectedList[1][2] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(11, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[1][2] = 0},
+                                    {
+                                      selectedList[1][2] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(11, 0);
+                                      })
+                                    },
                                   print(selectedList[1][2])
                                 }),
                         ElevatedButton(
@@ -368,14 +507,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                        getColor)),
+                                backgroundColor: backgrouneColorList[12]),
                             onPressed: () => {
                                   if (selectedList[1][3] == 0)
-                                    {selectedList[1][3] = 1}
+                                    {
+                                      selectedList[1][3] = 1,
+                                      setState(() {
+                                        switchBackgroundColor(12, 1);
+                                      })
+                                    }
                                   else
-                                    {selectedList[1][3] = 0},
+                                    {
+                                      selectedList[1][3] = 0,
+                                      setState(() {
+                                        switchBackgroundColor(12, 0);
+                                      })
+                                    },
                                   print(selectedList[1][3])
                                 })
                       ])),
@@ -410,14 +557,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[13]),
                               onPressed: () => {
                                     if (selectedList[2][0] == 0)
-                                      {selectedList[2][0] = 1}
+                                      {
+                                        selectedList[2][0] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(13, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[2][0] = 0},
+                                      {
+                                        selectedList[2][0] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(13, 0);
+                                        })
+                                      },
                                     print(selectedList[2][0])
                                   }),
                           ElevatedButton(
@@ -427,14 +582,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[14]),
                               onPressed: () => {
                                     if (selectedList[2][1] == 0)
-                                      {selectedList[2][1] = 1}
+                                      {
+                                        selectedList[2][1] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(14, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[2][1] = 0},
+                                      {
+                                        selectedList[2][1] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(14, 0);
+                                        })
+                                      },
                                     print(selectedList[2][1])
                                   }),
                           ElevatedButton(
@@ -444,14 +607,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[15]),
                               onPressed: () => {
                                     if (selectedList[2][2] == 0)
-                                      {selectedList[2][2] = 1}
+                                      {
+                                        selectedList[2][2] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(15, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[2][2] = 0},
+                                      {
+                                        selectedList[2][2] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(15, 0);
+                                        })
+                                      },
                                     print(selectedList[2][2])
                                   }),
                           ElevatedButton(
@@ -461,14 +632,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[16]),
                               onPressed: () => {
                                     if (selectedList[2][3] == 0)
-                                      {selectedList[2][3] = 1}
+                                      {
+                                        selectedList[2][3] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(16, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[2][3] = 0},
+                                      {
+                                        selectedList[2][3] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(16, 0);
+                                        })
+                                      },
                                     print(selectedList[2][3])
                                   }),
                         ]),
@@ -480,14 +659,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[17]),
                               onPressed: () => {
                                     if (selectedList[2][4] == 0)
-                                      {selectedList[2][4] = 1}
+                                      {
+                                        selectedList[2][4] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(17, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[2][4] = 0},
+                                      {
+                                        selectedList[2][4] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(17, 0);
+                                        })
+                                      },
                                     print(selectedList[2][4])
                                   }),
                           ElevatedButton(
@@ -497,14 +684,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[18]),
                               onPressed: () => {
                                     if (selectedList[2][5] == 0)
-                                      {selectedList[2][5] = 1}
+                                      {
+                                        selectedList[2][5] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(18, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[2][5] = 0},
+                                      {
+                                        selectedList[2][5] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(18, 0);
+                                        })
+                                      },
                                     print(selectedList[2][5])
                                   })
                         ])
@@ -540,14 +735,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[19]),
                               onPressed: () => {
                                     if (selectedList[3][0] == 0)
-                                      {selectedList[3][0] = 1}
+                                      {
+                                        selectedList[3][0] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(19, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[3][0] = 0},
+                                      {
+                                        selectedList[3][0] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(19, 0);
+                                        })
+                                      },
                                     print(selectedList[3][0])
                                   }),
                           ElevatedButton(
@@ -557,14 +760,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[20]),
                               onPressed: () => {
                                     if (selectedList[3][1] == 0)
-                                      {selectedList[3][1] = 1}
+                                      {
+                                        selectedList[3][1] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(20, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[3][1] = 0},
+                                      {
+                                        selectedList[3][1] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(20, 0);
+                                        })
+                                      },
                                     print(selectedList[3][1])
                                   }),
                           ElevatedButton(
@@ -574,14 +785,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[21]),
                               onPressed: () => {
                                     if (selectedList[3][2] == 0)
-                                      {selectedList[3][2] = 1}
+                                      {
+                                        selectedList[3][2] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(21, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[3][2] = 0},
+                                      {
+                                        selectedList[3][2] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(21, 0);
+                                        })
+                                      },
                                     print(selectedList[3][2])
                                   }),
                           ElevatedButton(
@@ -591,14 +810,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getColor)),
+                                  backgroundColor: backgrouneColorList[22]),
                               onPressed: () => {
                                     if (selectedList[3][3] == 0)
-                                      {selectedList[3][3] = 1}
+                                      {
+                                        selectedList[3][3] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(22, 1);
+                                        })
+                                      }
                                     else
-                                      {selectedList[3][3] = 0},
+                                      {
+                                        selectedList[3][3] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(22, 0);
+                                        })
+                                      },
                                     print(selectedList[3][3])
                                   }),
                         ]),
@@ -611,14 +838,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black)),
                                 style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.resolveWith(
-                                            getColor)),
+                                    backgroundColor: backgrouneColorList[23]),
                                 onPressed: () => {
                                       if (selectedList[3][4] == 0)
-                                        {selectedList[3][4] = 1}
+                                        {
+                                          selectedList[3][4] = 1,
+                                          setState(() {
+                                            switchBackgroundColor(23, 1);
+                                          })
+                                        }
                                       else
-                                        {selectedList[3][4] = 0},
+                                        {
+                                          selectedList[3][4] = 0,
+                                          setState(() {
+                                            switchBackgroundColor(23, 0);
+                                          })
+                                        },
                                       print(selectedList[3][4])
                                     }),
                             ElevatedButton(
@@ -628,14 +863,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black)),
                                 style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.resolveWith(
-                                            getColor)),
+                                    backgroundColor: backgrouneColorList[24]),
                                 onPressed: () => {
                                       if (selectedList[3][5] == 0)
-                                        {selectedList[3][5] = 1}
+                                        {
+                                          selectedList[3][5] = 1,
+                                          setState(() {
+                                            switchBackgroundColor(24, 1);
+                                          })
+                                        }
                                       else
-                                        {selectedList[3][5] = 0},
+                                        {
+                                          selectedList[3][5] = 0,
+                                          setState(() {
+                                            switchBackgroundColor(24, 0);
+                                          })
+                                        },
                                       print(selectedList[3][5])
                                     }),
                             ElevatedButton(
@@ -645,14 +888,22 @@ class _CourseDetailState extends State<CourseDetail> {
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black)),
                                 style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.resolveWith(
-                                            getColor)),
+                                    backgroundColor: backgrouneColorList[25]),
                                 onPressed: () => {
                                       if (selectedList[3][6] == 0)
-                                        {selectedList[3][6] = 1}
+                                        {
+                                          selectedList[3][6] = 1,
+                                          setState(() {
+                                            switchBackgroundColor(25, 1);
+                                          })
+                                        }
                                       else
-                                        {selectedList[3][6] = 0},
+                                        {
+                                          selectedList[3][6] = 0,
+                                          setState(() {
+                                            switchBackgroundColor(25, 0);
+                                          })
+                                        },
                                       print(selectedList[3][6])
                                     }),
                           ],
@@ -707,8 +958,8 @@ class _CourseDetailState extends State<CourseDetail> {
                     ),
                   ),
                   Container(
-                      width: 150.0,
-                      height: 70,
+                      width: 120.0,
+                      height: 90.0,
                       padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: ElevatedButton(
                           onPressed: () {
