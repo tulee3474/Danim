@@ -477,7 +477,7 @@ class _AttractionFixState extends State<AttractionFix> {
                           style: TextStyle(
                             fontFamily: "Neo",
                             fontWeight: FontWeight.bold,
-                          ))))
+                          )))),
             ])),
       ),
       // floatingActionButton: FloatingActionButton(
