@@ -84,6 +84,38 @@ class _AttractionFixState extends State<AttractionFix> {
 
   String location2 = "장소를 입력해주세요";
 
+  void showPopUp(String message) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              content: SizedBox(
+                  width: 250,
+                  height: 100,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Container(
+                            child: Text("Warning!",
+                                style: TextStyle(
+                                  fontFamily: "Neo",
+                                ))),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Container(
+                            child: Text(message,
+                                style: TextStyle(
+                                  fontFamily: "Neo",
+                                ))),
+                      ),
+                    ],
+                  )));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,6 +178,17 @@ class _AttractionFixState extends State<AttractionFix> {
               Container(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: Divider(color: Colors.grey, thickness: 2.0)),
+              Center(
+                  child: Container(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text("원하는 장소 입력",
+                    style: TextStyle(
+                      color: Colors.black,
+                      letterSpacing: 2.0,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                    )),
+              )),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Container(
                     width: 350,
@@ -240,18 +283,6 @@ class _AttractionFixState extends State<AttractionFix> {
                           ),
                         ))),
               ]),
-              // Padding(
-              //   padding: EdgeInsets.all(10.0),
-              //   child: Container(
-              //       width: 120.0,
-              //       height: 90.0,
-              //       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              //       child: TextField(
-              //         controller: fixDateController,
-              //         decoration: InputDecoration(
-              //             border: OutlineInputBorder(), labelText: '며칠차에?'),
-              //       )),
-              // ),
               Container(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
               Container(
                 margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -265,7 +296,7 @@ class _AttractionFixState extends State<AttractionFix> {
               ),
               Center(
                   child: Container(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                 child: Text("며칠 차 여행때 방문할 예정인가요?",
                     style: TextStyle(
                       color: Colors.black,
@@ -274,7 +305,6 @@ class _AttractionFixState extends State<AttractionFix> {
                       fontWeight: FontWeight.bold,
                     )),
               )),
-
               Container(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -282,7 +312,7 @@ class _AttractionFixState extends State<AttractionFix> {
                     for (int i = 0; i < dayDifference; i++)
                       Stack(children: [
                         Padding(
-                            padding: EdgeInsets.fromLTRB(11, 0, 0, 0),
+                            padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                             child: Container(
                               height: 40.0,
                               child: ElevatedButton(
@@ -319,8 +349,7 @@ class _AttractionFixState extends State<AttractionFix> {
                         //             onPressed: () => {print(widget.pathList[i])})))
                       ]),
                   ]),
-
-              Container(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
+              Container(padding: EdgeInsets.fromLTRB(0, 30, 0, 0)),
               Container(
                 margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 height: 7,
@@ -339,13 +368,63 @@ class _AttractionFixState extends State<AttractionFix> {
                     padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                     child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      AttractionFix(widget.transit)));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             AttractionFix(widget.transit)));
+                          //픽스할 관광지 저장
+                          if (fixTourSpotName != '') {
+                            fixTourSpotList.add(Place(
+                                fixTourSpotName,
+                                fixTourSpotLat,
+                                fixTourSpotLon,
+                                60,
+                                20,
+                                selectedList[0],
+                                selectedList[1],
+                                selectedList[2],
+                                selectedList[3],
+                                selectedList[4]));
+
+                            //픽스할 날짜 저장
+                            if (fixDayIndex != -1) {
+                              fixDateList.add(fixDayIndex);
+
+                              //픽스 입력창 2개 리셋하기
+                              fixTourSpotName = '';
+                              fixTourSpotLat = 0.0;
+                              fixTourSpotLon = 0.0;
+
+                              setState(() {
+                                location2 = "장소를 입력해주세요";
+                              });
+
+                              fixDayIndex = -1;
+
+                              for (int b = 0; b < dayDifference; b++) {
+                                switchFixDayButtonColor(b, 0);
+                              }
+
+                              //픽스 정보 잘 들어갔는지 출력
+                              if (fixTourSpotList.length > 0) {
+                                for (int f = 0;
+                                    f < fixTourSpotList.length;
+                                    f++) {
+                                  print(
+                                      '픽스 관광지 이름: ' + fixTourSpotList[f].name);
+                                }
+
+                                print(fixDateList);
+                              }
+                            } else {
+                              showPopUp("날짜가 선택되지 않았습니다.");
+                            }
+                          } else {
+                            showPopUp("장소가 선택되지 않았습니다.");
+                          }
                         },
-                        child: Text("관광지 추가",
+                        child: Text("장소 추가",
                             style: TextStyle(
                               fontFamily: "Neo",
                               fontWeight: FontWeight.bold,
@@ -357,31 +436,31 @@ class _AttractionFixState extends State<AttractionFix> {
                   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                   child: ElevatedButton(
                       onPressed: () {
-                        //픽스할 관광지 저장
-                        if (fixTourSpotName != '') {
-                          fixTourSpotList.add(Place(
-                              fixTourSpotName,
-                              fixTourSpotLat,
-                              fixTourSpotLon,
-                              60,
-                              20,
-                              selectedList[0],
-                              selectedList[1],
-                              selectedList[2],
-                              selectedList[3],
-                              selectedList[4]));
-                        }
+                        // //픽스할 관광지 저장
+                        // if (fixTourSpotName != '') {
+                        //   fixTourSpotList.add(Place(
+                        //       fixTourSpotName,
+                        //       fixTourSpotLat,
+                        //       fixTourSpotLon,
+                        //       60,
+                        //       20,
+                        //       selectedList[0],
+                        //       selectedList[1],
+                        //       selectedList[2],
+                        //       selectedList[3],
+                        //       selectedList[4]));
+                        // }
 
-                        //픽스할 날짜 저장
-                        if (fixDayIndex != -1) {
-                          fixDateList.add(fixDayIndex);
-                        }
+                        // //픽스할 날짜 저장
+                        // if (fixDayIndex != -1) {
+                        //   fixDateList.add(fixDayIndex);
+                        // }
 
-                        //픽스 정보 잘 들어갔는지 출력
-                        if (fixTourSpotList.length > 0) {
-                          print('픽스 관광지 이름: ' + fixTourSpotList[0].name);
-                          print(fixDateList);
-                        }
+                        // //픽스 정보 잘 들어갔는지 출력
+                        // if (fixTourSpotList.length > 0) {
+                        //   print('픽스 관광지 이름: ' + fixTourSpotList[0].name);
+                        //   print(fixDateList);
+                        // }
 
                         Navigator.push(
                             context,

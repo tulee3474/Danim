@@ -241,7 +241,7 @@ class RouteAI {
       }
 
       //1. 관광지 하나를 새 관광지로 바꾼다. - 모든 관광지를 갈 경우 안함.
-      if (i % 3 == 0 &&
+      if (i % 2 == 0 &&
           (placeList.length > newPath.length) &&
           placeListCopy.length > 0) {
         var temp;
@@ -330,7 +330,7 @@ class RouteAI {
 
       if (newPoint >= bestPoint) {
         bestPath = new List.from(newPath);
-        if (i % 3 == 0 &&
+        if (i % 2 == 0 &&
             (placeList.length > newPath.length) &&
             placeListCopy.length > 0 &&
             flag3 == false &&

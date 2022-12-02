@@ -155,7 +155,7 @@ class _PresetState extends State<Preset> {
                     bearing: 0.0,
                     target: LatLng(33.371964, 126.543512),
                     tilt: 0.0,
-                    zoom: 9.0),
+                    zoom: 8.0),
                 mapType: _mapType,
                 markers: markers,
                 pathOverlays: pathOverlays,
