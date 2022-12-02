@@ -40,6 +40,7 @@ List<Place> placeList = []; //장소 리스트, 전역 변수, 원본
 List<Place> placeListCopy = []; //장소 리스트, 전역 변수, n일차 코스를 위함.
 //path에 들어간 Place들은 제거하는 리스트
 List count = [0, 0, 0, 0, 0]; //selectList 선택 개수 저장 배열
+int transitInAI = 0;
 
 int qqq = 0;
 int www = 0;
@@ -183,8 +184,15 @@ class RouteAI {
       }
       double latDiff = targetPlace.latitude - beforePlace.latitude;
       double longDiff = targetPlace.longitude - beforePlace.longitude;
-
-      double distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 50000;
+      double distance = 0.0;
+      //대중교통
+      if (transitInAI == 1) {
+        distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 70000;
+      }
+      //자차
+      else {
+        distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 50000;
+      }
 
       sum -= distance.toInt(); // - 거리 계산
 
@@ -561,8 +569,14 @@ class RouteAI {
 
   //main part
   Future<List<List<List<Place>>>> route_search(city, house, selectList,
-      fixTourSpotList, fixDateList, timeLimitArray, numPreset, nDay) async {
+      fixTourSpotList, fixDateList, timeLimitArray, nDay, transit) async {
     // await안쓰면 이 함수 따로 돌리고 넘어가서, placeList에 원소 안넣은 상태로 코드돌림
+
+    //프리셋 갯수 결정
+    int numPreset = 5;
+
+    //자차, 대중교통 - 전역변수 저장
+    transitInAI = transit;
 
     //selectList 선순회
     for (int x = 0; x < 5; x++) {

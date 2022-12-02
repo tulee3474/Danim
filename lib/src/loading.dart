@@ -45,7 +45,7 @@ class _LoadingState extends State<Loading> {
 
     await ai.data_loading(city as String);
     read_data = (await ai.route_search(city, house, selectList, fixTourSpotList,
-            fixDateList, timeLimitArray, numPreset, nDay))
+            fixDateList, timeLimitArray, numPreset, nDay, widget.transit))
         .cast<List<List<Place>>>();
 
     for (int i = 0; i < read_data.length; i++) {
