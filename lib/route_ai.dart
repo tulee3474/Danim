@@ -315,17 +315,21 @@ class RouteAI {
         Place temp2;
         temp = Place.clone(newPath[idx1]);
         temp2 = Place.clone(newPath[idx2]);
-        newPath.removeWhere((item) => item.name == newPath[idx1].name);
-        newPath.removeWhere((item) => item.name == newPath[idx2 - 1].name);
-        if (idx1 >= newPath.length) {
-          newPath.add(Place.clone(temp2));
-        } else {
-          newPath.insert(idx1, Place.clone(temp2));
-        }
-        if (idx2 >= newPath.length) {
-          newPath.add(Place.clone(temp));
-        } else {
-          newPath.insert(idx2, Place.clone(temp));
+        try {
+          newPath.removeWhere((item) => item.name == newPath[idx1].name);
+          newPath.removeWhere((item) => item.name == newPath[idx2 - 1].name);
+          if (idx1 >= newPath.length) {
+            newPath.add(Place.clone(temp2));
+          } else {
+            newPath.insert(idx1, Place.clone(temp2));
+          }
+          if (idx2 >= newPath.length) {
+            newPath.add(Place.clone(temp));
+          } else {
+            newPath.insert(idx2, Place.clone(temp));
+          }
+        } catch (e) {
+          print("AI에서 인덱스 오류 발생. 보통 고정관광지 2개 이상일때 이럼");
         }
       }
 
