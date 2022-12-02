@@ -330,6 +330,7 @@ class RouteAI {
           }
         } catch (e) {
           print("AI에서 인덱스 오류 발생. 보통 고정관광지 2개 이상일때 이럼");
+          continue;
         }
       }
 
