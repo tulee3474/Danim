@@ -26,10 +26,10 @@ Future readPostData() async {
 class Post {
   String postTitle = ""; // 게시물 제목
   int postNum = 0; // 게시물 넘버
-  String postWriter = ""; // 작성자 이름
+  String? postWriter = ""; // 작성자 이름
   List<String> commentList = []; // 댓글 리스트
-  List<String> commentWriterList = []; // 댓글 작성자 리스트
-  List<String> recommendList = []; // 좋아요 누른 사람 리스트
+  List<String?> commentWriterList = []; // 댓글 작성자 리스트
+  List<String?> recommendList = []; // 좋아요 누른 사람 리스트
   int recommendNum = 0;
   String postContent = '';
 
@@ -44,7 +44,7 @@ class Post {
       this.postContent); // 좋아요 수
 }
 
-List<Post> posts = readData;
+List<Post> posts = [];
 
 /*
   //Post 객체 구성 - readData[0], readData[1] 이런식으로 쓰면 돼!
@@ -125,7 +125,7 @@ class Community extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => WrittenPost(posts[i])));
+                              builder: (context) => WrittenPost(posts[i], i)));
                     },
                   ))
           ])),

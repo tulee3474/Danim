@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../components/image_data.dart';
 import 'community.dart';
+import 'login.dart';
 
 class NewPost extends StatefulWidget{
 
@@ -23,9 +24,16 @@ class _NewPostState extends State<NewPost>{
   );
 
   TextEditingController postTitleController = TextEditingController();
-  TextEditingController postWriterController = TextEditingController();
+  //TextEditingController postWriterController = TextEditingController();
   TextEditingController postContentController = TextEditingController();
 
+
+  @override
+  initState(){
+    super.initState();
+    postTitleController = TextEditingController();
+    postContentController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context){
@@ -54,11 +62,6 @@ class _NewPostState extends State<NewPost>{
                 child: Divider(color: Colors.grey, thickness: 2.0)),
 
             TextField(
-              controller: postWriterController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: '작성자 이름'),
-            ),
-            TextField(
               controller: postTitleController,
               decoration: InputDecoration(
                   border: OutlineInputBorder(), labelText: '글 제목'),
@@ -81,7 +84,7 @@ class _NewPostState extends State<NewPost>{
                     posts.add(Post(
                       postTitleController.text,
                       posts.length,
-                      postWriterController.text,
+                        token,
                       [],[],[],0,postContentController.text
                     ));
                   });
