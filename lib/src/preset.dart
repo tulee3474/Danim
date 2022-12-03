@@ -75,7 +75,7 @@ class _PresetState extends State<Preset> {
     if (type == 1) {
       setState(() {
         presetButtonColorList[index] = MaterialStateProperty.resolveWith(
-            (states) => Color.fromARGB(255, 78, 194, 252));
+                (states) => Color.fromARGB(255, 78, 194, 252));
       });
     } else if (type == 0) {
       setState(() {
@@ -160,7 +160,7 @@ class _PresetState extends State<Preset> {
                 markers: markers,
                 pathOverlays: pathOverlays,
               ) // 여기서 지도 넣으면 돼!! 컨테이너 대신에 네이버맵 넣으면 될듯
-              ),
+          ),
           Container(
             margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
             height: 7,
@@ -234,55 +234,55 @@ class _PresetState extends State<Preset> {
           ),
           Center(
               child: Container(
-            width: 120.0,
-            height: 50.0,
-            child: ElevatedButton(
-                child: Text('프리셋 선택'),
-                onPressed: () async {
-                  //선택한 코스 전역변수에 저장
-                  course_selected = widget.pathList[presetIndex];
+                width: 120.0,
+                height: 50.0,
+                child: ElevatedButton(
+                    child: Text('프리셋 선택'),
+                    onPressed: () async {
+                      //선택한 코스 전역변수에 저장
+                      course_selected = widget.pathList[presetIndex];
 
-                  if (widget.transit == 0) {
-                    List<List<int>> movingTimeList = [
-                      for (int i = 0;
+                      if (widget.transit == 0) {
+                        List<List<int>> movingTimeList = [
+                          for (int i = 0;
                           i < widget.pathList[presetIndex].length;
                           i++)
-                        []
-                    ];
+                            []
+                        ];
 
-                    movingTimeList = await createDrivingTimeList(
-                        widget.pathList[presetIndex]);
+                        movingTimeList = await createDrivingTimeList(
+                            widget.pathList[presetIndex]);
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Timetable(
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Timetable(
                                   preset: widget.pathList[presetIndex],
                                   transit: widget.transit,
                                   movingTimeList: movingTimeList,
                                 )));
-                  } else {
-                    List<List<int>> movingTimeList = [
-                      for (int i = 0;
+                      } else {
+                        List<List<int>> movingTimeList = [
+                          for (int i = 0;
                           i < widget.pathList[presetIndex].length;
                           i++)
-                        []
-                    ];
+                            []
+                        ];
 
-                    movingTimeList = await createTransitTimeList(
-                        widget.pathList[presetIndex]);
+                        movingTimeList = await createTransitTimeList(
+                            widget.pathList[presetIndex]);
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Timetable(
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Timetable(
                                   preset: widget.pathList[presetIndex],
                                   transit: widget.transit,
                                   movingTimeList: movingTimeList,
                                 )));
-                  }
-                }),
-          ))
+                      }
+                    }),
+              ))
         ]));
   }
 }

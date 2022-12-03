@@ -25,6 +25,8 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:danim/map.dart';
 import 'package:danim/src/preset.dart';
 
+import 'day_view_map.dart';
+
 class DayView<T extends Object?> extends StatefulWidget {
 
 
@@ -323,12 +325,16 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
     _pageController.dispose();
     super.dispose();
   }
-  NaverMapController? mapController;
+  //MapController? mapController;
   MapType _mapType = MapType.Basic;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
+    return Scaffold(
+      body:Container(
+        child:Stack (
+          children: [
+
+       SizedBox(
         width: _width,
         child: DecoratedBox(
           decoration: BoxDecoration(
@@ -352,10 +358,8 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
                                 border: Border.all(color: Colors.black45)
                             ),
                               child: NaverMap(
-                                onMapCreated: (mcontroller) {
-                                  setState(() {
-                                    mapController = mcontroller;
-                                  });
+                                onMapCreated: (c) {
+
                                 },
                                 initialCameraPosition: CameraPosition(
                                     bearing: 0.0,
@@ -365,10 +369,22 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
                                 mapType: _mapType,
                                 markers: markers,
                                 pathOverlays: pathOverlays,
-                              )
-                          )
+                              ),
+                          ),
                           // 지도 들어갈 자리 !!
-
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => DayViewMap()));
+                              }, child: Row(
+                            children: [
+                              Text('자세히 보기'),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              //버튼 꾸미기
+                          ),
+                          )
                           ,SizedBox(
                             height: _height,
                             child: PageView.builder(
@@ -418,7 +434,7 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
           ),
         ),
       ),
-    );
+    ]),));
   }
 
   /// Returns [EventController] associated with this Widget.
