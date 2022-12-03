@@ -166,7 +166,7 @@ class _AttractionFixState extends State<AttractionFix> {
                         color: Colors.black,
                         fontFamily: "Neo",
                         letterSpacing: 2.0,
-                        fontSize: 18.0,
+                        fontSize: 17.0,
                         fontWeight: FontWeight.bold,
                       ))),
               Container(
