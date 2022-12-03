@@ -10,6 +10,7 @@ import 'package:danim/firebase_read_write.dart';
 import 'package:danim/src/myPage.dart';
 
 import 'createMovingTimeList.dart';
+import 'login.dart';
 
 class MyJourney extends StatefulWidget {
   List<CalendarEventData> journey = [];
@@ -394,7 +395,8 @@ class _MyJourneyState extends State<MyJourney> {
                                                 style: TextStyle(
                                                   fontFamily: "Neo",
                                                   fontWeight: FontWeight.bold,
-                                                )))
+                                                ))),
+
                                       ])));
                             });
                       },
@@ -402,7 +404,35 @@ class _MyJourneyState extends State<MyJourney> {
                           style: TextStyle(
                             fontFamily: "Neo",
                             fontWeight: FontWeight.bold,
+                          )))),
+
+
+              Container(
+                  width: 120.0,
+                  height: 80.0,
+                  padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                  child: ElevatedButton(
+                      onPressed: () {
+
+                        showDialog(context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context){
+                          return AlertDialog(
+                            content: SizedBox(
+                              width: 200,
+                              height: 100,
+                              child: Text("공유 ID : ${token}/${index + 1}")
+                            )
+                          );
+                            });
+
+                      },
+                      child: Text("공유하기",
+                          style: TextStyle(
+                            fontFamily: "Neo",
+                            fontWeight: FontWeight.bold,
                           ))))
+
             ]),
           )),
     );
