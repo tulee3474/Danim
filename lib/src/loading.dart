@@ -130,31 +130,42 @@ class _LoadingState extends State<Loading> {
             // onTap: () {
             //   Navigator.popUntil(context, (route) => route.isFirst);
             // },
-            child: Transform(
-              transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
-              ]),
+            child: Center(
+              child: Transform(
+                transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
+                ]),
+              ),
             ),
           ),
           actions: [
             //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
             //이곳에 한개 이상의 위젯들을 가진다.
-
-            TextButton(
-                onPressed: () {
-                  //Navigator.popUntil(context, (route) => route.isFirst);
-                  //첫화면까지 팝해버리는거임
-                },
-                child: Image.asset(IconsPath.count4,
-                    fit: BoxFit.contain, width: 60, height: 50)),
-            TextButton(
-                onPressed: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                  //첫화면까지 팝해버리는거임
-                },
-                child: Image.asset(IconsPath.house,
-                    fit: BoxFit.contain, height: 30)),
+            //
+            IconButton(
+              icon: Icon(Icons.home),
+              tooltip: 'Hi!',
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+                //첫화면까지 팝해버리는거임
+              },
+            ),
+            // TextButton(
+            //     onPressed: () {
+            //       //Navigator.popUntil(context, (route) => route.isFirst);
+            //       //첫화면까지 팝해버리는거임
+            //     },
+            //     child: Image.asset(IconsPath.count4,
+            //         fit: BoxFit.contain, width: 60, height: 50)),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.popUntil(context, (route) => route.isFirst);
+            //       //첫화면까지 팝해버리는거임
+            //     },
+            //     child: Image.asset(IconsPath.house,
+            //         fit: BoxFit.contain, height: 30)),
           ],
         ),
         body: Padding(
@@ -173,7 +184,7 @@ class _LoadingState extends State<Loading> {
                     ))),
             Center(
                 child: Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
               child: Text("최대 1분까지 소요될 수 있습니다",
                   style: TextStyle(
                     color: Colors.black,

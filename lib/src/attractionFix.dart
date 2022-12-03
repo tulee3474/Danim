@@ -425,6 +425,9 @@ class _AttractionFixState extends State<AttractionFix> {
                             showPopUp("장소가 선택되지 않았습니다.");
                           }
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xff0d62ee),
+                        ),
                         child: Text("장소 추가",
                             style: TextStyle(
                               fontFamily: "Neo",

@@ -70,598 +70,619 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: onWillPop,
-        child: SafeArea(
-          child: Scaffold(
-              appBar: AppBar(
-                elevation: 0,
-                systemOverlayStyle: SystemUiOverlayStyle(
-                    statusBarColor: Color.fromRGBO(194, 233, 252, 1),
-                    statusBarBrightness: Brightness.light,
-                    statusBarIconBrightness: Brightness.light),
-                title: Transform(
-                  transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Image.asset(IconsPath.logo,
-                            fit: BoxFit.contain, height: 40) // height 60->40
-                      ]),
-                ),
+      child: SafeArea(
+        child: Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: Color.fromRGBO(194, 233, 252, 1),
+                  statusBarBrightness: Brightness.light,
+                  statusBarIconBrightness: Brightness.light),
+              title: Transform(
+                transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Image.asset(IconsPath.logo,
+                      fit: BoxFit.contain, height: 40) // height 60->40
+                ]),
               ),
-              endDrawer: Drawer(
-                  child: ListView(padding: EdgeInsets.zero, children: [
-                UserAccountsDrawerHeader(
-                    arrowColor: Color.fromARGB(255, 78, 194, 252),
-                    accountName: Text('$userName'),
-                    accountEmail: Text('$userEmail')),
-                ListTile(
-                    leading: Icon(Icons.settings, color: Colors.grey),
-                    title: Text("설정"),
-                    onTap: () => {print("Setting")}),
-                ListTile(
-                    leading: Icon(Icons.login, color: Colors.grey),
-                    title: Text('로그아웃'),
-                    onTap: () => {
-                          //로그아웃
-                          FirebaseAuth.instance.signOut(),
-                          googleSignIn.signOut(),
-                          //Login()
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Login()))
-                        }),
-              ])),
-              body: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(children: <Widget>[
-                    Container(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: ButtonBar(
-                            alignment: MainAxisAlignment.center,
-                            buttonPadding: EdgeInsets.all(20),
-                            children: [
-                              ElevatedButton(
-                                  onPressed: () {
-                                    //숙소정보 초기화
-                                    accomodation = '';
-                                    accomodation_lati = 0;
-                                    accomodation_long = 0;
+            ),
+            endDrawer: Drawer(
+                child: ListView(padding: EdgeInsets.zero, children: [
+              UserAccountsDrawerHeader(
+                  arrowColor: Color.fromARGB(255, 78, 194, 252),
+                  accountName: Text('$userName'),
+                  accountEmail: Text('$userEmail')),
+              ListTile(
+                  leading: Icon(Icons.settings, color: Colors.grey),
+                  title: Text("설정"),
+                  onTap: () => {print("Setting")}),
+              ListTile(
+                  leading: Icon(Icons.login, color: Colors.grey),
+                  title: Text('로그아웃'),
+                  onTap: () => {
+                        //로그아웃
+                        FirebaseAuth.instance.signOut(),
+                        googleSignIn.signOut(),
+                        //Login()
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Login()))
+                      }),
+            ])),
+            body: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(children: <Widget>[
+                  Container(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: ButtonBar(
+                          alignment: MainAxisAlignment.center,
+                          buttonPadding: EdgeInsets.all(20),
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  //숙소정보 초기화
+                                  accomodation = '';
+                                  accomodation_lati = 0;
+                                  accomodation_long = 0;
 
-                                    //selectedList 초기화
-                                    selectedList = [
-                                      [0, 0, 0, 0, 0, 0, 0],
-                                      [0, 0, 0, 0],
-                                      [0, 0, 0, 0, 0, 0],
-                                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                      [0, 0, 0, 0]
-                                    ];
+                                  //selectedList 초기화
+                                  selectedList = [
+                                    [0, 0, 0, 0, 0, 0, 0],
+                                    [0, 0, 0, 0],
+                                    [0, 0, 0, 0, 0, 0],
+                                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                    [0, 0, 0, 0]
+                                  ];
 
-                                    //픽스 관광지 정보 초기화
-                                    fixTourSpotList = [];
-                                    fixDateList = [];
+                                  //픽스 관광지 정보 초기화
+                                  fixTourSpotList = [];
+                                  fixDateList = [];
 
-                                    //가는 날, 오는 날 초기화
-                                    startDay = DateTime.now();
-                                    endDay = DateTime.now();
+                                  //가는 날, 오는 날 초기화
+                                  startDay = DateTime.now();
+                                  endDay = DateTime.now();
 
-                                    showDialog(
-                                        context: context,
-                                        barrierDismissible: true,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                              content: Padding(
-                                                  padding: EdgeInsets.all(10.0),
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.vertical,
-                                                    child: SizedBox(
-                                                        height: 660.0,
-                                                        width: 330,
-                                                        child: Form(
-                                                            key: _form,
-                                                            child: Column(
-                                                              children: <
-                                                                  Widget>[
-                                                                Text(
-                                                                  '여행 정보(1/4)',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          20,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                Column(
-                                                                    children: <
-                                                                        Widget>[
-                                                                      SizedBox(
-                                                                        height:
-                                                                            30,
-                                                                      ),
-                                                                      Text(
-                                                                          '여행 지역',
-                                                                          style: TextStyle(
-                                                                              fontSize: 17,
-                                                                              fontWeight: FontWeight.bold)),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            10,
-                                                                      ),
-                                                                      Container(
-                                                                          width:
-                                                                              180.0,
-                                                                          child:
-                                                                              TextFormField(
-                                                                            initialValue:
-                                                                                "제주도",
-                                                                          )),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            30,
-                                                                      ),
-                                                                      Text(
-                                                                          '여행 날짜',
-                                                                          style: TextStyle(
-                                                                              fontSize: 17,
-                                                                              fontWeight: FontWeight.bold)),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-                                                                      Row(
-                                                                        children: [
-                                                                          GestureDetector(
-                                                                              onTap: () {
-                                                                                HapticFeedback.mediumImpact();
-                                                                                _selectedDataCalendar_startDay(context);
-                                                                              },
-                                                                              child: AbsorbPointer(
-                                                                                  child: Container(
-                                                                                width: 130,
-                                                                                //MediaQuery.of(context).size.width,
-                                                                                padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
-                                                                                child: TextFormField(
-                                                                                  style: TextStyle(fontSize: 16),
-                                                                                  decoration: InputDecoration(
-                                                                                    contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                                                                    isDense: true,
-                                                                                    hintText: "가는 날",
-                                                                                    enabledBorder: UnderlineInputBorder(
-                                                                                      borderSide: BorderSide(color: Colors.grey),
-                                                                                    ),
-                                                                                    focusedBorder: UnderlineInputBorder(
-                                                                                      borderSide: BorderSide(color: Colors.red),
-                                                                                    ),
-                                                                                  ),
-                                                                                  controller: _startDateController,
-                                                                                ),
-                                                                              ))),
-                                                                          SizedBox(
-                                                                              width: 10),
-                                                                          Expanded(
-                                                                            child:
-                                                                                DateTimeSelectorFormField(
-                                                                              controller: _startTimeController,
-                                                                              decoration: AppConstants.inputDecoration.copyWith(
-                                                                                  labelText: "시작 시간",
-                                                                                  labelStyle: TextStyle(
-                                                                                    fontSize: 15,
-                                                                                  )),
-                                                                              validator: (value) {
-                                                                                if (value == null || value == "") return "Please select start time.";
-
-                                                                                return null;
-                                                                              },
-                                                                              onSave: (date) => dayStartingTime = date,
-                                                                              textStyle: TextStyle(
-                                                                                color: AppColors.black,
-                                                                                fontSize: 17.0,
-                                                                              ),
-                                                                              type: DateTimeSelectionType.time,
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      SizedBox(
-                                                                          height:
-                                                                              10),
-                                                                      Row(
-                                                                        children: [
-                                                                          GestureDetector(
-                                                                              onTap: () {
-                                                                                HapticFeedback.mediumImpact();
-                                                                                _selectedDataCalendar_endDay(context);
-                                                                              },
-                                                                              child: AbsorbPointer(
-                                                                                  child: Container(
-                                                                                width: 130,
-                                                                                padding: const EdgeInsets.only(right: 10, left: 10, top: 10),
-                                                                                child: TextFormField(
-                                                                                  style: TextStyle(fontSize: 16),
-                                                                                  decoration: InputDecoration(
-                                                                                    contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                                                                    isDense: true,
-                                                                                    hintText: "오는 날",
-                                                                                    enabledBorder: UnderlineInputBorder(
-                                                                                      borderSide: BorderSide(color: Colors.grey),
-                                                                                    ),
-                                                                                    focusedBorder: UnderlineInputBorder(
-                                                                                      borderSide: BorderSide(color: Colors.red),
-                                                                                    ),
-                                                                                  ),
-                                                                                  controller: _endDateController,
-                                                                                ),
-                                                                              ))),
-                                                                          SizedBox(
-                                                                              width: 10),
-                                                                          Expanded(
-                                                                            child:
-                                                                                DateTimeSelectorFormField(
-                                                                              controller: _endTimeController,
-                                                                              decoration: AppConstants.inputDecoration.copyWith(
-                                                                                  labelText: "종료 시간",
-                                                                                  labelStyle: TextStyle(
-                                                                                    fontSize: 15,
-                                                                                  )),
-                                                                              validator: (value) {
-                                                                                if (value == null || value == "") return "Please select end time.";
-
-                                                                                return null;
-                                                                              },
-                                                                              onSave: (date) => dayEndingTime = date,
-                                                                              textStyle: TextStyle(
-                                                                                color: AppColors.black,
-                                                                                fontSize: 17.0,
-                                                                              ),
-                                                                              type: DateTimeSelectionType.time,
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      SizedBox(
-                                                                          height:
-                                                                              30),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            30,
-                                                                      ),
-                                                                      Text(
-                                                                          '여행 숙소',
-                                                                          style: TextStyle(
-                                                                              fontSize: 17,
-                                                                              fontWeight: FontWeight.bold)),
-                                                                      Text(
-                                                                        '미리 정해놓은 숙소가 있다면 입력해주세요',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                10,
-                                                                            color:
-                                                                                Colors.grey),
-                                                                      ),
-                                                                      InkWell(
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                            content: SingleChildScrollView(
+                                          child: Padding(
+                                              padding: EdgeInsets.all(10.0),
+                                              child: SingleChildScrollView(
+                                                scrollDirection: Axis.vertical,
+                                                child: SizedBox(
+                                                    height: 760.0,
+                                                    width: 380,
+                                                    child: Form(
+                                                        key: _form,
+                                                        child: Column(
+                                                          children: <Widget>[
+                                                            Text(
+                                                              '여행 정보(1/4)',
+                                                              style: TextStyle(
+                                                                  fontSize: 20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 10,
+                                                            ),
+                                                            Column(
+                                                                children: <
+                                                                    Widget>[
+                                                                  SizedBox(
+                                                                    height: 30,
+                                                                  ),
+                                                                  Text('여행 지역',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              17,
+                                                                          fontWeight:
+                                                                              FontWeight.bold)),
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Container(
+                                                                      width:
+                                                                          180.0,
+                                                                      child:
+                                                                          TextFormField(
+                                                                        initialValue:
+                                                                            "제주도",
+                                                                      )),
+                                                                  SizedBox(
+                                                                    height: 30,
+                                                                  ),
+                                                                  Text('여행 날짜',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              17,
+                                                                          fontWeight:
+                                                                              FontWeight.bold)),
+                                                                  SizedBox(
+                                                                    height: 20,
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      GestureDetector(
                                                                           onTap:
-                                                                              () async {
-                                                                            var place =
-                                                                                await PlacesAutocomplete.show(
-                                                                              context: context,
-                                                                              apiKey: 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
-                                                                              mode: Mode.overlay,
-                                                                              language: "kr",
-                                                                              //types: [],
-                                                                              //strictbounds: false,
-                                                                              components: [
-                                                                                Component(Component.country, 'kr')
-                                                                              ],
-                                                                              //google_map_webservice package
-                                                                              //onError: (err){
-                                                                              //  print(err);
-                                                                              //},
-                                                                            );
-
-                                                                            if (place !=
-                                                                                null) {
-                                                                              setState(() {
-                                                                                location = place.description.toString();
-                                                                              });
-
-                                                                              //form google_maps_webservice package
-                                                                              final plist = GoogleMapsPlaces(
-                                                                                apiKey: 'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
-                                                                                apiHeaders: await GoogleApiHeaders().getHeaders(),
-                                                                                //from google_api_headers package
-                                                                              );
-
-                                                                              String placeid = place.placeId ?? "0";
-
-                                                                              final detail = await plist.getDetailsByPlaceId(placeid);
-                                                                              final geometry = detail.result.geometry!;
-                                                                              final lat = geometry.location.lat;
-                                                                              final lang = geometry.location.lng;
-                                                                              var newlatlang = LatLng(lat, lang);
-                                                                              accommodationLatLen.add(newlatlang);
-
-                                                                              //move map camera to selected place with animation
-                                                                              //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
-                                                                              var places = location.split(', ');
-                                                                              String placeName = places[places.length - 1];
-                                                                              print('placeName: $placeName');
-
-                                                                              //숙소 정보 업데이트
-                                                                              accomodation = placeName;
-                                                                              accomodation_lati = lat;
-                                                                              accomodation_long = lang;
-
-                                                                              //관광지 이름
-                                                                              var fixTourSpotName = placeName;
-
-                                                                              placeList.add(Place(placeName, lat, lang, 60, 20, selectedList[0], selectedList[1], selectedList[2], selectedList[3], selectedList[4]));
-                                                                              setState(() {});
-                                                                              setState(() {});
-                                                                            } else {
-                                                                              setState(() {
-                                                                                location = "Search Location";
-                                                                              });
-                                                                            }
+                                                                              () {
+                                                                            HapticFeedback.mediumImpact();
+                                                                            _selectedDataCalendar_startDay(context);
                                                                           },
-                                                                          child:
-                                                                              Padding(
-                                                                            padding:
-                                                                                EdgeInsets.all(15),
-                                                                            child:
-                                                                                Card(
+                                                                          child: AbsorbPointer(
                                                                               child: Container(
-                                                                                  padding: EdgeInsets.all(0),
-                                                                                  width: MediaQuery.of(context).size.width - 40,
-                                                                                  child: ListTile(
-                                                                                    title: Text(
-                                                                                      location,
-                                                                                      style: TextStyle(fontSize: 18),
-                                                                                    ),
-                                                                                    trailing: Icon(Icons.search),
-                                                                                    dense: true,
-                                                                                  )),
+                                                                            width:
+                                                                                130,
+                                                                            //MediaQuery.of(context).size.width,
+                                                                            padding: const EdgeInsets.only(
+                                                                                right: 10,
+                                                                                left: 10,
+                                                                                top: 10),
+                                                                            child:
+                                                                                TextFormField(
+                                                                              style: TextStyle(fontSize: 16),
+                                                                              decoration: InputDecoration(
+                                                                                contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                                                                isDense: true,
+                                                                                hintText: "가는 날",
+                                                                                enabledBorder: UnderlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.grey),
+                                                                                ),
+                                                                                focusedBorder: UnderlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.red),
+                                                                                ),
+                                                                              ),
+                                                                              controller: _startDateController,
                                                                             ),
-                                                                          )),
+                                                                          ))),
                                                                       SizedBox(
-                                                                        height:
-                                                                            80,
-                                                                      ),
-                                                                      Row(
-                                                                        children: [
-                                                                          Expanded(
-                                                                            flex:
-                                                                                1,
-                                                                            child: Container(
-                                                                                width: 120.0,
-                                                                                height: 50.0,
-                                                                                // padding: EdgeInsets
-                                                                                //     .fromLTRB(0, 30,
-                                                                                //         0, 0),
-                                                                                child: ElevatedButton(
-                                                                                    onPressed: () {
-                                                                                      //인풋값들 출력 확인
-                                                                                      //숙소값, 가는날, 오는만 있어야 정상.
+                                                                          width:
+                                                                              10),
+                                                                      Expanded(
+                                                                        child:
+                                                                            DateTimeSelectorFormField(
+                                                                          controller:
+                                                                              _startTimeController,
+                                                                          decoration: AppConstants.inputDecoration.copyWith(
+                                                                              labelText: "시작 시간",
+                                                                              labelStyle: TextStyle(
+                                                                                fontSize: 15,
+                                                                              )),
+                                                                          validator:
+                                                                              (value) {
+                                                                            if (value == null ||
+                                                                                value == "")
+                                                                              return "Please select start time.";
 
-                                                                                      _form.currentState?.save();
-
-                                                                                      print("accomodation : ${accomodation}");
-                                                                                      print("accomo latitude: $accomodation_lati");
-                                                                                      print("accomo longitude: $accomodation_long");
-                                                                                      print("selectedList : ${selectedList}");
-                                                                                      print("fixTourSpotList: ${fixTourSpotList}");
-                                                                                      print("fixDateList : ${fixDateList}");
-                                                                                      print("startDay : $startDay");
-                                                                                      print("endDay: $endDay");
-                                                                                      print("dayStartingTime: $dayStartingTime");
-
-                                                                                      print("dayEndingTime: $dayEndingTime");
-
-                                                                                      print("며칠? ${endDay.difference(startDay).inDays + 1}");
-
-                                                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetail()));
-                                                                                    },
-                                                                                    child: Text(
-                                                                                      '추천코스',
-                                                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Neo"),
-                                                                                    ))),
+                                                                            return null;
+                                                                          },
+                                                                          onSave: (date) =>
+                                                                              dayStartingTime = date,
+                                                                          textStyle:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                AppColors.black,
+                                                                            fontSize:
+                                                                                17.0,
                                                                           ),
-                                                                          SizedBox(
-                                                                              width: 10),
-                                                                          Expanded(
-                                                                            flex:
-                                                                                1,
-                                                                            child: Container(
-                                                                                width: 120.0,
-                                                                                height: 50.0,
-                                                                                child: ElevatedButton(
-                                                                                    onPressed: () {
-                                                                                      List<List<Place>> emptyPreset = [
-                                                                                        for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
-                                                                                      ];
-
-                                                                                      List<List<int>> emptyMovingTime = [
-                                                                                        for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
-                                                                                      ];
-
-                                                                                      print("startDay : $startDay");
-                                                                                      print("endDay: $endDay");
-                                                                                      Navigator.push(
-                                                                                          context,
-                                                                                          MaterialPageRoute(
-                                                                                              builder: (context) => Timetable(
-                                                                                                    preset: emptyPreset,
-                                                                                                    transit: 0,
-                                                                                                    movingTimeList: emptyMovingTime,
-                                                                                                  )));
-                                                                                    },
-                                                                                    child: Text('혼자 짤래요', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Neo")))),
-                                                                          )
-                                                                        ],
+                                                                          type:
+                                                                              DateTimeSelectionType.time,
+                                                                        ),
                                                                       ),
-                                                                    ]),
-                                                              ],
-                                                            ))),
-                                                  )));
-                                        });
-                                  },
-                                  child: Text(
-                                    '새 코스',
-                                    style: TextStyle(
-                                      fontFamily: "Neo",
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 78, 194, 252),
-                                    ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                      primary:
-                                          Color.fromARGB(255, 215, 240, 253),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        side: BorderSide(
-                                            width: 2.0,
-                                            color: Color.fromARGB(
-                                                255, 78, 194, 252)),
-                                      ),
-                                      minimumSize: Size(100, 100))),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    //임시 텍스트
-                                    // if (token == '') {
-                                    //   await readUserData("docCodeTest123");
-                                    // } else {
-                                    //   await readUserData(token as String);
-                                    // }
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  Row(
+                                                                    children: [
+                                                                      GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            HapticFeedback.mediumImpact();
+                                                                            _selectedDataCalendar_endDay(context);
+                                                                          },
+                                                                          child: AbsorbPointer(
+                                                                              child: Container(
+                                                                            width:
+                                                                                130,
+                                                                            padding: const EdgeInsets.only(
+                                                                                right: 10,
+                                                                                left: 10,
+                                                                                top: 10),
+                                                                            child:
+                                                                                TextFormField(
+                                                                              style: TextStyle(fontSize: 16),
+                                                                              decoration: InputDecoration(
+                                                                                contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                                                                isDense: true,
+                                                                                hintText: "오는 날",
+                                                                                enabledBorder: UnderlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.grey),
+                                                                                ),
+                                                                                focusedBorder: UnderlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Colors.red),
+                                                                                ),
+                                                                              ),
+                                                                              controller: _endDateController,
+                                                                            ),
+                                                                          ))),
+                                                                      SizedBox(
+                                                                          width:
+                                                                              10),
+                                                                      Expanded(
+                                                                        child:
+                                                                            DateTimeSelectorFormField(
+                                                                          controller:
+                                                                              _endTimeController,
+                                                                          decoration: AppConstants.inputDecoration.copyWith(
+                                                                              labelText: "종료 시간",
+                                                                              labelStyle: TextStyle(
+                                                                                fontSize: 15,
+                                                                              )),
+                                                                          validator:
+                                                                              (value) {
+                                                                            if (value == null ||
+                                                                                value == "")
+                                                                              return "Please select end time.";
 
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LoadingMyPage()));
-                                  },
-                                  child: Text(
-                                    '내 여행',
-                                    style: TextStyle(
-                                      fontFamily: "Neo",
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 78, 194, 252),
-                                    ),
+                                                                            return null;
+                                                                          },
+                                                                          onSave: (date) =>
+                                                                              dayEndingTime = date,
+                                                                          textStyle:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                AppColors.black,
+                                                                            fontSize:
+                                                                                17.0,
+                                                                          ),
+                                                                          type:
+                                                                              DateTimeSelectionType.time,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          30),
+                                                                  SizedBox(
+                                                                    height: 30,
+                                                                  ),
+                                                                  Text('여행 숙소',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              17,
+                                                                          fontWeight:
+                                                                              FontWeight.bold)),
+                                                                  Text(
+                                                                    '미리 정해놓은 숙소가 있다면 입력해주세요',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            10,
+                                                                        color: Colors
+                                                                            .grey),
+                                                                  ),
+                                                                  InkWell(
+                                                                      onTap:
+                                                                          () async {
+                                                                        var place =
+                                                                            await PlacesAutocomplete.show(
+                                                                          context:
+                                                                              context,
+                                                                          apiKey:
+                                                                              'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                                                                          mode:
+                                                                              Mode.overlay,
+                                                                          language:
+                                                                              "kr",
+                                                                          //types: [],
+                                                                          //strictbounds: false,
+                                                                          components: [
+                                                                            Component(Component.country,
+                                                                                'kr')
+                                                                          ],
+                                                                          //google_map_webservice package
+                                                                          //onError: (err){
+                                                                          //  print(err);
+                                                                          //},
+                                                                        );
+
+                                                                        if (place !=
+                                                                            null) {
+                                                                          setState(
+                                                                              () {
+                                                                            location =
+                                                                                place.description.toString();
+                                                                          });
+
+                                                                          //form google_maps_webservice package
+                                                                          final plist =
+                                                                              GoogleMapsPlaces(
+                                                                            apiKey:
+                                                                                'AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI',
+                                                                            apiHeaders:
+                                                                                await GoogleApiHeaders().getHeaders(),
+                                                                            //from google_api_headers package
+                                                                          );
+
+                                                                          String
+                                                                              placeid =
+                                                                              place.placeId ?? "0";
+
+                                                                          final detail =
+                                                                              await plist.getDetailsByPlaceId(placeid);
+                                                                          final geometry = detail
+                                                                              .result
+                                                                              .geometry!;
+                                                                          final lat = geometry
+                                                                              .location
+                                                                              .lat;
+                                                                          final lang = geometry
+                                                                              .location
+                                                                              .lng;
+                                                                          var newlatlang = LatLng(
+                                                                              lat,
+                                                                              lang);
+                                                                          accommodationLatLen
+                                                                              .add(newlatlang);
+
+                                                                          //move map camera to selected place with animation
+                                                                          //mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
+                                                                          var places =
+                                                                              location.split(', ');
+                                                                          String
+                                                                              placeName =
+                                                                              places[places.length - 1];
+                                                                          print(
+                                                                              'placeName: $placeName');
+
+                                                                          //숙소 정보 업데이트
+                                                                          accomodation =
+                                                                              placeName;
+                                                                          accomodation_lati =
+                                                                              lat;
+                                                                          accomodation_long =
+                                                                              lang;
+
+                                                                          //관광지 이름
+                                                                          var fixTourSpotName =
+                                                                              placeName;
+
+                                                                          placeList.add(Place(
+                                                                              placeName,
+                                                                              lat,
+                                                                              lang,
+                                                                              60,
+                                                                              20,
+                                                                              selectedList[0],
+                                                                              selectedList[1],
+                                                                              selectedList[2],
+                                                                              selectedList[3],
+                                                                              selectedList[4]));
+                                                                          setState(
+                                                                              () {});
+                                                                          setState(
+                                                                              () {});
+                                                                        } else {
+                                                                          setState(
+                                                                              () {
+                                                                            location =
+                                                                                "Search Location";
+                                                                          });
+                                                                        }
+                                                                      },
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            EdgeInsets.all(15),
+                                                                        child:
+                                                                            Card(
+                                                                          child: Container(
+                                                                              padding: EdgeInsets.all(0),
+                                                                              width: MediaQuery.of(context).size.width - 40,
+                                                                              child: ListTile(
+                                                                                title: Text(
+                                                                                  location,
+                                                                                  style: TextStyle(fontSize: 18),
+                                                                                ),
+                                                                                trailing: Icon(Icons.search),
+                                                                                dense: true,
+                                                                              )),
+                                                                        ),
+                                                                      )),
+                                                                  SizedBox(
+                                                                    height: 80,
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      Expanded(
+                                                                        flex: 1,
+                                                                        child: Container(
+                                                                            width: 120.0,
+                                                                            height: 50.0,
+                                                                            // padding: EdgeInsets
+                                                                            //     .fromLTRB(0, 30,
+                                                                            //         0, 0),
+                                                                            child: ElevatedButton(
+                                                                                onPressed: () {
+                                                                                  //인풋값들 출력 확인
+                                                                                  //숙소값, 가는날, 오는만 있어야 정상.
+
+                                                                                  _form.currentState?.save();
+
+                                                                                  print("accomodation : ${accomodation}");
+                                                                                  print("accomo latitude: $accomodation_lati");
+                                                                                  print("accomo longitude: $accomodation_long");
+                                                                                  print("selectedList : ${selectedList}");
+                                                                                  print("fixTourSpotList: ${fixTourSpotList}");
+                                                                                  print("fixDateList : ${fixDateList}");
+                                                                                  print("startDay : $startDay");
+                                                                                  print("endDay: $endDay");
+                                                                                  print("dayStartingTime: $dayStartingTime");
+
+                                                                                  print("dayEndingTime: $dayEndingTime");
+
+                                                                                  print("며칠? ${endDay.difference(startDay).inDays + 1}");
+
+                                                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetail()));
+                                                                                },
+                                                                                child: Text(
+                                                                                  '추천코스',
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Neo"),
+                                                                                ))),
+                                                                      ),
+                                                                      SizedBox(
+                                                                          width:
+                                                                              10),
+                                                                      Expanded(
+                                                                        flex: 1,
+                                                                        child: Container(
+                                                                            width: 120.0,
+                                                                            height: 50.0,
+                                                                            child: ElevatedButton(
+                                                                                onPressed: () {
+                                                                                  List<List<Place>> emptyPreset = [
+                                                                                    for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
+                                                                                  ];
+
+                                                                                  List<List<int>> emptyMovingTime = [
+                                                                                    for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
+                                                                                  ];
+
+                                                                                  print("startDay : $startDay");
+                                                                                  print("endDay: $endDay");
+                                                                                  Navigator.push(
+                                                                                      context,
+                                                                                      MaterialPageRoute(
+                                                                                          builder: (context) => Timetable(
+                                                                                                preset: emptyPreset,
+                                                                                                transit: 0,
+                                                                                                movingTimeList: emptyMovingTime,
+                                                                                              )));
+                                                                                },
+                                                                                child: Text('혼자 짤래요', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Neo")))),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ]),
+                                                          ],
+                                                        ))),
+                                              )),
+                                        ));
+                                      });
+                                },
+                                child: Text(
+                                  '새 코스',
+                                  style: TextStyle(
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 78, 194, 252),
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                      primary:
-                                          Color.fromARGB(255, 215, 240, 253),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color.fromARGB(255, 215, 240, 253),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
                                       side: BorderSide(
                                           width: 2.0,
                                           color: Color.fromARGB(
                                               255, 78, 194, 252)),
-                                      minimumSize: Size(100, 100))),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    await readPostData();
-
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Community()));
-                                  },
-                                  child: Text(
-                                    '커뮤니티',
-                                    style: TextStyle(
-                                      fontFamily: "Neo",
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 78, 194, 252),
                                     ),
+                                    minimumSize: Size(100, 100))),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  //임시 텍스트
+                                  // if (token == '') {
+                                  //   await readUserData("docCodeTest123");
+                                  // } else {
+                                  //   await readUserData(token as String);
+                                  // }
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              LoadingMyPage()));
+                                },
+                                child: Text(
+                                  '내 여행',
+                                  style: TextStyle(
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 78, 194, 252),
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                      primary:
-                                          Color.fromARGB(255, 215, 240, 253),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      side: BorderSide(
-                                          width: 2.0,
-                                          color: Color.fromARGB(
-                                              255, 78, 194, 252)),
-                                      minimumSize: Size(100, 100)))
-                            ])),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      height: 7,
-                      decoration: BoxDecoration(
-                        color: Color(0xffF4F4F4),
-                        border: Border(
-                          top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
-                        ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color.fromARGB(255, 215, 240, 253),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    side: BorderSide(
+                                        width: 2.0,
+                                        color:
+                                            Color.fromARGB(255, 78, 194, 252)),
+                                    minimumSize: Size(100, 100))),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  await readPostData();
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Community()));
+                                },
+                                child: Text(
+                                  '커뮤니티',
+                                  style: TextStyle(
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 78, 194, 252),
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color.fromARGB(255, 215, 240, 253),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    side: BorderSide(
+                                        width: 2.0,
+                                        color:
+                                            Color.fromARGB(255, 78, 194, 252)),
+                                    minimumSize: Size(100, 100)))
+                          ])),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF4F4F4),
+                      border: Border(
+                        top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
                       ),
                     ),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('#지금, 당신 근처에',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        letterSpacing: 2.0,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Neo",
-                                      )),
-                                  SizedBox(height: 3),
-                                  Text('당신에게 딱 맞는 여행지를 추천해요',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        letterSpacing: 2.0,
-                                        fontSize: 10.0,
-                                        fontFamily: "Neo",
-                                      )),
-                                ],
-                              )),
-                          SizedBox(width: 0, height: 10),
-                          SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(children: [
-                                Image.asset('assets/images/jenu1.jpeg',
-                                    width: 300, height: 200),
-                                Image.asset('assets/images/jeju2.jpeg',
-                                    width: 300, height: 200)
-                              ])),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                            height: 7,
-                            decoration: BoxDecoration(
-                              color: Color(0xffF4F4F4),
-                              border: Border(
-                                top: BorderSide(
-                                    width: 1.0, color: Color(0xffD4D4D4)),
-                              ),
-                            ),
-                          ),
-                          Container(
+                  ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
                             padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('#만연한 가을, 단풍 속으로',
+                                Text('#지금, 당신 근처에',
                                     style: TextStyle(
                                       color: Colors.black,
                                       letterSpacing: 2.0,
-                                      fontSize: 15.0,
+                                      fontSize: 16.0,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: "Neo",
                                     )),
                                 SizedBox(height: 3),
-                                Text('다시 오지 않을 올해 가을을 느껴봐요',
+                                Text('당신에게 딱 맞는 여행지를 추천해요',
                                     style: TextStyle(
                                       color: Colors.grey,
                                       letterSpacing: 2.0,
@@ -669,28 +690,71 @@ class _AppState extends State<App> {
                                       fontFamily: "Neo",
                                     )),
                               ],
+                            )),
+                        SizedBox(width: 0, height: 10),
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(children: [
+                              Image.asset('assets/images/jenu1.jpeg',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/jeju2.jpeg',
+                                  width: 300, height: 200)
+                            ])),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          height: 7,
+                          decoration: BoxDecoration(
+                            color: Color(0xffF4F4F4),
+                            border: Border(
+                              top: BorderSide(
+                                  width: 1.0, color: Color(0xffD4D4D4)),
                             ),
                           ),
-                          SizedBox(width: 0, height: 10),
-                          SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(children: [
-                                Image.asset('assets/images/jeju3.jpeg',
-                                    width: 300, height: 200),
-                                Image.asset('assets/images/jeju2.jpeg',
-                                    width: 300, height: 200)
-                              ])),
-                        ])
-                  ]))),
-        ),
-
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('#만연한 가을, 단풍 속으로',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    letterSpacing: 2.0,
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Neo",
+                                  )),
+                              SizedBox(height: 3),
+                              Text('다시 오지 않을 올해 가을을 느껴봐요',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    letterSpacing: 2.0,
+                                    fontSize: 10.0,
+                                    fontFamily: "Neo",
+                                  )),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 0, height: 10),
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(children: [
+                              Image.asset('assets/images/jeju3.jpeg',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/jeju2.jpeg',
+                                  width: 300, height: 200)
+                            ])),
+                      ])
+                ]))),
+      ),
     );
   }
-  DateTime? currentBackPressTime;
-  Future <bool> onWillPop() async {
 
+  DateTime? currentBackPressTime;
+  Future<bool> onWillPop() async {
     DateTime now = DateTime.now();
-    if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       Fluttertoast.showToast(
           msg: "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.",
