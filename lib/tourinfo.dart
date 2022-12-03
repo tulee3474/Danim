@@ -65,14 +65,6 @@ Future<String> getPlaceID(String placeName) async {
   } else {
     String responseData = utf8.decode(response.bodyBytes);
     var responseBody = jsonDecode(responseData);
-    /*int isExist=responseBody["candidates"]["body"]["totalCount"];
-    if(isExist==0) {
-      contentID=0;
-    }
-    else {
-      var list = responseBody["response"]["body"]["items"]["item"][0];
-      contentID = int.parse(list["contentid"]);
-    }*/
     String status=responseBody['status'];
     if (status.compareTo('OK')==0) {
       placeID=responseBody['candidates'][0]['place_id'];
@@ -104,7 +96,7 @@ Future<String> getTourInfo(String placeName) async {
       String summary='요약정보 : ';
       String rating='\n별점 : ';
       String openingHours='\n운영 시간\n';
-      String reviews='\n리뷰\n\n';
+      String reviews='\n\n';
       if (status.compareTo('OK')==0) {
         var list=responseBody["result"];
         try {
@@ -120,19 +112,22 @@ Future<String> getTourInfo(String placeName) async {
           rating='';
         }
          try {
-           openingHours += list["current_opening_hours"]["weekday_text"].toString();
-           openingHours += '\n';
+          for (int i=0;i<list["current_opening_hours"]["weekday_text"].length;i++) {
+            openingHours += list["current_opening_hours"]["weekday_text"][i].toString();
+            openingHours += '\n';
+          }
         } catch (e) {
           openingHours='';
         }
         try {
-          reviews+='리뷰 1\n';
-          reviews+=list["reviews"][0]["text"].toString();
-          reviews+='\n\n\n리뷰 2\n';
-          reviews+=list["reviews"][1]["text"].toString();
-          reviews+='\n\n\n리뷰 3\n';
-          reviews+=list["reviews"][2]["text"].toString();
-
+          for (int i=0;i<list["reviews"].length;i++) {
+            reviews += '리뷰 ${i+1}\n';
+            reviews += list["reviews"][i]["text"].toString();
+            reviews += '\n\n\n';/*리뷰 2\n';
+            reviews += list["reviews"][1]["text"].toString();
+            reviews += '\n\n\n리뷰 3\n';
+            reviews += list["reviews"][2]["text"].toString();*/
+          }
         }catch(e) {
           reviews='';
         }

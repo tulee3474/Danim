@@ -19,6 +19,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:danim/src/courseDetail.dart';
 import 'package:danim/src/myPage.dart';
 import 'package:danim/src/start_end_day.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:danim/src/login.dart';
 
@@ -68,6 +69,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: onWillPop,
         child: SafeArea(
           child: Scaffold(
               appBar: AppBar(
@@ -798,9 +800,24 @@ class _AppState extends State<App> {
                         ])
                   ]))),
         ),
-        onWillPop: () async {
-          return false;
-        });
+
+    );
+  }
+  DateTime? currentBackPressTime;
+  Future <bool> onWillPop() async {
+
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(
+          msg: "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.",
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: const Color(0xff6E6E6E),
+          fontSize: 20,
+          toastLength: Toast.LENGTH_SHORT);
+      return false;
+    }
+    return true;
   }
 
   void _selectedDataCalendar_startDay(BuildContext context) {

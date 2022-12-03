@@ -5,7 +5,6 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 String kakaoURL = 'https://dapi.kakao.com/v2/local/search/keyword.json?';
 String apiKEY = '8b345cc6f29414a95b06e3ea40b1dfca';
 List<String> compareList=[];
-
 class Restaurant {
   String restName = '';
   String restCategory = '';
@@ -51,36 +50,39 @@ List<Accommodation> accommodationList = [];
 Future<List<Restaurant>> getRestaurant(double lat1,double lng1, double lat2, double lng2) async {
   restaurantList.clear();
   List<LatLng> restLatLen = [];
-  restLatLen.add(LatLng(lat1,lng1));
-  restLatLen.add(LatLng((lat1+lat2)/2,(lng1+lng2)/2));
-  restLatLen.add(LatLng(lat2,lng2));
-  for (int j=0;j<3;j++) {
+  restLatLen.add(LatLng(lat1, lng1));
+  restLatLen.add(LatLng((lat1 + lat2) / 2, (lng1 + lng2) / 2));
+  restLatLen.add(LatLng(lat2, lng2));
+  for (int j = 0; j < 3; j++) {
     http.Response response = await http.get(Uri.parse(
-        "https://dapi.kakao.com/v2/local/search/keyword.json?y=${restLatLen[j].latitude}&x=${restLatLen[j].longitude}&radius=3000&query=맛집&category_group_code=FD6&size=10&page=1"
+        "https://dapi.kakao.com/v2/local/search/keyword.json?y=${restLatLen[j]
+            .latitude}&x=${restLatLen[j]
+            .longitude}&radius=3000&query=맛집&category_group_code=FD6&size=10&page=1"
     ), headers: {"Authorization": "KakaoAK 3c1aba3b633e1d6804e9c59f68ac6601"}
     );
     if (response.statusCode < 200 || response.statusCode > 400) {
       String err = response.statusCode.toString();
-    } else {
+    }
+    else {
       String responseData = utf8.decode(response.bodyBytes);
       var responseBody = jsonDecode(responseData);
       var list = responseBody["documents"];
-      compareList.clear();
-      for (int i=0;i<list.length;i++) {
-        String restaurantName=list[i]["place_name"];
+      for (int i = 0; i < list.length; i++) {
+        String restaurantName = list[i]["place_name"];
         if (!compareList.contains(restaurantName)) {
           compareList.add(restaurantName);
-          String restaurantCategory=list[i]["category_name"];
-          double restaurantLat=double.parse(list[i]["y"]);
-          double restaurantLong=double.parse(list[i]["x"]);
-          restaurantList.add(Restaurant(restaurantName, restaurantCategory, restaurantLat, restaurantLong));
+          String restaurantCategory = list[i]["category_name"];
+          double restaurantLat = double.parse(list[i]["y"]);
+          double restaurantLong = double.parse(list[i]["x"]);
+          restaurantList.add(Restaurant(
+              restaurantName, restaurantCategory, restaurantLat,
+              restaurantLong));
         }
       }
     }
   }
   return restaurantList;
 }
-
 Future<List<Cafe>> getCafe(double lat1,double lng1, double lat2, double lng2) async {
   cafeList.clear();
   List<LatLng> cafeLatLen = [];
