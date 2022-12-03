@@ -63,6 +63,18 @@ class _AttractionFixState extends State<AttractionFix> {
     MaterialStateProperty.resolveWith(getColor),
     MaterialStateProperty.resolveWith(getColor),
     MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
+    MaterialStateProperty.resolveWith(getColor),
     MaterialStateProperty.resolveWith(getColor)
   ];
 
