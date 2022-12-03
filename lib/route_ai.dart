@@ -149,7 +149,7 @@ class RouteAI {
     int sum = 0;
 
     //각 성향 카테고리별 가중치, weight[5]는 popular, 인기관광지 점수
-    List weight = [15, 15, 15, 15, 15, 1.5];
+    List weight = [15, 15, 15, 15, 15, 2];
     List listSum = [0, 0, 0, 0, 0];
 
     for (int y = 0; y < selectList[0].length; y++) {
@@ -187,11 +187,11 @@ class RouteAI {
       double distance = 0.0;
       //대중교통
       if (transitInAI == 1) {
-        distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 70000;
+        distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 80000;
       }
       //자차
       else {
-        distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 50000;
+        distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 65000;
       }
 
       sum -= distance.toInt(); // - 거리 계산
@@ -740,6 +740,8 @@ class RouteAI {
     print(www);
     print("위 두개는 거리 지표가 어느정도 효과인지 알아보기 위함");
     count = [0, 0, 0, 0, 0]; //전역변수 다시 초기화
+    markers.clear();
+    pathOverlays.clear();
     return pathList;
   }
 }
