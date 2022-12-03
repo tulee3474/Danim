@@ -46,7 +46,7 @@ Future<TransitTime> getTransitDuration(double originLat, double originLng, doubl
   String transitSteps='';
   int transitDuration=0;
   http.Response response = await http.get(Uri.parse(
-      '${apiURL}origin=$originLat,$originLng&destination=$destinationLat,$destinationLng&mode=transit&departure_time=now&language=ko&key=$apiKEY'
+      '${apiURL}origin=$originLat,$originLng&destination=$destinationLat,$destinationLng&mode=transit&departure_time=1684292461&language=ko&key=$apiKEY'
   ),
   );
   if (response.statusCode < 200 || response.statusCode > 400) {
