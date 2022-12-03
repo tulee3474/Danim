@@ -134,36 +134,42 @@ class _AttractionFixState extends State<AttractionFix> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        title: InkWell(
-          // onTap: () {
-          //   Navigator.popUntil(context, (route) => route.isFirst);
-          // },
-          child: Transform(
-            transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
-            ]),
-          ),
-        ),
+        title: Center(
+            child: Text('특정 여행지(3/4)',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
         actions: [
           //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
           //이곳에 한개 이상의 위젯들을 가진다.
 
-          TextButton(
-              onPressed: () {
-                //Navigator.popUntil(context, (route) => route.isFirst);
-                //첫화면까지 팝해버리는거임
-              },
-              child: Image.asset(IconsPath.count3,
-                  fit: BoxFit.contain, width: 60, height: 50)),
-          TextButton(
-              onPressed: () {
-                Navigator.popUntil(context, (route) => route.isFirst);
-                //첫화면까지 팝해버리는거임
-              },
-              child: Image.asset(IconsPath.house,
-                  fit: BoxFit.contain, height: 30)),
+          // TextButton(
+          //     onPressed: () {
+          //       //Navigator.popUntil(context, (route) => route.isFirst);
+          //       //첫화면까지 팝해버리는거임
+          //     },
+          //     child: Image.asset(
+          //       IconsPath.count2,
+          //       fit: BoxFit.contain,
+          //       width: 60,
+          //       height: 40,
+          //     )),
+          IconButton(
+            icon: Icon(Icons.home),
+            tooltip: 'Hi!',
+            onPressed: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+              //첫화면까지 팝해버리는거임
+            },
+          ),
+          // TextButton(
+          //     onPressed: () {
+          //       Navigator.popUntil(context, (route) => route.isFirst);
+          //       //첫화면까지 팝해버리는거임
+          //     },
+          //     child: Image.asset(
+          //       IconsPath.house,
+          //       fit: BoxFit.contain,
+          //       height: 20,
+          //     )),
         ],
       ),
       body: Padding(
@@ -182,21 +188,18 @@ class _AttractionFixState extends State<AttractionFix> {
                         fontWeight: FontWeight.bold,
                       ))),
               Container(
-                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                   child: Text('예) 관광지, 카페, 맛집 등등',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: "Neo",
-                        letterSpacing: 2.0,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
+                        //letterSpacing: 2.0,
+                        fontSize: 10.0,
+                        //fontWeight: FontWeight.bold,
                       ))),
-              Container(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: Divider(color: Colors.grey, thickness: 2.0)),
               Center(
                   child: Container(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
                 child: Text("원하는 장소 입력",
                     style: TextStyle(
                       color: Colors.black,
@@ -209,8 +212,8 @@ class _AttractionFixState extends State<AttractionFix> {
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Container(
                     width: 350,
-                    height: 100.0,
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    height: 80.0,
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                     child: InkWell(
                         onTap: () async {
                           var place = await PlacesAutocomplete.show(
@@ -301,16 +304,6 @@ class _AttractionFixState extends State<AttractionFix> {
                         ))),
               ]),
               Container(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                height: 7,
-                decoration: BoxDecoration(
-                  color: Color(0xffF4F4F4),
-                  border: Border(
-                    top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
-                  ),
-                ),
-              ),
               Center(
                   child: Container(
                 padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
@@ -323,7 +316,7 @@ class _AttractionFixState extends State<AttractionFix> {
                       fontWeight: FontWeight.bold,
                     )),
               )),
-              Container(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
+              Container(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -368,16 +361,6 @@ class _AttractionFixState extends State<AttractionFix> {
                       ]),
                   ]),
               Container(padding: EdgeInsets.fromLTRB(0, 30, 0, 0)),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                height: 7,
-                decoration: BoxDecoration(
-                  color: Color(0xffF4F4F4),
-                  border: Border(
-                    top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
-                  ),
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
@@ -485,6 +468,9 @@ class _AttractionFixState extends State<AttractionFix> {
                             MaterialPageRoute(
                                 builder: (context) => Loading(widget.transit)));
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff0d62ee),
+                      ),
                       child: Text("다음 단계",
                           style: TextStyle(
                             fontFamily: "Neo",

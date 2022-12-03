@@ -63,16 +63,11 @@ class _LoadingMyPageState extends State<LoadingMyPage> {
         appBar: AppBar(
           elevation: 0,
           title: InkWell(
-            // onTap: () {
-            //   Navigator.popUntil(context, (route) => route.isFirst);
-            // },
-            child: Transform(
-              transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
-              ]),
-            ),
-          ),
+              // onTap: () {
+              //   Navigator.popUntil(context, (route) => route.isFirst);
+              // },
+
+              ),
           actions: [
             //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
             //이곳에 한개 이상의 위젯들을 가진다.

@@ -160,8 +160,10 @@ class _LoadingState extends State<Loading> {
         body: Padding(
           padding: EdgeInsets.all(20.0),
           child: Column(children: [
+            Container(padding: EdgeInsets.fromLTRB(0, 250, 0, 0)),
+            Center(child: SpinKitRing(color: Colors.grey)),
             Container(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                 child: Text('맞춤 관광코스 탐색중..',
                     style: TextStyle(
                       color: Colors.black,
@@ -169,19 +171,14 @@ class _LoadingState extends State<Loading> {
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     ))),
-            Container(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: Divider(color: Colors.grey, thickness: 2.0)),
-            Container(padding: EdgeInsets.fromLTRB(0, 200, 0, 0)),
-            Center(child: SpinKitRing(color: Colors.grey)),
             Center(
                 child: Container(
-              padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
-              child: Text("최대 1분까지 소요될 수 있습니다.",
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: Text("최대 1분까지 소요될 수 있습니다",
                   style: TextStyle(
                     color: Colors.black,
                     letterSpacing: 2.0,
-                    fontSize: 12.0,
+                    fontSize: 10.0,
                     fontWeight: FontWeight.bold,
                   )),
             )),
