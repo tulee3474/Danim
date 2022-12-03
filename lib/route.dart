@@ -33,6 +33,9 @@ Future<int> getDrivingDuration(double originLat, double originLng, double destin
     if (responseBody['code']!='0') {
       drivingDuration = (responseBody['route']['trafast'][0]['summary']['duration']);
       drivingDuration = (((drivingDuration / 60000).ceil() + 9) / 10).floor() * 10;
+      if (drivingDuration>120) {
+        drivingDuration=120;
+      }
     }
     else {drivingDuration=-1;}
   }
@@ -59,6 +62,9 @@ Future<TransitTime> getTransitDuration(double originLat, double originLng, doubl
     else {
       transitDuration = responseBody["routes"][0]["legs"][0]["duration"]["value"];
       transitDuration=(((transitDuration/60).ceil()+9)/10).floor()*10;
+      if (transitDuration>180) {
+        transitDuration=180;
+      }
       transitSteps=await getTransitSteps(originLat, originLng, destinationLat, destinationLng);
     }
   }
