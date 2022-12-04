@@ -639,7 +639,7 @@ class _AppState extends State<App> {
                                     ),
                                     minimumSize: Size(100, 100))),
                             ElevatedButton(
-                                onPressed: () async {
+                                onPressed: () {
                                   //임시 텍스트
                                   // if (token == '') {
                                   //   await readUserData("docCodeTest123");

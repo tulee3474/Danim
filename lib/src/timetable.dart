@@ -447,7 +447,7 @@ class _TimetableState extends State<Timetable> {
                                                 userData.eventList = List.from(
                                                     userData.eventList)
                                                   ..addAll(eventsForDB);
-                                                userData.diaryList.add("");
+                                                userData.diaryList.add("null");
                                                 fb_write_user(
                                                     userData.docCode,
                                                     userData.name,
