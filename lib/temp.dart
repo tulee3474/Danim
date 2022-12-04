@@ -27,13 +27,12 @@ class _TempState extends State<Temp> {
               token=FirebaseAuth.instance.currentUser?.uid;
               userEmail=FirebaseAuth.instance.currentUser?.email;
               userName=FirebaseAuth.instance.currentUser?.displayName;
-              if (userEmail==null) {
-                userName='익명 로그인';
-              }
-              if (userName==null) {
+              if (userName=='') {
                 userName='이메일 로그인';
               }
-              userEmail=FirebaseAuth.instance.currentUser?.email;
+              if (userEmail=='') {
+                userName='익명 로그인';
+              }
               print('asdfasf $token $userName $userEmail');
               return App();
             }
