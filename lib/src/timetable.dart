@@ -303,19 +303,24 @@ class _TimetableState extends State<Timetable> {
         child: Scaffold(
             appBar: AppBar(
               elevation: 0,
+              centerTitle: true, // 앱바 가운데 정렬
               title: InkWell(
-                // onTap: () {
-                //   Navigator.popUntil(context, (route) => route.isFirst);
-                // },
-                child: Transform(
-                  transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Image.asset(IconsPath.logo,
-                            fit: BoxFit.contain, height: 40)
-                      ]),
+                onTap: () {
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                },
+                child: Center(
+                  child: Image.asset(IconsPath.logo,
+                      fit: BoxFit.contain, height: 40),
                 ),
+                // child: Transform(
+                //   transform: Matrix4.translationValues(0, 0.0, 0.0),
+                //   child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.start,
+                //       children: [
+                //         Image.asset(IconsPath.logo,
+                //             fit: BoxFit.contain, height: 40)
+                //       ]),
+                // ),
               ),
               actions: [
                 //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
@@ -329,169 +334,189 @@ class _TimetableState extends State<Timetable> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               content: SizedBox(
-                                  height: 200,
                                   width: 300,
+                                  height: 200,
                                   child: Column(children: [
-                                    Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 30, 0, 0),
-                                        child: ElevatedButton(
-                                            onPressed: () async {
-                                              //List<CalendarEventData<Event>> 에서 List<CalendarEventData> 로 변환 !!
-                                              List<CalendarEventData>
-                                                  eventsForDB = [];
-                                              eventsForDB =
-                                                  eventsToCalendarEventData(
-                                                      events);
+                                    Padding(
+                                      padding: EdgeInsets.all(12.0),
+                                      child: Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                          child: Text('코스를 저장하시겠습니까?',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: "Neo",
+                                                letterSpacing: 2.0,
+                                                fontSize: 17.0,
+                                                fontWeight: FontWeight.bold,
+                                              ))),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                          width: 120,
+                                          height: 80,
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 30, 0, 0),
+                                          child: ElevatedButton(
+                                              onPressed: () async {
+                                                //List<CalendarEventData<Event>> 에서 List<CalendarEventData> 로 변환 !!
+                                                List<CalendarEventData>
+                                                    eventsForDB = [];
+                                                eventsForDB =
+                                                    eventsToCalendarEventData(
+                                                        events);
 
-                                              //여기서 DB 연결 !!!
-                                              // 현재 events 저장
-                                              //print('$eventsForDB');
+                                                //여기서 DB 연결 !!!
+                                                // 현재 events 저장
+                                                //print('$eventsForDB');
 
-                                              for (int i = 0;
-                                                  i < events.length;
-                                                  i++) {
-                                                print(
-                                                    '저장하기 전 이벤트 위도 경도 출력 ${i} : ${events[i].latitude} , ${events[i].longitude}');
-                                              }
+                                                for (int i = 0;
+                                                    i < events.length;
+                                                    i++) {
+                                                  print(
+                                                      '저장하기 전 이벤트 위도 경도 출력 ${i} : ${events[i].latitude} , ${events[i].longitude}');
+                                                }
 
-                                              for (int i = 0;
-                                                  i < eventsForDB.length;
-                                                  i++) {
-                                                print(
-                                                    '저장하기 전 db이벤트 위도 경도 출력 ${i} : ${eventsForDB[i].latitude} , ${eventsForDB[i].longitude}');
-                                              }
+                                                for (int i = 0;
+                                                    i < eventsForDB.length;
+                                                    i++) {
+                                                  print(
+                                                      '저장하기 전 db이벤트 위도 경도 출력 ${i} : ${eventsForDB[i].latitude} , ${eventsForDB[i].longitude}');
+                                                }
 
-                                              //임시 토큰!
-                                              if (token == '') {
-                                                //int 최대치는 약 21억
-                                                token = (Random().nextInt(
-                                                            2100000000) +
-                                                        1)
-                                                    .toString();
-                                              }
-                                              print(token);
-                                              print(token as String);
-
-                                              ReadController read =
-                                                  ReadController();
-                                              User userData;
-                                              try {
-                                                userData = await read
-                                                    .fb_read_user(token);
-                                              } catch (e) {
+                                                //임시 토큰!
+                                                if (token == '') {
+                                                  //int 최대치는 약 21억
+                                                  token = (Random().nextInt(
+                                                              2100000000) +
+                                                          1)
+                                                      .toString();
+                                                }
                                                 print(token);
                                                 print(token as String);
-                                                userData = User(
-                                                  token as String,
-                                                  token as String,
-                                                  [],
-                                                  [],
-                                                  [],
-                                                  [],
-                                                  [],
-                                                  [],
-                                                );
-                                              }
-                                              print(userData.docCode);
 
-                                              userData.travelList
-                                                  .add("제주도"); //임시 city 고정
-                                              //1일차, 2일차 수만큼 반복
-                                              int placeSum = 0;
-                                              List<String> placeLi = [];
-                                              for (int p = 0;
-                                                  p < getPreset().length;
-                                                  p++) {
-                                                placeSum +=
-                                                    getPreset()[p].length;
-                                                for (int q = 0;
-                                                    q < getPreset()[p].length;
-                                                    q++) {
-                                                  placeLi.add(
-                                                      getPreset()[p][q].name);
+                                                ReadController read =
+                                                    ReadController();
+                                                User userData;
+                                                try {
+                                                  userData = await read
+                                                      .fb_read_user(token);
+                                                } catch (e) {
+                                                  print(token);
+                                                  print(token as String);
+                                                  userData = User(
+                                                    token as String,
+                                                    token as String,
+                                                    [],
+                                                    [],
+                                                    [],
+                                                    [],
+                                                    [],
+                                                    [],
+                                                  );
                                                 }
-                                              }
-                                              userData.placeNumList
-                                                  .add(placeSum);
-                                              userData.traveledPlaceList =
-                                                  List.from(userData
-                                                      .traveledPlaceList)
-                                                    ..addAll(placeLi);
-                                              userData.eventNumList
-                                                  .add(eventsForDB.length);
-                                              userData.eventList =
-                                                  List.from(userData.eventList)
-                                                    ..addAll(eventsForDB);
-                                              userData.diaryList.add("");
-                                              fb_write_user(
-                                                  userData.docCode,
-                                                  userData.name,
-                                                  userData.travelList,
-                                                  userData.placeNumList,
-                                                  userData.traveledPlaceList,
-                                                  userData.eventNumList,
-                                                  selectedList, //전역변수라서, 차후에 문제생길수도
-                                                  userData.eventList,
-                                                  userData.diaryList);
+                                                print(userData.docCode);
 
-                                              print('pathlist saved');
+                                                userData.travelList
+                                                    .add("제주도"); //임시 city 고정
+                                                //1일차, 2일차 수만큼 반복
+                                                int placeSum = 0;
+                                                List<String> placeLi = [];
+                                                for (int p = 0;
+                                                    p < getPreset().length;
+                                                    p++) {
+                                                  placeSum +=
+                                                      getPreset()[p].length;
+                                                  for (int q = 0;
+                                                      q < getPreset()[p].length;
+                                                      q++) {
+                                                    placeLi.add(
+                                                        getPreset()[p][q].name);
+                                                  }
+                                                }
+                                                userData.placeNumList
+                                                    .add(placeSum);
+                                                userData.traveledPlaceList =
+                                                    List.from(userData
+                                                        .traveledPlaceList)
+                                                      ..addAll(placeLi);
+                                                userData.eventNumList
+                                                    .add(eventsForDB.length);
+                                                userData.eventList = List.from(
+                                                    userData.eventList)
+                                                  ..addAll(eventsForDB);
+                                                userData.diaryList.add("");
+                                                fb_write_user(
+                                                    userData.docCode,
+                                                    userData.name,
+                                                    userData.travelList,
+                                                    userData.placeNumList,
+                                                    userData.traveledPlaceList,
+                                                    userData.eventNumList,
+                                                    selectedList, //전역변수라서, 차후에 문제생길수도
+                                                    userData.eventList,
+                                                    userData.diaryList);
 
-                                              showDialog(
-                                                  context: context,
-                                                  barrierDismissible: true,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                        content: SizedBox(
-                                                            width: 250,
-                                                            height: 200,
-                                                            child: Column(
-                                                              children: [
-                                                                Padding(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              8.0),
-                                                                  child: Container(
-                                                                      child: Text('Saved as : ' +
-                                                                          userData
-                                                                              .docCode
-                                                                              .toString())),
-                                                                ),
-                                                                Padding(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              8.0),
-                                                                  child: Container(
-                                                                      child: Text('메인 화면으로 돌아갑니다.',
-                                                                          style: TextStyle(
-                                                                            fontFamily:
-                                                                                "Neo",
-                                                                          ))),
-                                                                ),
-                                                              ],
-                                                            )));
-                                                  });
-                                              sleep(Duration(seconds: 3));
-                                              Navigator.popUntil(context,
-                                                  (route) => route.isFirst);
-                                              //첫화면까지 팝해버리는거임
-                                            },
-                                            child: Text("코스 저장")))
+                                                print('pathlist saved');
+
+                                                showDialog(
+                                                    context: context,
+                                                    barrierDismissible: true,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                          content: SizedBox(
+                                                              width: 250,
+                                                              height: 200,
+                                                              child: Column(
+                                                                children: [
+                                                                  Padding(
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            8.0),
+                                                                    child: Container(
+                                                                        child: Text('Saved as : ' +
+                                                                            userData.docCode.toString())),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            8.0),
+                                                                    child: Container(
+                                                                        child: Text('메인 화면으로 돌아갑니다.',
+                                                                            style: TextStyle(
+                                                                              fontFamily: "Neo",
+                                                                            ))),
+                                                                  ),
+                                                                ],
+                                                              )));
+                                                    });
+                                                //sleep(Duration(seconds: 3));
+                                                Navigator.popUntil(context,
+                                                    (route) => route.isFirst);
+                                                //첫화면까지 팝해버리는거임
+                                              },
+                                              child: Text("코스 저장",
+                                                  style: TextStyle(
+                                                    fontFamily: "Neo",
+                                                    //letterSpacing: 2.0,
+                                                    fontSize: 15.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  )))),
+                                    )
                                   ])),
                             );
                           });
                     },
                     child: Icon(Icons.save)),
-                TextButton(
-                    onPressed: () {
-                      Navigator.popUntil(context, (route) => route.isFirst);
-                      //첫화면까지 팝해버리는거임
-                    },
-                    child: Image.asset(IconsPath.house,
-                        fit: BoxFit.contain, height: 30)),
+                // TextButton(
+                //     onPressed: () {
+                //       Navigator.popUntil(context, (route) => route.isFirst);
+                //       //첫화면까지 팝해버리는거임
+                //     },
+                //     child: Image.asset(IconsPath.house,
+                //         fit: BoxFit.contain, height: 30)),
               ],
             ),
             floatingActionButton: Stack(children: [
@@ -903,7 +928,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     super.dispose();
   }
 
-  String location3 = "Search Location";
+  String location3 = "장소를 검색해보세요";
   @override
   Widget build(BuildContext context) {
     _TimetableState? parent =
@@ -911,32 +936,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        centerTitle: false,
-        leading: IconButton(
-          onPressed: context.pop,
-          icon: Icon(
-            Icons.arrow_back,
-            color: AppColors.black,
-          ),
+        centerTitle: true, // 앱바 가운데 정렬
+        title: InkWell(
+          onTap: () {
+            Navigator.popUntil(context, (route) => route.isFirst);
+          },
+          child: Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40),
         ),
-        // title: Text(
-        //   "관광지 추가",
-        //   style: TextStyle(
-        //     color: AppColors.black,
-        //     fontSize: 20.0,
-        //     fontWeight: FontWeight.bold,
-        //   ),
-        // ),
-        title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          TextButton(
-              onPressed: () {
-                Navigator.popUntil(context, (route) => route.isFirst);
-                //첫화면까지 팝해버리는거임
-              },
-              child:
-                  Image.asset(IconsPath.house, fit: BoxFit.contain, height: 20))
-        ]),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
@@ -1012,7 +1018,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       setState(() {});
                     } else {
                       setState(() {
-                        location3 = "Search Location";
+                        location3 = "장소를 검색해보세요";
                       });
                     }
                   },
@@ -1037,7 +1043,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
               Row(
                 children: [
-                  Expanded(child: Text('날짜 : ' + '${_startDate}')),
+                  Expanded(
+                      child: Text('날짜 : ' +
+                          '${_startDate.year}' +
+                          '-' +
+                          '${_startDate.month}' +
+                          '-' +
+                          '${_startDate.day}')),
                   SizedBox(width: 20.0),
                 ],
               ),
@@ -1143,158 +1155,181 @@ class _CreateEventPageState extends State<CreateEventPage> {
               SizedBox(
                 height: 15,
               ),
-              CustomButton(
-                onTap: () async {
-                  _form.currentState?.save();
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: Container(
+                  width: 150.0,
+                  height: 50.0,
+                  child: ElevatedButton(
+                      child: Text('관광지 추가',
+                          style: TextStyle(
+                            fontFamily: "Neo",
+                            //letterSpacing: 2.0,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      onPressed: () async {
+                        _form.currentState?.save();
 
-                  final newEvent = CalendarEventData<Event>(
-                    date: _startDate,
-                    color: _color,
-                    endTime: _endTime,
-                    startTime: _startTime,
-                    description: _description,
-                    title: _title,
-                    latitude: _latitude,
-                    longitude: _longitude,
-                    event: Event(
-                      title: _title,
-                    ),
-                  );
+                        final newEvent = CalendarEventData<Event>(
+                          date: _startDate,
+                          color: _color,
+                          endTime: _endTime,
+                          startTime: _startTime,
+                          description: _description,
+                          title: _title,
+                          latitude: _latitude,
+                          longitude: _longitude,
+                          event: Event(
+                            title: _title,
+                          ),
+                        );
 
-                  print('${newEvent.date}');
-                  print(newEvent.title);
-                  print("${newEvent.startTime}");
-                  print("${newEvent.endTime}");
+                        print('${newEvent.date}');
+                        print(newEvent.title);
+                        print("${newEvent.startTime}");
+                        print("${newEvent.endTime}");
 
-                  //newEvent 생성까지 완료.
+                        //newEvent 생성까지 완료.
 
-                  List<List<Place>> presetToBeUpdated = widget.getPreset();
-                  print(presetToBeUpdated);
-                  //원래 코스 로드 완료
+                        List<List<Place>> presetToBeUpdated =
+                            widget.getPreset();
+                        print(presetToBeUpdated);
+                        //원래 코스 로드 완료
 
-                  List<CalendarEventData<Event>> eventsToBeUpdated =
-                      widget.getEvents();
-                  print(eventsToBeUpdated);
-                  //원래 이벤트리스트 로드 완료
+                        List<CalendarEventData<Event>> eventsToBeUpdated =
+                            widget.getEvents();
+                        print(eventsToBeUpdated);
+                        //원래 이벤트리스트 로드 완료
 
-                  CalendarEventData<Event> eventBefore = CalendarEventData(
-                      title: 'dummy',
-                      date: DateTime.now(),
-                      latitude: 0,
-                      longitude: 0,
-                      startTime: DateTime.now(),
-                      endTime: DateTime.now().add(Duration(hours: 1)));
-                  CalendarEventData<Event> eventAfter = CalendarEventData(
-                      title: 'dummy',
-                      latitude: 0,
-                      longitude: 0,
-                      date: DateTime.now(),
-                      startTime: DateTime.now(),
-                      endTime: DateTime.now().add(Duration(hours: 1)));
+                        CalendarEventData<Event> eventBefore =
+                            CalendarEventData(
+                                title: 'dummy',
+                                date: DateTime.now(),
+                                latitude: 0,
+                                longitude: 0,
+                                startTime: DateTime.now(),
+                                endTime:
+                                    DateTime.now().add(Duration(hours: 1)));
+                        CalendarEventData<Event> eventAfter = CalendarEventData(
+                            title: 'dummy',
+                            latitude: 0,
+                            longitude: 0,
+                            date: DateTime.now(),
+                            startTime: DateTime.now(),
+                            endTime: DateTime.now().add(Duration(hours: 1)));
 
-                  Place newPlace = Place(
-                      '${newEvent.title}',
-                      newPlaceLat,
-                      newPlaceLon,
-                      _endTime.difference(_startTime).inMinutes,
-                      30,
-                      [10, 20, 30, 40, 50, 60, 70],
-                      [10, 20, 30, 40, 50],
-                      [10, 20, 30, 40, 50, 60],
-                      [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110],
-                      [10, 20, 30, 40]);
+                        Place newPlace = Place(
+                            '${newEvent.title}',
+                            newPlaceLat,
+                            newPlaceLon,
+                            _endTime.difference(_startTime).inMinutes,
+                            30,
+                            [10, 20, 30, 40, 50, 60, 70],
+                            [10, 20, 30, 40, 50],
+                            [10, 20, 30, 40, 50, 60],
+                            [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110],
+                            [10, 20, 30, 40]);
 
-                  print(newPlace);
-                  //newPlace 생성 완료
+                        print(newPlace);
+                        //newPlace 생성 완료
 
-                  /*
-                  for(int i=0; i< eventsToBeUpdated.length; i++){
+                        /*
+                    for(int i=0; i< eventsToBeUpdated.length; i++){
 
-                    if(newEvent.date.year == eventsToBeUpdated[i].date.year && newEvent.date.month == eventsToBeUpdated[i].date.month && newEvent.date.day == eventsToBeUpdated[i].date.day ){
+                      if(newEvent.date.year == eventsToBeUpdated[i].date.year && newEvent.date.month == eventsToBeUpdated[i].date.month && newEvent.date.day == eventsToBeUpdated[i].date.day ){
 
-                      if(newEvent.startTime.hour > eventsToBeUpdated[i].startTime.hour && newEvent.startTime.hour < eventsToBeUpdated[i+1].startTime.hour){
+                        if(newEvent.startTime.hour > eventsToBeUpdated[i].startTime.hour && newEvent.startTime.hour < eventsToBeUpdated[i+1].startTime.hour){
 
-                        eventBefore = eventsToBeUpdated[i];
-                        eventAfter = eventsToBeUpdated[i+1];
-
-                        print(eventBefore);
-                        print(eventAfter);
-
-                      }
-
-                    }
-
-                  }
-
-                   */
-
-                  //eventBefore 찾기
-
-                  for (int i = 0; i < eventsToBeUpdated.length; i++) {
-                    if (newEvent.date.year == eventsToBeUpdated[i].date.year &&
-                        newEvent.date.month ==
-                            eventsToBeUpdated[i].date.month &&
-                        newEvent.date.day == eventsToBeUpdated[i].date.day) {
-                      if (eventsToBeUpdated[i].title != '식사시간' &&
-                          eventsToBeUpdated[i].title != '이동') {
-                        if (eventsToBeUpdated[i].startTime.hour <
-                            newEvent.startTime.hour) {
                           eventBefore = eventsToBeUpdated[i];
-                          print(eventBefore.title);
-                          //eventBefore 찾기 완료
+                          eventAfter = eventsToBeUpdated[i+1];
+
+                          print(eventBefore);
+                          print(eventAfter);
+
                         }
+
                       }
+
                     }
-                  }
 
-                  if (presetToBeUpdated[course_selected_day_index].length ==
-                      0) {
-                    presetToBeUpdated[course_selected_day_index].add(newPlace);
-                    print("path created");
-                    print(presetToBeUpdated);
-                  } else {
-                    for (int i = 0; i < presetToBeUpdated.length; i++) {
-                      for (int j = 0; j < presetToBeUpdated[i].length; j++) {
-                        if (presetToBeUpdated[i][j].name == eventBefore.title) {
-                          presetToBeUpdated[i].insert(j + 1, newPlace);
+                     */
 
-                          print("path updated");
+                        //eventBefore 찾기
+
+                        for (int i = 0; i < eventsToBeUpdated.length; i++) {
+                          if (newEvent.date.year ==
+                                  eventsToBeUpdated[i].date.year &&
+                              newEvent.date.month ==
+                                  eventsToBeUpdated[i].date.month &&
+                              newEvent.date.day ==
+                                  eventsToBeUpdated[i].date.day) {
+                            if (eventsToBeUpdated[i].title != '식사시간' &&
+                                eventsToBeUpdated[i].title != '이동') {
+                              if (eventsToBeUpdated[i].startTime.hour <
+                                  newEvent.startTime.hour) {
+                                eventBefore = eventsToBeUpdated[i];
+                                print(eventBefore.title);
+                                //eventBefore 찾기 완료
+                              }
+                            }
+                          }
+                        }
+
+                        if (presetToBeUpdated[course_selected_day_index]
+                                .length ==
+                            0) {
+                          presetToBeUpdated[course_selected_day_index]
+                              .add(newPlace);
+                          print("path created");
                           print(presetToBeUpdated);
+                        } else {
+                          for (int i = 0; i < presetToBeUpdated.length; i++) {
+                            for (int j = 0;
+                                j < presetToBeUpdated[i].length;
+                                j++) {
+                              if (presetToBeUpdated[i][j].name ==
+                                  eventBefore.title) {
+                                presetToBeUpdated[i].insert(j + 1, newPlace);
+
+                                print("path updated");
+                                print(presetToBeUpdated);
+                              }
+                            }
+                          }
                         }
-                      }
-                    }
-                  }
 
-                  List<List<int>> movingTimeList = [];
+                        List<List<int>> movingTimeList = [];
 
-                  if (widget.transit == 0) {
-                    movingTimeList =
-                        (await createDrivingTimeList(presetToBeUpdated));
-                  } else {
-                    movingTimeList =
-                        (await createTransitTimeList(presetToBeUpdated));
-                  }
+                        if (widget.transit == 0) {
+                          movingTimeList =
+                              (await createDrivingTimeList(presetToBeUpdated));
+                        } else {
+                          movingTimeList =
+                              (await createTransitTimeList(presetToBeUpdated));
+                        }
 
-                  //print(movingTimeList);
+                        //print(movingTimeList);
 
-                  if (movingTimeList.isEmpty) {
-                    print('movimgTimeList is empty');
-                  }
-                  setState(() {
-                    course_selected = presetToBeUpdated;
-                    //map.addMarker(presetToBeUpdated[course_selected_day_index]);
-                    //map.addPoly(presetToBeUpdated[course_selected_day_index]);
-                  });
-                  await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Timetable(
-                                preset: presetToBeUpdated,
-                                movingTimeList: movingTimeList,
-                                transit: widget.transit,
-                              )));
-                },
-                title: "관광지 추가",
+                        if (movingTimeList.isEmpty) {
+                          print('movimgTimeList is empty');
+                        }
+                        setState(() {
+                          course_selected = presetToBeUpdated;
+                          //map.addMarker(presetToBeUpdated[course_selected_day_index]);
+                          //map.addPoly(presetToBeUpdated[course_selected_day_index]);
+                        });
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Timetable(
+                                      preset: presetToBeUpdated,
+                                      movingTimeList: movingTimeList,
+                                      transit: widget.transit,
+                                    )));
+                      }),
+                )),
               ),
             ],
           ),

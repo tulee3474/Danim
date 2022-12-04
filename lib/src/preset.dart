@@ -75,7 +75,7 @@ class _PresetState extends State<Preset> {
     if (type == 1) {
       setState(() {
         presetButtonColorList[index] = MaterialStateProperty.resolveWith(
-                (states) => Color.fromARGB(255, 78, 194, 252));
+            (states) => Color.fromARGB(255, 78, 194, 252));
       });
     } else if (type == 0) {
       setState(() {
@@ -91,45 +91,81 @@ class _PresetState extends State<Preset> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          elevation: 0,
-          title: InkWell(
-            // onTap: () {
-            //   Navigator.popUntil(context, (route) => route.isFirst);
-            // },
-            child: Transform(
-              transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
-              ]),
-            ),
-          ),
+          title: Center(
+              child: Text('여행 코스 선택(4/4)',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
           actions: [
             //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
             //이곳에 한개 이상의 위젯들을 가진다.
 
-            TextButton(
-                onPressed: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                  //첫화면까지 팝해버리는거임
-                },
-                child: Image.asset(IconsPath.house,
-                    fit: BoxFit.contain, height: 30)),
+            // TextButton(
+            //     onPressed: () {
+            //       //Navigator.popUntil(context, (route) => route.isFirst);
+            //       //첫화면까지 팝해버리는거임
+            //     },
+            //     child: Image.asset(
+            //       IconsPath.count2,
+            //       fit: BoxFit.contain,
+            //       width: 60,
+            //       height: 40,
+            //     )),
+            IconButton(
+              icon: Icon(Icons.home),
+              tooltip: 'Hi!',
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+                //첫화면까지 팝해버리는거임
+              },
+            ),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.popUntil(context, (route) => route.isFirst);
+            //       //첫화면까지 팝해버리는거임
+            //     },
+            //     child: Image.asset(
+            //       IconsPath.house,
+            //       fit: BoxFit.contain,
+            //       height: 20,
+            //     )),
           ],
         ),
         body: Column(children: [
+          // Padding(
+          //   padding: EdgeInsets.all(10.0),
+          //   child: Container(
+          //       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          //       child: Text('다음 프리셋 중 하나를 골라주세요!',
+          //           style: TextStyle(
+          //             color: Colors.black,
+          //             letterSpacing: 2.0,
+          //             fontSize: 18.0,
+          //             fontFamily: "Neo",
+          //             fontWeight: FontWeight.bold,
+          //           ))),
+          // ),
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(8.0),
             child: Container(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: Text('다음 프리셋 중 하나를 골라주세요!',
+                child: Text('아래의 여행 코스 중 하나를 골라주세요!',
                     style: TextStyle(
                       color: Colors.black,
-                      letterSpacing: 2.0,
-                      fontSize: 18.0,
                       fontFamily: "Neo",
+                      letterSpacing: 2.0,
+                      fontSize: 17.0,
                       fontWeight: FontWeight.bold,
                     ))),
           ),
+          Container(
+              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+              child: Text('마커를 눌러 관광지를 확인해보세요',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: "Neo",
+                    //letterSpacing: 2.0,
+                    fontSize: 11.0,
+                    //fontWeight: FontWeight.bold,
+                  ))),
           Container(
             margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
             height: 7,
@@ -160,7 +196,7 @@ class _PresetState extends State<Preset> {
                 markers: markers,
                 pathOverlays: pathOverlays,
               ) // 여기서 지도 넣으면 돼!! 컨테이너 대신에 네이버맵 넣으면 될듯
-          ),
+              ),
           Container(
             margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
             height: 7,
@@ -234,55 +270,61 @@ class _PresetState extends State<Preset> {
           ),
           Center(
               child: Container(
-                width: 120.0,
-                height: 50.0,
-                child: ElevatedButton(
-                    child: Text('프리셋 선택'),
-                    onPressed: () async {
-                      //선택한 코스 전역변수에 저장
-                      course_selected = widget.pathList[presetIndex];
+            width: 120.0,
+            height: 50.0,
+            child: ElevatedButton(
+                child: Text('프리셋 선택',
+                    style: TextStyle(
+                      fontFamily: "Neo",
+                      //letterSpacing: 2.0,
+                      fontSize: 11.0,
+                      fontWeight: FontWeight.bold,
+                    )),
+                onPressed: () async {
+                  //선택한 코스 전역변수에 저장
+                  course_selected = widget.pathList[presetIndex];
 
-                      if (widget.transit == 0) {
-                        List<List<int>> movingTimeList = [
-                          for (int i = 0;
+                  if (widget.transit == 0) {
+                    List<List<int>> movingTimeList = [
+                      for (int i = 0;
                           i < widget.pathList[presetIndex].length;
                           i++)
-                            []
-                        ];
+                        []
+                    ];
 
-                        movingTimeList = await createDrivingTimeList(
-                            widget.pathList[presetIndex]);
+                    movingTimeList = await createDrivingTimeList(
+                        widget.pathList[presetIndex]);
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Timetable(
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Timetable(
                                   preset: widget.pathList[presetIndex],
                                   transit: widget.transit,
                                   movingTimeList: movingTimeList,
                                 )));
-                      } else {
-                        List<List<int>> movingTimeList = [
-                          for (int i = 0;
+                  } else {
+                    List<List<int>> movingTimeList = [
+                      for (int i = 0;
                           i < widget.pathList[presetIndex].length;
                           i++)
-                            []
-                        ];
+                        []
+                    ];
 
-                        movingTimeList = await createTransitTimeList(
-                            widget.pathList[presetIndex]);
+                    movingTimeList = await createTransitTimeList(
+                        widget.pathList[presetIndex]);
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Timetable(
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Timetable(
                                   preset: widget.pathList[presetIndex],
                                   transit: widget.transit,
                                   movingTimeList: movingTimeList,
                                 )));
-                      }
-                    }),
-              ))
+                  }
+                }),
+          )),
         ]));
   }
 }

@@ -90,19 +90,12 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
+          centerTitle: true, // 앱바 가운데 정렬
           title: InkWell(
-            // onTap: () {
-            //   Navigator.popUntil(context, (route) => route.isFirst);
-            // },
-            child: Center(
-              child: Transform(
-                transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
-                ]),
-              ),
-            ),
+            onTap: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+            child: Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40),
           ),
           actions: [
             //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
