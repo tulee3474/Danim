@@ -114,7 +114,8 @@ class MyPage extends StatelessWidget {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 102, 202, 252),
+                          //backgroundColor: Color.fromARGB(255, 102, 202, 252),
+                          backgroundColor: Color(0xff14BC57),
                           child: Text(
                             '${i + 1}',
                             style: TextStyle(
@@ -125,7 +126,8 @@ class MyPage extends StatelessWidget {
                         SizedBox(width: 10),
                         Text('${readData.travelList[i]}' + '여행',
                             style: TextStyle(
-                              color: Color.fromARGB(255, 102, 202, 252),
+                              //color: Color.fromARGB(255, 102, 202, 252),
+                              color: Color(0xff14BC57),
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
                             )),
@@ -173,7 +175,8 @@ class MyPage extends StatelessWidget {
                                   journeys[i][journeys[i].length - 1].date
                                 ],
                                 i,
-                                previousDiary)));
+                                previousDiary,
+                                readData.travelList[i])));
                     //i 인덱스도 넣어줌
                   },
                 ),
