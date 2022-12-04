@@ -522,8 +522,9 @@ class _TimetableState extends State<Timetable> {
             floatingActionButton: Stack(children: [
               Align(
                   alignment: Alignment(
-                      Alignment.bottomRight.x, Alignment.bottomRight.y - 0.15),
+                      Alignment.bottomRight.x, Alignment.bottomRight.y - 0.1),
                   child: FloatingActionButton(
+                    backgroundColor: Color.fromARGB(255, 102, 202, 252),
                     child: Icon(Icons.add),
                     elevation: 8,
                     onPressed: () async {

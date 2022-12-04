@@ -65,7 +65,7 @@ Future readPostData() async {
 
   fb_add_post(postTitle, postNum, postWriter, postContent) // 게시글 추가 - 게시글 제목, 게시글 넘버, 작성자, 게시글 내용
 
-  fb_add_comment(postTitle, comment, commentWriter) // 댓글 추가 - 게시글 제목, 댓글 내용, 댓글 작성자
+  fb_add_comment(postTitle, comment, commentWriterList) // 댓글 추가 - 게시글 제목, 댓글 내용, 댓글 작성자 리스트
 
   fb_add_recommend(postTitle, recommender, recommendNum)  // 좋아요 추가 - 게시글 제목, 누른사람, 기존 좋아요 개수
 
@@ -75,70 +75,102 @@ Future readPostData() async {
 class Community extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: InkWell(
-          // onTap: () {
-          //   Navigator.popUntil(context, (route) => route.isFirst);
-          // },
-          child: Transform(
-            transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40)
-            ]),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.popUntil(context, (route) => route.isFirst);
+        //첫화면까지 팝해버리는거임
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true, // 앱바 가운데 정렬
+          title: InkWell(
+            onTap: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+            child: Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40),
           ),
         ),
-        actions: [
-          //action은 복수의 아이콘, 버튼들을 오른쪽에 배치, AppBar에서만 적용
-          //이곳에 한개 이상의 위젯들을 가진다.
-
-          TextButton(
-              onPressed: () {
-                //Navigator.popUntil(context, (route) => route.isFirst);
-                //첫화면까지 팝해버리는거임
-              },
-              child: Image.asset(IconsPath.count4,
-                  fit: BoxFit.contain, width: 60, height: 50)),
-          TextButton(
-              onPressed: () {
-                Navigator.popUntil(context, (route) => route.isFirst);
-                //첫화면까지 팝해버리는거임
-              },
-              child: Image.asset(IconsPath.house,
-                  fit: BoxFit.contain, height: 30)),
-        ],
-      ),
-      body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(children: [
-            Container(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 0), child: Text("글 목록")),
-            Container(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: Divider(color: Colors.grey, thickness: 2.0)),
-            for (int i = 0; i < posts.length; i++)
-              Container(
-                  padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    child:
-                        Text('${posts[i].postNum + 1}. ${posts[i].postTitle}'),
-                    onPressed: () {
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(children: [
+                Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                    child: Text('커뮤니티 글 목록',
+                        style: TextStyle(
+                          color: Colors.black,
+                          letterSpacing: 2.0,
+                          fontFamily: 'Neo',
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ))),
+                for (int i = 0; i < posts.length; i++)
+                  GestureDetector(
+                    child: Container(
+                      width: double.infinity - 20,
+                      // height: 200,
+                      padding: EdgeInsets.all(12),
+                      margin: EdgeInsets.only(bottom: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 2,
+                            blurRadius: 2,
+                            offset: Offset(3, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Color.fromARGB(255, 102, 202, 252),
+                            child: Text(
+                              '${posts[i].postNum + 1}',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: Text(
+                              '${posts[i].postTitle}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          Icon(Icons.navigate_next),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      print(posts.length);
+                      print(i);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => WrittenPost(posts[i], i)));
                     },
-                  ))
-          ])),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        elevation: 0,
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => NewPost()));
-        },
+                  )
+              ])),
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Color.fromARGB(255, 102, 202, 252),
+          child: Icon(Icons.add),
+          elevation: 0,
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => NewPost()));
+          },
+        ),
       ),
     );
   }

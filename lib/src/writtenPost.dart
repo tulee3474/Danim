@@ -31,7 +31,8 @@ class _WrittenPostState extends State<WrittenPost> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.monitor_heart),
+          backgroundColor: Color.fromARGB(255, 102, 202, 252),
+          child: Icon(Icons.thumb_up),
           onPressed: () {
             if (widget.post.recommendList.contains(token)) {
               showDialog(
@@ -39,9 +40,16 @@ class _WrittenPostState extends State<WrittenPost> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                         content: SizedBox(
-                      width: 200,
+                      width: 250,
                       height: 100,
-                      child: Center(child: Text("이미 좋아요를 누르셨습니다.")),
+                      child: Center(
+                          child: Text("이미 좋아요를 누르셨습니다.",
+                              style: TextStyle(
+                                color: Colors.black,
+                                letterSpacing: 2.0,
+                                fontFamily: 'Neo',
+                                //fontWeight: FontWeight.bold,
+                              ))),
                     ));
                   });
             } else {
@@ -55,133 +63,270 @@ class _WrittenPostState extends State<WrittenPost> {
                 widget.post.recommendList.add(token!);
               });
             }
-
-//여기서 DB에 저장
           },
         ),
         appBar: AppBar(
           elevation: 0,
-          title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/app');
-                },
-                child: Image.asset(IconsPath.house,
-                    fit: BoxFit.contain, height: 20))
-          ]),
+          centerTitle: true, // 앱바 가운데 정렬
+          title: InkWell(
+            onTap: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+            child: Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40),
+          ),
         ),
-        body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Text("${widget.post.postTitle}")),
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Text("익명의 글쓴이 ${widget.index + 1}")),
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Divider(color: Colors.grey, thickness: 2.0)),
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child:
-                        TextFormField(initialValue: widget.post.postContent)),
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Text("좋아요 개수 : ${widget.post.recommendNum}")),
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Divider(color: Colors.grey, thickness: 2.0)),
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Text("댓글")),
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Divider(color: Colors.grey, thickness: 2.0)),
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: ElevatedButton(
-                        child: Text('댓글 작성',
-                            style: TextStyle(color: Colors.black)),
-                        style: ButtonStyle(),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              barrierDismissible: true,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                    content: SizedBox(
-                                        width: 300,
-                                        height: 300,
-                                        child: SingleChildScrollView(
-                                            scrollDirection: Axis.vertical,
-                                            child: Column(children: [
-                                              TextField(
-                                                controller: commentController,
-                                                decoration: InputDecoration(
-                                                    border:
-                                                        OutlineInputBorder(),
-                                                    labelText: '댓글 내용'),
-                                              ),
-                                              Container(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      0, 20, 0, 0),
-                                                  child: ElevatedButton(
-                                                    child: Text('댓글 작성',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black)),
-                                                    style: ButtonStyle(),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        widget.post
-                                                            .commentWriterList
-                                                            .add(token!);
-                                                        widget.post.commentList
-                                                            .add(
-                                                                commentController
-                                                                    .text);
-                                                        commentController.text =
-                                                            '';
-
-                                                        fb_add_comment(
-                                                            widget
-                                                                .post.postTitle,
-                                                            commentController
-                                                                .text,
-                                                            token!); // 댓글 추가 - 게시글 제목, 댓글 내용, 댓글 작성자
-                                                      });
-
-                                                      //잘 들어갔나 확인
-                                                      print(widget.post
-                                                          .commentList[widget
-                                                              .post
-                                                              .commentList
-                                                              .length -
-                                                          1]);
-                                                      print(widget.post
-                                                          .commentWriterList[widget
-                                                              .post
-                                                              .commentWriterList
-                                                              .length -
-                                                          1]);
-
-                                                      //여기서 DB에 저장
-
-                                                      //팝업 창 꺼짐
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ))
-                                            ]))));
-                              });
-                        })),
-                for (int i = 0; i < widget.post.commentList.length; i++)
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Text("${widget.post.postTitle}",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  letterSpacing: 2.0,
+                                  fontFamily: 'Neo',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ))),
+                        Container(
+                            padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
+                            child: Text("익명의 글쓴이${widget.index + 1}",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  letterSpacing: 2.0,
+                                  fontFamily: 'Neo',
+                                  fontSize: 10.0,
+                                  //fontWeight: FontWeight.bold,
+                                ))),
+                      ],
+                    ),
+                  ),
                   Container(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child:
-                          Text("익명 ${i + 1} : ${widget.post.commentList[i]}"))
-              ],
-            )));
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF4F4F4),
+                      border: Border(
+                        top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Text(widget.post.postContent,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  letterSpacing: 2.0,
+                                  fontFamily: 'Neo',
+                                  fontSize: 14.0,
+                                  //fontWeight: FontWeight.bold,
+                                ))),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Text("좋아요 : ${widget.post.recommendNum}",
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  letterSpacing: 2.0,
+                                  fontFamily: 'Neo',
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                ))),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF4F4F4),
+                      border: Border(
+                        top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      //mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Text("댓글",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  letterSpacing: 2.0,
+                                  fontFamily: 'Neo',
+                                  fontSize: 13.0,
+                                  fontWeight: FontWeight.bold,
+                                ))),
+                      ],
+                    ),
+                  ),
+                  for (int i = 0; i < widget.post.commentList.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              child: Text(
+                                  "익명 ${widget.post.commentWriterList.indexOf(widget.post.commentWriterList[i]) + 1} : ${widget.post.commentList[i]}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    letterSpacing: 2.0,
+                                    fontFamily: 'Neo',
+                                    fontSize: 11.0,
+                                    //fontWeight: FontWeight.bold,
+                                  ))),
+                        ],
+                      ),
+                    ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF4F4F4),
+                      border: Border(
+                        top: BorderSide(width: 1.0, color: Color(0xffD4D4D4)),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                        width: 115,
+                        height: 55,
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        child: ElevatedButton(
+                            child: Text('댓글 작성',
+                                style: TextStyle(
+                                  letterSpacing: 2.0,
+                                  fontFamily: 'Neo',
+                                  //fontSize: 13.0,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            style: ButtonStyle(),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                        content: SizedBox(
+                                            width: 300,
+                                            height: 300,
+                                            child: SingleChildScrollView(
+                                                scrollDirection: Axis.vertical,
+                                                child: Column(children: [
+                                                  TextField(
+                                                    controller:
+                                                        commentController,
+                                                    decoration: InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText: '댓글 내용'),
+                                                  ),
+                                                  Container(
+                                                      width: 110,
+                                                      height: 60,
+                                                      padding:
+                                                          EdgeInsets.fromLTRB(
+                                                              0, 20, 0, 0),
+                                                      child: ElevatedButton(
+                                                        child: Text('댓글 작성',
+                                                            style: TextStyle(
+                                                              letterSpacing:
+                                                                  2.0,
+                                                              fontFamily: 'Neo',
+                                                              //fontSize: 13.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            )),
+                                                        style: ButtonStyle(),
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            widget.post
+                                                                .commentWriterList
+                                                                .add(token!);
+                                                            widget.post
+                                                                .commentList
+                                                                .add(
+                                                                    commentController
+                                                                        .text);
+
+                                                            fb_add_comment(
+                                                                widget.post
+                                                                    .postTitle,
+                                                                widget.post
+                                                                    .commentList[widget
+                                                                        .post
+                                                                        .commentList
+                                                                        .length -
+                                                                    1],
+                                                                widget.post
+                                                                    .commentWriterList); // 댓글 추가 - 게시글 제목, 댓글 내용, 댓글 작성자 리스트
+
+                                                            commentController
+                                                                .text = '';
+                                                          });
+
+                                                          //잘 들어갔나 확인
+                                                          print(widget.post
+                                                              .commentList[widget
+                                                                  .post
+                                                                  .commentList
+                                                                  .length -
+                                                              1]);
+                                                          print(widget.post
+                                                              .commentWriterList[widget
+                                                                  .post
+                                                                  .commentWriterList
+                                                                  .length -
+                                                              1]);
+
+                                                          //여기서 DB에 저장
+
+                                                          //팝업 창 꺼짐
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      ))
+                                                ]))));
+                                  });
+                            })),
+                  ),
+                ],
+              )),
+        ));
   }
 }

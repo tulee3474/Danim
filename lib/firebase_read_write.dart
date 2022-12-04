@@ -173,14 +173,17 @@ void fb_add_post(postTitle, postNum, postWriter, postContent) {
   print("파이어베이스 업로드 완료");
 }
 
-void fb_add_comment(postTitle, comment, commentWriter) {
+void fb_add_comment(postTitle, comment, commentWriterList) {
   FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).update({
     "commentList": FieldValue.arrayUnion([comment]),
   });
-
-  FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).update({
-    "commentWriterList": FieldValue.arrayUnion([commentWriter]),
-  });
+  FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).set({
+    'commentWriterList': commentWriterList,
+  }, SetOptions(merge: true));
+  // 아래 방법은 중복 토큰이 저장 안됨. 할 수 없이 리스트 전체를 저장함
+  // FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).update({
+  //   "commentWriterList": FieldValue.arrayUnion([commentWriter]),
+  // });
 
   print("파이어베이스 업로드 완료");
 }
