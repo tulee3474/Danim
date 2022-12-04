@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/src/community.dart';
+import 'package:danim/src/post.dart';
 
 import '../components/image_data.dart';
 import 'login.dart';
@@ -45,7 +46,7 @@ class _WrittenPostState extends State<WrittenPost> {
             } else {
               setState(() {
                 widget.post.recommendNum++;
-                widget.post.recommendList.add(token);
+                widget.post.recommendList.add(token!);
               });
             }
 
@@ -130,7 +131,7 @@ class _WrittenPostState extends State<WrittenPost> {
                                                       setState(() {
                                                         widget.post
                                                             .commentWriterList
-                                                            .add(token);
+                                                            .add(token!);
                                                         widget.post.commentList
                                                             .add(
                                                                 commentController

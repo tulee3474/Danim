@@ -152,7 +152,7 @@ void fb_add_place(city, name, latitude, longitude, takenTime, popular, partner,
   print("파이어베이스 업로드 완료");
 }
 
-void fb_add_post(postTitle, postNum, postWriter) {
+void fb_add_post(postTitle, postNum, postWriter, postContent) {
   //합쳐쓰기
   FirebaseFirestore.instance.collection("커뮤니티").doc(postTitle).set({
     'postTitle': postTitle,
@@ -162,6 +162,7 @@ void fb_add_post(postTitle, postNum, postWriter) {
     'commentWriterList': [], //첫 작성이니까
     'recommendList': [], //첫 작성이니까
     'recommendNum': 0,
+    'postContent': postContent,
   }, SetOptions(merge: true));
 
   //관광지 목록에 이름 작성
@@ -206,9 +207,14 @@ class ReadController extends GetxController {
 
     List<String> tempList = docCodeNum.split('/');
 
+    print(tempList);
+
     String docCode = tempList[0];
 
-    int docNum = tempList[1] as int;
+    print(tempList[1]);
+
+    // int docNum = tempList[1] as int; - 에러남, 이유는 모름
+    int docNum = int.parse(tempList[1]);
 
     docNum -= 1; //num은 1, 2, 3, 4 형태니까 하나빼준다
 
@@ -552,6 +558,7 @@ class ReadController extends GetxController {
     int postNum = data.data()!['postNum'] as int;
     String postWriter = data.data()!['postWriter'] as String;
     int recommendNum = data.data()!['recommendNum'] as int;
+    String postContent = data.data()!['postContent'] as String;
 
     //Error: Expected a value of type 'List<int>', but got one of type 'List<dynamic>'
     //위 에러 때문에 하나식 일일히 형변환함. 리스트를 통으로 형변환하면 에러
@@ -580,6 +587,7 @@ class ReadController extends GetxController {
       commentWriterList,
       recommendList,
       recommendNum,
+      postContent,
     );
 
     return postData;

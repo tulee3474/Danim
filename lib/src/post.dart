@@ -6,6 +6,7 @@ class Post {
   List<String> commentWriterList = []; // 댓글 작성자 리스트
   List<String> recommendList = []; // 좋아요 누른 사람 리스트
   int recommendNum = 0; // 좋아요 수
+  String postContent = ''; //게시물 내용
 
   Post(
     this.postTitle,
@@ -15,6 +16,7 @@ class Post {
     this.commentWriterList,
     this.recommendList,
     this.recommendNum,
+    this.postContent,
   );
 
   Map<String, dynamic> toJson() => {
@@ -25,5 +27,6 @@ class Post {
         'commentWriterList': commentWriterList,
         'recommendList': recommendList,
         'recommendNum': recommendNum,
+        'postContent': postContent,
       };
 }

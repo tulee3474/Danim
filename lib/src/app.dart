@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:danim/src/loadingMyPage.dart';
+import 'package:danim/src/loadingOtherCourse.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/timetable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,7 +34,6 @@ import 'community.dart';
 import 'date_selectlist.dart';
 import 'fixInfo.dart';
 import 'package:danim/firebase_read_write.dart';
-
 
 void main() {
   runApp(MaterialApp(
@@ -101,57 +101,45 @@ class _AppState extends State<App> {
                   leading: Icon(Icons.search, color: Colors.grey),
                   title: Text("코스 검색"),
                   onTap: () {
-
-                   showDialog(context: context,
-                       builder: (BuildContext context){
-                     return AlertDialog(
-
-                       content: SizedBox(
-                         width: 200,
-                         height: 300,
-                         child: Center(
-                           child: Column(
-                             children: [
-
-
-                               Container(
-                                   margin: EdgeInsets.all(10),
-                                   child: TextField(
-                                       controller: searchCourseController,
-                                       decoration: InputDecoration(
-                                         border: OutlineInputBorder(),
-                                         labelText: '코스 코드',
-                                       )))   ,
-                               Container(
-                                   width: 120.0,
-                                   height: 80.0,
-                                   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                                   child: ElevatedButton(
-                                       onPressed: () {
-
-                                         //Future<User> fb_read_other_course(String docCodeNum)
-                                         //docCodeNum - docCode/num 형태, num은 1, 2, 3, 4 - event뒤의 숫자와 동일
-                                         //여기서 코스 코드 검색하면 됨 !!
-
-
-                                         //User searchedUser = await (fb_read_other_course(searchCourseController.text));
-
-
-
-                                       },
-                                       child: Text("검색하기",
-                                           style: TextStyle(
-                                             fontFamily: "Neo",
-                                             fontWeight: FontWeight.bold,
-                                           ))))
-                             ]
-                           )
-                         )
-                       )
-
-                     );
-                       });
-
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              content: SizedBox(
+                                  width: 200,
+                                  height: 300,
+                                  child: Center(
+                                      child: Column(children: [
+                                    Container(
+                                        margin: EdgeInsets.all(10),
+                                        child: TextField(
+                                            controller: searchCourseController,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              labelText: '코스 코드',
+                                            ))),
+                                    Container(
+                                        width: 120.0,
+                                        height: 80.0,
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 30, 0, 0),
+                                        child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LoadingOtherCourse(
+                                                              searchCourseController
+                                                                  .text)));
+                                            },
+                                            child: Text("검색하기",
+                                                style: TextStyle(
+                                                  fontFamily: "Neo",
+                                                  fontWeight: FontWeight.bold,
+                                                ))))
+                                  ]))));
+                        });
                   }),
               ListTile(
                   leading: Icon(Icons.login, color: Colors.grey),

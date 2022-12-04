@@ -1,55 +1,39 @@
 import 'dart:async';
-
-import 'package:danim/src/fixInfo.dart';
-import 'package:danim/src/preset.dart';
-import 'package:danim/src/start_end_day.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:danim/src/courseDetail.dart';
 
-import 'dart:ui';
 import 'package:danim/src/login.dart';
 import 'package:danim/src/myPage.dart';
 
-import 'package:danim/route_ai.dart';
 import 'package:danim/firebase_read_write.dart';
-import 'package:danim/src/place.dart';
 import 'package:danim/src/user.dart';
 
-import 'accomodationInfo.dart';
-import 'date_selectlist.dart';
-
-class LoadingMyPage extends StatefulWidget {
-  LoadingMyPage({super.key});
-
-  int transit = 0;
+class LoadingOtherCourse extends StatefulWidget {
+  LoadingOtherCourse(String this.searchText, {super.key});
+  String searchText;
 
   @override
-  State<LoadingMyPage> createState() => _LoadingMyPageState();
+  State<LoadingOtherCourse> createState() => _LoadingOtherCourseState();
 }
 
-class _LoadingMyPageState extends State<LoadingMyPage> {
-  Future<void> wwww() async {
-    //임시 텍스트
-    if (token == '') {
-      await readUserData("docCodeTest123");
-    } else {
-      await readUserData(token as String);
-    }
-    Timer(Duration(seconds: 0), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyPage()));
-    });
+class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
+  Future<void> eeee() async {
+    //Future<User> fb_read_other_course(String docCodeNum)
+    //docCodeNum - docCode/num 형태, num은 1, 2, 3, 4 - event뒤의 숫자와 동일
+    //여기서 코스 코드 검색하면 됨 !!
+
+    var read = ReadController();
+
+    User searchedUser = await (read.fb_read_other_course(widget.searchText));
+
+    print(searchedUser.eventList);
+    //타임테이블 띄워
   }
 
   @override
   initState() {
-    wwww();
+    eeee();
   }
 
   @override
