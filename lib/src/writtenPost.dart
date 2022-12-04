@@ -1,3 +1,4 @@
+import 'package:danim/firebase_read_write.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/src/community.dart';
@@ -45,6 +46,11 @@ class _WrittenPostState extends State<WrittenPost> {
                   });
             } else {
               setState(() {
+                fb_add_recommend(
+                    widget.post.postTitle,
+                    token!,
+                    widget
+                        .post.recommendNum); // 좋아요 추가 - 게시글 제목, 누른사람, 기존 좋아요 개수
                 widget.post.recommendNum++;
                 widget.post.recommendList.add(token!);
               });
@@ -138,6 +144,13 @@ class _WrittenPostState extends State<WrittenPost> {
                                                                     .text);
                                                         commentController.text =
                                                             '';
+
+                                                        fb_add_comment(
+                                                            widget
+                                                                .post.postTitle,
+                                                            commentController
+                                                                .text,
+                                                            token!); // 댓글 추가 - 게시글 제목, 댓글 내용, 댓글 작성자
                                                       });
 
                                                       //잘 들어갔나 확인

@@ -416,7 +416,10 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
                                                 date.compareWithoutTime(
                                                     DateTime.now()),
                                         timeLineOffset: widget.timeLineOffset,
-                                        timeLineWidth: _timeLineWidth,
+                                        //timeLineOffset - 이걸 +시키면 시간들이 위로 올라가긴 함.
+                                        //근데 테이블 나오는 건 그대로 아래에서 나와서 의미 x
+                                        timeLineWidth: _timeLineWidth + 10,
+                                        //태운 - 건드린 부분
                                         verticalLineOffset:
                                             widget.verticalLineOffset,
                                         showVerticalLine:

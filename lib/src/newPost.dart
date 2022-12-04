@@ -1,3 +1,4 @@
+import 'package:danim/firebase_read_write.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/src/post.dart';
@@ -69,6 +70,12 @@ class _NewPostState extends State<NewPost> {
                       setState(() {
                         posts.add(Post(postTitleController.text, posts.length,
                             token!, [], [], [], 0, postContentController.text));
+                        fb_add_post(
+                            postTitleController.text,
+                            posts.length - 1,
+                            token!,
+                            postContentController
+                                .text); // 게시글 추가 - 게시글 제목, 게시글 넘버, 작성자, 게시글 내용
                       });
 
                       //잘 들어갔나 확인

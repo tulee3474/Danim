@@ -5,6 +5,7 @@ import 'package:danim/src/start_end_day.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:get/get.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/directions.dart';
 import 'package:google_maps_webservice/places.dart';
@@ -434,61 +435,64 @@ class _AttractionFixState extends State<AttractionFix> {
                               fontWeight: FontWeight.bold,
                             )))),
               ),
-              Container(
-                  width: 120.0,
-                  height: 80.0,
-                  padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        // //픽스할 관광지 저장
-                        // if (fixTourSpotName != '') {
-                        //   fixTourSpotList.add(Place(
-                        //       fixTourSpotName,
-                        //       fixTourSpotLat,
-                        //       fixTourSpotLon,
-                        //       60,
-                        //       20,
-                        //       selectedList[0],
-                        //       selectedList[1],
-                        //       selectedList[2],
-                        //       selectedList[3],
-                        //       selectedList[4]));
-                        // }
+              // Container(
+              //     width: 120.0,
+              //     height: 80.0,
+              //     padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+              //     child: ElevatedButton(
+              //         onPressed: () {
 
-                        // //픽스할 날짜 저장
-                        // if (fixDayIndex != -1) {
-                        //   fixDateList.add(fixDayIndex);
-                        // }
-
-                        // //픽스 정보 잘 들어갔는지 출력
-                        // if (fixTourSpotList.length > 0) {
-                        //   print('픽스 관광지 이름: ' + fixTourSpotList[0].name);
-                        //   print(fixDateList);
-                        // }
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Loading(widget.transit)));
-                      },
-                      // style: ElevatedButton.styleFrom(
-                      //   backgroundColor: Color(0xff0d62ee),
-                      // ),
-                      child: Text("다음 단계",
-                          style: TextStyle(
-                            fontFamily: "Neo",
-                            fontWeight: FontWeight.bold,
-                          )))),
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) => Loading(widget.transit)));
+              //         },
+              //         // style: ElevatedButton.styleFrom(
+              //         //   backgroundColor: Color(0xff0d62ee),
+              //         // ),
+              //         child: Text("다음 단계",
+              //             style: TextStyle(
+              //               fontFamily: "Neo",
+              //               fontWeight: FontWeight.bold,
+              //             )))),
             ])),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //     onPressed: () {
-      //       Navigator.push(
-      //           context,
-      //           MaterialPageRoute(
-      //               builder: (context) => AttractionFix(widget.transit)));
-      //     },
-      //     child: Icon(Icons.add))
+      bottomSheet: (true)
+          ? GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Loading(widget.transit)));
+              },
+              child: Container(
+                width: Get.width,
+                height: 60,
+                color: Color.fromARGB(255, 102, 202, 252),
+                child: const Center(
+                  child: Text(
+                    '다음 단계',
+                    style: TextStyle(
+                      fontSize: 17.0,
+                      fontFamily: "Neo",
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : Container(
+              width: Get.width,
+              height: 60,
+              color: Color(0xffE9E9E9),
+              child: const Center(
+                child: Text(
+                  '다음',
+                  style: TextStyle(color: Color(0xffB0B0B0), fontSize: 16),
+                ),
+              ),
+            ),
     );
   }
 }
