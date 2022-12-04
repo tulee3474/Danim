@@ -44,25 +44,46 @@ class _LoadingState extends State<Loading> {
     stopwatch.start();
 
     await ai.data_loading(city as String);
-    read_data = (await ai.route_search(city, house, selectList, fixTourSpotList,
-            fixDateList, timeLimitArray, nDay, widget.transit))
-        .cast<List<List<Place>>>();
-
-    for (int i = 0; i < read_data.length; i++) {
-      print("코스");
-      for (int j = 0; j < read_data[i].length; j++) {
-        print("날짜 : " + (j + 1).toString());
-        for (int k = 0; k < read_data[i][j].length; k++) {
-          print(read_data[i][j][k].name);
+    try {
+      read_data = (await ai.route_search(
+              city,
+              house,
+              selectList,
+              fixTourSpotList,
+              fixDateList,
+              timeLimitArray,
+              nDay,
+              widget.transit))
+          .cast<List<List<Place>>>();
+      for (int i = 0; i < read_data.length; i++) {
+        print("코스");
+        for (int j = 0; j < read_data[i].length; j++) {
+          print("날짜 : " + (j + 1).toString());
+          for (int k = 0; k < read_data[i][j].length; k++) {
+            print(read_data[i][j][k].name);
+          }
         }
+        print("---------------------------");
       }
-      print("---------------------------");
-    }
-    print("AI 돌리는데 걸리는 시간");
-    print(stopwatch.elapsed);
-    stopwatch.stop();
+      print("AI 돌리는데 걸리는 시간");
+      print(stopwatch.elapsed);
+      stopwatch.stop();
 
-    return read_data;
+      return read_data;
+    } catch (e) {
+      print('AI 실행 중, 에러 발생');
+      print(house);
+      print(selectList);
+      print(fixTourSpotList);
+      print(fixDateList);
+      print(timeLimitArray);
+      print(nDay);
+      print(widget.transit);
+      print('---------------------------------------------------------');
+
+      read_data = [];
+      return read_data;
+    }
   }
 
   qqqq() async {

@@ -24,11 +24,55 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
     //여기서 코스 코드 검색하면 됨 !!
 
     var read = ReadController();
+    User searchedUser;
 
-    User searchedUser = await (read.fb_read_other_course(widget.searchText));
+    try {
+      searchedUser = await (read.fb_read_other_course(widget.searchText));
+      print(searchedUser.eventList);
+      //타임테이블 띄워
 
-    print(searchedUser.eventList);
-    //타임테이블 띄워
+    } catch (e) {
+      showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext context) {
+            return AlertDialog(
+                content: SizedBox(
+                    width: 250,
+                    height: 100,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Container(
+                              child: Text("Warning!",
+                                  style: TextStyle(
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                  ))),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Container(
+                              child: Text('에러코드' + widget.searchText,
+                                  style: TextStyle(
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                  ))),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Container(
+                              child: Text('잘못된 코드입니다.',
+                                  style: TextStyle(
+                                    fontFamily: "Neo",
+                                    fontWeight: FontWeight.bold,
+                                  ))),
+                        ),
+                      ],
+                    )));
+          });
+    }
   }
 
   @override

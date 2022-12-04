@@ -34,8 +34,11 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
           //primarySwatch: Colors.green,
           scaffoldBackgroundColor: Color.fromARGB(255, 245, 250, 253),
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: Color.fromRGBO(194, 233, 252, 1)),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Color.fromRGBO(194, 233, 252, 1),
+            brightness: Brightness.light,
+            primary: Color.fromARGB(255, 102, 202, 252),
+          ),
           brightness: Brightness.light,
           appBarTheme: const AppBarTheme(
             backgroundColor: Color.fromRGBO(194, 233, 252, 1),
