@@ -8,6 +8,36 @@ String tourInfoURL='http://apis.data.go.kr/B551011/KorService/detailCommon?servi
 String placesURL='https://maps.googleapis.com/maps/api/place/details/json?';
 String placesKey='AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI';
 String findURL='https://maps.googleapis.com/maps/api/place/findplacefromtext/json?';
+
+List<String> photoList=[];
+Future<String> getPhoto(String placeName) async {
+  String photoUrl='';
+  String placeID=await getPlaceID(placeName);
+  if (placeID=='') {
+    photoUrl='';
+  }
+  else {
+    http.Response response = await http.get(Uri.parse(
+        '${placesURL}place_id=$placeID&fields=photos&language=ko&key=$placesKey'
+    ),
+    );
+    if (response.statusCode < 200 || response.statusCode > 400) {
+      photoUrl=''; // Error 반환
+    } else {
+      String responseData = utf8.decode(response.bodyBytes);
+      var responseBody = jsonDecode(responseData);
+      String status=responseBody['status'];
+      if (status.compareTo('OK')==0) {
+        print(responseBody.toString());
+      }
+      else {
+        photoUrl='';
+      }
+    }
+  }
+  return photoUrl;
+}
+/*
 Future<int> getTourID(String placeName) async{
   int contentID=0;
   http.Response response = await http.get(Uri.parse(
@@ -29,7 +59,7 @@ Future<int> getTourID(String placeName) async{
     }
   }
   return contentID;
-}
+}*/
 /*
 Future<String> getTourInfo(String placeName) async {
   int contentID=await getTourID(placeName);
@@ -57,7 +87,7 @@ Future<String> getTourInfo(String placeName) async {
 Future<String> getPlaceID(String placeName) async {
   String placeID='';
   http.Response response = await http.get(Uri.parse(
-      '${findURL}input=$placeName&inputtype=textquery&fields=place_id&key=$placesKey'
+      '${findURL}input=제주도 $placeName&inputtype=textquery&fields=place_id&key=$placesKey'
   ),
   );
   if (response.statusCode < 200 || response.statusCode > 400) {
@@ -84,7 +114,7 @@ Future<String> getTourInfo(String placeName) async {
   }
   else {
     http.Response response = await http.get(Uri.parse(
-        '${placesURL}place_id=$placeID&fields=editorial_summary,current_opening_hours,reviews,rating&language=ko&key=$placesKey'
+        '${placesURL}place_id=$placeID&fields=editorial_summary,current_opening_hours,reviews,rating,photo&language=ko&key=$placesKey'
     ),
     );
     if (response.statusCode < 200 || response.statusCode > 400) {
@@ -106,12 +136,17 @@ Future<String> getTourInfo(String placeName) async {
           summary='';
         }
         try {
-          rating +=list["rating"].toString();
-          rating +=' / 5\n';
+          if (list["rating"].toString().compareTo('null')==0) {
+            rating='';
+          }
+          else {
+            rating +=list["rating"].toString();
+            rating +=' / 5\n';
+          }
         }catch(e) {
           rating='';
         }
-         try {
+        try {
           for (int i=0;i<list["current_opening_hours"]["weekday_text"].length;i++) {
             openingHours += list["current_opening_hours"]["weekday_text"][i].toString();
             openingHours += '\n';
@@ -132,6 +167,14 @@ Future<String> getTourInfo(String placeName) async {
           reviews='';
         }
         contentOverview=summary+rating+openingHours+reviews;
+        photoList.clear();
+        try {
+          for (int i=0;i<list["photos"].length;i++) {
+            photoList.add(list["photos"][i]["photo_reference"]);
+          }
+        }catch(e) {
+          photoList.clear();
+        }
       }
       else {
         contentOverview='정보가 없습니다.';

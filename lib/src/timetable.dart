@@ -21,6 +21,7 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:danim/src/start_end_day.dart';
 import 'package:danim/src/preset.dart';
 import '../../map.dart' as map;
+import 'viewPhoto.dart';
 
 import '../map.dart';
 import '../route_ai.dart';
@@ -633,6 +634,19 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                             scrollDirection: Axis.vertical,
                             child: Column(children: [
                               Container(child: Text(tourInformation)),
+                              Container(
+                                  child: ElevatedButton(
+                                    child: Text("사진 보기"),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ViewPhoto(
+                                              )));
+                                    },
+
+                                  )
+                              ),
                               Container(
                                   padding: EdgeInsets.fromLTRB(0, 240, 0, 0),
                                   child: ElevatedButton(

@@ -370,8 +370,8 @@ class EmailState extends State<Email> {
           .signInWithEmailAndPassword(email: email, password: passWord)
           .then((value) => Get.back(result: value));
       token = FirebaseAuth.instance.currentUser?.uid;
-      //userName=FirebaseAuth.instance.currentUser?.uid;
-      userName = FirebaseAuth.instance.currentUser?.email;
+      userName='이메일 로그인';
+      userEmail = FirebaseAuth.instance.currentUser?.email;
       Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context) => App()));
     } on FirebaseAuthException catch (e) {
