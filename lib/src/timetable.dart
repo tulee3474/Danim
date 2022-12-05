@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:danim/calendar_view.dart';
 import 'package:danim/src/event_CalendarEventData_switch.dart';
+import 'package:danim/src/viewPhoto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
@@ -635,6 +636,7 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                             child: Column(children: [
                               Container(child: Text(tourInformation)),
                               Container(
+
                                   child: ElevatedButton(
                                     child: Text("사진 보기"),
                                     onPressed: () {
@@ -646,6 +648,7 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                     },
 
                                   )
+
                               ),
                               Container(
                                   padding: EdgeInsets.fromLTRB(0, 240, 0, 0),

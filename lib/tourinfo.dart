@@ -9,7 +9,9 @@ String placesURL='https://maps.googleapis.com/maps/api/place/details/json?';
 String placesKey='AIzaSyD0em7tm03lJXoj4TK47TcunmqfjDwHGcI';
 String findURL='https://maps.googleapis.com/maps/api/place/findplacefromtext/json?';
 
+
 List<String> photoList=[];
+
 Future<String> getPhoto(String placeName) async {
   String photoUrl='';
   String placeID=await getPlaceID(placeName);
@@ -146,6 +148,8 @@ Future<String> getTourInfo(String placeName) async {
         }catch(e) {
           rating='';
         }
+
+
         try {
           for (int i=0;i<list["current_opening_hours"]["weekday_text"].length;i++) {
             openingHours += list["current_opening_hours"]["weekday_text"][i].toString();

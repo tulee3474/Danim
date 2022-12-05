@@ -30,7 +30,7 @@ class _TempState extends State<Temp> {
               if (userName=='') {
                 userName='이메일 로그인';
               }
-              if (userEmail==null) {
+              if (userEmail=='') {
                 userName='익명 로그인';
               }
               print('asdfasf $token $userName $userEmail');
