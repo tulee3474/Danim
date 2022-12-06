@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:danim/src/place.dart';
+import 'package:danim/src/timetable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
@@ -8,6 +10,8 @@ import 'package:danim/src/myPage.dart';
 
 import 'package:danim/firebase_read_write.dart';
 import 'package:danim/src/user.dart';
+
+import 'createMovingTimeList.dart';
 
 class LoadingOtherCourse extends StatefulWidget {
   LoadingOtherCourse(String this.searchText, {super.key});
@@ -31,6 +35,95 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
       print(searchedUser.eventList);
       //타임테이블 띄워
 
+
+      for (int i = 0; i < searchedUser.eventList.length; i++) {
+        print('journey_lat : ${searchedUser.eventList[i].title}');
+      }
+
+
+
+      List<DateTime> dateList = [];
+
+
+                      for (int i = 0;
+                      i < searchedUser.eventList[searchedUser.eventList.length-1].date.difference(searchedUser.eventList[0].date).inDays + 1;
+                      i++) {
+                      dateList.add(DateTime(searchedUser.eventList[0].date.year,
+                          searchedUser.eventList[0].date.month, searchedUser.eventList[0].date.day + i));
+                      } // 날짜 리스트
+
+      print(dateList);
+
+    List<List<Place>> oldPreset = [
+      for (int i = 0; i < dateList.length; i++)
+        []
+    ];
+
+
+                      //이걸 못하는 거 같음.
+      for (int i = 0; i < dateList.length; i++) {
+        for (int j = 0; j < searchedUser.eventList.length; j++) {
+          if ((dateList[i].year == searchedUser.eventList[j].date.year &&
+              dateList[i].month ==
+                  searchedUser.eventList[j].date.month &&
+              dateList[i].day ==
+                  searchedUser.eventList[j].date.day) &&
+              (searchedUser.eventList[j].title != '이동') &&
+              (searchedUser.eventList[j].title != '식사시간')) {
+            oldPreset[i].add(Place(
+                searchedUser.eventList[j].title,
+                searchedUser.eventList[j].latitude,
+                searchedUser.eventList[j].longitude,
+                searchedUser.eventList[j]
+                    .endTime
+                    .difference(searchedUser.eventList[j].startTime)
+                    .inMinutes,
+                60,
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0]));
+          }
+        }
+      }
+
+      //타임테이블 생성 잘 됐나 출력
+      // 지금 여기서 안돼.. 왜?
+
+      for (int i = 0; i < oldPreset.length; i++) {
+        for (int j = 0; j < oldPreset[i].length; j++) {
+          print(
+              '${i}째 날 ${j}째 코스 : ${oldPreset[i][j].name}');
+        }
+      }
+
+      //print('lati : ${oldPreset[0][0].latitude}');
+      //print(oldPreset[0][0].longitude);
+
+      List<List<int>> movingTimeList = [
+        for (int i = 0; i < oldPreset.length; i++) []
+      ];
+
+      movingTimeList =
+      await createDrivingTimeList(oldPreset);
+
+      print(oldPreset);
+      print(movingTimeList);
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Timetable(
+                preset: oldPreset,
+                transit: 0,
+                movingTimeList: movingTimeList,
+                startDayTime: searchedUser.eventList[0].startTime.hour,
+                endDayTime: searchedUser.eventList[searchedUser.eventList.length-1].endTime.hour,
+              )));
+
+
+
     } catch (e) {
       showDialog(
           context: context,
@@ -42,7 +135,9 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
                     height: 100,
                     child: Column(
                       children: [
-                        Padding(
+                        SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                        child:Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Container(
                               child: Text("Warning!",
@@ -50,7 +145,7 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
                                     fontFamily: "Neo",
                                     fontWeight: FontWeight.bold,
                                   ))),
-                        ),
+                        )),
                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Container(

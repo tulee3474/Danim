@@ -407,6 +407,8 @@ class _MyJourneyState extends State<MyJourney> {
                                           preset: oldPreset,
                                           transit: 0,
                                           movingTimeList: movingTimeList,
+                                      startDayTime: journey[0].startTime.hour,
+                                      endDayTime: journey[journey.length-1].endTime.hour,
                                         )));
                           },
                           child: Text("여행 코스 확인",

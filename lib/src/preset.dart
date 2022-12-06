@@ -1,4 +1,5 @@
 import 'package:danim/src/createMovingTimeList.dart';
+import 'package:danim/src/start_end_day.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
 import 'package:danim/src/timetable.dart';
@@ -310,6 +311,8 @@ class _PresetState extends State<Preset> {
                                   preset: widget.pathList[presetIndex],
                                   transit: widget.transit,
                                   movingTimeList: movingTimeList,
+                              startDayTime: dayStartingTime.hour,
+                              endDayTime: dayEndingTime.hour,
                                 )));
                   } else {
                     List<List<int>> movingTimeList = [
@@ -329,6 +332,8 @@ class _PresetState extends State<Preset> {
                                   preset: widget.pathList[presetIndex],
                                   transit: widget.transit,
                                   movingTimeList: movingTimeList,
+                              startDayTime: dayStartingTime.hour,
+                              endDayTime: dayEndingTime.hour,
                                 )));
                   }
                 } else {

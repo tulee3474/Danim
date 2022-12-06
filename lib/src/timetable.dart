@@ -40,9 +40,9 @@ import 'package:danim/src/login.dart';
 import 'package:danim/src/user.dart';
 
 List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
-    DateTime startDay, DateTime endDay, List<List<int>> moving_time) {
-  int startDayTime = dayStartingTime.hour;
-  int endDayTime = dayEndingTime.hour;
+    DateTime startDay, DateTime endDay, List<List<int>> moving_time, int startDayTime, int endDayTime) {
+  //int startDayTime = dayStartingTime.hour;
+  //int endDayTime = dayEndingTime.hour;
 
   bool lunch = false;
   bool dinner = false;
@@ -56,15 +56,18 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
 
   List<CalendarEventData<Event>> events = [];
 
-  List<List<int>> drivingTimeList = [
-    for (int i = 0; i < preset.length; i++) []
-  ];
-
-  List<List<TransitTime>> transitTimeList = [
-    for (int i = 0; i < preset.length; i++) []
-  ];
 
   for (int i = 0; i < preset.length; i++) {
+    if(i == 0){
+      timeIndex =  DateTime(startDay.year, startDay.month, startDay.day,
+          startDayTime, 0);
+    }
+
+    else{
+      timeIndex =  DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+          10, 0);
+    }
+
     for (int j = 0; j < preset[i].length; j++) {
       if (timeIndex.compareTo(DateTime(
                   dayIndex.year, dayIndex.month, dayIndex.day, 11, 0)) >=
@@ -168,11 +171,23 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
         timeIndex = transitEndTime;
       }
 
-      if (timeIndex.compareTo(DateTime(
-              dayIndex.year, dayIndex.month, dayIndex.day, endDayTime)) >
-          0) {
-        break;
+      if(i == preset.length-1){
+        if (timeIndex.compareTo(DateTime(
+            dayIndex.year, dayIndex.month, dayIndex.day, endDayTime)) >
+            0) {
+          break;
+        }
       }
+
+      else{
+        if (timeIndex.compareTo(DateTime(
+            dayIndex.year, dayIndex.month, dayIndex.day, 20)) >
+            0) {
+          break;
+        }
+
+      }
+
 
       DateTime tourEndTime = DateTime(
           dayIndex.year,
@@ -195,10 +210,21 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
 
       timeIndex = tourEndTimeUpdated;
 
-      if (timeIndex.compareTo(DateTime(dayIndex.year, dayIndex.month,
-              dayIndex.day, timeIndex.hour, timeIndex.minute)) >
-          0) {
-        break;
+      if(i == preset.length-1){
+        if (timeIndex.compareTo(DateTime(
+            dayIndex.year, dayIndex.month, dayIndex.day, endDayTime)) >
+            0) {
+          break;
+        }
+      }
+
+      else{
+        if (timeIndex.compareTo(DateTime(
+            dayIndex.year, dayIndex.month, dayIndex.day, 20)) >
+            0) {
+          break;
+        }
+
       }
 
       if (j < preset[i].length - 1) {
@@ -238,7 +264,9 @@ class Timetable extends StatefulWidget {
       {Key? key,
       required this.preset,
       required this.transit,
-      required this.movingTimeList})
+      required this.movingTimeList,
+      required this.startDayTime,
+      required this.endDayTime})
       : super(key: key);
 
   int transit = 0; // 자차:0, 대중교통:1
@@ -246,6 +274,8 @@ class Timetable extends StatefulWidget {
   List<List<Place>> preset = [];
   DateTime currentDate = startDay;
   List<List<int>> movingTimeList;
+  int startDayTime = 0;
+  int endDayTime = 0;
 
   @override
   _TimetableState createState() => _TimetableState();
@@ -255,7 +285,7 @@ class _TimetableState extends State<Timetable> {
   final _CourseNameController = TextEditingController();
 
   late List<CalendarEventData<Event>> events =
-      createEventList(widget.preset, startDay, endDay, widget.movingTimeList);
+      createEventList(widget.preset, startDay, endDay, widget.movingTimeList, widget.startDayTime, widget.endDayTime);
 
   String isSaved = '';
 
@@ -294,7 +324,7 @@ class _TimetableState extends State<Timetable> {
 
   void setEventList() {
     events =
-        createEventList(widget.preset, startDay, endDay, widget.movingTimeList)
+        createEventList(widget.preset, startDay, endDay, widget.movingTimeList, dayStartingTime.hour, dayEndingTime.hour)
             as List<CalendarEventData<Event>>;
   }
 
@@ -754,6 +784,8 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                                       movingTimeList:
                                                           movingTimeList,
                                                       transit: widget.transit,
+                                                  startDayTime: eventsToBeUpdated[0].startTime.hour,
+                                                  endDayTime: eventsToBeUpdated[eventsToBeUpdated.length-1].endTime.hour,
                                                     )));
 
                                         print("pathlist updated");
@@ -1254,6 +1286,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         //newPlace 생성 완료
 
                         /*
+                        //eventAfter 찾기
                     for(int i=0; i< eventsToBeUpdated.length; i++){
 
                       if(newEvent.date.year == eventsToBeUpdated[i].date.year && newEvent.date.month == eventsToBeUpdated[i].date.month && newEvent.date.day == eventsToBeUpdated[i].date.day ){
@@ -1270,9 +1303,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
                       }
 
-                    }
+                    }*/
 
-                     */
+
 
                         //eventBefore 찾기
 
@@ -1293,6 +1326,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               }
                             }
                           }
+                        }
+
+                        if(eventBefore.title == 'dummy'){
+
+                          // 처음에 추가하려면..
+
                         }
 
                         if (presetToBeUpdated[course_selected_day_index]
@@ -1338,6 +1377,24 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           //map.addMarker(presetToBeUpdated[course_selected_day_index]);
                           //map.addPoly(presetToBeUpdated[course_selected_day_index]);
                         });
+
+                        int startT = 0;
+                        int endT = 0;
+
+                        if(eventsToBeUpdated.length == 0){
+                          startT = dayStartingTime.hour;
+                          endT = dayEndingTime.hour;
+                        }
+
+                        else{
+                          startT = eventsToBeUpdated[0].startTime.hour;
+                          endT = eventsToBeUpdated[eventsToBeUpdated.length-1].startTime.hour;
+
+                        }
+
+                        print(startT);
+                        print(endT);
+
                         await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -1345,6 +1402,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                       preset: presetToBeUpdated,
                                       movingTimeList: movingTimeList,
                                       transit: widget.transit,
+                                  startDayTime: startT,
+                                  endDayTime: endT
                                     )));
                       }),
                 )),

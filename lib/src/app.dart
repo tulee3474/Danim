@@ -21,7 +21,7 @@ import 'package:danim/src/courseDetail.dart';
 import 'package:danim/src/myPage.dart';
 import 'package:danim/src/start_end_day.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:time_picker_widget/time_picker_widget.dart';
 import 'package:danim/src/login.dart';
 
 import '../app_colors.dart';
@@ -34,6 +34,7 @@ import 'community.dart';
 import 'date_selectlist.dart';
 import 'fixInfo.dart';
 import 'package:danim/firebase_read_write.dart';
+
 
 void main() {
   runApp(MaterialApp(
@@ -69,6 +70,18 @@ class _AppState extends State<App> {
 
   DateTime? tempPickedDate;
   final GlobalKey<FormState> _form = GlobalKey();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _startTimeController = TextEditingController(text: '시작 시간');
+    _endTimeController = TextEditingController(text: '종료 시간');
+    searchCourseController = TextEditingController();
+    _startDateController = TextEditingController();
+    _endDateController = TextEditingController();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,6 +199,16 @@ class _AppState extends State<App> {
                                   startDay = DateTime.now();
                                   endDay = DateTime.now();
 
+                                  //컨트롤러들 초기화
+                                  setState(() {
+                                    _startTimeController = TextEditingController(text: '시작 시간');
+                                    _endTimeController = TextEditingController(text: '종료 시간');
+                                    searchCourseController = TextEditingController();
+                                    _startDateController = TextEditingController();
+                                    _endDateController = TextEditingController();
+                                  });
+
+
                                   showDialog(
                                       context: context,
                                       barrierDismissible: true,
@@ -285,10 +308,38 @@ class _AppState extends State<App> {
                                                                           ))),
                                                                       SizedBox(
                                                                           width:
-                                                                              10),
-                                                                      Expanded(
-                                                                        child:
-                                                                            DateTimeSelectorFormField(
+                                                                              5),
+                                                                      SizedBox(
+                                                                        width: 105,
+                                                                        height: 50,
+                                                                        child: TextFormField(
+                                                                          controller: _startTimeController,
+
+                                                                          readOnly: true,
+                                                                            decoration: InputDecoration(
+
+                                                                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                                                                                border: const OutlineInputBorder(
+                                                                                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                                                                )),
+
+                                                                            onTap: () =>
+                                                                            //FocusScopeNode currentFocus = FocusScope.of(context);
+
+                                                                            showCustomTimePicker(
+                                                                            context: context,
+                                                                            // It is a must if you provide selectableTimePredicate
+                                                                            onFailValidation: (context) => print('Unavailable selection'),
+                                                                            initialTime: TimeOfDay(hour: 2, minute: 0),
+                                                                            selectableTimePredicate: (time)=>
+
+                                                                                time!.minute == 0).then((time) =>
+                                                                            setState(() { dayStartingTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, time!.hour);
+
+                                                                              _startTimeController.text = time.format(context);
+
+                                                                            })))
+                                                                            /*DateTimeSelectorFormField(
                                                                           controller:
                                                                               _startTimeController,
                                                                           decoration: AppConstants.inputDecoration.copyWith(
@@ -304,6 +355,7 @@ class _AppState extends State<App> {
 
                                                                             return null;
                                                                           },
+
                                                                           onSave: (date) =>
                                                                               dayStartingTime = date,
                                                                           textStyle:
@@ -315,7 +367,7 @@ class _AppState extends State<App> {
                                                                           ),
                                                                           type:
                                                                               DateTimeSelectionType.time,
-                                                                        ),
+                                                                        )*/
                                                                       ),
                                                                     ],
                                                                   ),
@@ -357,14 +409,43 @@ class _AppState extends State<App> {
                                                                           ))),
                                                                       SizedBox(
                                                                           width:
-                                                                              10),
-                                                                      Expanded(
-                                                                        child:
-                                                                            DateTimeSelectorFormField(
+                                                                              5),
+
+                                                                      SizedBox(
+                                                                          width: 105,
+                                                                          height: 50,
+                                                                          child: TextFormField(
+                                                                              controller: _endTimeController,
+
+                                                                              readOnly: true,
+                                                                              decoration: InputDecoration(
+
+                                                                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                                                                                  border: const OutlineInputBorder(
+                                                                                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                                                                  )),
+
+                                                                              onTap: () =>
+                                                                              //FocusScopeNode currentFocus = FocusScope.of(context);
+
+                                                                              showCustomTimePicker(
+                                                                                  context: context,
+                                                                                  // It is a must if you provide selectableTimePredicate
+                                                                                  onFailValidation: (context) => print('Unavailable selection'),
+                                                                                  initialTime: TimeOfDay(hour: 2, minute: 0),
+                                                                                  selectableTimePredicate: (time)=>
+
+                                                                                  time!.minute == 0).then((time) =>
+                                                                                  setState(() { dayEndingTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, time!.hour);
+
+                                                                                  _endTimeController.text = time.format(context);
+
+                                                                                  })))
+                                                                        /*DateTimeSelectorFormField(
                                                                           controller:
-                                                                              _endTimeController,
+                                                                              _startTimeController,
                                                                           decoration: AppConstants.inputDecoration.copyWith(
-                                                                              labelText: "종료 시간",
+                                                                              labelText: "시작 시간",
                                                                               labelStyle: TextStyle(
                                                                                 fontSize: 15,
                                                                               )),
@@ -372,12 +453,13 @@ class _AppState extends State<App> {
                                                                               (value) {
                                                                             if (value == null ||
                                                                                 value == "")
-                                                                              return "Please select end time.";
+                                                                              return "Please select start time.";
 
                                                                             return null;
                                                                           },
+
                                                                           onSave: (date) =>
-                                                                              dayEndingTime = date,
+                                                                              dayStartingTime = date,
                                                                           textStyle:
                                                                               TextStyle(
                                                                             color:
@@ -387,8 +469,9 @@ class _AppState extends State<App> {
                                                                           ),
                                                                           type:
                                                                               DateTimeSelectionType.time,
-                                                                        ),
-                                                                      ),
+                                                                        )*/
+                                                                      )
+
                                                                     ],
                                                                   ),
                                                                   SizedBox(
@@ -607,6 +690,8 @@ class _AppState extends State<App> {
                                                                                                 preset: emptyPreset,
                                                                                                 transit: 0,
                                                                                                 movingTimeList: emptyMovingTime,
+                                                                                            startDayTime: dayStartingTime.hour,
+                                                                                            endDayTime: dayEndingTime.hour,
                                                                                               )));
                                                                                 },
                                                                                 child: Text('혼자 짤래요', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Neo")))),

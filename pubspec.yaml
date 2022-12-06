@@ -58,6 +58,7 @@ dependencies:
   google_sign_in: ^5.4.2
   flutter_signin_button: ^2.0.0
   fluttertoast: ^8.1.1
+  time_picker_widget: ^1.0.0+10
 
 dev_dependencies:
   flutter_test:
