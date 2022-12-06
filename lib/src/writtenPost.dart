@@ -8,8 +8,17 @@ import '../components/image_data.dart';
 import 'login.dart';
 
 class WrittenPost extends StatefulWidget {
+  void aaaa() {
+    for (int i = 0; i < post.commentWriterList.length; i++) {
+      if (!countedCommentWriterList.contains(post.commentWriterList[i])) {
+        countedCommentWriterList.add(post.commentWriterList[i]);
+      }
+    }
+  }
+
   Post post = Post('', 0, '', [], [], [], 0, '');
   int index = 0;
+  List<String> countedCommentWriterList = [];
 
   WrittenPost(this.post, this.index);
 
@@ -23,6 +32,7 @@ class _WrittenPostState extends State<WrittenPost> {
 
   @override
   initState() {
+    widget.aaaa();
     super.initState();
     commentController = TextEditingController();
   }
@@ -121,18 +131,25 @@ class _WrittenPostState extends State<WrittenPost> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Text(widget.post.postContent,
+                        Flexible(
+                          child: RichText(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 7,
+                            strutStyle: StrutStyle(fontSize: 14.0),
+                            text: TextSpan(
+                                text: (widget.post.postContent),
                                 style: TextStyle(
                                   color: Colors.black,
                                   letterSpacing: 2.0,
+                                  //height: 1.4,
                                   fontFamily: 'Neo',
                                   fontSize: 14.0,
-                                  //fontWeight: FontWeight.bold,
-                                ))),
+                                )),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -196,7 +213,7 @@ class _WrittenPostState extends State<WrittenPost> {
                           Container(
                               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                               child: Text(
-                                  "익명 ${widget.post.commentWriterList.indexOf(widget.post.commentWriterList[i]) + 1} : ${widget.post.commentList[i]}",
+                                  "익명 ${widget.countedCommentWriterList.indexOf(widget.post.commentWriterList[i]) + 1} : ${widget.post.commentList[i]}",
                                   style: TextStyle(
                                     color: Colors.black,
                                     letterSpacing: 2.0,

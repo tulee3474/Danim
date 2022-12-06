@@ -21,6 +21,8 @@ class MyJourney extends StatefulWidget {
   int index = -1;
   String previousDiary = '';
   String traveledCity = '';
+  //임시로 그냥 넣음
+  bool feedback = false;
 
   MyJourney(this.journey, this.dates, this.index, this.previousDiary,
       this.traveledCity);
@@ -424,291 +426,337 @@ class _MyJourneyState extends State<MyJourney> {
                             borderRadius: BorderRadius.circular(25.0),
                           ))),
                           onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                //AlertDialog는 StateLess라서 setState가 안먹음. 따라서 StatefulBuilder로 감싸줌.
-                                return StatefulBuilder(
-                                  builder: (BuildContext context,
-                                      StateSetter setState) {
+                            if (widget.feedback) {
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) {
                                     return AlertDialog(
                                         content: SizedBox(
-                                            height: 350.0,
-                                            width: 350.0,
-                                            child: Column(children: [
-                                              SizedBox(height: 20),
-                                              Text("이 코스 어떠셨나요?",
-                                                  style: TextStyle(
-                                                    fontFamily: "Neo",
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18,
-                                                  )),
-                                              SizedBox(height: 20),
-                                              Text("별점을 매겨주세요!",
-                                                  style: TextStyle(
-                                                    fontFamily: "Neo",
-                                                    //fontWeight: FontWeight.bold,
-                                                    fontSize: 12,
-                                                  )),
-                                              SizedBox(height: 10),
-                                              Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 40,
-                                                      child: ElevatedButton(
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  rateButtonColorList[
-                                                                      1]),
-                                                          onPressed: () {
-                                                            print("1");
-                                                            rate = 1;
-                                                            //버튼 색 변환
-                                                            setState(() {
-                                                              switchRateButtonColor(
-                                                                  1, 1);
-                                                              for (int b = 0;
-                                                                  b < 6;
-                                                                  b++) {
-                                                                if (b != 1) {
-                                                                  switchRateButtonColor(
-                                                                      b, 0);
+                                            width: 250,
+                                            height: 100,
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                      child: Text("Warning!",
+                                                          style: TextStyle(
+                                                            fontFamily: "Neo",
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ))),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                      child: Text(
+                                                          "이미 리뷰를 남기셨습니다.",
+                                                          style: TextStyle(
+                                                            fontFamily: "Neo",
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ))),
+                                                ),
+                                              ],
+                                            )));
+                                  });
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  //AlertDialog는 StateLess라서 setState가 안먹음. 따라서 StatefulBuilder로 감싸줌.
+                                  return StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSetter setState) {
+                                      return AlertDialog(
+                                          content: SizedBox(
+                                              height: 350.0,
+                                              width: 350.0,
+                                              child: Column(children: [
+                                                SizedBox(height: 20),
+                                                Text("이 코스 어떠셨나요?",
+                                                    style: TextStyle(
+                                                      fontFamily: "Neo",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18,
+                                                    )),
+                                                SizedBox(height: 20),
+                                                Text("별점을 매겨주세요!",
+                                                    style: TextStyle(
+                                                      fontFamily: "Neo",
+                                                      //fontWeight: FontWeight.bold,
+                                                      fontSize: 12,
+                                                    )),
+                                                SizedBox(height: 10),
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 40,
+                                                        child: ElevatedButton(
+                                                            style: ButtonStyle(
+                                                                backgroundColor:
+                                                                    rateButtonColorList[
+                                                                        1]),
+                                                            onPressed: () {
+                                                              print("1");
+                                                              rate = 1;
+                                                              //버튼 색 변환
+                                                              setState(() {
+                                                                switchRateButtonColor(
+                                                                    1, 1);
+                                                                for (int b = 0;
+                                                                    b < 6;
+                                                                    b++) {
+                                                                  if (b != 1) {
+                                                                    switchRateButtonColor(
+                                                                        b, 0);
+                                                                  }
                                                                 }
-                                                              }
-                                                            });
-                                                          },
-                                                          child: Text(
-                                                            '1',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          )),
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                              '1',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            )),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 40,
+                                                        child: ElevatedButton(
+                                                            style: ButtonStyle(
+                                                                backgroundColor:
+                                                                    rateButtonColorList[
+                                                                        2]),
+                                                            onPressed: () {
+                                                              print("2");
+                                                              rate = 2;
+                                                              //버튼 색 변환
+                                                              setState(() {
+                                                                switchRateButtonColor(
+                                                                    2, 1);
+                                                                for (int b = 0;
+                                                                    b < 6;
+                                                                    b++) {
+                                                                  if (b != 2) {
+                                                                    switchRateButtonColor(
+                                                                        b, 0);
+                                                                  }
+                                                                }
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                              '2',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            )),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 40,
+                                                        child: ElevatedButton(
+                                                            style: ButtonStyle(
+                                                                backgroundColor:
+                                                                    rateButtonColorList[
+                                                                        3]),
+                                                            onPressed: () {
+                                                              print("3");
+                                                              rate = 3;
+                                                              //버튼 색 변환
+                                                              setState(() {
+                                                                switchRateButtonColor(
+                                                                    3, 1);
+                                                                for (int b = 0;
+                                                                    b < 6;
+                                                                    b++) {
+                                                                  if (b != 3) {
+                                                                    switchRateButtonColor(
+                                                                        b, 0);
+                                                                  }
+                                                                }
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                              '3',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            )),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 40,
+                                                        child: ElevatedButton(
+                                                            style: ButtonStyle(
+                                                                backgroundColor:
+                                                                    rateButtonColorList[
+                                                                        4]),
+                                                            onPressed: () {
+                                                              print("4");
+                                                              rate = 4;
+                                                              //버튼 색 변환
+                                                              setState(() {
+                                                                switchRateButtonColor(
+                                                                    4, 1);
+                                                                for (int b = 0;
+                                                                    b < 6;
+                                                                    b++) {
+                                                                  if (b != 4) {
+                                                                    switchRateButtonColor(
+                                                                        b, 0);
+                                                                  }
+                                                                }
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                              '4',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            )),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 40,
+                                                        child: ElevatedButton(
+                                                            style: ButtonStyle(
+                                                                backgroundColor:
+                                                                    rateButtonColorList[
+                                                                        5]),
+                                                            onPressed: () {
+                                                              print("5");
+                                                              rate = 5;
+                                                              //버튼 색 변환
+                                                              setState(() {
+                                                                switchRateButtonColor(
+                                                                    5, 1);
+                                                                for (int b = 0;
+                                                                    b < 6;
+                                                                    b++) {
+                                                                  if (b != 5) {
+                                                                    switchRateButtonColor(
+                                                                        b, 0);
+                                                                  }
+                                                                }
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                              '5',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            )),
+                                                      )
+                                                    ]),
+                                                SizedBox(height: 20),
+                                                Expanded(
+                                                  child: Container(
+                                                    child: TextField(
+                                                      controller: courseReview,
+                                                      maxLines: 3,
+                                                      decoration: InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          labelText:
+                                                              '리뷰를 작성해주세요(선택)'),
                                                     ),
-                                                    SizedBox(
-                                                      width: 40,
-                                                      child: ElevatedButton(
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  rateButtonColorList[
-                                                                      2]),
-                                                          onPressed: () {
-                                                            print("2");
-                                                            rate = 2;
-                                                            //버튼 색 변환
-                                                            setState(() {
-                                                              switchRateButtonColor(
-                                                                  2, 1);
-                                                              for (int b = 0;
-                                                                  b < 6;
-                                                                  b++) {
-                                                                if (b != 2) {
-                                                                  switchRateButtonColor(
-                                                                      b, 0);
-                                                                }
-                                                              }
-                                                            });
-                                                          },
-                                                          child: Text(
-                                                            '2',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          )),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 40,
-                                                      child: ElevatedButton(
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  rateButtonColorList[
-                                                                      3]),
-                                                          onPressed: () {
-                                                            print("3");
-                                                            rate = 3;
-                                                            //버튼 색 변환
-                                                            setState(() {
-                                                              switchRateButtonColor(
-                                                                  3, 1);
-                                                              for (int b = 0;
-                                                                  b < 6;
-                                                                  b++) {
-                                                                if (b != 3) {
-                                                                  switchRateButtonColor(
-                                                                      b, 0);
-                                                                }
-                                                              }
-                                                            });
-                                                          },
-                                                          child: Text(
-                                                            '3',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          )),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 40,
-                                                      child: ElevatedButton(
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  rateButtonColorList[
-                                                                      4]),
-                                                          onPressed: () {
-                                                            print("4");
-                                                            rate = 4;
-                                                            //버튼 색 변환
-                                                            setState(() {
-                                                              switchRateButtonColor(
-                                                                  4, 1);
-                                                              for (int b = 0;
-                                                                  b < 6;
-                                                                  b++) {
-                                                                if (b != 4) {
-                                                                  switchRateButtonColor(
-                                                                      b, 0);
-                                                                }
-                                                              }
-                                                            });
-                                                          },
-                                                          child: Text(
-                                                            '4',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          )),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 40,
-                                                      child: ElevatedButton(
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  rateButtonColorList[
-                                                                      5]),
-                                                          onPressed: () {
-                                                            print("5");
-                                                            rate = 5;
-                                                            //버튼 색 변환
-                                                            setState(() {
-                                                              switchRateButtonColor(
-                                                                  5, 1);
-                                                              for (int b = 0;
-                                                                  b < 6;
-                                                                  b++) {
-                                                                if (b != 5) {
-                                                                  switchRateButtonColor(
-                                                                      b, 0);
-                                                                }
-                                                              }
-                                                            });
-                                                          },
-                                                          child: Text(
-                                                            '5',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          )),
-                                                    )
-                                                  ]),
-                                              SizedBox(height: 20),
-                                              Expanded(
-                                                child: Container(
-                                                  child: TextField(
-                                                    controller: courseReview,
-                                                    maxLines: 3,
-                                                    decoration: InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText:
-                                                            '리뷰를 작성해주세요(선택)'),
                                                   ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 20),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: SizedBox(
-                                                      height: 50,
-                                                      child: ElevatedButton(
-                                                          onPressed: () async {
-                                                            // 여기서 DB 연결 !!!
-                                                            ReadController
-                                                                read =
-                                                                ReadController();
-                                                            List<List<int>>
-                                                                selectList =
-                                                                await read
-                                                                    .fb_read_user_selectList(
-                                                                        readData
-                                                                            .docCode,
-                                                                        index);
+                                                SizedBox(height: 20),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: SizedBox(
+                                                        height: 50,
+                                                        child: ElevatedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              // 여기서 DB 연결 !!!
+                                                              ReadController
+                                                                  read =
+                                                                  ReadController();
+                                                              List<List<int>>
+                                                                  selectList =
+                                                                  await read.fb_read_user_selectList(
+                                                                      readData
+                                                                          .docCode,
+                                                                      index);
 
-                                                            List<String>
-                                                                traveledPlaceList =
-                                                                []; //여행다녔던 관광지들 1차원 배열
-                                                            int placeNum = 0;
-                                                            for (int p = 0;
-                                                                p < index;
-                                                                p++) {
-                                                              placeNum += readData
-                                                                      .placeNumList[
-                                                                  p] as int;
-                                                            }
+                                                              List<String>
+                                                                  traveledPlaceList =
+                                                                  []; //여행다녔던 관광지들 1차원 배열
+                                                              int placeNum = 0;
+                                                              for (int p = 0;
+                                                                  p < index;
+                                                                  p++) {
+                                                                placeNum += readData
+                                                                        .placeNumList[
+                                                                    p] as int;
+                                                              }
 
-                                                            int traveledPlaceNum =
-                                                                readData.placeNumList[
-                                                                        index]
-                                                                    as int;
+                                                              int traveledPlaceNum =
+                                                                  readData.placeNumList[
+                                                                          index]
+                                                                      as int;
 
-                                                            for (int p =
-                                                                    placeNum;
-                                                                p <
-                                                                    placeNum +
-                                                                        traveledPlaceNum;
-                                                                p++) {
-                                                              traveledPlaceList
-                                                                  .add(readData
-                                                                      .traveledPlaceList[p]);
-                                                            }
+                                                              for (int p =
+                                                                      placeNum;
+                                                                  p <
+                                                                      placeNum +
+                                                                          traveledPlaceNum;
+                                                                  p++) {
+                                                                traveledPlaceList
+                                                                    .add(readData
+                                                                        .traveledPlaceList[p]);
+                                                              }
 
-                                                            feedback(
-                                                                readData.travelList[
-                                                                    index],
-                                                                traveledPlaceList,
-                                                                selectList,
-                                                                rate,
-                                                                courseReview
-                                                                    .text);
+                                                              feedback(
+                                                                  readData.travelList[
+                                                                      index],
+                                                                  traveledPlaceList,
+                                                                  selectList,
+                                                                  rate,
+                                                                  courseReview
+                                                                      .text);
 
-                                                            //print('${rate}'); //별점
-                                                            //print('${courseReview.text}'); //리뷰
-                                                            //print('${journey}');
-                                                          },
-                                                          child: Text("리뷰 저장",
-                                                              style: TextStyle(
-                                                                fontFamily:
-                                                                    "Neo",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ))),
+                                                              widget.feedback =
+                                                                  true;
+                                                              //이러면 showDialog가 pop될걸?
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+
+                                                              //print('${rate}'); //별점
+                                                              //print('${courseReview.text}'); //리뷰
+                                                              //print('${journey}');
+                                                            },
+                                                            child: Text("리뷰 저장",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      "Neo",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ))),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ])));
-                                  },
-                                );
-                              },
-                            );
+                                                  ],
+                                                ),
+                                              ])));
+                                    },
+                                  );
+                                },
+                              );
+                            }
                           },
                           child: Text("리뷰 작성",
                               style: TextStyle(
