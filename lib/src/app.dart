@@ -911,6 +911,8 @@ class _AppState extends State<App> {
               width: MediaQuery.of(context).size.width / 1.1,
               height: 550,
               child: SfDateRangePicker(
+                enablePastDates: false,
+                //minDate: DateTime.now(),
                 monthViewSettings: DateRangePickerMonthViewSettings(
                   dayFormat: 'EEE',
                 ),
@@ -969,6 +971,8 @@ class _AppState extends State<App> {
               width: MediaQuery.of(context).size.width / 1.1,
               height: 550,
               child: SfDateRangePicker(
+                enablePastDates: false,
+                minDate: startDay,
                 monthViewSettings: DateRangePickerMonthViewSettings(
                   dayFormat: 'EEE',
                 ),
@@ -983,7 +987,7 @@ class _AppState extends State<App> {
                 allowViewNavigation: false,
                 backgroundColor: ThemeData.light().scaffoldBackgroundColor,
                 initialSelectedDate: DateTime.now(),
-                minDate: DateTime.now(),
+                //minDate: DateTime.now(),
                 // 아래코드는 tempPickedDate를 전역으로 받아 시작일을 선택한 날자로 시작할 수 있음
                 //minDate: tempPickedDate,
                 maxDate: DateTime.now().add(new Duration(days: 365)),
