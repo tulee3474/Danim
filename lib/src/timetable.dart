@@ -23,6 +23,7 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:danim/src/start_end_day.dart';
 import 'package:danim/src/preset.dart';
 import '../../map.dart' as map;
+import 'loadingTimeTable.dart';
 import 'viewPhoto.dart';
 
 import '../map.dart';
@@ -940,26 +941,7 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                           }
                                         }
 
-                                        List<List<int>> movingTimeList;
-                                        List<List<String>> movingStepsList = [
-                                          for(int i=0; i<presetUpdated.length; i++)
-                                            []
-                                        ];
 
-                                        if (widget.transit == 0) {
-                                          movingTimeList =
-                                              await createDrivingTimeList(
-                                                  presetUpdated);
-
-                                        } else {
-                                          movingTimeList =
-                                              await createTransitTimeList(
-                                                  presetUpdated);
-
-                                          movingStepsList =
-                                          await createTransitStepsList(
-                                              presetUpdated);
-                                        }
                                         setState(() {
                                           course_selected = presetUpdated;
                                           //map.addMarker(presetUpdated[course_selected_day_index]);
@@ -969,14 +951,13 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => Timetable(
-                                                      preset: presetUpdated,
-                                                      movingTimeList:
-                                                          movingTimeList,
-                                                      transit: widget.transit,
-                                                  startDayTime: eventsToBeUpdated[0].startTime.hour,
-                                                  endDayTime: eventsToBeUpdated[eventsToBeUpdated.length-1].endTime.hour,
-                                                  movingStepsList: movingStepsList,
+                                                builder: (context) => LoadingTimeTable(
+                                                      presetUpdated,
+
+                                                     widget.transit,
+                                                  eventsToBeUpdated[0].startTime.hour,
+                                                eventsToBeUpdated[eventsToBeUpdated.length-1].endTime.hour,
+
                                                     )));
 
                                         print("pathlist updated");
@@ -1671,31 +1652,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         //프리셋에 새로운 관광지 추가
                         presetToBeUpdated[course_selected_day_index].insert(newPlaceIndex,newPlace);
 
-                        List<List<int>> movingTimeList = [
-                          for(int i=0; i<presetToBeUpdated.length; i++)
-                            []
-                        ];
-                        List<List<String>> movingStepsList = [
-                          for(int i=0; i<presetToBeUpdated.length; i++)
-                            []
-                        ];
-
-                        if (widget.transit == 0) {
-                          movingTimeList =
-                              (await createDrivingTimeList(presetToBeUpdated));
-                        } else {
-                          movingTimeList =
-                              (await createTransitTimeList(presetToBeUpdated));
-
-                          movingStepsList =
-                          (await createTransitStepsList(presetToBeUpdated));
-                        }
 
                         //print(movingTimeList);
 
-                        if (movingTimeList.isEmpty) {
-                          print('movimgTimeList is empty');
-                        }
+
                         setState(() {
                           course_selected = presetToBeUpdated;
                           //map.addMarker(presetToBeUpdated[course_selected_day_index]);
@@ -1726,13 +1686,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Timetable(
-                                      preset: presetToBeUpdated,
-                                      movingTimeList: movingTimeList,
-                                      transit: widget.transit,
-                                  startDayTime: startT,
-                                  endDayTime: endT,
-                                  movingStepsList: movingStepsList,
+                                builder: (context) => LoadingTimeTable(
+                                      presetToBeUpdated,
+
+                                     widget.transit,
+                                 startT,
+                                endT,
+
                                     )));
                       }),
                 )),

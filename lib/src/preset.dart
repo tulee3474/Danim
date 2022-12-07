@@ -1,4 +1,5 @@
 import 'package:danim/src/createMovingTimeList.dart';
+import 'package:danim/src/loadingTimeTable.dart';
 import 'package:danim/src/start_end_day.dart';
 import 'package:flutter/material.dart';
 import 'package:danim/components/image_data.dart';
@@ -293,66 +294,20 @@ class _PresetState extends State<Preset> {
                 if (presetIndex != -1) {
                   //선택한 코스 전역변수에 저장
                   course_selected = widget.pathList[presetIndex];
-                  if (widget.transit == 0) {
-                    List<List<int>> movingTimeList = [
-                      for (int i = 0;
-                          i < widget.pathList[presetIndex].length;
-                          i++)
-                        []
-                    ];
-                    List<List<String>> movingStepsList = [
-                      for (int i = 0;
-                      i < widget.pathList[presetIndex].length;
-                      i++)
-                        []
-                    ];
-
-                    movingTimeList = await createDrivingTimeList(
-                        widget.pathList[presetIndex]);
 
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Timetable(
-                                  preset: widget.pathList[presetIndex],
-                                  transit: widget.transit,
-                                  movingTimeList: movingTimeList,
-                              startDayTime: dayStartingTime.hour,
-                              endDayTime: dayEndingTime.hour,
-                              movingStepsList: movingStepsList,
-                                )));
-                  } else {
-                    List<List<int>> movingTimeList = [
-                      for (int i = 0;
-                          i < widget.pathList[presetIndex].length;
-                          i++)
-                        []
-                    ];
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              LoadingTimeTable(
+                                widget.pathList[presetIndex],
+                                widget.transit,
 
-                    List<List<String>> movingStepsList = [
-                      for (int i = 0;
-                      i < widget.pathList[presetIndex].length;
-                      i++)
-                        []
-                    ];
+                            dayStartingTime.hour,
+                                dayEndingTime.hour,
 
-                    movingTimeList = await createTransitTimeList(
-                        widget.pathList[presetIndex]);
-                    movingStepsList = await createTransitStepsList(widget.pathList[presetIndex]);
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Timetable(
-                                  preset: widget.pathList[presetIndex],
-                                  transit: widget.transit,
-                                  movingTimeList: movingTimeList,
-                              startDayTime: dayStartingTime.hour,
-                              endDayTime: dayEndingTime.hour,
-                              movingStepsList: movingStepsList,
-                                )));
-                  }
+                              )));
                 } else {
                   showDialog(
                       context: context,

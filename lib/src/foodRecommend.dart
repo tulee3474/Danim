@@ -15,6 +15,7 @@ import 'package:danim/src/timetable.dart';
 import 'package:danim/model/event.dart';
 
 import 'createMovingTimeList.dart';
+import 'loadingTimeTable.dart';
 
 class FoodRecommend extends StatefulWidget {
 
@@ -305,38 +306,23 @@ class FoodRecommendState extends State<FoodRecommend> {
                           //print('lati : ${oldPreset[0][0].latitude}');
                           //print(oldPreset[0][0].longitude);
 
-                          List<List<int>> movingTimeList = [
-                            for (int i = 0; i < newPreset.length; i++) []
-                          ];
 
-                          List<List<String>> movingStepsList = [
-                            for (int i = 0; i < newPreset.length; i++) []
-                          ];
-
-                          if(widget.transit == 0) {
-                            movingTimeList =
-                            await createDrivingTimeList(newPreset);
-                          }
-                          else{
-                            movingTimeList = await createTransitTimeList(newPreset);
-                            movingStepsList = await createTransitStepsList(newPreset);
-                          }
 
 
 
                           print(newPreset);
-                          print(movingTimeList);
+                         // print(movingTimeList);
 
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Timetable(
-                                    preset: newPreset,
-                                    transit: 0,
-                                    movingTimeList: movingTimeList,
-                                    startDayTime: eventsUpdated[0].startTime.hour,
-                                    endDayTime: eventsUpdated[eventsUpdated.length-1].endTime.hour,
-                                    movingStepsList: movingStepsList,
+                                  builder: (context) => LoadingTimeTable(
+                                    newPreset,
+                                    widget.transit,
+
+                                    eventsUpdated[0].startTime.hour,
+                                   eventsUpdated[eventsUpdated.length-1].endTime.hour,
+
                                   )));
 
 

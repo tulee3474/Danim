@@ -13,6 +13,7 @@ import 'package:danim/firebase_read_write.dart';
 import 'package:danim/src/myPage.dart';
 
 import 'createMovingTimeList.dart';
+import 'loadingTimeTable.dart';
 import 'login.dart';
 
 class MyJourney extends StatefulWidget {
@@ -390,31 +391,21 @@ class _MyJourneyState extends State<MyJourney> {
                             //print('lati : ${oldPreset[0][0].latitude}');
                             //print(oldPreset[0][0].longitude);
 
-                            List<List<int>> movingTimeList = [
-                              for (int i = 0; i < oldPreset.length; i++) []
-                            ];
-
-                            List<List<String>> movingStepsList = [
-                              for (int i = 0; i < oldPreset.length; i++) []
-                            ];
-
-                            movingTimeList =
-                                await createDrivingTimeList(oldPreset);
 
 
                             print(oldPreset);
-                            print(movingTimeList);
+
 
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Timetable(
-                                          preset: oldPreset,
-                                          transit: 0,
-                                          movingTimeList: movingTimeList,
-                                      startDayTime: journey[0].startTime.hour,
-                                      endDayTime: journey[journey.length-1].endTime.hour,
-                                      movingStepsList: movingStepsList,
+                                    builder: (context) => LoadingTimeTable(
+                                          oldPreset,
+                                       0,
+
+                                     journey[0].startTime.hour,
+                                       journey[journey.length-1].endTime.hour,
+
                                         )));
                           },
                           child: Text("여행 코스 확인",
