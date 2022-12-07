@@ -46,7 +46,7 @@ Future<TransitTime> getTransitDuration(double originLat, double originLng, doubl
   String transitSteps='';
   int transitDuration=0;
   http.Response response = await http.get(Uri.parse(
-      '${apiURL}origin=$originLat,$originLng&destination=$destinationLat,$destinationLng&mode=transit&departure_time=1684292461&language=ko&key=$apiKEY'
+      '${apiURL}origin=$originLat,$originLng&destination=$destinationLat,$destinationLng&mode=transit&departure_time=1672229288&language=ko&key=$apiKEY'
   ),
   );
   if (response.statusCode < 200 || response.statusCode > 400) {
@@ -68,13 +68,14 @@ Future<TransitTime> getTransitDuration(double originLat, double originLng, doubl
       transitSteps=await getTransitSteps(originLat, originLng, destinationLat, destinationLng);
     }
   }
+  print('이동시간 $transitDuration $transitSteps');
   return TransitTime(transitDuration, transitSteps);
 }
 
 Future<String> getTransitSteps(double originLat, double originLng, double destinationLat, double destinationLng) async {
   String transitSteps='';
   http.Response response = await http.get(Uri.parse(
-      '${apiURL}origin=$originLat,$originLng&destination=$destinationLat,$destinationLng&mode=transit&departure_time=now&language=ko&key=$apiKEY'
+      '${apiURL}origin=$originLat,$originLng&destination=$destinationLat,$destinationLng&mode=transit&departure_time=1672229288&language=ko&key=$apiKEY'
   ),
   );
   if (response.statusCode < 200 || response.statusCode > 400) {
