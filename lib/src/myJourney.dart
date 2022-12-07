@@ -394,8 +394,13 @@ class _MyJourneyState extends State<MyJourney> {
                               for (int i = 0; i < oldPreset.length; i++) []
                             ];
 
+                            List<List<String>> movingStepsList = [
+                              for (int i = 0; i < oldPreset.length; i++) []
+                            ];
+
                             movingTimeList =
                                 await createDrivingTimeList(oldPreset);
+
 
                             print(oldPreset);
                             print(movingTimeList);
@@ -409,6 +414,7 @@ class _MyJourneyState extends State<MyJourney> {
                                           movingTimeList: movingTimeList,
                                       startDayTime: journey[0].startTime.hour,
                                       endDayTime: journey[journey.length-1].endTime.hour,
+                                      movingStepsList: movingStepsList,
                                         )));
                           },
                           child: Text("여행 코스 확인",

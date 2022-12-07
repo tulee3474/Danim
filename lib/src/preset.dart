@@ -300,9 +300,16 @@ class _PresetState extends State<Preset> {
                           i++)
                         []
                     ];
+                    List<List<String>> movingStepsList = [
+                      for (int i = 0;
+                      i < widget.pathList[presetIndex].length;
+                      i++)
+                        []
+                    ];
 
                     movingTimeList = await createDrivingTimeList(
                         widget.pathList[presetIndex]);
+
 
                     Navigator.push(
                         context,
@@ -313,6 +320,7 @@ class _PresetState extends State<Preset> {
                                   movingTimeList: movingTimeList,
                               startDayTime: dayStartingTime.hour,
                               endDayTime: dayEndingTime.hour,
+                              movingStepsList: movingStepsList,
                                 )));
                   } else {
                     List<List<int>> movingTimeList = [
@@ -322,8 +330,16 @@ class _PresetState extends State<Preset> {
                         []
                     ];
 
+                    List<List<String>> movingStepsList = [
+                      for (int i = 0;
+                      i < widget.pathList[presetIndex].length;
+                      i++)
+                        []
+                    ];
+
                     movingTimeList = await createTransitTimeList(
                         widget.pathList[presetIndex]);
+                    movingStepsList = await createTransitStepsList(widget.pathList[presetIndex]);
 
                     Navigator.push(
                         context,
@@ -334,6 +350,7 @@ class _PresetState extends State<Preset> {
                                   movingTimeList: movingTimeList,
                               startDayTime: dayStartingTime.hour,
                               endDayTime: dayEndingTime.hour,
+                              movingStepsList: movingStepsList,
                                 )));
                   }
                 } else {

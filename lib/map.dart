@@ -97,21 +97,21 @@ void addPoly(List<Place> pathList) {
             outlineWidth: 0));
   }
 }
-void addRestMarker(List<Restaurant> restList) {
+void addRestMarker(Restaurant rest) {
   markers.clear();
   addMarker(pathTemp);
 
-  for(int i=0;i<restList.length;i++) {
+
     markers.add(Marker(
-      markerId: restList[i].restName,
-      position: LatLng(restList[i].restLat, restList[i].restLong),
-      infoWindow: '${restList[i].restName}\n${restList[i].restCategory}',
+      markerId: rest.restName,
+      position: LatLng(rest.restLat, rest.restLong),
+      infoWindow: '${rest.restName}\n${rest.restCategory}',
       captionColor: Colors.purple,
       captionHaloColor: Colors.purple,
       iconTintColor: Colors.purple,
       width: 20,
       height: 20,
     ));
-  }
+
 }
 

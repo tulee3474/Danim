@@ -59,6 +59,7 @@ dependencies:
   flutter_signin_button: ^2.0.0
   fluttertoast: ^8.1.1
   time_picker_widget: ^1.0.0+10
+  dropdown_formfield: ^0.1.4
 
 dev_dependencies:
   flutter_test:

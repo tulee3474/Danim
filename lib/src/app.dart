@@ -681,6 +681,10 @@ class _AppState extends State<App> {
                                                                                     for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
                                                                                   ];
 
+                                                                                  List<List<String>> emptyMovingSteps = [
+                                                                                    for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
+                                                                                  ];
+
                                                                                   print("startDay : $startDay");
                                                                                   print("endDay: $endDay");
                                                                                   Navigator.push(
@@ -692,6 +696,7 @@ class _AppState extends State<App> {
                                                                                                 movingTimeList: emptyMovingTime,
                                                                                             startDayTime: dayStartingTime.hour,
                                                                                             endDayTime: dayEndingTime.hour,
+                                                                                            movingStepsList: emptyMovingSteps,
                                                                                               )));
                                                                                 },
                                                                                 child: Text('혼자 짤래요', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Neo")))),

@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
+import 'package:dropdown_formfield/dropdown_formfield.dart';
 
 import 'package:danim/calendar_view.dart';
 import 'package:danim/src/event_CalendarEventData_switch.dart';
@@ -58,6 +59,20 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
 
 
   for (int i = 0; i < preset.length; i++) {
+
+    //점심, 혹은 저녁 입력했는지 판별하기
+
+    for(int j=0; j<preset[i].length; j++){
+
+      if(preset[i][j].name.contains('점심')){
+        lunch = true;
+      }
+      else if(preset[i][j].name.contains('저녁')){
+        dinner = true;
+      }
+
+    }
+
     if(i == 0){
       timeIndex =  DateTime(startDay.year, startDay.month, startDay.day,
           startDayTime, 0);
@@ -175,6 +190,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
         if (timeIndex.compareTo(DateTime(
             dayIndex.year, dayIndex.month, dayIndex.day, endDayTime)) >
             0) {
+
+
           break;
         }
       }
@@ -266,16 +283,18 @@ class Timetable extends StatefulWidget {
       required this.transit,
       required this.movingTimeList,
       required this.startDayTime,
-      required this.endDayTime})
+      required this.endDayTime,
+      required this. movingStepsList})
       : super(key: key);
 
   int transit = 0; // 자차:0, 대중교통:1
 
-  List<List<Place>> preset = [];
+  List<List<Place>> preset = [[]];
   DateTime currentDate = startDay;
-  List<List<int>> movingTimeList;
+  List<List<int>> movingTimeList = [[]];
   int startDayTime = 0;
   int endDayTime = 0;
+  List<List<String>> movingStepsList = [[]];
 
   @override
   _TimetableState createState() => _TimetableState();
@@ -284,14 +303,79 @@ class Timetable extends StatefulWidget {
 class _TimetableState extends State<Timetable> {
   final _CourseNameController = TextEditingController();
 
-  late List<CalendarEventData<Event>> events =
-      createEventList(widget.preset, startDay, endDay, widget.movingTimeList, widget.startDayTime, widget.endDayTime);
-
+  List<CalendarEventData<Event>> events =[];
   String isSaved = '';
 
   @override
   void initState() {
     super.initState();
+    events =       createEventList(widget.preset, startDay, endDay, widget.movingTimeList, widget.startDayTime, widget.endDayTime);
+
+
+    List<List<Place>> newPreset = [
+      for (int i = 0;
+      i <
+          events[events.length -1].date
+              .difference(events[0].date)
+              .inDays +
+              1;
+      i++)
+        []
+    ]; // 프리셋 초기화
+
+    List<DateTime> dateList = [];
+
+
+    for (int i = 0;
+    i < events[events.length -1].date
+        .difference(events[0].date)
+        .inDays +
+        1;
+    i++) {
+      dateList.add(DateTime(events[0].date.year,
+          events[0].date.month, events[0].date.day + i));
+    } // 날짜 리스트
+
+
+
+    for (int i = 0; i < dateList.length; i++) {
+      for (int j = 0; j < events.length; j++) {
+        if ((dateList[i].year == events[j].date.year &&
+            dateList[i].month ==
+                events[j].date.month &&
+            dateList[i].day ==
+                events[j].date.day) &&
+            (events[j].title != '이동') &&
+            (events[j].title != '식사시간')) {
+          newPreset[i].add(Place(
+              events[j].title,
+              events[j].latitude,
+              events[j].longitude,
+              events[j]
+                  .endTime
+                  .difference(events[j].startTime)
+                  .inMinutes,
+              60,
+              [0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0]));
+        }
+      }
+    }
+
+    //타임테이블 생성 잘 됐나 출력
+
+    for (int i = 0; i < newPreset.length; i++) {
+      for (int j = 0; j < newPreset[i].length; j++) {
+        print(
+            '${i}째 날 ${j}째 코스 : ${newPreset[i][j].name}');
+      }
+    }
+
+    widget.preset = newPreset;
+
   }
 
   @override
@@ -316,11 +400,17 @@ class _TimetableState extends State<Timetable> {
     return widget.movingTimeList;
   }
 
+  List<List<String>> getMovingStepsList(){
+    return widget.movingStepsList;
+  }
+
   void deletePlace(Place place) {
     setState(() {
       widget.preset.remove(place);
     });
   }
+
+
 
   void setEventList() {
     events =
@@ -576,11 +666,12 @@ class _TimetableState extends State<Timetable> {
                     },
                   )),
             ]),
-            body: DayViewWidget(
+            body:  DayViewWidget(
               transit: widget.transit,
               getPreset: getPreset,
               getEvents: getEvents,
               getMovingTimeList: getMovingTimeList,
+              getMovingStepsList: getMovingStepsList,
             )));
   }
 }
@@ -592,6 +683,7 @@ class DayViewWidget extends StatefulWidget {
   final Function() getPreset;
   final Function() getEvents;
   final Function() getMovingTimeList;
+  final Function() getMovingStepsList;
 
   int transit = 0;
 
@@ -603,14 +695,19 @@ class DayViewWidget extends StatefulWidget {
     required this.getPreset,
     required this.getEvents,
     required this.getMovingTimeList,
+    required this.getMovingStepsList,
   }) : super(key: key);
 
   @override
   _DayViewWidgetState createState() => _DayViewWidgetState();
 }
 
+
+
+
 class _DayViewWidgetState extends State<DayViewWidget> {
   late List<CalendarEventData<Event>> events = widget.getEvents();
+  late List<List<String>> movingSteps = widget.getMovingStepsList();
 
   @override
   Widget build(BuildContext context) {
@@ -643,13 +740,97 @@ class _DayViewWidgetState extends State<DayViewWidget> {
             for (int i = 0; i < restList.length; i++) {
               print('${restList[i].restName}\n');
             }
-            map.addRestMarker(restList);
+            //map.addRestMarker(restList);
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => FoodRecommend()));
+                MaterialPageRoute(builder: (context) => FoodRecommend(restList, mealIndex, events, widget.transit)));
           } else {
             print("전후 관광지가 없습니다.");
           }
         } else if (event[0].title == '이동') {
+
+
+          /*
+          for(int i=0; i<movingSteps.length; i++){
+            for(int j=0; j<movingSteps[i].length; j++){
+              print("이동경로 ${i},${j} : ${movingSteps[i][j]} ");
+            }
+          }*/
+
+          String movingStep = '';
+          int movingIndex = 0;
+          int movingDayIndex = 0;
+          int movingIndexInDay = 0; //그날 몇변째 이벤트인지
+          int numPlaces = 0; //그날 그전까지 관광지 갯수
+          int numMeals = 0; //그날 그전까지 식사시간 갯수
+          bool afterMeal = false;
+
+          //이 이동시간이 이벤트리스트의 몇번째 이동시간인지 가져오기
+          for(int i=0; i<events.length; i++){
+            if(events[i].startTime.compareTo(event[0].startTime)==0){
+              movingIndex = i; //이 이동시간이 이벤트리스트의 몇번째 이동시간인지 가져오기
+            }
+          }
+
+          //이 이동시간이 며칠차의 이동시간인지 가져오기 첫날 = 0
+          movingDayIndex = event[0].date.difference(events[0].date).inDays;
+          print('movingDayIndex = ${movingDayIndex}');
+
+          //그 날 몇번째 이벤트인지 가져오기
+          for(int i=0;i<movingIndex; i++){
+            if(events[i].date.day == event[0].date.day){
+              movingIndexInDay = movingIndexInDay + 1;
+
+            }
+          }
+
+          //그 날 관광지 갯수 세기
+          for(int i=0; i<movingIndex; i++){
+            if(events[i].title != '식사시간' && events[i].title != '이동' && events[i].date.compareTo(event[0].date) == 0){
+              numPlaces = numPlaces + 1;
+            }
+          }
+
+          //식사시간 갯수 세기
+          for(int i=0; i<movingIndex; i++){
+            if(events[i].title == '식사시간' && events[i].date.compareTo(event[0].date) == 0){
+              numMeals = numMeals + 1;
+            }
+          }
+
+          //바로 앞이 식사시간인지
+          if(events[movingIndex-1].title == '식사시간'){
+            afterMeal = true;
+          }
+
+          print("그 날 몇번째 이벤트 ? ${movingIndexInDay}");
+          print("그 날 관광지 앞에 몇개? ${numPlaces}");
+          print("그 날 식사시간 앞에 몇개? ${numMeals}");
+
+          //가져올 이동경로 상세 구하기
+
+          if(afterMeal){
+            movingStep = '식사 장소가 특정되지 않아 이동 경로를 불러올 수 없습니다.';
+          }
+          else{
+          movingStep = movingSteps[movingDayIndex][movingIndexInDay - numPlaces - 2*(numMeals)];
+          print(movingStep);}
+
+          if(widget.transit == 1){
+          showDialog(context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context){
+            return AlertDialog(
+              content: SizedBox(
+                height: 350,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Container(child:Text(movingStep))
+                )
+              )
+            );
+              });}
+
+
         } else {
           String tourInformation = '';
           tourInformation = await getTourInfo(event[0].title);
@@ -760,15 +941,24 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                         }
 
                                         List<List<int>> movingTimeList;
+                                        List<List<String>> movingStepsList = [
+                                          for(int i=0; i<presetUpdated.length; i++)
+                                            []
+                                        ];
 
                                         if (widget.transit == 0) {
                                           movingTimeList =
                                               await createDrivingTimeList(
                                                   presetUpdated);
+
                                         } else {
                                           movingTimeList =
                                               await createTransitTimeList(
                                                   presetUpdated);
+
+                                          movingStepsList =
+                                          await createTransitStepsList(
+                                              presetUpdated);
                                         }
                                         setState(() {
                                           course_selected = presetUpdated;
@@ -786,6 +976,7 @@ class _DayViewWidgetState extends State<DayViewWidget> {
                                                       transit: widget.transit,
                                                   startDayTime: eventsToBeUpdated[0].startTime.hour,
                                                   endDayTime: eventsToBeUpdated[eventsToBeUpdated.length-1].endTime.hour,
+                                                  movingStepsList: movingStepsList,
                                                     )));
 
                                         print("pathlist updated");
@@ -831,6 +1022,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
   DateTime _startDate = startDay.add(Duration(days: course_selected_day_index));
   //late DateTime _endDate;
 
+  List<CalendarEventData<Event>> events = [];
+  List<List<Place>> preset = [];
+
   String newPlaceName = '';
   double newPlaceLat = 0;
   double newPlaceLon = 0;
@@ -838,6 +1032,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
   late DateTime _startTime;
 
   late DateTime _endTime;
+
+  int placeNum = 0; //몇번째에 갈건지
+
+  Duration spendingTime = Duration(hours:1); //소요시간
 
   String _title = "";
 
@@ -851,16 +1049,24 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   String _titleNode = '';
 
+  int numPlaces = 0; // 이 날 들어있는 관광지 수
+
   late FocusNode _descriptionNode;
 
   late FocusNode _dateNode;
 
-  final GlobalKey<FormState> _form = GlobalKey();
+  final  _form = GlobalKey<FormState>();
 
   //late TextEditingController _startDateController;
   late TextEditingController _startTimeController;
   late TextEditingController _endTimeController;
   //late TextEditingController _endDateController;
+
+  TextEditingController placeNumController = TextEditingController();
+  TextEditingController spendingTimeController = TextEditingController();
+
+  String _when = '';
+  String _whenResult = '';
 
   /*
   void _createEvent() {
@@ -955,6 +1161,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
   @override
   void initState() {
     super.initState();
+    events = widget.getEvents();
+    preset = widget.getPreset();
+
+    numPlaces = preset[course_selected_day_index].length ;
+
+
+
 
     _descriptionNode = FocusNode();
     _dateNode = FocusNode();
@@ -963,6 +1176,18 @@ class _CreateEventPageState extends State<CreateEventPage> {
     //_endDateController = TextEditingController();
     _startTimeController = TextEditingController();
     _endTimeController = TextEditingController();
+    placeNumController = TextEditingController();
+    spendingTimeController = TextEditingController();
+  }
+
+  _saveForm() {
+
+
+      _form.currentState?.save();
+      setState(() {
+        _whenResult = _when;
+      });
+
   }
 
   @override
@@ -1106,8 +1331,45 @@ class _CreateEventPageState extends State<CreateEventPage> {
               SizedBox(
                 height: 15,
               ),
-              Row(
-                children: [
+
+
+                  Container(
+                    width:300,
+                    height: 80,
+
+                    child: DropDownFormField(
+
+                      titleText: '몇번째에 방문하길 원하세요?',
+                      hintText: '선택해주세요',
+                      value: _when,
+                      onSaved: (value){
+                        setState(() {
+                          _when = value;
+                        });
+                      },
+                        onChanged: (value){
+                        setState(() {
+                          _when = value;
+                        });
+                        },
+                      dataSource: [
+                        for(int i=0; i<numPlaces+1; i++)
+                          {
+                            "display" : "${i+1}",
+                            "value" : '${i}' // 0번째가 첫번째
+                          }
+                      ],
+                      textField: "display",
+                      valueField: "value"
+
+
+
+
+                    )
+
+                  )
+
+                  /*
                   Expanded(
                     child: DateTimeSelectorFormField(
                       controller: _startTimeController,
@@ -1127,9 +1389,29 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       ),
                       type: DateTimeSelectionType.time,
                     ),
-                  ),
-                  SizedBox(width: 20.0),
-                  Expanded(
+                  )
+
+                   */
+
+
+                  ,SizedBox(width: 20.0),
+
+              TextFormField(
+
+                  controller: spendingTimeController,
+
+                  decoration: InputDecoration(
+
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                      hintText: '몇분동안 머무를 예정이세요?',
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      ))
+
+              )
+
+        /*
+        Expanded(
                     child: DateTimeSelectorFormField(
                       controller: _endTimeController,
                       decoration: AppConstants.inputDecoration.copyWith(
@@ -1148,9 +1430,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       ),
                       type: DateTimeSelectionType.time,
                     ),
-                  ),
-                ],
-              ),
+                  )
+              */
+              ,
+
+
+
               SizedBox(
                 height: 15,
               )
@@ -1221,6 +1506,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           )),
                       onPressed: () async {
                         _form.currentState?.save();
+                        _saveForm();
+
+                        print(_whenResult);
+                        print(spendingTimeController.text);
+
+/*
 
                         final newEvent = CalendarEventData<Event>(
                           date: _startDate,
@@ -1356,8 +1647,38 @@ class _CreateEventPageState extends State<CreateEventPage> {
                             }
                           }
                         }
+                        */
 
-                        List<List<int>> movingTimeList = [];
+                        int newPlaceIndex = int.parse(_when); //몇번째에 들어갈건지
+                        int newTakenTime = int.parse(spendingTimeController.text);
+                        List<List<Place>> presetToBeUpdated = preset;
+
+                        Place newPlace = Place(
+                          _title,
+                          _latitude,
+                          _longitude,
+                          newTakenTime,
+                            30,
+                            [0, 0, 0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                            [0, 0, 0, 0]
+
+
+                        );
+
+                        //프리셋에 새로운 관광지 추가
+                        presetToBeUpdated[course_selected_day_index].insert(newPlaceIndex,newPlace);
+
+                        List<List<int>> movingTimeList = [
+                          for(int i=0; i<presetToBeUpdated.length; i++)
+                            []
+                        ];
+                        List<List<String>> movingStepsList = [
+                          for(int i=0; i<presetToBeUpdated.length; i++)
+                            []
+                        ];
 
                         if (widget.transit == 0) {
                           movingTimeList =
@@ -1365,6 +1686,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         } else {
                           movingTimeList =
                               (await createTransitTimeList(presetToBeUpdated));
+
+                          movingStepsList =
+                          (await createTransitStepsList(presetToBeUpdated));
                         }
 
                         //print(movingTimeList);
@@ -1378,22 +1702,26 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           //map.addPoly(presetToBeUpdated[course_selected_day_index]);
                         });
 
+
+
                         int startT = 0;
                         int endT = 0;
 
-                        if(eventsToBeUpdated.length == 0){
+                        if(events.length == 0){
                           startT = dayStartingTime.hour;
                           endT = dayEndingTime.hour;
                         }
 
                         else{
-                          startT = eventsToBeUpdated[0].startTime.hour;
-                          endT = eventsToBeUpdated[eventsToBeUpdated.length-1].startTime.hour;
+                          startT = events[0].startTime.hour;
+                          endT = events[events.length-1].startTime.hour;
 
                         }
 
                         print(startT);
                         print(endT);
+
+
 
                         await Navigator.push(
                             context,
@@ -1403,7 +1731,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                       movingTimeList: movingTimeList,
                                       transit: widget.transit,
                                   startDayTime: startT,
-                                  endDayTime: endT
+                                  endDayTime: endT,
+                                  movingStepsList: movingStepsList,
                                     )));
                       }),
                 )),

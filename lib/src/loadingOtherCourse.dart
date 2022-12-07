@@ -105,6 +105,10 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
         for (int i = 0; i < oldPreset.length; i++) []
       ];
 
+      List<List<String>> movingStepsList = [
+        for (int i = 0; i < oldPreset.length; i++) []
+      ];
+
       movingTimeList =
       await createDrivingTimeList(oldPreset);
 
@@ -120,6 +124,7 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
                 movingTimeList: movingTimeList,
                 startDayTime: searchedUser.eventList[0].startTime.hour,
                 endDayTime: searchedUser.eventList[searchedUser.eventList.length-1].endTime.hour,
+                movingStepsList: movingStepsList,
               )));
 
 
