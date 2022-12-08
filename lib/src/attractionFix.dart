@@ -318,13 +318,109 @@ class _AttractionFixState extends State<AttractionFix> {
                     )),
               )),
               Container(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-              Row(
+
+              if(dayDifference > 4)
+                Column(
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          for (int i = 0; i < 5; i++)
+                            Stack(children: [
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                  child: Container(
+                                    height: 40.0,
+                                    child: ElevatedButton(
+                                        child: Text(
+                                          '${i + 1}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        //이거 나중에 인덱스 초기화 에러 조심할 것! 관광지 갯수가 적으면..
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                            fixDayButtonColorList[i]),
+                                        onPressed: () {
+                                          setState(() {
+                                            fixDayIndex = i + 1;
+                                            //버튼 색 변환
+                                            switchFixDayButtonColor(i, 1);
+                                            for (int b = 0; b < dayDifference; b++) {
+                                              if (b != i) {
+                                                switchFixDayButtonColor(b, 0);
+                                              }
+                                            }
+                                          });
+
+                                          print("selected day: ${i + 1}");
+                                        }),
+                                  )),
+                              // Positioned(
+                              //     right: -20,
+                              //     child: Container(
+                              //         child: TextButton(
+                              //             child: Icon(Icons.arrow_forward, color: Colors.red),
+                              //             onPressed: () => {print(widget.pathList[i])})))
+                            ]),
+                        ]),
+
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          for (int i = 5; i < dayDifference; i++)
+                            Stack(children: [
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                  child: Container(
+                                    height: 40.0,
+                                    child: ElevatedButton(
+                                        child: Text(
+                                          '${i + 1}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        //이거 나중에 인덱스 초기화 에러 조심할 것! 관광지 갯수가 적으면..
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                            fixDayButtonColorList[i]),
+                                        onPressed: () {
+                                          setState(() {
+                                            fixDayIndex = i + 1;
+                                            //버튼 색 변환
+                                            switchFixDayButtonColor(i, 1);
+                                            for (int b = 0; b < dayDifference; b++) {
+                                              if (b != i) {
+                                                switchFixDayButtonColor(b, 0);
+                                              }
+                                            }
+                                          });
+
+                                          print("selected day: ${i + 1}");
+                                        }),
+                                  )),
+                              // Positioned(
+                              //     right: -20,
+                              //     child: Container(
+                              //         child: TextButton(
+                              //             child: Icon(Icons.arrow_forward, color: Colors.red),
+                              //             onPressed: () => {print(widget.pathList[i])})))
+                            ]),
+                        ]),
+                  ],
+                )
+
+
+            else
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     for (int i = 0; i < dayDifference; i++)
                       Stack(children: [
                         Padding(
-                            padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                            padding: EdgeInsets.fromLTRB(5, 15, 0, 0),
                             child: Container(
                               height: 40.0,
                               child: ElevatedButton(

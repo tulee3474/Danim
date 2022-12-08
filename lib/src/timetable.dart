@@ -1083,6 +1083,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   String _when = '';
   String _whenResult = '';
+  String _howLong = '';
+  String _howLongResult = '';
 
   /*
   void _createEvent() {
@@ -1204,6 +1206,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
       _form.currentState?.save();
       setState(() {
         _whenResult = _when;
+        _howLongResult = _howLong;
       });
 
   }
@@ -1237,7 +1240,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
           child: Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40),
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+          child:Padding(
         padding: EdgeInsets.all(20.0),
         child: Form(
           key: _form,
@@ -1336,7 +1341,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
               Row(
                 children: [
-                  Expanded(
+                  Container(
                       child: Text('날짜 : ' +
                           '${_startDate.year}' +
                           '-' +
@@ -1412,8 +1417,84 @@ class _CreateEventPageState extends State<CreateEventPage> {
                    */
 
 
-                  ,SizedBox(width: 20.0),
+                  ,SizedBox(height: 15),
 
+              Container(
+                  width:300,
+                  height: 80,
+
+                  child:TextFormField(
+
+                      controller: spendingTimeController,
+
+                      decoration: InputDecoration(
+
+                          contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                          hintText: '몇분동안 머무를 예정이세요?',
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          ))
+
+                  )
+
+
+                /*DropDownFormField(
+
+                      titleText: '몇분동안 머무를 예정이세요?',
+                      hintText: '선택해주세요',
+                      value: _howLong,
+                      onSaved: (value){
+                        setState(() {
+                          _howLong = value;
+                        });
+                      },
+                      onChanged: (value){
+                        setState(() {
+                          _howLong = value;
+                        });
+                      },
+                      dataSource: [
+                        for(int i=0; i<4; i++)
+                          {
+                            "display" : "${30 * i + 30}분",
+                            "value" : '${30 * i + 30}' // 0번째가 첫번째
+                          },
+                        {
+                          "display" : "직접 입력",
+                          "value" : showDialog(context: context, builder: (BuildContext context){
+                            return AlertDialog(
+                              content: SizedBox(
+                                  width: 400,
+                                  height: 200,
+                              child:  TextFormField(
+
+                                  controller: spendingTimeController,
+
+                                  decoration: InputDecoration(
+
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                                      hintText: '몇분동안 머무를 예정이세요?',
+                                      border: const OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                      ))
+
+                              ))
+                            );
+                          })
+                        }
+                      ],
+                      textField: "display",
+                      valueField: "value"
+
+
+
+
+                  )*/
+
+              ),
+
+
+              /*
               TextFormField(
 
                   controller: spendingTimeController,
@@ -1427,6 +1508,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       ))
 
               )
+
+               */
 
         /*
         Expanded(
@@ -1450,7 +1533,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     ),
                   )
               */
-              ,
+
 
 
               /*
@@ -1503,9 +1586,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               SizedBox(
                 height: 15,
               ),
-              Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Center(
+              Center(
                     child: Container(
                   width: 150.0,
                   height: 40.0,
@@ -1523,6 +1604,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
                         print(_whenResult);
                         print(spendingTimeController.text);
+                        print(_howLong);
+                        print(_howLongResult);
 
 /*
 
@@ -1663,11 +1746,19 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         */
 
                         int newPlaceIndex = int.parse(_when); //몇번째에 들어갈건지
-                        int newTakenTime = int.parse(spendingTimeController.text);
+                        int newTakenTime = 0;
+
+                        if(spendingTimeController.text == ''){
+                          newTakenTime = int.parse(_howLong);
+                        }
+                        else {
+                          newTakenTime = int.parse(
+                              spendingTimeController.text);
+                        }
                         List<List<Place>> presetToBeUpdated = preset;
                         int days = preset.length;
 
-                        print("요기서 세개여야함 : ${presetToBeUpdated}");
+                        print('몇분 ??? : ${newTakenTime}');
 
                         Place newPlace = Place(
                           _title,
@@ -1727,11 +1818,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                     )));
                       }),
                 )),
-              ),
+
             ],
           ),
         ),
-      ),
+      ))
     );
   }
 }
