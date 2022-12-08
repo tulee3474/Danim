@@ -67,6 +67,9 @@ class _LoadingTimeTableState extends State<LoadingTimeTable>{
         []
     ];
 
+    if (widget.transit == 0) {
+      movingTimeList = await createDrivingTimeList(widget.preset);
+
     //혼자짤래요 시작이면,
     if(widget.preset[0].length == 0){
 
@@ -80,9 +83,13 @@ class _LoadingTimeTableState extends State<LoadingTimeTable>{
 
     }
 
-
-    if (widget.transit == 0) {
-     movingTimeList = await createDrivingTimeList(widget.preset);
+    print("before Timetable");
+    print(widget.preset);
+    print(widget.transit);
+    print(movingTimeList);
+    print(widget.startDayTime);
+    print(widget.endDayTime);
+    print(movingStepsList);
 
 
 

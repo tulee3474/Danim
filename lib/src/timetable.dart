@@ -1,4 +1,5 @@
 import 'dart:core';
+
 import 'dart:io';
 import 'dart:math';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
@@ -317,20 +318,16 @@ class _TimetableState extends State<Timetable> {
   @override
   void initState() {
     super.initState();
-    events =       createEventList(widget.preset, startDay, endDay, widget.movingTimeList, widget.startDayTime, widget.endDayTime);
+    events = createEventList(widget.preset, startDay, endDay, widget.movingTimeList, widget.startDayTime, widget.endDayTime);
 
+    int days = widget.preset.length;
+    List<List<Place>> newPreset = [
+      for (int i=0; i<days; i++)
+        [],
+    ];
 
     if(events.length >0){
-    List<List<Place>> newPreset = [
-      for (int i = 0;
-      i <
-          events[events.length -1].date
-              .difference(events[0].date)
-              .inDays +
-              1;
-      i++)
-        []
-    ]; // 프리셋 초기화
+    // 프리셋 초기화
 
     List<DateTime> dateList = [];
 
@@ -1156,6 +1153,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
     events = widget.getEvents();
     preset = widget.getPreset();
 
+    print("in initState : ${preset}");
+
     numPlaces = preset[course_selected_day_index].length ;
 
 
@@ -1639,6 +1638,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         int newPlaceIndex = int.parse(_when); //몇번째에 들어갈건지
                         int newTakenTime = int.parse(spendingTimeController.text);
                         List<List<Place>> presetToBeUpdated = preset;
+                        int days = preset.length;
+
+                        print("요기서 세개여야함 : ${presetToBeUpdated}");
 
                         Place newPlace = Place(
                           _title,
@@ -1656,7 +1658,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         );
 
                         //프리셋에 새로운 관광지 추가
-                        presetToBeUpdated[course_selected_day_index].insert(newPlaceIndex,newPlace);
+
+                          presetToBeUpdated[course_selected_day_index].insert(
+                              newPlaceIndex, newPlace);
 
 
                         //print(movingTimeList);
@@ -1673,22 +1677,16 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         int startT = 0;
                         int endT = 0;
 
-                        if(events.length == 0){
+
                           startT = dayStartingTime.hour;
                           endT = dayEndingTime.hour;
-                        }
 
-                        else{
-                          startT = events[0].startTime.hour;
-                          endT = events[events.length-1].startTime.hour;
-
-                        }
 
                         print(startT);
                         print(endT);
 
 
-
+                        print("다시 로딩하기 직전에 preset: ${presetToBeUpdated}");
                         await Navigator.push(
                             context,
                             MaterialPageRoute(

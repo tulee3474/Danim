@@ -32,6 +32,7 @@ import '../route_ai.dart';
 import '../widgets/date_time_selector.dart';
 import 'accomodationInfo.dart';
 import 'community.dart';
+import 'courseSelected.dart';
 import 'date_selectlist.dart';
 import 'fixInfo.dart';
 import 'package:danim/firebase_read_write.dart';
@@ -675,7 +676,7 @@ class _AppState extends State<App> {
                                                                             child: ElevatedButton(
                                                                                 onPressed: () {
                                                                                   List<List<Place>> emptyPreset = [
-                                                                                    for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
+                                                                                    for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) [],
                                                                                   ];
 
                                                                                   List<List<int>> emptyMovingTime = [
@@ -686,6 +687,9 @@ class _AppState extends State<App> {
                                                                                     for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
                                                                                   ];
 
+                                                                                  course_selected = emptyPreset;
+
+                                                                                  print(emptyPreset);
                                                                                   print("startDay : $startDay");
                                                                                   print("endDay: $endDay");
                                                                                   Navigator.push(
@@ -693,7 +697,7 @@ class _AppState extends State<App> {
                                                                                       MaterialPageRoute(
                                                                                           builder: (context) => LoadingTimeTable(
                                                                                                 emptyPreset,
-                                                                                                1,
+                                                                                                0, //혼자짤래요 기본값 자차 이동
 
                                                                                           dayStartingTime.hour,
                                                                                            dayEndingTime.hour
