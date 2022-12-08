@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:danim/src/loadingMyPage.dart';
 import 'package:danim/src/loadingOtherCourse.dart';
+import 'package:danim/src/loadingTimeTable.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/timetable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -690,13 +691,12 @@ class _AppState extends State<App> {
                                                                                   Navigator.push(
                                                                                       context,
                                                                                       MaterialPageRoute(
-                                                                                          builder: (context) => Timetable(
-                                                                                                preset: emptyPreset,
-                                                                                                transit: 0,
-                                                                                                movingTimeList: emptyMovingTime,
-                                                                                            startDayTime: dayStartingTime.hour,
-                                                                                            endDayTime: dayEndingTime.hour,
-                                                                                            movingStepsList: emptyMovingSteps,
+                                                                                          builder: (context) => LoadingTimeTable(
+                                                                                                emptyPreset,
+                                                                                                1,
+
+                                                                                          dayStartingTime.hour,
+                                                                                           dayEndingTime.hour
                                                                                               )));
                                                                                 },
                                                                                 child: Text('혼자 짤래요', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Neo")))),

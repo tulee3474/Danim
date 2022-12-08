@@ -52,6 +52,8 @@ class _LoadingTimeTableState extends State<LoadingTimeTable>{
   qqqq() async {
 
 
+
+
     List<List<int>> movingTimeList = [
       for (int i = 0;
       i < widget.preset.length;
@@ -64,6 +66,19 @@ class _LoadingTimeTableState extends State<LoadingTimeTable>{
       i++)
         []
     ];
+
+    //혼자짤래요 시작이면,
+    if(widget.preset[0].length == 0){
+
+      movingTimeList =  [
+        for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
+      ];
+
+      movingStepsList = [
+        for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) []
+      ];
+
+    }
 
 
     if (widget.transit == 0) {
