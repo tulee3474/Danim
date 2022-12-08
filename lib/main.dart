@@ -45,10 +45,10 @@ class _MyAppState extends State<MyApp> {
             titleTextStyle: TextStyle(color: Colors.black),
           )),
       debugShowCheckedModeBanner: false,
-      routes: {
+      /*routes: {
         '/app': (context) => App(),
         '/mea': (context) => const MyHomePage(),
-      },
+      },*/
       home: Temp(),
       //home: const Map(),
       //home: const MyHomePage(),

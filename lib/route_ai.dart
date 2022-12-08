@@ -187,7 +187,7 @@ class RouteAI {
       double distance = 0.0;
       //대중교통
       if (transitInAI == 1) {
-        distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 80000;
+        distance = sqrt(latDiff * latDiff + longDiff * longDiff) * 90000;
       }
       //자차
       else {
@@ -448,7 +448,7 @@ class RouteAI {
       //코스의 길이가 길수록 이동시간도 길어짐
       //길이에 비례하여 timeLimit를 줄임
       //이 수치는 차후에 조정할 것!!
-      if (totalTime > timeLimit - bestPath.length * 30) {
+      if (totalTime > timeLimit - (bestPath.length * 40)) {
         int aaa = bestPath.length;
         Place popPlace = bestPath.removeLast();
 

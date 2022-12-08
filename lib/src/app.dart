@@ -36,7 +36,7 @@ import 'courseSelected.dart';
 import 'date_selectlist.dart';
 import 'fixInfo.dart';
 import 'package:danim/firebase_read_write.dart';
-
+import '../temp.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -51,8 +51,7 @@ final userReference = FirebaseFirestore.instance.collection('users');
 
 //final DateTime timestamp = DateTime.now();
 User? currentUser;
-String? userName = ' ';
-String? userEmail = ' ';
+
 
 class App extends StatefulWidget {
   @override
@@ -641,6 +640,10 @@ class _AppState extends State<App> {
                                                                                 onPressed: () {
                                                                                   //인풋값들 출력 확인
                                                                                   //숙소값, 가는날, 오는만 있어야 정상.
+                                                                                  setState(() {
+                                                                                    markers.clear();
+                                                                                    pathOverlays.clear();
+                                                                                  });
 
                                                                                   _form.currentState?.save();
 
@@ -675,6 +678,10 @@ class _AppState extends State<App> {
                                                                             height: 50.0,
                                                                             child: ElevatedButton(
                                                                                 onPressed: () {
+                                                                                  setState(() {
+                                                                                    markers.clear();
+                                                                                    pathOverlays.clear();
+                                                                                  });
                                                                                   List<List<Place>> emptyPreset = [
                                                                                     for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) [],
                                                                                   ];

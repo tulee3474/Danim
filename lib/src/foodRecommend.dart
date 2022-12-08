@@ -1,6 +1,7 @@
 
 
 import 'package:danim/src/app.dart';
+import 'package:danim/src/courseSelected.dart';
 import 'package:danim/src/place.dart';
 import 'package:danim/src/selectedRestaurant.dart';
 import 'package:flutter/cupertino.dart';
@@ -314,6 +315,11 @@ class FoodRecommendState extends State<FoodRecommend> {
 
                           print(newPreset);
                          // print(movingTimeList);
+                          setState(() {
+                            course_selected=newPreset;
+                            //addMarker(newPreset);
+                            //addPoly(newPreset);
+                          });
 
                           Navigator.push(
                               context,

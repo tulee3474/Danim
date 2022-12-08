@@ -326,62 +326,84 @@ class _TimetableState extends State<Timetable> {
         [],
     ];
 
+<<<<<<< Updated upstream
     if(events.length >0){
     // 프리셋 초기화
 
     List<DateTime> dateList = [];
+=======
+    if(events.length >0) {
+      List<List<Place>> newPreset = [
+        for (int i = 0;
+        i <
+            events[events.length - 1].date
+                .difference(events[0].date)
+                .inDays +
+                1;
+        i++)
+          []
+      ]; // 프리셋 초기화
+
+      List<DateTime> dateList = [];
 
 
-    for (int i = 0;
-    i < events[events.length -1].date
-        .difference(events[0].date)
-        .inDays +
-        1;
-    i++) {
-      dateList.add(DateTime(events[0].date.year,
-          events[0].date.month, events[0].date.day + i));
-    } // 날짜 리스트
+      for (int i = 0;
+      i < events[events.length - 1].date
+          .difference(events[0].date)
+          .inDays +
+          1;
+      i++) {
+        dateList.add(DateTime(events[0].date.year,
+            events[0].date.month, events[0].date.day + i));
+      } // 날짜 리스트
+>>>>>>> Stashed changes
 
 
-
-    for (int i = 0; i < dateList.length; i++) {
-      for (int j = 0; j < events.length; j++) {
-        if ((dateList[i].year == events[j].date.year &&
-            dateList[i].month ==
-                events[j].date.month &&
-            dateList[i].day ==
-                events[j].date.day) &&
-            (events[j].title != '이동') &&
-            (events[j].title != '식사시간')) {
-          newPreset[i].add(Place(
-              events[j].title,
-              events[j].latitude,
-              events[j].longitude,
-              events[j]
-                  .endTime
-                  .difference(events[j].startTime)
-                  .inMinutes,
-              60,
-              [0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0]));
+      for (int i = 0; i < dateList.length; i++) {
+        for (int j = 0; j < events.length; j++) {
+          if ((dateList[i].year == events[j].date.year &&
+              dateList[i].month ==
+                  events[j].date.month &&
+              dateList[i].day ==
+                  events[j].date.day) &&
+              (events[j].title != '이동') &&
+              (events[j].title != '식사시간')) {
+            newPreset[i].add(Place(
+                events[j].title,
+                events[j].latitude,
+                events[j].longitude,
+                events[j]
+                    .endTime
+                    .difference(events[j].startTime)
+                    .inMinutes,
+                60,
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0]));
+          }
         }
       }
-    }
 
-    //타임테이블 생성 잘 됐나 출력
+      //타임테이블 생성 잘 됐나 출력
 
-    for (int i = 0; i < newPreset.length; i++) {
-      for (int j = 0; j < newPreset[i].length; j++) {
-        print(
-            '${i}째 날 ${j}째 코스 : ${newPreset[i][j].name}');
+      for (int i = 0; i < newPreset.length; i++) {
+        for (int j = 0; j < newPreset[i].length; j++) {
+          print(
+              '${i}째 날 ${j}째 코스 : ${newPreset[i][j].name}');
+        }
       }
+
+      setState(() {
+        widget.preset = newPreset;
+        course_selected=newPreset;
+        for (int i = 0; i < newPreset.length; i++) {
+          addMarker(newPreset[i]);
+          addPoly(newPreset[i]);
+        }
+      });
     }
-
-    widget.preset = newPreset;}
-
   }
 
   @override
@@ -488,6 +510,10 @@ class _TimetableState extends State<Timetable> {
                                               EdgeInsets.fromLTRB(0, 30, 0, 0),
                                           child: ElevatedButton(
                                               onPressed: () async {
+                                                setState(() {
+                                                  markers.clear();
+                                                  pathOverlays.clear();
+                                                });
                                                 //List<CalendarEventData<Event>> 에서 List<CalendarEventData> 로 변환 !!
                                                 List<CalendarEventData>
                                                     eventsForDB = [];
@@ -624,6 +650,7 @@ class _TimetableState extends State<Timetable> {
                                                               )));
                                                     });
                                                 //sleep(Duration(seconds: 3));
+
                                                 Navigator.popUntil(context,
                                                     (route) => route.isFirst);
                                                 //첫화면까지 팝해버리는거임

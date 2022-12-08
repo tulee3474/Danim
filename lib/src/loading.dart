@@ -55,6 +55,7 @@ class _LoadingState extends State<Loading> {
               nDay,
               widget.transit))
           .cast<List<List<Place>>>();
+      print(read_data.length);
       for (int i = 0; i < read_data.length; i++) {
         print("코스");
         for (int j = 0; j < read_data[i].length; j++) {
@@ -71,6 +72,7 @@ class _LoadingState extends State<Loading> {
 
       return read_data;
     } catch (e) {
+      print(e);
       print('AI 실행 중, 에러 발생');
       print(house);
       print(selectList);

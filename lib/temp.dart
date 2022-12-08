@@ -5,7 +5,8 @@ import 'package:danim/src/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+String? userName = '이태운';
+String? userEmail = 'tulee3474@gmail.com';
 class Temp extends StatefulWidget {
   const Temp({Key? key}) : super(key: key);
 
