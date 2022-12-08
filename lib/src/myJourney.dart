@@ -176,14 +176,29 @@ class _MyJourneyState extends State<MyJourney> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: TextField(
+                                      child: /*TextField(
                                         controller: shareController,
                                         maxLines: 2,
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
                                           filled: true,
                                         ),
+                                      )*/
+                                      Flexible(
+                                        child: SelectableText.rich(
+                                            TextSpan(text: (shareController.text),
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  letterSpacing: 2.0,
+                                                  //height: 1.4,
+
+                                                  fontSize: 14.0,
+                                                )
+
+                                            )
+                                        ),
                                       ),
+
                                     ),
                                   ],
                                 ),

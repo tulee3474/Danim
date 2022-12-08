@@ -95,6 +95,7 @@ class _WrittenPostState extends State<WrittenPost> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
+                        /*
                         Container(
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Text("${widget.post.postTitle}",
@@ -104,7 +105,48 @@ class _WrittenPostState extends State<WrittenPost> {
                                   fontFamily: 'Neo',
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
-                                ))),
+
+                               )))*/
+
+
+                        /*
+                        Flexible(
+                          child: RichText(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            strutStyle: StrutStyle(fontSize: 14.0),
+                            text: TextSpan(
+                                text: (widget.post.postTitle),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  letterSpacing: 2.0,
+                                  //height: 1.4,
+                                  fontFamily: 'Neo',
+                                  fontSize: 20.0,
+                                )),
+                          ),
+                        ),
+
+
+                         */
+
+                        Flexible(
+                          child: SelectableText.rich(
+                            TextSpan(text: (widget.post.postTitle),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  letterSpacing: 2.0,
+                                  //height: 1.4,
+                                  fontFamily: 'Neo',
+                                  fontSize: 20.0,
+                                )
+
+                            )
+                          ),
+                        ),
+
+
+
                         Container(
                             padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
                             child: Text("익명의 글쓴이${widget.index + 1}",
@@ -135,21 +177,19 @@ class _WrittenPostState extends State<WrittenPost> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Flexible(
-                          child: RichText(
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 7,
-                            strutStyle: StrutStyle(fontSize: 14.0),
-                            text: TextSpan(
-                                text: (widget.post.postContent),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  letterSpacing: 2.0,
-                                  //height: 1.4,
-                                  fontFamily: 'Neo',
-                                  fontSize: 14.0,
-                                )),
-                          ),
-                        ),
+                    child: SelectableText.rich(
+                    TextSpan(text: (widget.post.postContent),
+                      style: TextStyle(
+                        color: Colors.black,
+                        letterSpacing: 2.0,
+                        //height: 1.4,
+                        fontFamily: 'Neo',
+                        fontSize: 14.0,
+                      )
+
+                  )
+        ),
+    ),
                       ],
                     ),
                   ),
