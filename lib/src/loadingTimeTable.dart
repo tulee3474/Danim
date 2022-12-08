@@ -140,6 +140,7 @@ class _LoadingTimeTableState extends State<LoadingTimeTable>{
         child: Column(children: [
           Container(padding: EdgeInsets.fromLTRB(0, 250, 0, 0)),
           Center(child: SpinKitRing(color: Colors.grey)),
+          SizedBox(height:15),
           Center(
               child: Container(
                 padding: EdgeInsets.fromLTRB(0, 5, 0, 0),

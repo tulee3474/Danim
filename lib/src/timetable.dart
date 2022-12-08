@@ -215,6 +215,11 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
           timeIndex.minute + preset[i][j].takenTime);
       DateTime tourEndTimeUpdated = tourEndTime;
 
+      Color mealColor = Colors.blue;
+      if(preset[i][j].name.contains('점심') || preset[i][j].name.contains('저녁')){
+        mealColor = Colors.orangeAccent;
+      }
+
       events.add(CalendarEventData(
           title: '${preset[i][j].name}',
           date: dayIndex,
@@ -224,9 +229,11 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
           longitude: preset[i][j].longitude,
           startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
               timeIndex.hour, timeIndex.minute),
-          endTime: tourEndTimeUpdated));
+          endTime: tourEndTimeUpdated,
+      color: mealColor));
 
       timeIndex = tourEndTimeUpdated;
+      mealColor = Colors.blue;
 
       if(i == preset.length-1){
         if (timeIndex.compareTo(DateTime(
@@ -313,6 +320,7 @@ class _TimetableState extends State<Timetable> {
     events =       createEventList(widget.preset, startDay, endDay, widget.movingTimeList, widget.startDayTime, widget.endDayTime);
 
 
+    if(events.length >0){
     List<List<Place>> newPreset = [
       for (int i = 0;
       i <
@@ -375,7 +383,7 @@ class _TimetableState extends State<Timetable> {
       }
     }
 
-    widget.preset = newPreset;
+    widget.preset = newPreset;}
 
   }
 
@@ -582,7 +590,10 @@ class _TimetableState extends State<Timetable> {
                                                     userData.diaryList);
 
                                                 print('pathlist saved');
-
+                                                setState(() {
+                                                  markers.clear();
+                                                  pathOverlays.clear();
+                                                });
                                                 showDialog(
                                                     context: context,
                                                     barrierDismissible: true,
@@ -1416,11 +1427,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ,
 
 
-
-              SizedBox(
-                height: 15,
-              )
-
               /*
           TextFormField(
             focusNode: _descriptionNode,
@@ -1446,7 +1452,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
             ),
           )
           */
-              ,
+
               SizedBox(
                 height: 15.0,
               ),
@@ -1472,11 +1478,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 height: 15,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(3.0),
                 child: Center(
                     child: Container(
                   width: 150.0,
-                  height: 50.0,
+                  height: 40.0,
                   child: ElevatedButton(
                       child: Text('관광지 추가',
                           style: TextStyle(

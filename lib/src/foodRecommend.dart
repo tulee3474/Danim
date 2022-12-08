@@ -109,16 +109,15 @@ class FoodRecommendState extends State<FoodRecommend> {
           return Future(() => true);
         },
     child: Scaffold(
-        appBar: AppBar(
+        appBar:  AppBar(
           elevation: 0,
-          title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Image.asset(IconsPath.back,
-                    fit: BoxFit.contain, height: 20))
-          ]),
+          centerTitle: true, // 앱바 가운데 정렬
+          title: InkWell(
+            onTap: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+            child: Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40),
+          ),
         ),
         body: Column(
             children:[
@@ -144,7 +143,7 @@ class FoodRecommendState extends State<FoodRecommend> {
                 height: 5
               ),
               SizedBox(
-                height: 250,
+                height: 300,
                 child:
                 SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -155,13 +154,16 @@ class FoodRecommendState extends State<FoodRecommend> {
                     for(int i=0; i< widget.restaurantList.length; i++)
                       Container(
                         alignment: Alignment.topLeft,
-                        height: 30,
+                        height: 40,
+                        width: 400,
                         child: ElevatedButton(
+
 
                             style: ButtonStyle(
 
                                 backgroundColor:
-                                backgrouneColorList[i]),
+                                backgrouneColorList[i],
+                            minimumSize: MaterialStateProperty.all(Size(400,40))),
 
 
                           onPressed: () {

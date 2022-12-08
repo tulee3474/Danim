@@ -19,7 +19,7 @@ class CourseDetail extends StatefulWidget {
 }
 
 class _CourseDetailState extends State<CourseDetail> {
-  int transit = 0; //초기값은 자차이용
+  int transit = 1; //초기값은 대중교통
 
   String str = '';
 
