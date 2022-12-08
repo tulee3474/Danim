@@ -331,10 +331,11 @@ class _AppState extends State<App> {
                                                                             context: context,
                                                                             // It is a must if you provide selectableTimePredicate
                                                                             onFailValidation: (context) => print('Unavailable selection'),
-                                                                            initialTime: TimeOfDay(hour: 2, minute: 0),
+                                                                            initialTime: TimeOfDay(hour: 10, minute: 0),
                                                                             selectableTimePredicate: (time)=>
 
-                                                                                time!.minute == 0).then((time) =>
+
+                                                                            time!.minute == 0).then((time) =>
                                                                             setState(() { dayStartingTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, time!.hour);
 
                                                                               _startTimeController.text = time.format(context);
@@ -433,7 +434,7 @@ class _AppState extends State<App> {
                                                                                   context: context,
                                                                                   // It is a must if you provide selectableTimePredicate
                                                                                   onFailValidation: (context) => print('Unavailable selection'),
-                                                                                  initialTime: TimeOfDay(hour: 2, minute: 0),
+                                                                                  initialTime: TimeOfDay(hour: 20, minute: 0),
                                                                                   selectableTimePredicate: (time)=>
 
                                                                                   time!.minute == 0).then((time) =>

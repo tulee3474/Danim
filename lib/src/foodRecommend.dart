@@ -199,160 +199,7 @@ class FoodRecommendState extends State<FoodRecommend> {
 
                       ),
 
-                    Container(
-                      child:ElevatedButton(
-                        onPressed: () async {
 
-                          //여기서 선택한 거 반영해서 다시 타임테이블 띄우기
-
-
-                          //식사 이벤트 만들기
-
-                          //점심이면
-                          if(widget.events[widget.mealIndex].startTime.hour < 16){
-                            lunchOrDinner = 0;
-
-                          }
-                          else{
-                            lunchOrDinner = 1;
-                          }
-
-                          CalendarEventData<Event> newMealEvent;
-
-                          if(lunchOrDinner == 0){
-
-                            newMealEvent = CalendarEventData<Event>(title: '점심 - ${_selectedRestaurant.restName}',event: Event(title: '점심 - ${_selectedRestaurant.restName}'), latitude: _selectedRestaurant.restLat, longitude: _selectedRestaurant.restLong, startTime: widget.events[widget.mealIndex].startTime, endTime: widget.events[widget.mealIndex].endTime, date: widget.events[widget.mealIndex].date);
-
-
-                          }
-
-                          else{
-                            newMealEvent = CalendarEventData<Event>(title: '저녁 - ${_selectedRestaurant.restName}',event: Event(title: '저녁 - ${_selectedRestaurant.restName}'), latitude: _selectedRestaurant.restLat, longitude: _selectedRestaurant.restLong, startTime: widget.events[widget.mealIndex].startTime, endTime: widget.events[widget.mealIndex].endTime, date: widget.events[widget.mealIndex].date);
-
-                          }
-
-                          //이벤트리스트에서 식사시간 삭제, 새로운 이벤트 넣음
-
-                          List<CalendarEventData<Event>> eventsUpdated = widget.events;
-                          eventsUpdated.removeAt(widget.mealIndex);
-                          eventsUpdated.insert(widget.mealIndex, newMealEvent);
-
-                          //업데이트된 이벤트리스트에서 새롭게 프리셋 만들고 타임테이블 출력 !!
-
-
-                          for (int i = 0; i < eventsUpdated.length; i++) {
-                            print('journey_lat : ${eventsUpdated[i].title}');
-                          }
-
-                          List<List<Place>> newPreset = [
-                            for (int i = 0;
-                            i <
-                                eventsUpdated[eventsUpdated.length -1].date
-                                    .difference(eventsUpdated[0].date)
-                                    .inDays +
-                                    1;
-                            i++)
-                              []
-                          ]; // 프리셋 초기화
-
-                          List<DateTime> dateList = [];
-
-
-                      for (int i = 0;
-                      i < eventsUpdated[eventsUpdated.length -1].date
-                          .difference(eventsUpdated[0].date)
-                          .inDays +
-                          1;
-                      i++) {
-                      dateList.add(DateTime(eventsUpdated[0].date.year,
-                          eventsUpdated[0].date.month, eventsUpdated[0].date.day + i));
-                      } // 날짜 리스트
-
-
-
-                          for (int i = 0; i < dateList.length; i++) {
-                            for (int j = 0; j < eventsUpdated.length; j++) {
-                              if ((dateList[i].year == eventsUpdated[j].date.year &&
-                                  dateList[i].month ==
-                                      eventsUpdated[j].date.month &&
-                                  dateList[i].day ==
-                                      eventsUpdated[j].date.day) &&
-                                  (eventsUpdated[j].title != '이동') &&
-                                  (eventsUpdated[j].title != '식사시간')) {
-                                newPreset[i].add(Place(
-                                    eventsUpdated[j].title,
-                                    eventsUpdated[j].latitude,
-                                    eventsUpdated[j].longitude,
-                                    eventsUpdated[j]
-                                        .endTime
-                                        .difference(eventsUpdated[j].startTime)
-                                        .inMinutes,
-                                    60,
-                                    [0, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0]));
-                              }
-                            }
-                          }
-
-                          //타임테이블 생성 잘 됐나 출력
-
-                          for (int i = 0; i < newPreset.length; i++) {
-                            for (int j = 0; j < newPreset[i].length; j++) {
-                              print(
-                                  '${i}째 날 ${j}째 코스 : ${newPreset[i][j].name}');
-                            }
-                          }
-
-                          //print('lati : ${oldPreset[0][0].latitude}');
-                          //print(oldPreset[0][0].longitude);
-
-
-
-
-
-                          print(newPreset);
-                         // print(movingTimeList);
-                          setState(() {
-                            course_selected=newPreset;
-                            //addMarker(newPreset);
-                            //addPoly(newPreset);
-                          });
-
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoadingTimeTable(
-                                    newPreset,
-                                    widget.transit,
-
-                                    eventsUpdated[0].startTime.hour,
-                                   eventsUpdated[eventsUpdated.length-1].endTime.hour,
-
-                                  )));
-
-
-
-
-
-                          setState(() {
-                            //selectedRestaurant = _selectedRestaurant;
-                          });
-
-
-
-                        },
-                        child:  Text('식당 선택하기',
-                            style: TextStyle(
-                              fontFamily: "Neo",
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 13,
-                            ))
-                      )
-                    )
 
                     ]
 
@@ -366,6 +213,160 @@ class FoodRecommendState extends State<FoodRecommend> {
 
 
 
+              ),
+              Container(
+                  child:ElevatedButton(
+                      onPressed: () async {
+
+                        //여기서 선택한 거 반영해서 다시 타임테이블 띄우기
+
+
+                        //식사 이벤트 만들기
+
+                        //점심이면
+                        if(widget.events[widget.mealIndex].startTime.hour < 16){
+                          lunchOrDinner = 0;
+
+                        }
+                        else{
+                          lunchOrDinner = 1;
+                        }
+
+                        CalendarEventData<Event> newMealEvent;
+
+                        if(lunchOrDinner == 0){
+
+                          newMealEvent = CalendarEventData<Event>(title: '점심 - ${_selectedRestaurant.restName}',event: Event(title: '점심 - ${_selectedRestaurant.restName}'), latitude: _selectedRestaurant.restLat, longitude: _selectedRestaurant.restLong, startTime: widget.events[widget.mealIndex].startTime, endTime: widget.events[widget.mealIndex].endTime, date: widget.events[widget.mealIndex].date);
+
+
+                        }
+
+                        else{
+                          newMealEvent = CalendarEventData<Event>(title: '저녁 - ${_selectedRestaurant.restName}',event: Event(title: '저녁 - ${_selectedRestaurant.restName}'), latitude: _selectedRestaurant.restLat, longitude: _selectedRestaurant.restLong, startTime: widget.events[widget.mealIndex].startTime, endTime: widget.events[widget.mealIndex].endTime, date: widget.events[widget.mealIndex].date);
+
+                        }
+
+                        //이벤트리스트에서 식사시간 삭제, 새로운 이벤트 넣음
+
+                        List<CalendarEventData<Event>> eventsUpdated = widget.events;
+                        eventsUpdated.removeAt(widget.mealIndex);
+                        eventsUpdated.insert(widget.mealIndex, newMealEvent);
+
+                        //업데이트된 이벤트리스트에서 새롭게 프리셋 만들고 타임테이블 출력 !!
+
+
+                        for (int i = 0; i < eventsUpdated.length; i++) {
+                          print('journey_lat : ${eventsUpdated[i].title}');
+                        }
+
+                        List<List<Place>> newPreset = [
+                          for (int i = 0;
+                          i <
+                              eventsUpdated[eventsUpdated.length -1].date
+                                  .difference(eventsUpdated[0].date)
+                                  .inDays +
+                                  1;
+                          i++)
+                            []
+                        ]; // 프리셋 초기화
+
+                        List<DateTime> dateList = [];
+
+
+                        for (int i = 0;
+                        i < eventsUpdated[eventsUpdated.length -1].date
+                            .difference(eventsUpdated[0].date)
+                            .inDays +
+                            1;
+                        i++) {
+                          dateList.add(DateTime(eventsUpdated[0].date.year,
+                              eventsUpdated[0].date.month, eventsUpdated[0].date.day + i));
+                        } // 날짜 리스트
+
+
+
+                        for (int i = 0; i < dateList.length; i++) {
+                          for (int j = 0; j < eventsUpdated.length; j++) {
+                            if ((dateList[i].year == eventsUpdated[j].date.year &&
+                                dateList[i].month ==
+                                    eventsUpdated[j].date.month &&
+                                dateList[i].day ==
+                                    eventsUpdated[j].date.day) &&
+                                (eventsUpdated[j].title != '이동') &&
+                                (eventsUpdated[j].title != '식사시간')) {
+                              newPreset[i].add(Place(
+                                  eventsUpdated[j].title,
+                                  eventsUpdated[j].latitude,
+                                  eventsUpdated[j].longitude,
+                                  eventsUpdated[j]
+                                      .endTime
+                                      .difference(eventsUpdated[j].startTime)
+                                      .inMinutes,
+                                  60,
+                                  [0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0]));
+                            }
+                          }
+                        }
+
+                        //타임테이블 생성 잘 됐나 출력
+
+                        for (int i = 0; i < newPreset.length; i++) {
+                          for (int j = 0; j < newPreset[i].length; j++) {
+                            print(
+                                '${i}째 날 ${j}째 코스 : ${newPreset[i][j].name}');
+                          }
+                        }
+
+                        //print('lati : ${oldPreset[0][0].latitude}');
+                        //print(oldPreset[0][0].longitude);
+
+
+
+
+
+                        print(newPreset);
+                        // print(movingTimeList);
+                        setState(() {
+                          course_selected=newPreset;
+                          //addMarker(newPreset);
+                          //addPoly(newPreset);
+                        });
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoadingTimeTable(
+                                  newPreset,
+                                  widget.transit,
+
+                                  eventsUpdated[0].startTime.hour,
+                                  eventsUpdated[eventsUpdated.length-1].endTime.hour,
+
+                                )));
+
+
+
+
+
+                        setState(() {
+                          //selectedRestaurant = _selectedRestaurant;
+                        });
+
+
+
+                      },
+                      child:  Text('식당 선택하기',
+                          style: TextStyle(
+                            fontFamily: "Neo",
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 13,
+                          ))
+                  )
               )
 
 

@@ -100,7 +100,7 @@ class _LoadingState extends State<Loading> {
         accomodation,
         accomodation_lati,
         accomodation_long,
-        10,
+        30,
         1,
         [0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0],

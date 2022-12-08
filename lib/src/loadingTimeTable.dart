@@ -166,7 +166,7 @@ class _LoadingTimeTableState extends State<LoadingTimeTable>{
           Center(
               child: Container(
                 padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                child: Text("타임 테이블을 생성하고 있입니다.",
+                child: Text("타임 테이블을 생성하고 있습니다.",
                     style: TextStyle(
                       color: Colors.black,
                       letterSpacing: 2.0,

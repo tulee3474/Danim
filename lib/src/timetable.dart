@@ -90,7 +90,7 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
                   dayIndex.year, dayIndex.month, dayIndex.day, 11, 0)) >=
               0 &&
           timeIndex.compareTo(DateTime(
-                  dayIndex.year, dayIndex.month, dayIndex.day, 14, 0)) <
+                  dayIndex.year, dayIndex.month, dayIndex.day, 14,30)) <
               0 &&
           !lunch) {
         lunch = true;
@@ -169,9 +169,13 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
 
         timeIndex = mealEndTime;
 
+
+
+
         DateTime transitEndTime = DateTime(dayIndex.year, dayIndex.month,
             dayIndex.day, timeIndex.hour, timeIndex.minute + 30);
         DateTime transitEndTimeUpdated = transitEndTime;
+
 
         events.add(CalendarEventData(
             title: '이동',
@@ -193,7 +197,6 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             dayIndex.year, dayIndex.month, dayIndex.day, endDayTime)) >
             0) {
 
-
           break;
         }
       }
@@ -202,6 +205,8 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
         if (timeIndex.compareTo(DateTime(
             dayIndex.year, dayIndex.month, dayIndex.day, 20)) >
             0) {
+
+          events.removeLast();
           break;
         }
 
@@ -326,12 +331,7 @@ class _TimetableState extends State<Timetable> {
         [],
     ];
 
-<<<<<<< Updated upstream
-    if(events.length >0){
-    // 프리셋 초기화
 
-    List<DateTime> dateList = [];
-=======
     if(events.length >0) {
       List<List<Place>> newPreset = [
         for (int i = 0;
@@ -356,7 +356,7 @@ class _TimetableState extends State<Timetable> {
         dateList.add(DateTime(events[0].date.year,
             events[0].date.month, events[0].date.day + i));
       } // 날짜 리스트
->>>>>>> Stashed changes
+
 
 
       for (int i = 0; i < dateList.length; i++) {
@@ -758,6 +758,7 @@ class _DayViewWidgetState extends State<DayViewWidget> {
           //여기에 다시 구현
 
           int mealIndex = 0;
+          DateTime mealDate = startDay; // 초기값 출발 날짜
 
           for (int i = 0; i < events.length; i++) {
             if (event[0].startTime.compareTo(events[i].startTime) == 0) {
@@ -779,7 +780,48 @@ class _DayViewWidgetState extends State<DayViewWidget> {
             //map.addRestMarker(restList);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => FoodRecommend(restList, mealIndex, events, widget.transit)));
-          } else {
+          }
+          //식사시간이 날짜의 첫번째면
+          else if(mealIndex == 0 || events[mealIndex-1].date.getDayDifference(events[mealIndex].date) > 0){
+
+            double lat1 = events[mealIndex + 2].latitude;
+            double lon1 = events[mealIndex + 2].longitude;
+            double lat2 = events[mealIndex + 2].latitude;
+            double lon2 = events[mealIndex + 2].longitude;
+
+            List<Restaurant> restList =
+            await getRestaurant(lat1, lon1, lat2, lon2);
+            for (int i = 0; i < restList.length; i++) {
+              print('${restList[i].restName}\n');
+            }
+            //map.addRestMarker(restList);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => FoodRecommend(restList, mealIndex, events, widget.transit)));
+
+
+
+          }
+
+          //식사시간이 날짜의 마지막이면
+          else if (mealIndex == events.length-1 || events[mealIndex+1].date.getDayDifference(events[mealIndex].date) > 0){
+            double lat1 = events[mealIndex - 2].latitude;
+            double lon1 = events[mealIndex - 2].longitude;
+            double lat2 = events[mealIndex - 2].latitude;
+            double lon2 = events[mealIndex - 2].longitude;
+
+            List<Restaurant> restList =
+            await getRestaurant(lat1, lon1, lat2, lon2);
+            for (int i = 0; i < restList.length; i++) {
+              print('${restList[i].restName}\n');
+            }
+            //map.addRestMarker(restList);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => FoodRecommend(restList, mealIndex, events, widget.transit)));
+
+
+          }
+
+          else {
             print("전후 관광지가 없습니다.");
           }
         } else if (event[0].title == '이동') {

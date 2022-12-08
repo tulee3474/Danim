@@ -252,18 +252,18 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
 
     course_selected_day_index = _currentIndex;
 
-<<<<<<< Updated upstream
+
     print('현재 날짜 _currentIndex : ${_currentIndex}');
     print('현재 날짜 course_selected_index : ${course_selected_day_index}');
     print('_currentDate : ${_currentDate}');
 
 
-=======
+
     print(course_selected_day_index);
     for(int i=0;i<course_selected.length;i++) {
       print('코스 길이 ${course_selected[i].length}');
     }
->>>>>>> Stashed changes
+
     addMarker(course_selected[course_selected_day_index]);
     addPoly(course_selected[course_selected_day_index]);
   }
@@ -613,14 +613,12 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
 
         print(course_selected_day_index);
 
-<<<<<<< Updated upstream
+
         if (course_selected.isNotEmpty) {
-=======
-        if (course_selected != [[]]) {
           for(int i=0;i<course_selected.length;i++) {
             print('코스 길이 ${course_selected[i].length}');
           }
->>>>>>> Stashed changes
+
           addMarker(course_selected[course_selected_day_index]);
           addPoly(course_selected[course_selected_day_index]);
         }
