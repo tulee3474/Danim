@@ -862,7 +862,7 @@ class _AppState extends State<App> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('#만연한 가을, 단풍 속으로',
+                              Text('#겨울방학에는 제주도로',
                                   style: TextStyle(
                                     color: Colors.black,
                                     letterSpacing: 2.0,
@@ -871,7 +871,7 @@ class _AppState extends State<App> {
                                     fontFamily: "Neo",
                                   )),
                               SizedBox(height: 3),
-                              Text('다시 오지 않을 올해 가을을 느껴봐요',
+                              Text('제주의 겨울 풍경을 느껴보아요',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     letterSpacing: 2.0,
@@ -885,9 +885,9 @@ class _AppState extends State<App> {
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
-                              Image.asset('assets/images/jeju3.jpeg',
+                              Image.asset('assets/images/jeju3.jpg',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/jeju2.jpeg',
+                              Image.asset('assets/images/jeju4.jfif',
                                   width: 300, height: 200)
                             ])),
                       ])

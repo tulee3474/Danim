@@ -618,7 +618,6 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
           for(int i=0;i<course_selected.length;i++) {
             print('코스 길이 ${course_selected[i].length}');
           }
-
           addMarker(course_selected[course_selected_day_index]);
           addPoly(course_selected[course_selected_day_index]);
         }
