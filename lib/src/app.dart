@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:danim/src/global_house_check.dart';
 import 'package:danim/src/loadingMyPage.dart';
 import 'package:danim/src/loadingOtherCourse.dart';
 import 'package:danim/src/loadingTimeTable.dart';
@@ -182,6 +183,7 @@ class _AppState extends State<App> {
                                   accomodation = '';
                                   accomodation_lati = 0;
                                   accomodation_long = 0;
+                                  globalHouseCheck = false;
 
                                   //selectedList 초기화
                                   selectedList = [
@@ -601,7 +603,7 @@ class _AppState extends State<App> {
                                                                           setState(
                                                                               () {
                                                                             location =
-                                                                                "Search Location";
+                                                                                "숙소를 검색하세요.";
                                                                           });
                                                                         }
                                                                       },
@@ -644,6 +646,7 @@ class _AppState extends State<App> {
                                                                                   setState(() {
                                                                                     markers.clear();
                                                                                     pathOverlays.clear();
+                                                                                    location = '숙소를 검색하세요.';
                                                                                   });
 
                                                                                   _form.currentState?.save();
@@ -682,6 +685,7 @@ class _AppState extends State<App> {
                                                                                   setState(() {
                                                                                     markers.clear();
                                                                                     pathOverlays.clear();
+                                                                                    location = '숙소를 검색하세요.';
                                                                                   });
                                                                                   List<List<Place>> emptyPreset = [
                                                                                     for (int i = 0; i < endDay.difference(startDay).inDays + 1; i++) [],

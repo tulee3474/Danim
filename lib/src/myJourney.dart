@@ -416,7 +416,7 @@ class _MyJourneyState extends State<MyJourney> {
                                 MaterialPageRoute(
                                     builder: (context) => LoadingTimeTable(
                                           oldPreset,
-                                       0,
+                                       1,
 
                                      journey[0].startTime.hour,
                                        journey[journey.length-1].endTime.hour,

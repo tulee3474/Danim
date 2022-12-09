@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'dart:io';
 import 'dart:math';
+import 'package:danim/src/global_house_check.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 
 import 'package:danim/calendar_view.dart';
@@ -90,7 +91,7 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
                   dayIndex.year, dayIndex.month, dayIndex.day, 11, 0)) >=
               0 &&
           timeIndex.compareTo(DateTime(
-                  dayIndex.year, dayIndex.month, dayIndex.day, 14,30)) <
+                  dayIndex.year, dayIndex.month, dayIndex.day, 15,10)) <
               0 &&
           !lunch) {
         lunch = true;
@@ -197,6 +198,66 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             dayIndex.year, dayIndex.month, dayIndex.day, endDayTime)) >
             0) {
 
+          events.removeLast();
+
+          //숙소 있으면
+          if(globalHouseCheck){
+
+            //이동 하나 넣고
+            DateTime transitEndTime = DateTime(dayIndex.year, dayIndex.month,
+                dayIndex.day, timeIndex.hour, timeIndex.minute + 30);
+            DateTime transitEndTimeUpdated = transitEndTime;
+
+
+            events.add(CalendarEventData(
+                title: '이동',
+                date: dayIndex,
+                event: Event(title: '이동'),
+                description: '',
+                latitude: 0,
+                longitude: 0,
+                startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                    timeIndex.hour, timeIndex.minute),
+                endTime: transitEndTime,
+                color: Colors.grey));
+
+            timeIndex = transitEndTime;
+
+
+
+            //그 날짜의 마지막 관광지 넣어
+            DateTime tourEndTime = DateTime(
+                dayIndex.year,
+                dayIndex.month,
+                dayIndex.day,
+                timeIndex.hour,
+                timeIndex.minute + 30);
+            DateTime tourEndTimeUpdated = tourEndTime;
+
+            Color mealColor = Colors.blue;
+            if(preset[i][j].name.contains('점심') || preset[i][j].name.contains('저녁')){
+              mealColor = Colors.orangeAccent;
+            }
+
+            events.add(CalendarEventData(
+                title: '${preset[i][preset[i].length-1].name}',
+                date: dayIndex,
+                event: Event(title: '${preset[i][preset[i].length-1].name}'),
+                description: '',
+                latitude: preset[i][preset[i].length-1].latitude,
+                longitude: preset[i][preset[i].length-1].longitude,
+                startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                    timeIndex.hour, timeIndex.minute),
+                endTime: tourEndTimeUpdated,
+                color: mealColor));
+
+            timeIndex = tourEndTimeUpdated;
+            mealColor = Colors.blue;
+
+
+          }
+
+
           break;
         }
       }
@@ -207,6 +268,65 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
             0) {
 
           events.removeLast();
+
+          //숙소 있으면
+          if(globalHouseCheck){
+
+            //이동 하나 넣고
+            DateTime transitEndTime = DateTime(dayIndex.year, dayIndex.month,
+                dayIndex.day, timeIndex.hour, timeIndex.minute + 30);
+            DateTime transitEndTimeUpdated = transitEndTime;
+
+
+            events.add(CalendarEventData(
+                title: '이동',
+                date: dayIndex,
+                event: Event(title: '이동'),
+                description: '',
+                latitude: 0,
+                longitude: 0,
+                startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                    timeIndex.hour, timeIndex.minute),
+                endTime: transitEndTime,
+                color: Colors.grey));
+
+            timeIndex = transitEndTime;
+
+
+
+            //그 날짜의 마지막 관광지 넣어
+            DateTime tourEndTime = DateTime(
+                dayIndex.year,
+                dayIndex.month,
+                dayIndex.day,
+                timeIndex.hour,
+                timeIndex.minute + 30);
+            DateTime tourEndTimeUpdated = tourEndTime;
+
+            Color mealColor = Colors.blue;
+            if(preset[i][j].name.contains('점심') || preset[i][j].name.contains('저녁')){
+              mealColor = Colors.orangeAccent;
+            }
+
+            events.add(CalendarEventData(
+                title: '${preset[i][preset[i].length-1].name}',
+                date: dayIndex,
+                event: Event(title: '${preset[i][preset[i].length-1].name}'),
+                description: '',
+                latitude: preset[i][preset[i].length-1].latitude,
+                longitude: preset[i][preset[i].length-1].longitude,
+                startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                    timeIndex.hour, timeIndex.minute),
+                endTime: tourEndTimeUpdated,
+                color: mealColor));
+
+            timeIndex = tourEndTimeUpdated;
+            mealColor = Colors.blue;
+
+
+          }
+
+
           break;
         }
 
@@ -241,18 +361,139 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
       timeIndex = tourEndTimeUpdated;
       mealColor = Colors.blue;
 
+      //마지막 날이라면
       if(i == preset.length-1){
         if (timeIndex.compareTo(DateTime(
             dayIndex.year, dayIndex.month, dayIndex.day, endDayTime)) >
             0) {
+
+          //숙소 있으면
+          if(globalHouseCheck){
+
+            //이동 하나 넣고
+            DateTime transitEndTime = DateTime(dayIndex.year, dayIndex.month,
+                dayIndex.day, timeIndex.hour, timeIndex.minute + 30);
+            DateTime transitEndTimeUpdated = transitEndTime;
+
+
+            events.add(CalendarEventData(
+                title: '이동',
+                date: dayIndex,
+                event: Event(title: '이동'),
+                description: '',
+                latitude: 0,
+                longitude: 0,
+                startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                    timeIndex.hour, timeIndex.minute),
+                endTime: transitEndTime,
+                color: Colors.grey));
+
+            timeIndex = transitEndTime;
+
+
+
+            //그 날짜의 마지막 관광지 넣어
+            DateTime tourEndTime = DateTime(
+                dayIndex.year,
+                dayIndex.month,
+                dayIndex.day,
+                timeIndex.hour,
+                timeIndex.minute +30);
+            DateTime tourEndTimeUpdated = tourEndTime;
+
+            Color mealColor = Colors.blue;
+            if(preset[i][j].name.contains('점심') || preset[i][j].name.contains('저녁')){
+              mealColor = Colors.orangeAccent;
+            }
+
+            events.add(CalendarEventData(
+                title: '${preset[i][preset[i].length-1].name}',
+                date: dayIndex,
+                event: Event(title: '${preset[i][preset[i].length-1].name}'),
+                description: '',
+                latitude: preset[i][preset[i].length-1].latitude,
+                longitude: preset[i][preset[i].length-1].longitude,
+                startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                    timeIndex.hour, timeIndex.minute),
+                endTime: tourEndTimeUpdated,
+                color: mealColor));
+
+            timeIndex = tourEndTimeUpdated;
+            mealColor = Colors.blue;
+
+
+          }
+
           break;
         }
       }
 
+      //마지막날이 아니라면
       else{
         if (timeIndex.compareTo(DateTime(
             dayIndex.year, dayIndex.month, dayIndex.day, 20)) >
             0) {
+
+
+          //숙소 있으면
+          if(globalHouseCheck){
+
+            //이동 하나 넣고
+            DateTime transitEndTime = DateTime(dayIndex.year, dayIndex.month,
+                dayIndex.day, timeIndex.hour, timeIndex.minute + 30);
+            DateTime transitEndTimeUpdated = transitEndTime;
+
+
+            events.add(CalendarEventData(
+                title: '이동',
+                date: dayIndex,
+                event: Event(title: '이동'),
+                description: '',
+                latitude: 0,
+                longitude: 0,
+                startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                    timeIndex.hour, timeIndex.minute),
+                endTime: transitEndTime,
+                color: Colors.grey));
+
+            timeIndex = transitEndTime;
+
+
+
+            //그 날짜의 마지막 관광지 넣어
+            DateTime tourEndTime = DateTime(
+                dayIndex.year,
+                dayIndex.month,
+                dayIndex.day,
+                timeIndex.hour,
+                timeIndex.minute + 30);
+            DateTime tourEndTimeUpdated = tourEndTime;
+
+            Color mealColor = Colors.blue;
+            if(preset[i][j].name.contains('점심') || preset[i][j].name.contains('저녁')){
+              mealColor = Colors.orangeAccent;
+            }
+
+            events.add(CalendarEventData(
+                title: '${preset[i][preset[i].length-1].name}',
+                date: dayIndex,
+                event: Event(title: '${preset[i][preset[i].length-1].name}'),
+                description: '',
+                latitude: preset[i][preset[i].length-1].latitude,
+                longitude: preset[i][preset[i].length-1].longitude,
+                startTime: DateTime(dayIndex.year, dayIndex.month, dayIndex.day,
+                    timeIndex.hour, timeIndex.minute),
+                endTime: tourEndTimeUpdated,
+                color: mealColor));
+
+            timeIndex = tourEndTimeUpdated;
+            mealColor = Colors.blue;
+
+
+          }
+
+
+
           break;
         }
 
