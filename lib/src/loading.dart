@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:danim/src/fixInfo.dart';
+import 'package:danim/src/global_house_check.dart';
 import 'package:danim/src/preset.dart';
 import 'package:danim/src/start_end_day.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -92,6 +93,7 @@ class _LoadingState extends State<Loading> {
     bool houseCheck = false;
     if (accomodation != '') {
       houseCheck = true;
+      globalHouseCheck = true;
     }
 
     print(houseCheck);
