@@ -63,6 +63,9 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
 
   for (int i = 0; i < preset.length; i++) {
 
+    lunch = false;
+    dinner = false;
+
     //점심, 혹은 저녁 입력했는지 판별하기
 
     for(int j=0; j<preset[i].length; j++){
@@ -527,6 +530,7 @@ List<CalendarEventData<Event>> createEventList(List<List<Place>> preset,
     lunch = false;
     dinner = false;
   }
+
 
   return events;
 }
