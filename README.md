@@ -93,3 +93,9 @@ https://docs.google.com/spreadsheets/d/1eaMYnmJKCG-lb7ROFClCIupIMctPODeXwhO8Ykvj
   <사진 9>  
 </div>
 <br/>
+
+## 다님 메뉴얼
+https://github.com/tulee3474/Danim/blob/main/Documents/%EB%A9%94%EB%89%B4%EC%96%BC.pdf
+
+## 최종 발표 PPT
+https://github.com/tulee3474/Danim/blob/main/Documents/%EB%8B%A4%EB%8B%98%20%EB%8D%B0%EB%AA%A8%20ppt.pptx
