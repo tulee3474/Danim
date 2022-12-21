@@ -26,7 +26,7 @@ Future readUserData(docCode) async {
   diaries = [];
 
   try {
-    readData = await read.fb_read_user(docCode) as User;
+    readData = await read.fb_read_user("EVadDssd3zapgTbTMqS3q7jT4b23") as User;
     //readData = await read.fb_read_user('docCodeTest1') as User;
     print(readData.name);
     int jSave = 0;
@@ -45,6 +45,12 @@ Future readUserData(docCode) async {
     }
   } catch (e) {
     print("저장된 코스가 없습니다.");
+  }
+  for (int i = 0; i < journeys.length; i++) {
+    for (int j = 0; j < journeys[i].length; j++) {
+      print(journeys[i][j].title);
+    }
+    print("1-----------------------");
   }
 }
 

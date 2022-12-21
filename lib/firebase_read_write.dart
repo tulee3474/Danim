@@ -357,8 +357,8 @@ class ReadController extends GetxController {
     CalendarEventData temp;
 
     List<CalendarEventData> eventList = [];
+    int iSave = 0;
     for (int j = 0; j < travelList.length; j++) {
-      int iSave = 0;
       for (int i = 0; i < eventNumList[j]; i++) {
         data2 = await db
             .collection('Users')
