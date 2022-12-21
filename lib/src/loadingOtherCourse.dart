@@ -212,12 +212,22 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
         ),
         body: Padding(
           padding: EdgeInsets.all(20.0),
-          child: Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Center(child: SpinKitRing(color: Colors.grey)),
-            ]),
-          ),
+          child: Column(children: [
+            Container(padding: EdgeInsets.fromLTRB(0, 250, 0, 0)),
+            Center(child: SpinKitRing(color: Colors.grey)),
+            SizedBox(height:15),
+            Center(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                  child: Text("타임 테이블을 생성하고 있습니다.",
+                      style: TextStyle(
+                        color: Colors.black,
+                        letterSpacing: 2.0,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                      )),
+                )),
+          ]),
         ));
   }
 }
