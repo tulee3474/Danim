@@ -130,6 +130,7 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
 
 
     } catch (e) {
+      print('에러 $e');
       showDialog(
           context: context,
           barrierDismissible: true,

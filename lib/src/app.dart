@@ -866,7 +866,7 @@ class _AppState extends State<App> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('#겨울방학에는 제주도로',
+                              Text('#연인과 함께 동백꽃 속으로',
                                   style: TextStyle(
                                     color: Colors.black,
                                     letterSpacing: 2.0,
@@ -874,24 +874,34 @@ class _AppState extends State<App> {
                                     fontWeight: FontWeight.bold,
                                     fontFamily: "Neo",
                                   )),
-                              SizedBox(height: 3),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          LoadingOtherCourse(
+                                              "JsiuTQPLkGTeL8QEURHJ5bPj10i1/1")));
+                            }, child: Image.asset('assets/images/rightarrow.png')),
+                              /*SizedBox(height: 3),
                               Text('제주의 겨울 풍경을 느껴보아요',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     letterSpacing: 2.0,
                                     fontSize: 10.0,
                                     fontFamily: "Neo",
-                                  )),
+                                  )),*/
                             ],
                           ),
                         ),
                         SizedBox(width: 0, height: 10),
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Row(children: [
-                              Image.asset('assets/images/jeju3.jpg',
+                            child:
+                            Row(children: [
+                              Image.asset('assets/images/dongbak1.jfif',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/jeju4.jfif',
+                              Image.asset('assets/images/dongbak2.jfif',
                                   width: 300, height: 200)
                             ])),
                       ])

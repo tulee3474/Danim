@@ -30,14 +30,15 @@ Future<int> getDrivingDuration(double originLat, double originLng, double destin
   } else {
     String responseData=utf8.decode(response.bodyBytes);
     var responseBody=jsonDecode(responseData);
-    if (responseBody['code']!='0') {
+    if (responseBody['code']==0) {
+      //print(responseBody.toString());
       drivingDuration = (responseBody['route']['trafast'][0]['summary']['duration']);
       drivingDuration = (((drivingDuration / 60000).ceil() + 9) / 10).floor() * 10;
       if (drivingDuration>120) {
         drivingDuration=120;
       }
     }
-    else {drivingDuration=-1;}
+    else {drivingDuration=10;}
   }
   return drivingDuration;
 }
