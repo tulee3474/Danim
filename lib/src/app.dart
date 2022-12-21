@@ -823,7 +823,7 @@ class _AppState extends State<App> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('#지금, 당신 근처에',
+                                Text('추운겨울에는 실내여행지',
                                     style: TextStyle(
                                       color: Colors.black,
                                       letterSpacing: 2.0,
@@ -832,7 +832,7 @@ class _AppState extends State<App> {
                                       fontFamily: "Neo",
                                     )),
                                 SizedBox(height: 3),
-                                Text('당신에게 딱 맞는 여행지를 추천해요',
+                                Text('#커플여행 #우정여행 #문화시설 #실내여행지',
                                     style: TextStyle(
                                       color: Colors.grey,
                                       letterSpacing: 2.0,
@@ -845,9 +845,11 @@ class _AppState extends State<App> {
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
-                              Image.asset('assets/images/jenu1.jpeg',
+                              Image.asset('assets/images/bunker.png',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/jeju2.jpeg',
+                              Image.asset('assets/images/aqua.jpg',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/nexon.jpg',
                                   width: 300, height: 200)
                             ])),
                         Container(
@@ -866,7 +868,7 @@ class _AppState extends State<App> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('#연인과 함께 동백꽃 속으로',
+                              Text('연인과 함께 동백꽃 속으로',
                                   style: TextStyle(
                                     color: Colors.black,
                                     letterSpacing: 2.0,
@@ -874,7 +876,15 @@ class _AppState extends State<App> {
                                     fontWeight: FontWeight.bold,
                                     fontFamily: "Neo",
                                   )),
-                          ElevatedButton(
+                              SizedBox(height: 3),
+                              Text('#커플여행 #힐링 #사진 #산책',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    letterSpacing: 2.0,
+                                    fontSize: 10.0,
+                                    fontFamily: "Neo",
+                                  )),
+                          /*ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -882,15 +892,8 @@ class _AppState extends State<App> {
                                       builder: (context) =>
                                           LoadingOtherCourse(
                                               "JsiuTQPLkGTeL8QEURHJ5bPj10i1/1")));
-                            }, child: Image.asset('assets/images/rightarrow.png')),
-                              /*SizedBox(height: 3),
-                              Text('제주의 겨울 풍경을 느껴보아요',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    letterSpacing: 2.0,
-                                    fontSize: 10.0,
-                                    fontFamily: "Neo",
-                                  )),*/
+                            }, child: Image.asset('assets/images/rightarrow.png')),*/
+
                             ],
                           ),
                         ),
@@ -899,9 +902,45 @@ class _AppState extends State<App> {
                             scrollDirection: Axis.horizontal,
                             child:
                             Row(children: [
-                              Image.asset('assets/images/dongbak1.jfif',
+                              Image.asset('assets/images/camel.jfif',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/dongbak2.jfif',
+                              Image.asset('assets/images/dongbaek.jfif',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/dbforest.jpg',
+                                  width: 300, height: 200)
+                            ])),
+                        Container(
+                            padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('제주도의 이색체험',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      letterSpacing: 2.0,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Neo",
+                                    )),
+                                SizedBox(height: 3),
+                                Text('#이색체험',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      letterSpacing: 2.0,
+                                      fontSize: 10.0,
+                                      fontFamily: "Neo",
+                                    )),
+                              ],
+                            )),
+                        SizedBox(width: 0, height: 10),
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(children: [
+                              Image.asset('assets/images/orange.jfif',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/aqua.jpg',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/nexon.jpg',
                                   width: 300, height: 200)
                             ])),
                       ])
