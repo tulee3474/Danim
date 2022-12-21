@@ -26,7 +26,7 @@ Future readUserData(docCode) async {
   diaries = [];
 
   try {
-    readData = await read.fb_read_user("EVadDssd3zapgTbTMqS3q7jT4b23") as User;
+    readData = await read.fb_read_user(docCode) as User;
     //readData = await read.fb_read_user('docCodeTest1') as User;
     print(readData.name);
     int jSave = 0;
