@@ -865,7 +865,7 @@ class _AppState extends State<App> {
                         ),
                         Container(
                           padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                          child: Column(
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('연인과 함께 동백꽃 속으로',
@@ -884,7 +884,7 @@ class _AppState extends State<App> {
                                     fontSize: 10.0,
                                     fontFamily: "Neo",
                                   )),
-                          /*ElevatedButton(
+                          ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -892,7 +892,7 @@ class _AppState extends State<App> {
                                       builder: (context) =>
                                           LoadingOtherCourse(
                                               "JsiuTQPLkGTeL8QEURHJ5bPj10i1/1")));
-                            }, child: Image.asset('assets/images/rightarrow.png')),*/
+                            }, child: Image.asset('assets/images/rightarrow.png')),
 
                             ],
                           ),
@@ -997,8 +997,6 @@ class _AppState extends State<App> {
                               Image.asset('assets/images/11.jpg',
                                   width: 300, height: 200),
                               Image.asset('assets/images/12.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/13.jpg',
                                   width: 300, height: 200)
                             ])),
                         Container(
@@ -1039,11 +1037,11 @@ class _AppState extends State<App> {
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
+                              Image.asset('assets/images/13.jpg',
+                                  width: 300, height: 200),
                               Image.asset('assets/images/14.jpg',
                                   width: 300, height: 200),
                               Image.asset('assets/images/15.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/16.jpg',
                                   width: 300, height: 200)
                             ])),
                       ])
