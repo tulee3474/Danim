@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:danim/src/place.dart';
+import 'package:danim/src/start_end_day.dart';
 import 'package:danim/src/timetable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
@@ -111,10 +112,12 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
 
       movingTimeList =
       await createDrivingTimeList(oldPreset);
-
+      startDay=dateList[0];
+      endDay=dateList[dateList.length-1];
       print(oldPreset);
       print(movingTimeList);
-
+      print("시작시간 ${searchedUser.eventList[0].startTime.hour}\n");
+      print("끝시간 ${searchedUser.eventList[searchedUser.eventList.length-1].endTime.hour}\n");
       Navigator.push(
           context,
           MaterialPageRoute(

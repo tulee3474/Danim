@@ -590,7 +590,7 @@ class _TimetableState extends State<Timetable> {
       ]; // 프리셋 초기화
 
       List<DateTime> dateList = [];
-
+      print("12312431435 $startDay\n");
 
       for (int i = 0;
       i < events[events.length - 1].date
