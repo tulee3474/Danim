@@ -95,7 +95,7 @@ class _LoadingOtherCourseState extends State<LoadingOtherCourse> {
       for (int i = 0; i < oldPreset.length; i++) {
         for (int j = 0; j < oldPreset[i].length; j++) {
           print(
-              '${i}째 날 ${j}째 코스 : ${oldPreset[i][j].name}');
+              '${i}째 날 ${j}째 코스 : ${oldPreset[i][j].name}, 몇분 : ${oldPreset[i][j].takenTime}');
         }
       }
 

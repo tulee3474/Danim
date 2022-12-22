@@ -59,14 +59,16 @@ void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
     int date = eventList[i].date.year * 10000 +
         eventList[i].date.month * 100 +
         eventList[i].date.day;
-    int startTime = eventList[i].startTime.year * 1000000 +
-        eventList[i].startTime.month * 10000 +
-        eventList[i].startTime.day * 100 +
-        eventList[i].startTime.hour;
-    int endTime = eventList[i].endTime.year * 1000000 +
-        eventList[i].endTime.month * 10000 +
-        eventList[i].endTime.day * 100 +
-        eventList[i].endTime.hour;
+    int startTime = eventList[i].startTime.year * 100000000 +
+        eventList[i].startTime.month * 1000000 +
+        eventList[i].startTime.day * 10000 +
+        eventList[i].startTime.hour * 100 +
+        eventList[i].startTime.minute;
+    int endTime = eventList[i].endTime.year * 100000000 +
+        eventList[i].endTime.month * 1000000 +
+        eventList[i].endTime.day * 10000 +
+        eventList[i].endTime.hour * 100 +
+        eventList[i].endTime.minute;
     FirebaseFirestore.instance
         .collection('Users')
         .doc(docCode)
@@ -302,9 +304,10 @@ class ReadController extends GetxController {
         event: Event(title: title),
 
         description: data2.data()!['description'] as String,
-        startTime:
-            DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
-        endTime: DateTime(endTime[0], endTime[1], endTime[2], endTime[3]),
+        startTime: DateTime(startTime[0], startTime[1], startTime[2],
+            startTime[3], startTime[4]),
+        endTime: DateTime(
+            endTime[0], endTime[1], endTime[2], endTime[3], endTime[4]),
       );
       eventList.add(temp);
     }
@@ -396,9 +399,10 @@ class ReadController extends GetxController {
           event: Event(title: title),
 
           description: data2.data()!['description'] as String,
-          startTime:
-              DateTime(startTime[0], startTime[1], startTime[2], startTime[3]),
-          endTime: DateTime(endTime[0], endTime[1], endTime[2], endTime[3]),
+          startTime: DateTime(startTime[0], startTime[1], startTime[2],
+              startTime[3], startTime[4]),
+          endTime: DateTime(
+              endTime[0], endTime[1], endTime[2], endTime[3], endTime[4]),
         );
         eventList.add(temp);
       }
@@ -611,13 +615,15 @@ class ReadController extends GetxController {
   List<int> parseTime(time) {
     List<int> returnData = [];
 
-    returnData.add(time ~/ 1000000); //year
-    int index1 = time % 1000000;
-    returnData.add(index1 ~/ 10000); //month
-    int index2 = time % 10000;
-    returnData.add(index2 ~/ 100); //day
-    int index3 = time % 100;
-    returnData.add(index3); //time
+    returnData.add(time ~/ 100000000); //year
+    int index1 = time % 100000000;
+    returnData.add(index1 ~/ 1000000); //month
+    int index2 = time % 1000000;
+    returnData.add(index2 ~/ 10000); //day
+    int index3 = time % 10000;
+    returnData.add(index3 ~/ 100); // hour
+    int index4 = time % 100;
+    returnData.add(index4); //time
 
     return returnData;
   }
