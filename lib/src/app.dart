@@ -458,8 +458,12 @@ class _AppState extends State<App> {
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
-                              Image.asset('assets/images/10.jpg',
-                                  width: 300, height: 200),
+                              Image.asset('assets/images/10.png',
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/10.png',
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/10.png',
+                                  width: 310, height: 250),
                               Image.asset('assets/images/11.jpg',
                                   width: 300, height: 200),
                               Image.asset('assets/images/12.jpg',
