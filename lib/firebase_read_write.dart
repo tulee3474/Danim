@@ -67,7 +67,7 @@ void fb_write_user(docCode, name, travelList, placeNumList, traveledPlaceList,
     int endTime = eventList[i].endTime.year * 100000000 +
         eventList[i].endTime.month * 1000000 +
         eventList[i].endTime.day * 10000 +
-        eventList[i].endTime.hour* 100 +
+        eventList[i].endTime.hour * 100 +
         eventList[i].endTime.minute;
     FirebaseFirestore.instance
         .collection('Users')
@@ -304,9 +304,10 @@ class ReadController extends GetxController {
         event: Event(title: title),
 
         description: data2.data()!['description'] as String,
-        startTime:
-            DateTime(startTime[0], startTime[1], startTime[2], startTime[3], startTime[4]),
-        endTime: DateTime(endTime[0], endTime[1], endTime[2], endTime[3], startTime[4]),
+        startTime: DateTime(startTime[0], startTime[1], startTime[2],
+            startTime[3], startTime[4]),
+        endTime: DateTime(
+            endTime[0], endTime[1], endTime[2], endTime[3], endTime[4]),
       );
       eventList.add(temp);
     }
@@ -398,9 +399,10 @@ class ReadController extends GetxController {
           event: Event(title: title),
 
           description: data2.data()!['description'] as String,
-          startTime:
-              DateTime(startTime[0], startTime[1], startTime[2], startTime[3], startTime[4]),
-          endTime: DateTime(endTime[0], endTime[1], endTime[2], endTime[3], endTime[4]),
+          startTime: DateTime(startTime[0], startTime[1], startTime[2],
+              startTime[3], startTime[4]),
+          endTime: DateTime(
+              endTime[0], endTime[1], endTime[2], endTime[3], endTime[4]),
         );
         eventList.add(temp);
       }
@@ -620,8 +622,8 @@ class ReadController extends GetxController {
     returnData.add(index2 ~/ 10000); //day
     int index3 = time % 10000;
     returnData.add(index3 ~/ 100); // hour
-    int index4 = time % 100 ;
-    returnData.add(index4);//time
+    int index4 = time % 100;
+    returnData.add(index4); //time
 
     return returnData;
   }
