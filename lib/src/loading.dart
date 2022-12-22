@@ -159,10 +159,12 @@ class _LoadingState extends State<Loading> {
             child: Image.asset(IconsPath.logo, fit: BoxFit.contain, height: 40),
           ),
         ),
-        body: Padding(
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+            child:Padding(
           padding: EdgeInsets.all(20.0),
           child: Column(children: [
-            Container(padding: EdgeInsets.fromLTRB(0, 250, 0, 0)),
+            Container(padding: EdgeInsets.fromLTRB(0, 100, 0, 0)),
             Center(child: SpinKitRing(color: Colors.grey)),
             Container(
                 padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
@@ -190,6 +192,6 @@ class _LoadingState extends State<Loading> {
 
 
           ]),
-        ));
+        )));
   }
 }

@@ -7,6 +7,7 @@ import 'package:danim/src/preset.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+
 import 'date_selectlist.dart';
 import 'loading.dart';
 import 'package:danim/src/app.dart';
@@ -167,8 +168,9 @@ class _CourseDetailState extends State<CourseDetail> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: ElevatedButton(
-                                      child: Text('자차',
+                                  child: ElevatedButton.icon(
+                                    icon: Image.asset('assets/images/car.png', width: 25, height: 25),
+                                      label: Text('자차',
                                           style: TextStyle(
                                             fontFamily: "Neo",
                                             fontWeight: FontWeight.bold,
@@ -190,8 +192,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                 // MaterialStatePropertyColor.fromARGB(255, 78, 194, 252)]
                                 SizedBox(width: 10),
                                 Expanded(
-                                  child: ElevatedButton(
-                                      child: Text('대중교통',
+                                  child: ElevatedButton.icon(
+                                    icon: Image.asset('assets/images/bus.png', width: 25, height: 25),
+                                      label: Text('대중교통',
                                           style: TextStyle(
                                             fontFamily: "Neo",
                                             fontWeight: FontWeight.bold,
@@ -227,8 +230,10 @@ class _CourseDetailState extends State<CourseDetail> {
                         child: Column(children: [
                           Row(children: <Widget>[
                             Expanded(
-                              child: ElevatedButton(
-                                  child: Text('혼자여행',
+                              child: ElevatedButton.icon(
+
+                                icon: Image.asset('assets/images/alone.png', width: 25, height: 25),
+                                  label: Text('혼자여행',
                                       style: TextStyle(
                                         fontFamily: "Neo",
                                         fontWeight: FontWeight.bold,
@@ -257,8 +262,9 @@ class _CourseDetailState extends State<CourseDetail> {
                             ),
                             SizedBox(width: 10),
                             Expanded(
-                              child: ElevatedButton(
-                                  child: Text('커플여행',
+                              child: ElevatedButton.icon(
+                                icon: Image.asset('assets/images/parents.png', width: 25, height: 25),
+                                  label: Text('커플여행',
                                       style: TextStyle(
                                         fontFamily: "Neo",
                                         fontWeight: FontWeight.bold,
@@ -288,8 +294,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ]),
                           Row(children: <Widget>[
                             Expanded(
-                              child: ElevatedButton(
-                                  child: Text('우정여행',
+                              child: ElevatedButton.icon(
+                                icon: Image.asset('assets/images/friends.png', width: 25, height: 25),
+                                  label: Text('우정여행',
                                       style: TextStyle(
                                         fontFamily: "Neo",
                                         fontWeight: FontWeight.bold,
@@ -318,8 +325,9 @@ class _CourseDetailState extends State<CourseDetail> {
                             ),
                             SizedBox(width: 10),
                             Expanded(
-                              child: ElevatedButton(
-                                  child: Text('가족여행',
+                              child: ElevatedButton.icon(
+                                icon : Image.asset('assets/images/family.png', width: 25, height: 25),
+                                  label: Text('가족여행',
                                       style: TextStyle(
                                         fontFamily: "Neo",
                                         fontWeight: FontWeight.bold,
@@ -349,8 +357,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ]),
                           Row(children: <Widget>[
                             Expanded(
-                              child: ElevatedButton(
-                                  child: Text('효도여행',
+                              child: ElevatedButton.icon(
+                                icon: Image.asset('assets/images/grandparents.png', width: 25, height: 25),
+                                  label: Text('효도여행',
                                       style: TextStyle(
                                         fontFamily: "Neo",
                                         fontWeight: FontWeight.bold,
@@ -379,8 +388,9 @@ class _CourseDetailState extends State<CourseDetail> {
                             ),
                             SizedBox(width: 10),
                             Expanded(
-                              child: ElevatedButton(
-                                  child: Text('어린자녀와',
+                              child: ElevatedButton.icon(
+                                icon: Image.asset('assets/images/kid.png', width: 25, height: 25),
+                                  label: Text('어린자녀와',
                                       style: TextStyle(
                                         fontFamily: "Neo",
                                         fontWeight: FontWeight.bold,
@@ -410,8 +420,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           ]),
                           Row(children: <Widget>[
                             Expanded(
-                                child: ElevatedButton(
-                                    child: Text('반려견과',
+                                child: ElevatedButton.icon(
+                                  icon: Image.asset('assets/images/dog.png', width: 25, height: 25),
+                                    label: Text('반려견과',
                                         style: TextStyle(
                                           fontFamily: "Neo",
                                           fontWeight: FontWeight.bold,
@@ -467,8 +478,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      child: ElevatedButton(
-                                          child: Text('힐링',
+                                      child: ElevatedButton.icon(
+                                        icon: Image.asset('assets/images/healing.png', width: 25, height: 25),
+                                          label: Text('힐링',
                                               style: TextStyle(
                                                 fontFamily: "Neo",
                                                 fontWeight: FontWeight.bold,
@@ -500,8 +512,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                     ),
                                     SizedBox(width: 10),
                                     Expanded(
-                                      child: ElevatedButton(
-                                          child: Text('액티비티',
+                                      child: ElevatedButton.icon(
+                                        icon: Image.asset('assets/images/motocross.png', width: 25, height: 25),
+                                          label: Text('액티비티',
                                               style: TextStyle(
                                                 fontFamily: "Neo",
                                                 fontWeight: FontWeight.bold,
@@ -535,8 +548,9 @@ class _CourseDetailState extends State<CourseDetail> {
                               Row(
                                 children: [
                                   Expanded(
-                                    child: ElevatedButton(
-                                        child: Text('배움이 있는',
+                                    child: ElevatedButton.icon(
+                                      icon: Image.asset('assets/images/puzzle.png', width: 25, height: 25),
+                                        label: Text('배움이 있는',
                                             style: TextStyle(
                                               fontFamily: "Neo",
                                               fontWeight: FontWeight.bold,
@@ -568,8 +582,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                   ),
                                   SizedBox(width: 10),
                                   Expanded(
-                                    child: ElevatedButton(
-                                        child: Text('맛있는',
+                                    child: ElevatedButton.icon(
+                                      icon: Image.asset('assets/images/food.png', width: 25, height: 25),
+                                        label: Text('맛있는',
                                             style: TextStyle(
                                               fontFamily: "Neo",
                                               fontWeight: FontWeight.bold,
@@ -624,8 +639,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    child: ElevatedButton(
-                                        child: Text('레저스포츠',
+                                    child: ElevatedButton.icon(
+                                      icon: Image.asset('assets/images/kitesurfing.png', width: 25, height: 25),
+                                        label: Text('레저스포츠',
                                             style: TextStyle(
                                                 fontFamily: "Neo",
                                                 fontWeight: FontWeight.bold,
@@ -655,8 +671,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                   ),
                                   SizedBox(width: 10),
                                   Expanded(
-                                    child: ElevatedButton(
-                                        child: Text('문화시설',
+                                    child: ElevatedButton.icon(
+                                      icon: Image.asset('assets/images/facility.png', width: 25, height: 25),
+                                        label: Text('문화시설',
                                             style: TextStyle(
                                                 fontFamily: "Neo",
                                                 fontWeight: FontWeight.bold,
@@ -688,8 +705,9 @@ class _CourseDetailState extends State<CourseDetail> {
                             Row(
                               children: [
                                 Expanded(
-                                  child: ElevatedButton(
-                                      child: Text('사진',
+                                  child: ElevatedButton.icon(
+                                    icon : Image.asset('assets/images/camera.png', width: 25, height: 25),
+                                      label: Text('사진',
                                           style: TextStyle(
                                               fontFamily: "Neo",
                                               fontWeight: FontWeight.bold,
@@ -717,8 +735,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                 ),
                                 SizedBox(width: 10),
                                 Expanded(
-                                  child: ElevatedButton(
-                                      child: Text('이색체험',
+                                  child: ElevatedButton.icon(
+                                    icon: Image.asset('assets/images/fishing.png', width: 25, height: 25),
+                                      label: Text('이색체험',
                                           style: TextStyle(
                                               fontFamily: "Neo",
                                               fontWeight: FontWeight.bold,
@@ -750,8 +769,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Expanded(
-                                    child: ElevatedButton(
-                                        child: Text('문화체험',
+                                    child: ElevatedButton.icon(
+                                      icon: Image.asset('assets/images/united.png', width: 25, height: 25),
+                                        label: Text('문화체험',
                                             style: TextStyle(
                                                 fontFamily: "Neo",
                                                 fontWeight: FontWeight.bold,
@@ -781,8 +801,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                   ),
                                   SizedBox(width: 10),
                                   Expanded(
-                                    child: ElevatedButton(
-                                        child: Text('역사',
+                                    child: ElevatedButton.icon(
+                                      icon: Image.asset('assets/images/old-paper.png', width: 25, height: 25),
+                                        label: Text('역사',
                                             style: TextStyle(
                                                 fontFamily: "Neo",
                                                 fontWeight: FontWeight.bold,
@@ -831,8 +852,9 @@ class _CourseDetailState extends State<CourseDetail> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                ElevatedButton(
-                                    child: Text('바다',
+                                ElevatedButton.icon(
+                                  icon: Image.asset('assets/images/beach.png', width: 25, height: 25),
+                                    label: Text('바다',
                                         style: TextStyle(
                                           fontFamily: "Neo",
                                           fontWeight: FontWeight.bold,
@@ -860,8 +882,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                           print(selectedList[3][0])
                                         }),
                                 SizedBox(width: 10),
-                                ElevatedButton(
-                                    child: Text('산',
+                                ElevatedButton.icon(
+                                  icon: Image.asset('assets/images/mountain.png', width: 25, height: 25),
+                                    label: Text('산',
                                         style: TextStyle(
                                           fontFamily: "Neo",
                                           fontWeight: FontWeight.bold,
@@ -889,8 +912,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                           print(selectedList[3][1])
                                         }),
                                 SizedBox(width: 10),
-                                ElevatedButton(
-                                    child: Text('드라이브 코스',
+                                ElevatedButton.icon(
+                                  icon: Image.asset('assets/images/hands.png', width: 25, height: 25),
+                                    label: Text('드라이브 코스',
                                         style: TextStyle(
                                           fontFamily: "Neo",
                                           fontWeight: FontWeight.bold,
@@ -917,41 +941,45 @@ class _CourseDetailState extends State<CourseDetail> {
                                             },
                                           print(selectedList[3][2])
                                         }),
-                                SizedBox(width: 10),
-                                ElevatedButton(
-                                    child: Text('산책',
-                                        style: TextStyle(
-                                          fontFamily: "Neo",
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 13,
-                                        )),
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            backgrouneColorList[22]),
-                                    onPressed: () => {
-                                          if (selectedList[3][3] == 0)
-                                            {
-                                              selectedList[3][3] = 1,
-                                              setState(() {
-                                                switchBackgroundColor(22, 1);
-                                              })
-                                            }
-                                          else
-                                            {
-                                              selectedList[3][3] = 0,
-                                              setState(() {
-                                                switchBackgroundColor(22, 0);
-                                              })
-                                            },
-                                          print(selectedList[3][3])
-                                        }),
+
                               ]),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ElevatedButton(
-                                  child: Text('쇼핑',
+                              ElevatedButton.icon(
+                                  icon: Image.asset('assets/images/walk.png', width: 25, height: 25),
+                                  label: Text('산책',
+                                      style: TextStyle(
+                                        fontFamily: "Neo",
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 13,
+                                      )),
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      backgrouneColorList[22]),
+                                  onPressed: () => {
+                                    if (selectedList[3][3] == 0)
+                                      {
+                                        selectedList[3][3] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(22, 1);
+                                        })
+                                      }
+                                    else
+                                      {
+                                        selectedList[3][3] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(22, 0);
+                                        })
+                                      },
+                                    print(selectedList[3][3])
+                                  }),
+                              SizedBox(width: 10),
+                              ElevatedButton.icon(
+                                  icon: Image.asset('assets/images/online-shopping.png', width: 25, height: 25),
+                                  label: Text('쇼핑',
                                       style: TextStyle(
                                         fontFamily: "Neo",
                                         fontWeight: FontWeight.bold,
@@ -961,25 +989,32 @@ class _CourseDetailState extends State<CourseDetail> {
                                   style: ButtonStyle(
                                       backgroundColor: backgrouneColorList[23]),
                                   onPressed: () => {
-                                        if (selectedList[3][4] == 0)
-                                          {
-                                            selectedList[3][4] = 1,
-                                            setState(() {
-                                              switchBackgroundColor(23, 1);
-                                            })
-                                          }
-                                        else
-                                          {
-                                            selectedList[3][4] = 0,
-                                            setState(() {
-                                              switchBackgroundColor(23, 0);
-                                            })
-                                          },
-                                        print(selectedList[3][4])
-                                      }),
-                              SizedBox(width: 10),
-                              ElevatedButton(
-                                  child: Text('실내여행지',
+                                    if (selectedList[3][4] == 0)
+                                      {
+                                        selectedList[3][4] = 1,
+                                        setState(() {
+                                          switchBackgroundColor(23, 1);
+                                        })
+                                      }
+                                    else
+                                      {
+                                        selectedList[3][4] = 0,
+                                        setState(() {
+                                          switchBackgroundColor(23, 0);
+                                        })
+                                      },
+                                    print(selectedList[3][4])
+                                  }),
+                            ]
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+
+                              ElevatedButton.icon(
+                                icon: Image.asset('assets/images/indoor.png', width: 25, height: 25),
+                                  label: Text('실내여행지',
                                       style: TextStyle(
                                         fontFamily: "Neo",
                                         fontWeight: FontWeight.bold,
@@ -1006,8 +1041,9 @@ class _CourseDetailState extends State<CourseDetail> {
                                         print(selectedList[3][5])
                                       }),
                               SizedBox(width: 10),
-                              ElevatedButton(
-                                  child: Text('시티투어',
+                              ElevatedButton.icon(
+                                icon : Image.asset('assets/images/buildings.png', width: 25, height: 25),
+                                  label: Text('시티투어',
                                       style: TextStyle(
                                         fontFamily: "Neo",
                                         fontWeight: FontWeight.bold,

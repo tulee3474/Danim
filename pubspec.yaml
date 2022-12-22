@@ -110,6 +110,7 @@ flutter:
         - asset: assets/fonts/NanumSquareNeo-dEb.ttf
           weight: 700
         - asset: assets/fonts/NanumSquareNeo-bRg.ttf
+
     # - family: Trajan Pro
     #   fonts:
     #     - asset: fonts/TrajanPro.ttf

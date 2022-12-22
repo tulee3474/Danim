@@ -282,7 +282,7 @@ class _DayTimeFixState extends State<DayTimeFix> {
                                         initialTime:
                                             TimeOfDay(hour: 10, minute: 0),
                                         selectableTimePredicate: (time) =>
-                                            time!.minute == 0).then(
+                                            time!.minute != -1).then(
                                         (time) => setState(() {
                                               dayStartingTime = DateTime(
                                                   DateTime.now().year,
@@ -358,7 +358,7 @@ class _DayTimeFixState extends State<DayTimeFix> {
                                         initialTime:
                                             TimeOfDay(hour: 20, minute: 0),
                                         selectableTimePredicate: (time) =>
-                                            time!.minute == 0).then(
+                                            time!.minute != -1).then(
                                         (time) => setState(() {
                                               dayEndingTime = DateTime(
                                                   DateTime.now().year,
