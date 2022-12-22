@@ -176,7 +176,7 @@ class _LoadingState extends State<Loading> {
             Center(
                 child: Container(
               padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-              child: Text("최대 1분까지 소요될 수 있습니다",
+              child: Text("최대 1분까지 소요될 수 있습니다\n\n\n",
                   style: TextStyle(
                     color: Colors.black,
                     letterSpacing: 2.0,
@@ -184,6 +184,9 @@ class _LoadingState extends State<Loading> {
                     fontWeight: FontWeight.bold,
                   )),
             )),
+            Container(
+              width: 350, height: 350,
+              child: const Image(image: AssetImage("assets/images/reco.gif")))
 
 
           ]),
