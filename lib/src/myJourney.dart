@@ -390,6 +390,18 @@ class _MyJourneyState extends State<MyJourney> {
                                       [0, 0, 0, 0, 0, 0],
                                       [0, 0, 0, 0, 0, 0, 0, 0, 0],
                                       [0, 0, 0, 0]));
+
+                                  print("이름 ${journey[j].title}");
+                                  print("시작시간 ${journey[j].startTime}");
+                                  print("끝시간 ${journey[j].endTime}");
+
+                                  print("시간 차이 ${    journey[j]
+                                      .endTime
+                                      .difference(journey[j].startTime)
+                                      .inMinutes}");
+
+
+
                                 }
                               }
                             }
@@ -399,7 +411,7 @@ class _MyJourneyState extends State<MyJourney> {
                             for (int i = 0; i < oldPreset.length; i++) {
                               for (int j = 0; j < oldPreset[i].length; j++) {
                                 print(
-                                    '${i}째 날 ${j}째 코스 : ${oldPreset[i][j].name}');
+                                    '${i}째 날 ${j}째 코스 : ${oldPreset[i][j].name} 몇분 : ${oldPreset[i][j].takenTime}');
                               }
                             }
 
