@@ -845,11 +845,11 @@ class _AppState extends State<App> {
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
-                              Image.asset('assets/images/bunker.png',
+                              Image.asset('assets/images/1.png',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/aqua.jpg',
+                              Image.asset('assets/images/2.jpg',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/nexon.jpg',
+                              Image.asset('assets/images/3.jpg',
                                   width: 300, height: 200)
                             ])),
                         Container(
@@ -902,13 +902,24 @@ class _AppState extends State<App> {
                             scrollDirection: Axis.horizontal,
                             child:
                             Row(children: [
-                              Image.asset('assets/images/camel.jfif',
+                              Image.asset('assets/images/4.jpg',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/dongbaek.jfif',
+                              Image.asset('assets/images/5.jpg',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/dbforest.jpg',
+                              Image.asset('assets/images/6.jpg',
                                   width: 300, height: 200)
                             ])),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          height: 7,
+                          decoration: BoxDecoration(
+                            color: Color(0xffF4F4F4),
+                            border: Border(
+                              top: BorderSide(
+                                  width: 1.0, color: Color(0xffD4D4D4)),
+                            ),
+                          ),
+                        ),
                         Container(
                             padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
                             child: Column(
@@ -936,11 +947,103 @@ class _AppState extends State<App> {
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
-                              Image.asset('assets/images/orange.jfif',
+                              Image.asset('assets/images/7.jpg',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/aqua.jpg',
+                              Image.asset('assets/images/8.jpg',
                                   width: 300, height: 200),
-                              Image.asset('assets/images/nexon.jpg',
+                              Image.asset('assets/images/9.jpg',
+                                  width: 300, height: 200)
+                            ])),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          height: 7,
+                          decoration: BoxDecoration(
+                            color: Color(0xffF4F4F4),
+                            border: Border(
+                              top: BorderSide(
+                                  width: 1.0, color: Color(0xffD4D4D4)),
+                            ),
+                          ),
+                        ),
+                        Container(
+                            padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('이국적인 제주도',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      letterSpacing: 2.0,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Neo",
+                                    )),
+                                SizedBox(height: 3),
+                                Text('#이색체험',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      letterSpacing: 2.0,
+                                      fontSize: 10.0,
+                                      fontFamily: "Neo",
+                                    )),
+                              ],
+                            )),
+                        SizedBox(width: 0, height: 10),
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(children: [
+                              Image.asset('assets/images/10.jpg',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/11.jpg',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/12.jpg',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/13.jpg',
+                                  width: 300, height: 200)
+                            ])),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          height: 7,
+                          decoration: BoxDecoration(
+                            color: Color(0xffF4F4F4),
+                            border: Border(
+                              top: BorderSide(
+                                  width: 1.0, color: Color(0xffD4D4D4)),
+                            ),
+                          ),
+                        ),
+                        Container(
+                            padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('아이와 함께 신나는 액티비티',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      letterSpacing: 2.0,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Neo",
+                                    )),
+                                SizedBox(height: 3),
+                                Text('#액티비티',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      letterSpacing: 2.0,
+                                      fontSize: 10.0,
+                                      fontFamily: "Neo",
+                                    )),
+                              ],
+                            )),
+                        SizedBox(width: 0, height: 10),
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(children: [
+                              Image.asset('assets/images/14.jpg',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/15.jpg',
+                                  width: 300, height: 200),
+                              Image.asset('assets/images/16.jpg',
                                   width: 300, height: 200)
                             ])),
                       ])
