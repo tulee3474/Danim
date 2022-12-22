@@ -299,13 +299,22 @@ class _AppState extends State<App> {
                                       fontFamily: "Neo",
                                     )),
                                 SizedBox(height: 3),
-                                Text('#커플여행 #우정여행 #문화시설 #실내여행지',
+                                Text('#커플여행 #우정여행 #가족여행 #문화시설 #실내여행지',
                                     style: TextStyle(
                                       color: Colors.grey,
                                       letterSpacing: 2.0,
                                       fontSize: 10.0,
                                       fontFamily: "Neo",
                                     )),
+                                /*ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoadingOtherCourse(
+                                                      "V5XYzT5Q0CY9aXlXAx1AJUMdUp13/1")));
+                                    }, child: Image.asset('assets/images/rightarrow.png')),*/
                               ],
                             )),
                         SizedBox(width: 0, height: 10),
@@ -313,11 +322,11 @@ class _AppState extends State<App> {
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
                               Image.asset('assets/images/1.png',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/2.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/3.jpg',
-                                  width: 300, height: 200)
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/2.png',
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/3.png',
+                                  width: 310, height: 250)
                             ])),
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -332,26 +341,26 @@ class _AppState extends State<App> {
                         ),
                         Container(
                           padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                          child: Row(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('연인과 함께 동백꽃 속으로',
                                   style: TextStyle(
                                     color: Colors.black,
                                     letterSpacing: 2.0,
-                                    fontSize: 15.0,
+                                    fontSize: 16.0,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: "Neo",
                                   )),
                               SizedBox(height: 3),
-                              Text('#커플여행 #힐링 #사진 #산책',
+                              Text('#커플여행 #우정여행 #가족여행 #힐링 #사진 #산책',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     letterSpacing: 2.0,
                                     fontSize: 10.0,
                                     fontFamily: "Neo",
                                   )),
-                          ElevatedButton(
+                          /*ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -359,7 +368,7 @@ class _AppState extends State<App> {
                                       builder: (context) =>
                                           LoadingOtherCourse(
                                               "JsiuTQPLkGTeL8QEURHJ5bPj10i1/1")));
-                            }, child: Image.asset('assets/images/rightarrow.png')),
+                            }, child: Image.asset('assets/images/rightarrow.png')),*/
 
                             ],
                           ),
@@ -368,12 +377,12 @@ class _AppState extends State<App> {
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
-                              Image.asset('assets/images/4.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/5.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/6.jpg',
-                                  width: 300, height: 200)
+                              Image.asset('assets/images/4.png',
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/5.png',
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/6.png',
+                                  width: 310, height: 250)
                             ])),
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -400,25 +409,34 @@ class _AppState extends State<App> {
                                       fontFamily: "Neo",
                                     )),
                                 SizedBox(height: 3),
-                                Text('#이색체험',
+                                Text('#커플여행 #우정여행 #가족여행 #어린자녀와 #사진 #이색체험',
                                     style: TextStyle(
                                       color: Colors.grey,
                                       letterSpacing: 2.0,
                                       fontSize: 10.0,
                                       fontFamily: "Neo",
                                     )),
+                                /*ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoadingOtherCourse(
+                                                      "EEgLi4oIBFW9B32pA3kvXUNpwyE2/1")));
+                                    }, child: Image.asset('assets/images/rightarrow.png')),*/
                               ],
                             )),
                         SizedBox(width: 0, height: 10),
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
-                              Image.asset('assets/images/7.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/8.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/9.jpg',
-                                  width: 300, height: 200)
+                              Image.asset('assets/images/7.png',
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/8.png',
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/9.png',
+                                  width: 310, height: 250)
                             ])),
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -445,7 +463,7 @@ class _AppState extends State<App> {
                                       fontFamily: "Neo",
                                     )),
                                 SizedBox(height: 3),
-                                Text('#이색체험',
+                                Text('#힐링 #사진 #문화체험',
                                     style: TextStyle(
                                       color: Colors.grey,
                                       letterSpacing: 2.0,
@@ -454,20 +472,25 @@ class _AppState extends State<App> {
                                     )),
                               ],
                             )),
+                        /*ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          LoadingOtherCourse(
+                                              "b9tMAB2DuxRd8ac5sRwGYi1QrZu1/1")));
+                            }, child: Image.asset('assets/images/rightarrow.png')),*/
                         SizedBox(width: 0, height: 10),
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
                               Image.asset('assets/images/10.png',
                                   width: 310, height: 250),
-                              Image.asset('assets/images/10.png',
+                              Image.asset('assets/images/11.png',
                                   width: 310, height: 250),
-                              Image.asset('assets/images/10.png',
-                                  width: 310, height: 250),
-                              Image.asset('assets/images/11.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/12.jpg',
-                                  width: 300, height: 200)
+                              Image.asset('assets/images/12.png',
+                                  width: 310, height: 250)
                             ])),
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -494,7 +517,7 @@ class _AppState extends State<App> {
                                       fontFamily: "Neo",
                                     )),
                                 SizedBox(height: 3),
-                                Text('#액티비티',
+                                Text('#가족여행 #어린자녀와 #액티비티',
                                     style: TextStyle(
                                       color: Colors.grey,
                                       letterSpacing: 2.0,
@@ -503,16 +526,25 @@ class _AppState extends State<App> {
                                     )),
                               ],
                             )),
+                        /*ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          LoadingOtherCourse(
+                                              "vejoHSlw57TGPGWTFkCbfGJGLqs2/1")));
+                            }, child: Image.asset('assets/images/rightarrow.png')),*/
                         SizedBox(width: 0, height: 10),
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(children: [
-                              Image.asset('assets/images/13.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/14.jpg',
-                                  width: 300, height: 200),
-                              Image.asset('assets/images/15.jpg',
-                                  width: 300, height: 200)
+                              Image.asset('assets/images/13.png',
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/14.png',
+                                  width: 310, height: 250),
+                              Image.asset('assets/images/15.png',
+                                  width: 310, height: 250)
                             ])),
                       ])
                 ]))),

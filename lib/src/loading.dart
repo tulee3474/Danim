@@ -184,6 +184,8 @@ class _LoadingState extends State<Loading> {
                     fontWeight: FontWeight.bold,
                   )),
             )),
+
+
           ]),
         ));
   }
